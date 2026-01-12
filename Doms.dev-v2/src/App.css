@@ -1,42 +1,71 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* src/styles/custom.css */
+html, body {
+  height: auto;
+  overflow-y: auto;
+  margin: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* 2. Desktop Only: Lock the screen */
+@media (min-width: 768px) {
+  html, body {
+    height: 100%;
+    overflow: hidden;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .bento-card {
+    height: 100%; /* Only force 100% height on desktop */
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* 3. Ensure cards look good on mobile */
+
+:root {
+  --neon-blue: #3b82f6;
+  --neon-purple: #a855f7;
+  --dark-bg: #030712;
 }
 
-.card {
-  padding: 2em;
+body {
+  background-color: #020617;
+  color: white;
+  font-family: 'Inter', sans-serif;
 }
 
-.read-the-docs {
-  color: #888;
+/* The base "Bento" look */
+.bento-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  /* On mobile, cards need a bit of internal spacing so they don't collapse */
+}
+
+/* Custom Border Colors */
+.border-blue { border: 1.5px solid var(--neon-blue); }
+.border-purple { border: 1.5px solid var(--neon-purple); }
+
+/* Glow effects on hover */
+.bento-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--neon-blue);
+  box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
+}
+
+/* Specialized Gradient for Hero */
+.hero-gradient {
+  background: linear-gradient(135deg, rgba(30, 27, 75, 0.5) 0%, rgba(15, 23, 42, 0.2) 100%);
+}
+
+/* Custom Button Styling */
+.custom-button {
+  background: var(--neon-blue);
+  padding: 0.5rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
 }
