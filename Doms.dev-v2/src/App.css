@@ -12,9 +12,7 @@ html, body {
     overflow: hidden;
   }
   
-  .bento-card {
-    height: 100%; /* Only force 100% height on desktop */
-  }
+
 }
 
 /* 3. Ensure cards look good on mobile */
@@ -31,35 +29,40 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* The base "Bento" look */
 .bento-card {
-  display: flex;
-  flex-direction: column;
   background: rgba(15, 23, 42, 0.3);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1.5rem;
-  padding: 1.5rem;
-  /* On mobile, cards need a bit of internal spacing so they don't collapse */
+  padding: 12px;
 }
 
-/* Custom Border Colors */
+.testing{
+
+  position: fixed;
+  display: flex;
+  flex-direction: row-reverse;
+  top: 2vh;
+  right: 2vw;
+  width: 60%;
+
+  transition: all;
+
+}
+
 .border-blue { border: 1.5px solid var(--neon-blue); }
 .border-purple { border: 1.5px solid var(--neon-purple); }
 
-/* Glow effects on hover */
 .bento-card:hover {
   transform: translateY(-5px);
   border-color: var(--neon-blue);
   box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
 }
 
-/* Specialized Gradient for Hero */
 .hero-gradient {
   background: linear-gradient(135deg, rgba(30, 27, 75, 0.5) 0%, rgba(15, 23, 42, 0.2) 100%);
 }
 
-/* Custom Button Styling */
 .custom-button {
   background: var(--neon-blue);
   padding: 0.5rem 1.5rem;
