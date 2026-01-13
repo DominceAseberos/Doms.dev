@@ -24,7 +24,7 @@ const Dashboard = () => {
 
                     <div className='w-full flex flex-col gap-2'>
 
-                        <div className="bento-card flex-1 ">
+                        <div className=" flex-1 ">
                             <MusicPlayer/>
                         </div>
                         
