@@ -28,9 +28,9 @@ const Dashboard = () => {
                             <MusicPlayer/>
                         </div>
                         
-                       <p className='bento-card h-full min-h-8 max-h-10' >
+                       <div className='bento-card h-full min-h-8 max-h-10' >
                         <ThemeToggle/>
-                        </p>
+                        </div>
                     </div>
 
                 </div>
@@ -75,13 +75,13 @@ const Dashboard = () => {
                 <div className='flex justify w-full h-full gap-4'>
                 
                     <div className='w-full flex flex-col gap-4'>
-                    <p className='bento-card h-12' >
+                    <div className='bento-card h-12' >
                         <ActionButton/>
-                        </p>
+                        </div>
 
-                    <p className='bento-card h-full'>
+                    <div className='bento-card h-full'>
                         <TechStackIcons/>
-                        </p>
+                        </div>
                     </div>
 
                     <div className='bento-card w-48'>

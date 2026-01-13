@@ -1,41 +1,92 @@
 import '../Style/musicStyle.css'
-
 import { useState, useEffect, useCallback, useRef } from 'react';
+import axios from 'axios';
+
 const MusicPlayer = () => {
-   
-  const [isPlaying, setPlaying ] = useState(false);
-
-
-  const togglePlayPause = useCallback (() =>{
-     if(!isPlaying){
-      setPlaying(true)
-     }else
-      setPlaying(false)
-    }
-  )
-
-  /* title slider State */
+  const [isPlaying, setPlaying] = useState(false);
+  const [currentPlaying, setCurrentPlaying] = useState(null);
   const textRef = useRef(null)
   const containerRef = useRef(null)
-  const title = "Laufey - asdasdasd";
-  const [shouldSlide, setShoudlSlide] = useState(false);
+  const [shouldSlide, setShouldSlide] = useState(false);
+  const [coverPhotoSrc, setCoverPhotoSrc] = useState("/placeholderAlbum.jpg")
+    const [loading, setLoading] = useState(true);
 
+
+  const MAX_COUNT = 5;
+  const FETCH_DELAY = 2000;
+
+/* TOGGLE BUTTONS */
+  const togglePlayPause = useCallback(() => {
+    setPlaying(prev => !prev);
+  }, []);
+
+useEffect(() => {
+    const fetchMusicToPlay = async () => {
+      try {
+        const res = await axios.get(
+          "https://api.audius.co/v1/tracks/22?app_name=MyPortfolio"
+        );
+        const track = res.data.data;
+        setCurrentPlaying(track);
+
+        if (track.artwork?.["480x480"]) {
+          const img = new Image();
+          img.src = track.artwork["480x480"];
+          img.onload = () => {
+            setCoverPhotoSrc(track.artwork["480x480"]);
+            setLoading(false);
+          };
+          img.onerror = () => {
+            setCoverPhotoSrc("/placeholderAlbum.jpg");
+            setLoading(false);
+          };
+        } else {
+          setCoverPhotoSrc("/placeholderAlbum.jpg");
+          setLoading(false);
+        }
+      } catch (err) {
+        console.warn(err);
+        setCoverPhotoSrc("/placeholderAlbum.jpg");
+        setLoading(false);
+      }
+    };
+
+    fetchMusicToPlay();
+  }, []);
+
+  
+const titleArtist = currentPlaying
+  ? ` ${currentPlaying.user?.name || "Unknown Artist"} - ${currentPlaying.title}`
+  : "";
+
+  const musicAlbumArt = currentPlaying?.artwork?.["480x480"]; 
+  
+  // check if text should slide
   useEffect(() => {
-    if(textRef.current && containerRef.current){
-      setShoudlSlide(
-     textRef.current.scrollWidth > containerRef.current.offsetWidth
-      );
+    if (textRef.current && containerRef.current) {
+      setShouldSlide(textRef.current.scrollWidth > containerRef.current.offsetWidth);
     }
-  }, [title])
- 
+  }, [titleArtist]);
+
+
+
   return (
     <>
     <div className='music-style flex  flex-col gap-2 justify-around'>
 
         <div className='flex flex-row w-full justify-center h-fit  gap-3 text-center p-2 '>
-           <div className='w-12'>
-            <img className='rounded' src="/en.jpg" alt="" />
-           </div>
+         
+            <div className="rounded border-sky-100 border-[1.4px] w-12 h-12 overflow-hidden flex items-center justify-center">
+  {loading ? (
+    <div className="w-3 h-3 border-2 border-gray-300 border-t-blue-400 rounded-full animate-spin"></div>
+              ) : (
+                <img className='rounded'
+                  src={coverPhotoSrc}
+                  alt="Album Cover"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              )}
+            </div>
            <div ref={containerRef}
 
            className='flex flex-col w-32 overflow-hidden justify-center'>
@@ -44,7 +95,7 @@ const MusicPlayer = () => {
               ${shouldSlide ?
                  "title-slide"
                  : ""
-                } `}>{title}</p>
+                } `}>{titleArtist}</p>
             <p className='label-font font-bold '>Currently Playing</p>
           </div>
         </div>
@@ -72,13 +123,13 @@ const MusicPlayer = () => {
 
           {isPlaying ?(
              <svg className="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 6H8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Zm7 0h-1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Z"/>
+          <path stroke="currentColor" strokeLineCap="round" strokeLineJoin="round" strokeWidth="2" d="M9 6H8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Zm7 0h-1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Z"/>
           </svg>
           
           )
           :
              <svg className="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z" clip-rule="evenodd" />
+            <path fillRule="evenodd" d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z" clipRule="evenodd" />
           </svg>
           }
          
@@ -90,7 +141,7 @@ const MusicPlayer = () => {
 
         {/* FORWARD */}
         <button className=''
-         onClick={""}>
+         onClick={() => {}}>
           <svg className="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 6v12M8 6v12l8-6-8-6Z" />
           </svg>
@@ -107,5 +158,6 @@ const MusicPlayer = () => {
     </>
   );
 };
+
 export default MusicPlayer;
 
