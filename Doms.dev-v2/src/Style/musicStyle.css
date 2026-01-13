@@ -4,3 +4,34 @@
     height: 100%;
     border-radius: 12px;
 }
+
+
+.music-button{
+  transition: all 0.3s ease-in-out;
+}
+
+.music-button:hover{
+    background-color: darkblue;
+}
+
+
+/* title slide  if too long */
+.title-slide{
+
+    display: inline-block;
+    animation: slide 12s  linear infinite;
+}
+
+@keyframes slide {
+    0%{
+        transform: translateX(200%);
+    }
+    100%{
+        transform: translateX(-100%);
+    }
+}
+
+.label-font{
+    font-size: 10px;
+    font-weight: 500;
+}

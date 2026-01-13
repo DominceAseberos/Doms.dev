@@ -18,7 +18,7 @@ const Dashboard = () => {
 
                 <div className='flex justify w-full h-full gap-4'>
 
-                    <div className='bento-card w-48 h-32'>
+                    <div className='bento-card w-48'>
                        <Profile/>
                    </div>
 
@@ -28,7 +28,7 @@ const Dashboard = () => {
                             <MusicPlayer/>
                         </div>
                         
-                       <p className='bento-card h-12' >
+                       <p className='bento-card h-full min-h-8 max-h-10' >
                         <ThemeToggle/>
                         </p>
                     </div>
