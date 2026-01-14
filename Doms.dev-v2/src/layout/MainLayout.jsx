@@ -6,8 +6,8 @@ return (
   border: `1px solid  rgb(var(--theme-rgb))`,
       background: `linear-gradient(
           to bottom,
-          #8986DF,
-          #7572C4
+           rgba(var(--body-Linear-1-rgb))  ,
+             rgba(var(--body-Linear-2-rgb))  
       )`
       }}
       

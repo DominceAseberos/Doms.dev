@@ -23,7 +23,7 @@ const Dashboard = () => {
                         border: `1px solid  rgb(var(--theme-rgb))`,
                             background: `linear-gradient(
                                 to bottom,
-                               #FFCBCB,
+                                #FFCBCB,
                                 #A3B894
                             )`
                             }}>
@@ -51,8 +51,8 @@ const Dashboard = () => {
                 style={{
                     background: `linear-gradient(
                         to bottom,
-                        rgb(var(--theme-rgb)),
-                        rgba(var(--linear-rgb))
+                         rgba(var(--box-Linear-1-rgb))  ,
+                         rgba(var(--box-Linear-2-rgb))  
                     )`
                     }}
                 >

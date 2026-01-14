@@ -142,8 +142,8 @@ useEffect(() => {
       style={{
           background: `linear-gradient(
             to bottom,
-            rgb(var(--theme-rgb)),
-            rgba(var(--linear-rgb))
+            rgba(var(--box-Linear-1-rgb))  ,
+             rgba(var(--box-Linear-2-rgb))  
           )`
         }}
         >

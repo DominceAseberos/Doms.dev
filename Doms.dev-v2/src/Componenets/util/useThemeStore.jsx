@@ -2,10 +2,29 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 // 1. MAIN COLORS (Background/Primary)
-const COLORS = {
-  start: { r: 21,  g: 18,  b: 38 }, 
-  mid:   { r: 35,  g: 0,   b: 255 },  
-  end:   { r: 255, g: 0,   b: 208 },  
+
+
+/*  #131226,
+     #1B1723
+
+      #333269,
+      #35223A
+
+         #8986DF,
+          #7572C4
+     */
+
+
+const BODYLINEAR_1 = {
+  start: { r: 49, g: 49, b: 59 },  
+  mid:   { r: 94, g: 133, b: 133 },   
+  end:   { r: 245,   g: 170, b: 170 }, 
+};
+
+const BODYLINEAR_2 = {
+  start: { r: 27,   g: 23, b: 35 },  
+  mid:   { r: 145,   g: 145, b: 145 },   
+  end:   { r: 215,   g: 150, b: 150 }, 
 };
 
 
@@ -15,8 +34,13 @@ const CONTRAST = {
   end:   { r: 153,   g: 227, b: 237 }, 
 };
 
+const BOXCOLORLINEAR_1 = {
+  start: { r: 21,  g: 18,  b: 38 }, 
+  mid:   { r: 35,  g: 0,   b: 255 },  
+  end:   { r: 255, g: 0,   b: 208 },  
+};
 
-const LINEARCOLOR = {
+const BOXCOLORLINEAR_2 = {
   start: { r: 38,  g: 42,  b: 61 }, 
   mid:   { r: 87,  g: 97,   b: 134 },  
   end:   { r: 255, g: 133,   b: 133 },  
@@ -30,57 +54,86 @@ const lerp = (start, end, t) => {
 const updateThemeVariable = (percentage) => {
   if (typeof document === 'undefined') return;
 
-  let r, g, b;       // Main Color
-  let cr, cg, cb; // Contrast Color
-  let lr,lg,lb;   //liniar color
+  let br,bg,bb;
+  let bbr,bbg,bbb;
 
+  let cr, cg, cb; // Contrast Color
+  let r, g, b;       // linearColor1
+  let lr,lg,lb;   //liniarColor2
   if (percentage <= 50) {
-    // RANGE 1: 0% to 50%
     const t = percentage / 50; 
-    
-    // Main
-    r = lerp(COLORS.start.r, COLORS.mid.r, t);
-    g = lerp(COLORS.start.g, COLORS.mid.g, t);
-    b = lerp(COLORS.start.b, COLORS.mid.b, t);
+
+    // BodyLiniar1
+    br = lerp(BODYLINEAR_1.start.r, BODYLINEAR_1.mid.r, t);
+    bg = lerp(BODYLINEAR_1.start.g, BODYLINEAR_1.mid.g, t);
+    bb = lerp(BODYLINEAR_1.start.b, BODYLINEAR_1.mid.b, t);
+
+    // BodyLiniar2
+    bbr = lerp(BODYLINEAR_2.start.r, BODYLINEAR_2.mid.r, t);
+    bbg = lerp(BODYLINEAR_2.start.g, BODYLINEAR_2.mid.g, t);
+    bbb = lerp(BODYLINEAR_2.start.b, BODYLINEAR_2.mid.b, t);
 
     // Contrast
     cr = lerp(CONTRAST.start.r, CONTRAST.mid.r, t);
     cg = lerp(CONTRAST.start.g, CONTRAST.mid.g, t);
     cb = lerp(CONTRAST.start.b, CONTRAST.mid.b, t);
-     
-    lr = lerp(LINEARCOLOR.start.r, LINEARCOLOR.mid.r, t);
-    lg = lerp(LINEARCOLOR.start.g, LINEARCOLOR.mid.g, t);
-    lb = lerp(LINEARCOLOR.start.b, LINEARCOLOR.mid.b, t);
+    
+     // linearColor1
+    r = lerp(BOXCOLORLINEAR_1.start.r, BOXCOLORLINEAR_1.mid.r, t);
+    g = lerp(BOXCOLORLINEAR_1.start.g, BOXCOLORLINEAR_1.mid.g, t);
+    b = lerp(BOXCOLORLINEAR_1.start.b, BOXCOLORLINEAR_1.mid.b, t);
+
+     //liniarColor2
+    lr = lerp(BOXCOLORLINEAR_2.start.r, BOXCOLORLINEAR_2.mid.r, t);
+    lg = lerp(BOXCOLORLINEAR_2.start.g, BOXCOLORLINEAR_2.mid.g, t);
+    lb = lerp(BOXCOLORLINEAR_2.start.b, BOXCOLORLINEAR_2.mid.b, t);
 
   } else {
     // RANGE 2: 50% to 100%
     const t = (percentage - 50) / 50;
-
-    // Main
-    r = lerp(COLORS.mid.r, COLORS.end.r, t);
-    g = lerp(COLORS.mid.g, COLORS.end.g, t);
-    b = lerp(COLORS.mid.b, COLORS.end.b, t);
-
+      
     // Contrast
     cr = lerp(CONTRAST.mid.r, CONTRAST.end.r, t);
     cg = lerp(CONTRAST.mid.g, CONTRAST.end.g, t);
     cb = lerp(CONTRAST.mid.b, CONTRAST.end.b, t);
 
-    //linear
-    lr = lerp(LINEARCOLOR.start.r, LINEARCOLOR.mid.r, t);
-    lg = lerp(LINEARCOLOR.start.g, LINEARCOLOR.mid.g, t);
-    lb = lerp(LINEARCOLOR.start.b, LINEARCOLOR.mid.b, t);
+    // BodyLiniar1
+    br = lerp(BODYLINEAR_1.mid.r, BODYLINEAR_1.end.r, t);
+    bg = lerp(BODYLINEAR_1.mid.g, BODYLINEAR_1.end.g, t);
+    bb = lerp(BODYLINEAR_1.mid.b, BODYLINEAR_1.end.b, t);
+
+    // BodyLiniar2
+    bbr = lerp(BODYLINEAR_2.mid.r, BODYLINEAR_2.end.r, t);
+    bbg = lerp(BODYLINEAR_2.mid.g, BODYLINEAR_2.end.g, t);
+    bbb = lerp(BODYLINEAR_2.mid.b, BODYLINEAR_2.end.b, t);
+  
+
+
+     // linearColor1
+    r = lerp(BOXCOLORLINEAR_1.mid.r, BOXCOLORLINEAR_1.end.r, t);
+    g = lerp(BOXCOLORLINEAR_1.mid.g, BOXCOLORLINEAR_1.end.g, t);
+    b = lerp(BOXCOLORLINEAR_1.mid.b, BOXCOLORLINEAR_1.end.b, t);
+
+   //liniarColor2
+    lr = lerp(BOXCOLORLINEAR_2.mid.r, BOXCOLORLINEAR_2.end.r, t);
+    lg = lerp(BOXCOLORLINEAR_2.mid.g, BOXCOLORLINEAR_2.end.g, t);
+    lb = lerp(BOXCOLORLINEAR_2.mid.b, BOXCOLORLINEAR_2.end.b, t);
   }
 
   // Format strings
-  const mainColor = `${Math.round(r)} ${Math.round(g)} ${Math.round(b)}`;
+  const bodyLinearColorOne = `${Math.round(br)} ${Math.round(bg)} ${Math.round(bb)}`;
+  const bodyLinearColorTwo = `${Math.round(bbr)} ${Math.round(bbg)} ${Math.round(bbb)}`;
+  const linearColorOne = `${Math.round(r)} ${Math.round(g)} ${Math.round(b)}`;
   const contrastColor = `${Math.round(cr)} ${Math.round(cg)} ${Math.round(cb)}`;
-  const linearColor = `${Math.round(lr)} ${Math.round(lg)} ${Math.round(lb)}`;
+  const linearColorTwo = `${Math.round(lr)} ${Math.round(lg)} ${Math.round(lb)}`;
+
 
   // Set BOTH variables
-  document.documentElement.style.setProperty('--theme-rgb', mainColor);
+  document.documentElement.style.setProperty('--body-Linear-1-rgb', bodyLinearColorOne);
+  document.documentElement.style.setProperty('--body-Linear-2-rgb', bodyLinearColorTwo);
+  document.documentElement.style.setProperty('--box-Linear-1-rgb', linearColorOne);
   document.documentElement.style.setProperty('--contrast-rgb', contrastColor);
-  document.documentElement.style.setProperty('--linear-rgb', linearColor);
+  document.documentElement.style.setProperty('--box-Linear-2-rgb', linearColorTwo);
 
 };
 
