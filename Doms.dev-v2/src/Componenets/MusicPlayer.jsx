@@ -10,7 +10,7 @@ const MusicPlayer = () => {
   const [coverPhotoSrc, setCoverPhotoSrc] = useState("/placeholderAlbum.jpg")
   const [loading, setLoading] = useState(true);
   const [durationSlide, setDurationSlide] = useState(12);
-
+  const [progress, setProgress] = useState(0);
   const audioRef = useRef(new Audio());
 
 const marqueeStyle = `
@@ -19,6 +19,8 @@ const marqueeStyle = `
     100% { transform: translateX(-50%); }
   }
 `;
+
+
 /* TOGGLE BUTTONS */
   const togglePlayPause = useCallback(() => {
     if(isPlaying){
@@ -29,6 +31,13 @@ const marqueeStyle = `
     setPlaying(prev => !prev);
   }, [isPlaying]);
 
+
+  const handleTogglePrev = useCallback(() => {
+    
+
+  })
+/*==================== */
+/* fetch  */
 
 useEffect(() => {
     const fetchMusicToPlay = async () => {
@@ -103,6 +112,25 @@ useEffect(() => {
 }, [title]);
 
 
+useEffect(() => {
+
+    const handleTimeUpdate = () => {
+      const current = audioRef.current.currentTime;
+      const duration = audioRef.current.duration;
+      
+      const percent = duration > 0 ? (current / duration) * 100 : 0;
+      setProgress(percent);
+    };
+    
+    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+
+    return () => {
+      audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      audioRef.current.pause(); 
+      audioRef.current.src = "";
+    };
+}, []);
+
   return (
     <>
     <style>{marqueeStyle}</style>
@@ -167,11 +195,34 @@ useEffect(() => {
 
       </div>
 
+<div className='flex  px-2'>
+  <div className='w-full h-1 rounded-full border-[0.5px] border-amber-100 overflow-hidden cursor-pointer' 
+  style={{
+    backgroundColor :  `rgb(var(--theme-rgb))`
+  }}
+     onClick={(e) => {
+       const width = e.currentTarget.clientWidth;
+       const clickX = e.nativeEvent.offsetX;
+       const duration = audioRef.current.duration;
+       audioRef.current.currentTime = (clickX / width) * duration;
+     }}
+    >
+      <div 
+        className='h-full transition-all duration-100 ease-linear'
+        style={{ 
+          width: `${progress}%`,
+          backgroundColor:`rgb(var(--contrast-rgb))` 
+        }}
+      />
+    </div>
+</div>
+
     {/*button controls  */}
+
       <div className="flex flex-row justify-center h-fit pb-2  gap-5">
 
         {/* SHUFFLE */}
-        <button className='music-button'>
+        <button className='active:scale-120 transition-all duration-200 '>
           <svg className="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.484 9.166 15 7h5m0 0-3-3m3 3-3 3M4 17h4l1.577-2.253M4 7h4l7 10h5m0 0-3 3m3-3-3-3"/>
           </svg>
@@ -180,21 +231,21 @@ useEffect(() => {
 
         {/* BACK */}
         <button >
-          <svg className="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <svg className="active:scale-120 transition-all duration-200 w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 6v12m8-12v12l-8-6 8-6Z" />
           </svg>
         </button>
 
 
         {/* PLAY */}
-        <button className='rounded-full p-1'
+        <button className='active:scale-120 transition-all duration-200 rounded-full p-1'
         style={{
           backgroundColor:  `rgb(var(--contrast-rgb))`
         }}
          onClick={togglePlayPause}>
 
           {isPlaying ?(
-             <svg className="w-5 h-5 text-gray-800"
+             <svg className="active:scale-120 transition-all duration-200 w-5 h-5 text-gray-800"
              style={{
               color:  `rgb(var(--theme-rgb))`
              }}
@@ -205,7 +256,7 @@ useEffect(() => {
           
           )
           :
-             <svg className="w-5 h-5 text-gray-800"
+             <svg className="active:scale-120 transition-all duration-200 w-5 h-5 text-gray-800"
               style={{
               color:  `rgb(var(--theme-rgb))`
              }}
@@ -222,20 +273,39 @@ useEffect(() => {
 
         {/* FORWARD */}
         <button className=''
-         onClick={() => {}}>
-          <svg className="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+         onClick={() => {}}
+         >
+          <svg className="active:scale-120 transition-all duration-200 w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 6v12M8 6v12l8-6-8-6Z" />
           </svg>
         </button>
+
+
         {/* reapet */}
         <button>
-          <svg className="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <svg className="active:scale-120 transition-all duration-200 w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"/>
         </svg>
 
         </button>
       </div>
  </div>
+
+ <div className='fixed w-32 h-32 bottom-4 right-4 bg-amber-50 z-50'
+      style={
+        isPlaying ? 
+        {
+          display: 'block'
+         
+        }:
+        {
+          display: "none"
+        }
+      }>
+
+
+
+      </div>
     </>
   );
 };
