@@ -1,4 +1,3 @@
-import '../Style/musicStyle.css'
 import { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 
@@ -101,7 +100,11 @@ useEffect(() => {
 
   return (
     <>
-    <div className='music-style flex  flex-col gap-2 justify-around'>
+    <div className='music-style flex  flex-col gap-2 justify-around' 
+    style={{
+      backgroundColor: `rgb(var(--theme-rgb))` 
+    }}>
+      
 
         <div className='flex flex-row w-full justify-center h-fit  gap-3 text-center p-2 '>
          
@@ -125,12 +128,19 @@ useEffect(() => {
                       shouldSlide ?
                       {
                         animation: `slide ${durationSlide}s linear infinite`,
+                                  color: `rgb(var(--contrast-rgb))`
+
                       }:{}
                     }
                         >  
                         {title}
                         </p>
-                    <p className='label-font '>Artist: {artistName}</p>
+                    <p className='label-font ' 
+                    style={{
+                         color: `rgb(var(--contrast-rgb))`
+                      
+                    }}
+                    >Artist: {artistName}</p>
 
                   </div>
                 </div>
@@ -155,17 +165,29 @@ useEffect(() => {
 
 
         {/* PLAY */}
-        <button className='bg-blue-950 rounded-full p-1'
+        <button className='rounded-full p-1'
+        style={{
+          backgroundColor:  `rgb(var(--contrast-rgb))`
+        }}
          onClick={togglePlayPause}>
 
           {isPlaying ?(
-             <svg className="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+             <svg className="w-5 h-5 text-gray-800"
+             style={{
+              color:  `rgb(var(--theme-rgb))`
+             }}
+             
+             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 6H8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Zm7 0h-1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Z"/>
           </svg>
           
           )
           :
-             <svg className="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+             <svg className="w-5 h-5 text-gray-800"
+              style={{
+              color:  `rgb(var(--theme-rgb))`
+             }}
+             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fillRule="evenodd" d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z" clipRule="evenodd" />
           </svg>
           }

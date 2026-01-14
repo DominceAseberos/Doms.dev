@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+@theme {
+  /* The Main Color */
+  --color-primary: rgb(var(--theme-rgb));
+  
+  /* The New Contrast Color */
+  --color-contrast: rgb(var(--contrast-rgb));
+}
+
+:root {
+  --theme-rgb: 21 18 38;      /* Default Dark */
+  --contrast-rgb: 230 230 255; /* Default Light */
+}
+
+
+
+.label-font{
+    font-size: 10px;
+    font-weight: 600;
+}
