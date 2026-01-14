@@ -24,51 +24,13 @@ html, body {
 }
 
 body {
-  background-color: #020617;
+  background-color: #ffff;
   color: white;
   font-family: 'Inter', sans-serif;
 }
 
 .bento-card {
-  background: rgba(15, 23, 42, 0.3);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.5rem;
-  padding: 12px;
+  border-radius: 1.2rem;
 }
 
-.testing{
-
-  position: fixed;
-  display: flex;
-  flex-direction: row-reverse;
-  top: 2vh;
-  right: 2vw;
-  width: 60%;
-
-  transition: all;
-
-}
-
-.border-blue { border: 1.5px solid var(--neon-blue); }
-.border-purple { border: 1.5px solid var(--neon-purple); }
-
-.bento-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--neon-blue);
-  box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
-}
-
-.hero-gradient {
-  background: linear-gradient(135deg, rgba(30, 27, 75, 0.5) 0%, rgba(15, 23, 42, 0.2) 100%);
-}
-
-.custom-button {
-  background: var(--neon-blue);
-  padding: 0.5rem 1.5rem;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-}

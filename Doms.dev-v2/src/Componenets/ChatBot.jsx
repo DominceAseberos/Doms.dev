@@ -3,7 +3,9 @@ const ChatBot = () => {
 
 return (
      <>
-      <div>
+      <div 
+      
+      >
            <p>Chat Bot</p>
       </div>
     </>

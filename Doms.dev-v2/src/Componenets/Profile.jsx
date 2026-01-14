@@ -3,9 +3,7 @@ const Profile = () => {
 
 return (
      <>
-      <div>
-           <p>Profile</p>
-      </div>
+          <img className="w-full h-full object-contain" src="./profile.png" alt="" />
     </>
   );
 };

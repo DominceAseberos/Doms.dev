@@ -2,7 +2,15 @@
 import * as Slider from "@radix-ui/react-slider";
 import { useThemeStore } from "./util/useThemeStore"; 
 
+/*  #131226,
+     #1B1723
 
+      #333269,
+      #35223A
+
+         #8986DF,
+          #7572C4
+     */
 const ThemeToggle = () => {
   const { sliderValue, setTheme } = useThemeStore();
 

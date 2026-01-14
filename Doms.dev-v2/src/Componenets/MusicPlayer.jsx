@@ -21,6 +21,26 @@ const marqueeStyle = `
 `;
 
 
+
+useEffect(() => {
+
+    const handleTimeUpdate = () => {
+      const current = audioRef.current.currentTime;
+      const duration = audioRef.current.duration;
+      
+      const percent = duration > 0 ? (current / duration) * 100 : 0;
+      setProgress(percent);
+    };
+    
+    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+
+    return () => {
+      audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      audioRef.current.pause(); 
+      audioRef.current.src = "";
+    };
+}, []);
+
 /* TOGGLE BUTTONS */
   const togglePlayPause = useCallback(() => {
     if(isPlaying){
@@ -112,33 +132,22 @@ useEffect(() => {
 }, [title]);
 
 
-useEffect(() => {
-
-    const handleTimeUpdate = () => {
-      const current = audioRef.current.currentTime;
-      const duration = audioRef.current.duration;
-      
-      const percent = duration > 0 ? (current / duration) * 100 : 0;
-      setProgress(percent);
-    };
-    
-    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-
-    return () => {
-      audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-      audioRef.current.pause(); 
-      audioRef.current.src = "";
-    };
-}, []);
-
   return (
     <>
     <style>{marqueeStyle}</style>
-    <div className='music-style flex  flex-col gap-2 justify-around' 
-    style={{
-      backgroundColor: `rgb(var(--theme-rgb))` 
-    }}>
+
+
       
+        <div className='music-style  flex  flex-col gap-2 justify-around' 
+      style={{
+          background: `linear-gradient(
+            to bottom,
+            rgb(var(--theme-rgb)),
+            rgba(var(--linear-rgb))
+          )`
+        }}
+        >
+          
 
         <div className='flex flex-row w-full justify-center h-fit  gap-3 text-center p-2 '>
          
@@ -195,27 +204,27 @@ useEffect(() => {
 
       </div>
 
-<div className='flex  px-2'>
-  <div className='w-full h-1 rounded-full border-[0.5px] border-amber-100 overflow-hidden cursor-pointer' 
-  style={{
-    backgroundColor :  `rgb(var(--theme-rgb))`
-  }}
-     onClick={(e) => {
-       const width = e.currentTarget.clientWidth;
-       const clickX = e.nativeEvent.offsetX;
-       const duration = audioRef.current.duration;
-       audioRef.current.currentTime = (clickX / width) * duration;
-     }}
-    >
-      <div 
-        className='h-full transition-all duration-100 ease-linear'
-        style={{ 
-          width: `${progress}%`,
-          backgroundColor:`rgb(var(--contrast-rgb))` 
-        }}
-      />
-    </div>
-</div>
+  <div className='flex  px-2'>
+    <div className='w-full h-1 rounded-full border-[0.5px] border-amber-50 overflow-hidden cursor-pointer' 
+    style={{
+      backgroundColor :  `rgb(var(--theme-rgb))`
+    }}
+      onClick={(e) => {
+        const width = e.currentTarget.clientWidth;
+        const clickX = e.nativeEvent.offsetX;
+        const duration = audioRef.current.duration;
+        audioRef.current.currentTime = (clickX / width) * duration;
+      }}
+      >
+        <div 
+          className='h-full transition-all duration-100 ease-linear'
+          style={{ 
+            width: `${progress}%`,
+            backgroundColor:`rgb(var(--contrast-rgb))` 
+          }}
+        />
+      </div>
+  </div>
 
     {/*button controls  */}
 
@@ -264,12 +273,7 @@ useEffect(() => {
             <path fillRule="evenodd" d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z" clipRule="evenodd" />
           </svg>
           }
-         
-
-       
         </button>
-
-      
 
         {/* FORWARD */}
         <button className=''
@@ -289,23 +293,16 @@ useEffect(() => {
 
         </button>
       </div>
+    <div 
+      className='w-32 h-32 bg-amber-50 fixed right-4 bottom-12 z-100'
+    >
+    </div>
  </div>
 
- <div className='fixed w-32 h-32 bottom-4 right-4 bg-amber-50 z-50'
-      style={
-        isPlaying ? 
-        {
-          display: 'block'
-         
-        }:
-        {
-          display: "none"
-        }
-      }>
 
 
 
-      </div>
+
     </>
   );
 };

@@ -18,7 +18,15 @@ const Dashboard = () => {
 
                 <div className='flex justify w-full h-full gap-4'>
 
-                    <div className='bento-card w-48'>
+                    <div className='bento-card w-48 overflow-hidden ' 
+                     style={{
+                        border: `1px solid  rgb(var(--theme-rgb))`,
+                            background: `linear-gradient(
+                                to bottom,
+                               #FFCBCB,
+                                #A3B894
+                            )`
+                            }}>
                        <Profile/>
                    </div>
 
@@ -39,7 +47,15 @@ const Dashboard = () => {
                 {/* ABOUT ME */}
             <div className="
                 bento-card col-span-4 row-span-2   
-                ">
+                "  
+                style={{
+                    background: `linear-gradient(
+                        to bottom,
+                        rgb(var(--theme-rgb)),
+                        rgba(var(--linear-rgb))
+                    )`
+                    }}
+                >
                    <AboutMe/>
                 </div>
 
