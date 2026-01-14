@@ -28,7 +28,7 @@ const Dashboard = () => {
                             <MusicPlayer/>
                         </div>
                         
-                       <div className='bento-card h-full min-h-8 max-h-10' >
+                       <div className='' >
                         <ThemeToggle/>
                         </div>
                     </div>

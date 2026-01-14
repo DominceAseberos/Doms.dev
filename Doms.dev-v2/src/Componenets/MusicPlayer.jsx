@@ -36,7 +36,6 @@ useEffect(() => {
         setCurrentPlaying(track);
 
         const streamURL = `https://api.audius.co/v1/tracks/${track.id}/stream?app_name=MyPortfolio`;
-        console.log(streamURL);
         audioRef.current.src = streamURL;
         audioRef.current.load();
         setPlaying(false);
@@ -73,12 +72,10 @@ useEffect(() => {
   }, []);
 
   
-const titleArtist = currentPlaying
-  ? ` ${currentPlaying.user?.name || "Unknown Artist"} - ${currentPlaying.title}`
-  : "";
 
-const title = currentPlaying.title;
-const artistName = currentPlaying.user.name;
+/* MUSIC INFO */
+const title =  currentPlaying?.title || "Unknown Song";
+const artistName = currentPlaying?.user?.name || "Unknown Artist";
 
 
 // check if text should slide
@@ -99,7 +96,7 @@ useEffect(() => {
   } else {
     setShouldSlide(false);
   }
-}, [titleArtist]);
+}, [title]);
 
 
   return (
