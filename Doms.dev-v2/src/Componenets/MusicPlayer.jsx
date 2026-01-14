@@ -13,7 +13,12 @@ const MusicPlayer = () => {
 
   const audioRef = useRef(new Audio());
 
-
+const marqueeStyle = `
+  @keyframes seamless-loop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+`;
 /* TOGGLE BUTTONS */
   const togglePlayPause = useCallback(() => {
     if(isPlaying){
@@ -100,6 +105,7 @@ useEffect(() => {
 
   return (
     <>
+    <style>{marqueeStyle}</style>
     <div className='music-style flex  flex-col gap-2 justify-around' 
     style={{
       backgroundColor: `rgb(var(--theme-rgb))` 
@@ -120,30 +126,46 @@ useEffect(() => {
                           />
                         )}
                       </div>
-                <div ref={containerRef}
-                  className='flex flex-col w-32 overflow-hidden justify-center'>
-                    <p ref={textRef} 
-                    className="whitespace-nowrap text-sm font-bold "
-                    style={
-                      shouldSlide ?
-                      {
-                        animation: `slide ${durationSlide}s linear infinite`,
-                                  color: `rgb(var(--contrast-rgb))`
 
-                      }:{}
-                    }
-                        >  
-                        {title}
-                        </p>
-                    <p className='label-font ' 
-                    style={{
-                         color: `rgb(var(--contrast-rgb))`
-                      
-                    }}
-                    >Artist: {artistName}</p>
+       <div 
+          ref={containerRef}
+          className='flex flex-col w-32 overflow-hidden justify-center relative mask-linear'
+        >
+          <div 
+            className="flex w-fit items-center"
+            style={shouldSlide ? {
+             
+              animation: `seamless-loop ${durationSlide}s linear infinite`,
+              width: "max-content", 
+            } : {}}
+          >
+            {/* COPY 1: The main text */}
+            <p 
+              ref={textRef} 
+              className="whitespace-nowrap text-sm font-bold pr-8" // pr-8 adds the GAP
+              style={{ color: `rgb(var(--contrast-rgb))` }}
+            >
+              {title}
+            </p>
 
-                  </div>
-                </div>
+            {shouldSlide && (
+              <p 
+                className="whitespace-nowrap text-sm font-bold pr-8" // Must match Copy 1 padding
+                style={{ color: `rgb(var(--contrast-rgb))` }}
+              >
+                {title}
+              </p>
+            )}
+          </div>
+
+          {/* ARTIST NAME (Static) */}
+          <p className='label-font' style={{ color: `rgb(var(--contrast-rgb))` }}>
+            Artist: {artistName}
+          </p>
+        </div>
+        {/* ----------------------------- */}
+
+      </div>
 
     {/*button controls  */}
       <div className="flex flex-row justify-center h-fit pb-2  gap-5">
