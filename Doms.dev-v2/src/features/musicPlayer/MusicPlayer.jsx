@@ -50,7 +50,7 @@ const MusicPlayer = () => {
         <Controls isPlaying={isPlaying} togglePlayPause={togglePlayPause} />
 
 
-          <div className="fixed flex justify-center items-center h-42 w-42 rounded-full bottom-0 right-2 z-100  ">
+          <div className="fixed flex justify-center items-center h-58 w-58 rounded-full bottom-0 -right-4 z-100  ">
             <Visualizer canvasRef={canvasRef} />
 
           </div>

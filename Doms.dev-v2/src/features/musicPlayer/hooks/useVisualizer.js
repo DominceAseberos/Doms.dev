@@ -56,8 +56,9 @@ const drawVisualizer = useCallback(() => {
       const cy = height / 2;
       
       // NEW: Calculate a Dynamic Scale based on canvas size
-      // If canvas is 800px, radius is 400px. We scale relative to that.
-      const maxRadius = Math.min(width, height) / 2; 
+      const PADDING = 20; // pixels around the edge
+      const maxRadius = Math.min(width, height) / 2 - PADDING;
+
 
       // 1. ANALYSIS
       let bass = 0, mid = 0, treble = 0;
@@ -147,11 +148,13 @@ const drawVisualizer = useCallback(() => {
         
         const percent = i / (usefulLength - 1);
         const baseAngle = percent * (Math.PI / 2);
+          const innerCircleRadius = maxRadius * 0.15; 
+          const maxBarLength = maxRadius * 0.4; 
 
         [baseAngle, Math.PI - baseAngle, Math.PI + baseAngle, Math.PI * 2 - baseAngle].forEach(a => {
             // SCALE INNER RADIUS: Hole starts at 10% of radius
-            const r1 = (maxRadius * 0.1) + (pulse * (maxRadius * 0.05));
-            const r2 = r1 + barHeight;
+          const r1 = innerCircleRadius + (pulse * (maxRadius * 0.05)); 
+            const r2 = r1 + barHeight;  
             ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
             ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
         });
