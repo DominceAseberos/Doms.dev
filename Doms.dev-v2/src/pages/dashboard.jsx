@@ -1,13 +1,13 @@
-import MusicPlayer from '../Componenets/MusicPlayer'
-import Profile from '../Componenets/Profile'
-import ThemeToggle from '../Componenets/ThemeToggle'
-import AboutMe from '../Componenets/AboutMe'
-import ChatBot from '../Componenets/ChatBot'
-import InteractiveGame from '../Componenets/InteractiveGame'
-import TechStack from '../Componenets/TechStack'
-import StatsGitHub from '../Componenets/StatsGitHub'
-import ActionButton from '../Componenets/ActionButton'
-import TechStackIcons from '../Componenets/TechStackIcons'
+import MusicPlayer from '../features/musicPlayer/MusicPlayer'
+import Profile from '../features/Profile'
+import ThemeToggle from '../features/ThemeToggle'
+import AboutMe from '../features/AboutMe'
+import ChatBot from '../features/ChatBot'
+import InteractiveGame from '../features/InteractiveGame'
+import TechStack from '../features/TechStack'
+import StatsGitHub from '../features/StatsGitHub'
+import ActionButton from '../features/ActionButton'
+import TechStackIcons from '../features/TechStackIcons'
 
 const Dashboard = () => {
     return (
