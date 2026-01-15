@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const PLACEHOLDER_ALBUM = '/placeholderAlbum.jpg';
-const AUDIUS_TRACK_ID = 22;
+const AUDIUS_TRACK_ID = 5581;
 const AUDIUS_APP_NAME = 'MyPortfolio';
 
 export const useFetchTrack = (onTrackLoaded) => {

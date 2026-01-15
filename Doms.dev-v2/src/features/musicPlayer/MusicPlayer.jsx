@@ -49,7 +49,11 @@ const MusicPlayer = () => {
 
         <Controls isPlaying={isPlaying} togglePlayPause={togglePlayPause} />
 
-        <Visualizer canvasRef={canvasRef} />
+
+          <div className="fixed flex justify-center items-center h-42 w-42 rounded-full bottom-0 right-2 z-100  ">
+            <Visualizer canvasRef={canvasRef} />
+
+          </div>
       </div>
     </>
   );
