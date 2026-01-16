@@ -73,36 +73,39 @@ const drawVisualizer = useCallback(() => {
       treble /= (bufferLength - 100);
 
       smoothBassRef.current += (bass - smoothBassRef.current) * 0.15;
-      const pulse = smoothBassRef.current;
+      const pulse = smoothBassRef.current ;
 
-      // 2. BEAT COLOR LOGIC
+
+      const kick = Math.max(0, bass - pulse);
+      const kickPulse = Math.min(kick * 2.5, 1);
+
+      // 2. CIRCLE MIDDLE
       const now = performance.now();
-      if (bass > 0.6 && now - lastBeatTimeRef.current > 300) {
+
+      if (kickPulse > 0.2 && now - lastBeatTimeRef.current > 250) {
         beatColorHueRef.current += colors.hueSpeed;
         lastBeatTimeRef.current = now;
       }
-
       ctx.clearRect(0, 0, width, height);
       ctx.save();
       ctx.filter = `hue-rotate(${beatColorHueRef.current}deg)`;
 
-      // --- LAYER 1: CIRCLE GLOW (Made Bigger) ---
-      // Base size is now 15% of the total available space
-      const glowBaseSize = maxRadius * 0.15; 
-      const glowRadius = glowBaseSize + (pulse * (maxRadius * 0.1)); 
+      const glowBaseSize = maxRadius * 0.10; 
+      const glowRadius = glowBaseSize + (kickPulse * (maxRadius * 0.25) + pulse * (maxRadius * 0.3)); 
       
       ctx.beginPath();
       ctx.arc(cx, cy, glowRadius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgb(${colors.base} / ${0.1 + pulse * 0.3})`; 
+      ctx.fillStyle = `rgb(${colors.base})`; 
       ctx.fill();
       ctx.restore(); 
 
-      // --- LAYER 2: PARTICLES (Spawn further out) ---
+
+      /* particles */
       if (treble > 0.35) {
         const spawnCount = Math.floor(treble * 5);
         for (let j = 0; j < spawnCount; j++) {
           const angle = Math.random() * Math.PI * 2;
-          // Spawn particles between 20% and 40% of the radius
+
           const startDist = (maxRadius * 0.2) + Math.random() * (maxRadius * 0.2);
           
           particlesRef.current.push({
@@ -111,7 +114,7 @@ const drawVisualizer = useCallback(() => {
             vx: Math.cos(angle) * (1 + Math.random() * 3),
             vy: Math.sin(angle) * (1 + Math.random() * 3),
             life: 1.0,
-            size: 2 + Math.random() * 3 // Slightly bigger particles
+            size: 2 + Math.random() * 3
           });
         }
       }
@@ -125,7 +128,7 @@ const drawVisualizer = useCallback(() => {
         if (p.life <= 0) {
           particlesRef.current.splice(i, 1);
         } else {
-          ctx.fillStyle = `rgb(${colors.highlight} / ${p.life})`;
+          ctx.fillStyle = `rgb(${colors.base})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
           ctx.fill();
@@ -144,17 +147,17 @@ const drawVisualizer = useCallback(() => {
         const fadeOut = 1 - Math.pow(i / usefulLength, 2);
         
         // SCALE HEIGHT: Bars can now take up 40% of the radius
-        const barHeight = v * (maxRadius * 0.4) * fadeOut;
-        
+        const barHeight = v * (maxRadius * 0.7) * fadeOut;
+
         const percent = i / (usefulLength - 1);
         const baseAngle = percent * (Math.PI / 2);
           const innerCircleRadius = maxRadius * 0.15; 
-          const maxBarLength = maxRadius * 0.4; 
+          const maxBarLength = barHeight * 0.4; 
 
         [baseAngle, Math.PI - baseAngle, Math.PI + baseAngle, Math.PI * 2 - baseAngle].forEach(a => {
             // SCALE INNER RADIUS: Hole starts at 10% of radius
-          const r1 = innerCircleRadius + (pulse * (maxRadius * 0.05)); 
-            const r2 = r1 + barHeight;  
+          const r1 = innerCircleRadius + (pulse * (maxRadius * 0.02)); 
+            const r2 = r1 + maxBarLength * 2;  
             ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
             ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
         });
@@ -169,13 +172,14 @@ const drawVisualizer = useCallback(() => {
 
       // --- LAYER 4: TREBLE STROKE ---
       ctx.beginPath();
-      const trebleStart = Math.floor(usefulLength * 0.3); 
+      const trebleStart = Math.floor(usefulLength * 0.4); 
       for (let i = trebleStart; i < usefulLength; i++) {
         const v = dataArray[i] / 255;
         if (v > 0.1) {
             const fadeOut = 1 - Math.pow(i / usefulLength, 2);
-            // Treble spikes are slightly taller (45% of radius)
-            const barHeight = v * (maxRadius * 0.45) * fadeOut;
+
+
+            const barHeight = v * (maxRadius * 0.85) * fadeOut;
             const percent = i / (usefulLength - 1);
             const baseAngle = percent * (Math.PI / 2);
 
