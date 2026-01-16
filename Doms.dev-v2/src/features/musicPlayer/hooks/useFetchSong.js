@@ -2,24 +2,27 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const PLACEHOLDER_ALBUM = '/placeholderAlbum.jpg';
-const AUDIUS_TRACK_ID = 3232; /* 1087633 */
 const AUDIUS_APP_NAME = 'MyPortfolio';
 
-export const useFetchTrack = (onTrackLoaded) => {
+export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
   const [currentPlaying, setCurrentPlaying] = useState(null);
   const [coverPhotoSrc, setCoverPhotoSrc] = useState(PLACEHOLDER_ALBUM);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!activeTrackID) return; 
     const fetchMusicToPlay = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(
-          `https://api.audius.co/v1/tracks/${AUDIUS_TRACK_ID}?app_name=${AUDIUS_APP_NAME}`
+          `https://api.audius.co/v1/tracks/${activeTrackID}?app_name=${AUDIUS_APP_NAME}`
         );
         const track = res.data.data;
         setCurrentPlaying(track);
+        console.log(activeTrackID);
 
         const streamURL = `https://api.audius.co/v1/tracks/${track.id}/stream?app_name=${AUDIUS_APP_NAME}`;
+        /* pass data  */
         onTrackLoaded(streamURL);
 
         if (track.artwork?.['480x480']) {
@@ -39,7 +42,13 @@ export const useFetchTrack = (onTrackLoaded) => {
           setLoading(false);
         }
       } catch (err) {
-        console.warn(err);
+        console.warn("❌ Fetch Failed:", err);
+
+        if (onError) {
+            console.log("⏭️ Auto-skipping to next track due to error...");
+            onError(); 
+        }
+
         setCoverPhotoSrc(PLACEHOLDER_ALBUM);
         setLoading(false);
       }
@@ -50,7 +59,7 @@ export const useFetchTrack = (onTrackLoaded) => {
     return () => {
       setCoverPhotoSrc(PLACEHOLDER_ALBUM);
     };
-  }, []);
+  }, [activeTrackID]);
 
   return {
     currentPlaying,

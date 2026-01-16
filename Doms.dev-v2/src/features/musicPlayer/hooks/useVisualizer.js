@@ -1,6 +1,5 @@
 import { useRef, useCallback } from 'react';
 
-// You can now pass options here!
 export const useVisualizer = (options = {}) => {
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
@@ -8,7 +7,6 @@ export const useVisualizer = (options = {}) => {
   const animationRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // LOGIC STATE
   const smoothBassRef = useRef(0);
   const lastBeatTimeRef = useRef(0);
   const beatColorHueRef = useRef(0);
@@ -55,12 +53,10 @@ const drawVisualizer = useCallback(() => {
       const cx = width / 2;
       const cy = height / 2;
       
-      // NEW: Calculate a Dynamic Scale based on canvas size
-      const PADDING = 20; // pixels around the edge
+      const PADDING = 20; 
       const maxRadius = Math.min(width, height) / 2 - PADDING;
 
 
-      // 1. ANALYSIS
       let bass = 0, mid = 0, treble = 0;
       for (let i = 0; i < bufferLength; i++) {
         const v = dataArray[i] / 255;
@@ -135,7 +131,7 @@ const drawVisualizer = useCallback(() => {
         }
       }
 
-      // --- LAYER 3: MAIN BARS (Scaled Up) ---
+      // --- LAYER 3: MAIN BARS ---
       ctx.save();
       ctx.filter = `hue-rotate(${beatColorHueRef.current}deg)`;
       
@@ -146,7 +142,8 @@ const drawVisualizer = useCallback(() => {
         const v = dataArray[i] / 255;
         const fadeOut = 1 - Math.pow(i / usefulLength, 2);
         
-        // SCALE HEIGHT: Bars can now take up 40% of the radius
+
+
         const barHeight = v * (maxRadius * 0.7) * fadeOut;
 
         const percent = i / (usefulLength - 1);
@@ -155,7 +152,9 @@ const drawVisualizer = useCallback(() => {
           const maxBarLength = barHeight * 0.4; 
 
         [baseAngle, Math.PI - baseAngle, Math.PI + baseAngle, Math.PI * 2 - baseAngle].forEach(a => {
-            // SCALE INNER RADIUS: Hole starts at 10% of radius
+
+
+
           const r1 = innerCircleRadius + (pulse * (maxRadius * 0.02)); 
             const r2 = r1 + maxBarLength * 2;  
             ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
@@ -164,7 +163,6 @@ const drawVisualizer = useCallback(() => {
       }
 
       ctx.strokeStyle = `rgb(${colors.base} / 0.5)`; 
-      // Thicker lines for bigger canvas
       ctx.lineWidth = 4; 
       ctx.lineCap = 'round';
       ctx.stroke();
@@ -179,12 +177,12 @@ const drawVisualizer = useCallback(() => {
             const fadeOut = 1 - Math.pow(i / usefulLength, 2);
 
 
-            const barHeight = v * (maxRadius * 0.85) * fadeOut;
+            const barHeight = v * (maxRadius * 0.95) * fadeOut;
             const percent = i / (usefulLength - 1);
             const baseAngle = percent * (Math.PI / 2);
 
             [baseAngle, Math.PI - baseAngle, Math.PI + baseAngle, Math.PI * 2 - baseAngle].forEach(a => {
-                const r1Base = (maxRadius * 0.1) + (pulse * (maxRadius * 0.05));
+                const r1Base = (maxRadius * 0.1) + (pulse * (maxRadius * 0.2));
                 const r1 = r1Base + (barHeight * 0.6); 
                 const r2 = r1Base + barHeight;
                 ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
@@ -201,13 +199,23 @@ const drawVisualizer = useCallback(() => {
     renderFrame();
   }, [colors.base, colors.highlight, colors.hueSpeed]);
   
-  // ... (stopVisualization etc. remain same) ...
-  const stopVisualization = useCallback(() => {
+const stopVisualization = useCallback(() => {
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
       animationRef.current = null;
     }
+
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    }
+
+    smoothBassRef.current = 0;
+    particlesRef.current = [];
+    
   }, []);
+
 
   const resumeAudioContext = useCallback(() => {
     if (audioContextRef.current?.state === 'suspended') {

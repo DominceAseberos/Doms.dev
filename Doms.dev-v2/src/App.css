@@ -34,3 +34,14 @@ body {
   border-radius: 1.2rem;
 }
 
+@keyframes tumble {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(90deg); }
+  50% { transform: rotate(180deg); }
+  75% { transform: rotate(270deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-tumble {
+  animation: tumble 0.5s steps(4) infinite; /* steps(4) makes it snap like a dice */
+}
