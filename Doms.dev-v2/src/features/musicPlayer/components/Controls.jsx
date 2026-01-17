@@ -10,6 +10,7 @@ export const Controls = ({
   isOpenModal,
   buttonRef,
   isBuffering,
+  onNext,
 }) => {
 
 
@@ -129,7 +130,26 @@ export const Controls = ({
       </button>
 
 
-      {/* REPEAT */}
+      {/* NEXT */}
+      <button 
+      onClick={onNext} className="active:scale-120 transition-all  w-max duration-200">
+
+        <svg className="w-6 h-6 text-gray-800
+       dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24"
+          fill="none" viewBox="0 0 24 24
+      "
+          style={{
+            color: `rgb(var(--contrast-rgb))`,
+          }}
+        >
+          <path stroke="currentColor" strokeLinecap="round"
+           strokeLinejoin="round" strokeWidth="2" d="M16 6v12M8 6v12l8-6-8-6Z" />
+        </svg>
+      </button>
+ 
 
     </div>
   )

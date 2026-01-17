@@ -14,16 +14,17 @@ const MusicPlayer = () => {
   const buttonRef = useRef(null);
 
 
-  const handleNextTrack = () => {
-
+const handleNextTrack = () => {
     const currentPlaylist = TRACKLIST[currentMood];
     const currentIndex = currentPlaylist.findIndex(t => String(t.id) === String(trackID));
 
     let nextSongIndex = currentIndex + 1;
     let nextMood = currentMood;
+    let nextPlaylist = currentPlaylist;
 
     if (nextSongIndex >= currentPlaylist.length || currentIndex === -1) {
-
+      console.log(`✅ Finished ${currentMood}. Switching Mood...`);
+      
       const moods = Object.keys(TRACKLIST);
       const currentMoodIndex = moods.indexOf(currentMood);
       let nextMoodIndex = currentMoodIndex + 1;
@@ -33,17 +34,18 @@ const MusicPlayer = () => {
       }
 
       nextMood = moods[nextMoodIndex];
-      nextSongIndex = 0;
+      nextPlaylist = TRACKLIST[nextMood];
+
+      nextSongIndex = Math.floor(Math.random() * nextPlaylist.length);
     }
 
-    // 4. Update Everything
-    const nextPlaylist = TRACKLIST[nextMood];
-    const nextTrackId = nextPlaylist[nextSongIndex].id;
+
+     const nextTrackId = nextPlaylist[nextSongIndex].id;
 
     console.log(`⏭️ New Mood: ${nextMood} | Song: ${nextSongIndex} | ID: ${nextTrackId}`);
     console.groupEnd();
 
-    setCurrentMood(nextMood);
+    setCurrentMood(nextMood); 
     setTrackID(nextTrackId);
   };
 
@@ -73,12 +75,10 @@ const MusicPlayer = () => {
 
 useEffect(() => {
   const handleClickOutside = (event) => {
-    // If dropdown exists and click is NOT inside dropdown
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpenModal(false);
     } else {
-      // Click is inside dropdown, do nothing
-      setIsOpenModal(true); // optional, can omit if it's already true
+      setIsOpenModal(true); 
     }
   };
 
@@ -93,17 +93,16 @@ useEffect(() => {
     togglePlayPause,
     progress,
     audioRef,
-    setCurrentTime,
     currentPlaying,
     coverPhotoSrc,
     loading,
-    title,
     artistName,
     textRef,
     containerRef,
     shouldSlide,
     durationSlide,
     canvasRef,
+    isBuffering,
   } = useMusicPlayer(trackID, handleNextTrack);
 
   return (
@@ -141,12 +140,13 @@ useEffect(() => {
           setOpenModal={setIsOpenModal}
           isOpenModal={isOpenModal}
           buttonRef={buttonRef}
+          isBuffering = {isBuffering}
+          onNext={handleNextTrack}
 
         />
 
         
         <OverlayDropdown
-
           currentMood={currentMood}
           onMoodChange={handleMoodSelect}
           availableMoods={MOOD_OPTIONS}
