@@ -42,7 +42,6 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
 
           
         img.onerror = () => {
-            console.warn(`Failed to load local image: ${localImageSrc}`);
             setCoverPhotoSrc(PLACEHOLDER_ALBUM);
             setLoading(false);
           };
@@ -52,10 +51,8 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
           setLoading(false);
         }
       } catch (err) {
-        console.warn("❌ Fetch Failed:", err);
 
         if (onError) {
-            console.log("⏭️ Auto-skipping to next track due to error...");
             onError(); 
         }
 

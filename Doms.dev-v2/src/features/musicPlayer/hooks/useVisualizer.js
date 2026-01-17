@@ -84,7 +84,6 @@ export const useVisualizer = (options = {}) => {
 
       const now = performance.now();
 
-      // --- ADAPTIVE SCALING LOGIC ---
       let frameVol = 0;
       for (let i = 0; i < bufferLength; i++) {
         frameVol += dataArray[i];
@@ -97,7 +96,7 @@ export const useVisualizer = (options = {}) => {
           maxVolRef.current -= 0.1; 
       }
 
-      // Sensitivity Scale (Prevents quiet songs from looking dead)
+      // Sensitivity Scale
       const scale = 255 / (Math.max(maxVolRef.current, 40));
 
       // --- FREQUENCY ANALYSIS ---
@@ -128,14 +127,14 @@ export const useVisualizer = (options = {}) => {
 
       ctx.clearRect(0, 0, width, height);
 
-      // ✅ 2. SIZE FIX: Reduced Multipliers here
+      
       const glowBaseSize = maxRadius * 0.05; 
       
-      // Outer Halo (Reduced from 0.40 to 0.15)
+      // Outer Halo 
       const glowRadius = glowBaseSize + (kickPulse * (maxRadius * 0.15) + pulse * (maxRadius * 0.15)); 
       
-      // Inner Core Base (Reduced from 0.2 to 0.08)
-      const glowRadiusSSmall = glowBaseSize + (kickPulse * (maxRadius * 0.08) + pulse * (maxRadius * 0.08)); 
+      // Inner Core Base 
+      const glowRadiusSSmall = glowBaseSize + (kickPulse * (maxRadius * 0.04) + pulse * (maxRadius * 0.04)); 
 
       ctx.save();
 
@@ -159,7 +158,7 @@ export const useVisualizer = (options = {}) => {
         let spikes = 0;
         if (treble > 0.3) {
              spikes = Math.sin(angle * 50 + now * 0.01) * (treble * 4);
-             if (angle % 0.2 < 0.05) spikes += treble * 10;
+             if (angle % 0.2 < 0.05) spikes += treble * 2;
         }
 
         const expansion = kickPulse * 2; 
