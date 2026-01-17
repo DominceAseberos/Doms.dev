@@ -11,11 +11,11 @@ export const TRACKLIST = {
 
     ],
     drift: [
-      { id: '658465526', imgSrc: '/images/drift/dirft-1.jpg' },    
-      { id: '902189369', imgSrc: '/images/drift/dirft-2.jpg' },  
-      { id: '1728867985', imgSrc: '/images/drift/dirft-3.jpg' },  
-      { id: '265802', imgSrc: '/images/drift/dirft-4.jpg' },  
-      { id: '265861', imgSrc: '/images/drift/dirft-5.jpg' },  
+      { id: '658465526', imgSrc: '/images/drift/drift-1.jpg' },    
+      { id: '902189369', imgSrc: '/images/drift/drift-2.jpg' },  
+      { id: '1728867985', imgSrc: '/images/drift/drift-3.jpg' },  
+      { id: '265802', imgSrc: '/images/drift/drift-4.jpg' },  
+      { id: '265861', imgSrc: '/images/drift/drift-5.jpg' },  
 
     ],
     moody: [
@@ -28,21 +28,21 @@ export const TRACKLIST = {
     ],
 
       fierce: [
-      { id: '67531686' },
-      { id: '184959303' },
-      { id: '2019678919' },
-      { id: '891082411' },
-      { id: '1051991608' },
+      { id: '67531686', imgSrc: '/images/fierce/fierce-1.jpg' }, 
+      { id: '184959303' , imgSrc: '/images/fierce/fierce-2.jpg' }, 
+      { id: '2019678919', imgSrc: '/images/fierce/fierce-3.jpg' }, 
+      { id: '891082411', imgSrc: '/images/fierce/fierce-4.jpg' }, 
+      { id: '1051991608', imgSrc: '/images/fierce/fierce-5.jpg' }, 
     
 
     ],
 
-      Upbeat: [
-      { id: '524115861' },
-      { id: '329349' },
-      { id: '10647679' },
-      { id: '252278' },
-      { id: '53435' },
+      upbeat: [
+      { id: '524115861',imgSrc: '/images/upbeat/upbeat-1.jpg' }, 
+      { id: '329349',imgSrc: '/images/upbeat/upbeat-2.jpg' }, 
+      { id: '10647679' ,imgSrc: '/images/upbeat/upbeat-3.jpg' }, 
+      { id: '252278' ,imgSrc: '/images/upbeat/upbeat-4.jpg' }, 
+      { id: '53435' ,imgSrc: '/images/upbeat/upbeat-5.jpg' }, 
 
       ]
   }

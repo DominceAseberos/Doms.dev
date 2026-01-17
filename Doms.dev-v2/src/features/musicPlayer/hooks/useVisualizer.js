@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
 export const useVisualizer = (options = {}) => {
   const audioContextRef = useRef(null);
@@ -6,18 +6,19 @@ export const useVisualizer = (options = {}) => {
   const sourceRef = useRef(null);
   const animationRef = useRef(null);
   const canvasRef = useRef(null);
+  
+  // Track if music is playing
+  const isPlayingRef = useRef(false);
 
+  // LOGIC STATE
   const smoothBassRef = useRef(0);
   const lastBeatTimeRef = useRef(0);
   const beatColorHueRef = useRef(0);
   const particlesRef = useRef([]);
 
-const colors = {
-
-    
+  const colors = {
     base: options.colors?.base || 
           (getComputedStyle(document.documentElement).getPropertyValue('--contrast-rgb').trim() || '165, 217, 196'),
-    
     highlight: options.colors?.highlight || '255, 255, 255', 
     hueSpeed: options.hueSpeed || 45 
   };
@@ -34,10 +35,15 @@ const colors = {
         analyserRef.current.connect(audioContextRef.current.destination);
       }
     }
-  }, [colors.base]); 
+  }, []); 
 
-const drawVisualizer = useCallback(() => {
+  const drawVisualizer = useCallback(() => {
     if (!analyserRef.current || !canvasRef.current) return;
+
+    // We are playing, so we definitely need the loop active
+    isPlayingRef.current = true;
+
+    if (animationRef.current) return; // Loop already running
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -45,8 +51,25 @@ const drawVisualizer = useCallback(() => {
     const dataArray = new Uint8Array(bufferLength);
 
     const renderFrame = () => {
+      // ✅ PERFORMANCE OPTIMIZATION:
+      // If paused AND the visualizer has basically stopped moving (value is near 0)
+      // Stop the loop to save battery/CPU.
+      if (!isPlayingRef.current && smoothBassRef.current < 0.01 && particlesRef.current.length === 0) {
+        // Clear one last time to be sure
+        ctx.clearRect(0, 0, canvas.width, canvas.height); 
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+        return; // EXIT THE LOOP
+      }
+
       animationRef.current = requestAnimationFrame(renderFrame);
-      analyserRef.current.getByteFrequencyData(dataArray);
+      
+      if (isPlayingRef.current) {
+        analyserRef.current.getByteFrequencyData(dataArray);
+      } else {
+        // If paused, feed zeros so it shrinks
+        dataArray.fill(0); 
+      }
 
       const width = canvas.width;
       const height = canvas.height;
@@ -56,7 +79,7 @@ const drawVisualizer = useCallback(() => {
       const PADDING = 20; 
       const maxRadius = Math.min(width, height) / 2 - PADDING;
 
-
+      // 1. ANALYSIS
       let bass = 0, mid = 0, treble = 0;
       for (let i = 0; i < bufferLength; i++) {
         const v = dataArray[i] / 255;
@@ -69,8 +92,7 @@ const drawVisualizer = useCallback(() => {
       treble /= (bufferLength - 100);
 
       smoothBassRef.current += (bass - smoothBassRef.current) * 0.15;
-      const pulse = smoothBassRef.current ;
-
+      const pulse = smoothBassRef.current;
 
       const kick = Math.max(0, bass - pulse);
       const kickPulse = Math.min(kick * 2.5, 1);
@@ -95,13 +117,11 @@ const drawVisualizer = useCallback(() => {
       ctx.fill();
       ctx.restore(); 
 
-
       /* particles */
       if (treble > 0.35) {
         const spawnCount = Math.floor(treble * 5);
         for (let j = 0; j < spawnCount; j++) {
           const angle = Math.random() * Math.PI * 2;
-
           const startDist = (maxRadius * 0.2) + Math.random() * (maxRadius * 0.2);
           
           particlesRef.current.push({
@@ -142,23 +162,18 @@ const drawVisualizer = useCallback(() => {
         const v = dataArray[i] / 255;
         const fadeOut = 1 - Math.pow(i / usefulLength, 2);
         
-
-
         const barHeight = v * (maxRadius * 0.7) * fadeOut;
 
         const percent = i / (usefulLength - 1);
         const baseAngle = percent * (Math.PI / 2);
-          const innerCircleRadius = maxRadius * 0.15; 
-          const maxBarLength = barHeight * 0.4; 
+        const innerCircleRadius = maxRadius * 0.15; 
+        const maxBarLength = barHeight * 0.4; 
 
         [baseAngle, Math.PI - baseAngle, Math.PI + baseAngle, Math.PI * 2 - baseAngle].forEach(a => {
-
-
-
           const r1 = innerCircleRadius + (pulse * (maxRadius * 0.02)); 
-            const r2 = r1 + maxBarLength * 2;  
-            ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
-            ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+          const r2 = r1 + maxBarLength * 2;  
+          ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+          ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
         });
       }
 
@@ -175,8 +190,6 @@ const drawVisualizer = useCallback(() => {
         const v = dataArray[i] / 255;
         if (v > 0.1) {
             const fadeOut = 1 - Math.pow(i / usefulLength, 2);
-
-
             const barHeight = v * (maxRadius * 0.95) * fadeOut;
             const percent = i / (usefulLength - 1);
             const baseAngle = percent * (Math.PI / 2);
@@ -199,28 +212,24 @@ const drawVisualizer = useCallback(() => {
     renderFrame();
   }, [colors.base, colors.highlight, colors.hueSpeed]);
   
-const stopVisualization = useCallback(() => {
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
-
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height); 
-    }
-
-    smoothBassRef.current = 0;
-    particlesRef.current = [];
-    
+  const stopVisualization = useCallback(() => {
+     // Just signal that we are paused. The loop will self-destruct 
+     // when the bars reach zero size.
+     isPlayingRef.current = false;
   }, []);
-
 
   const resumeAudioContext = useCallback(() => {
     if (audioContextRef.current?.state === 'suspended') {
       audioContextRef.current.resume();
     }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
   }, []);
 
   return { canvasRef, setupVisualizer, drawVisualizer, stopVisualization, resumeAudioContext, audioContextRef };

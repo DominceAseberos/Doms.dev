@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 
 const VISUALIZER_EFFECT = {
-    start: { r: 255, g: 255, b: 255 },  
+    start: { r: 123, g: 122, b: 122 },  
     mid:   { r: 183, g: 183, b: 183 },   
     end:   { r: 85,   g: 252, b: 255 }, 
 }
