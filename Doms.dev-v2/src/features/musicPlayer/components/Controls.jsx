@@ -1,121 +1,137 @@
-
+import { LoadingPathSVG, buttonPausePathSVG, buttonPlayPathSVG } from "../svgPath"
 export const Controls = ({
-  
-  isPlaying, 
-  togglePlayPause, 
-  onShuffle,   
+
+  isPlaying,
+  togglePlayPause,
+  onShuffle,
   currentMood,
   loading,
   setOpenModal,
   isOpenModal,
- buttonRef,
+  buttonRef,
+  isBuffering,
 }) => {
 
 
 
-  return(
-
-  
-  <div className="flex flex-row justify-center h-fit pb-2 gap-3">
+  return (
 
 
-    {/* SHUFFLE BUTTON */}
-    <button className="active:scale-120 transition-all duration-200 "
-    onClick={onShuffle}
-    disabled={loading}
-    >
-      <svg className={loading ?  "animate-tumble" : " "}
-      
-      fill="rgb(var(--contrast-rgb))" width="32px" height="32px" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fillRule="evenodd"> <path d="M47.895 88.097c.001-4.416 3.064-9.837 6.854-12.117l66.257-39.858c3.785-2.277 9.915-2.277 13.707.008l66.28 39.934c3.786 2.28 6.853 7.703 6.852 12.138l-.028 79.603c-.001 4.423-3.069 9.865-6.848 12.154l-66.4 40.205c-3.781 2.29-9.903 2.289-13.69-.01l-66.167-40.185c-3.78-2.295-6.842-7.733-6.84-12.151l.023-79.72zm13.936-6.474l65.834 36.759 62.766-36.278-62.872-36.918L61.83 81.623zM57.585 93.52c0 1.628-1.065 71.86-1.065 71.86-.034 2.206 1.467 4.917 3.367 6.064l61.612 37.182.567-77.413s-64.48-39.322-64.48-37.693zm76.107 114.938l60.912-38.66c2.332-1.48 4.223-4.915 4.223-7.679V93.125l-65.135 37.513v77.82z"></path> <path d="M77.76 132.287c-4.782 2.762-11.122.735-14.16-4.526-3.037-5.261-1.622-11.765 3.16-14.526 4.783-2.762 11.123-.735 14.16 4.526 3.038 5.261 1.623 11.765-3.16 14.526zm32 21c-4.782 2.762-11.122.735-14.16-4.526-3.037-5.261-1.622-11.765 3.16-14.526 4.783-2.762 11.123-.735 14.16 4.526 3.038 5.261 1.623 11.765-3.16 14.526zm-32 16c-4.782 2.762-11.122.735-14.16-4.526-3.037-5.261-1.622-11.765 3.16-14.526 4.783-2.762 11.123-.735 14.16 4.526 3.038 5.261 1.623 11.765-3.16 14.526zm32 21c-4.782 2.762-11.122.735-14.16-4.526-3.037-5.261-1.622-11.765 3.16-14.526 4.783-2.762 11.123-.735 14.16 4.526 3.038 5.261 1.623 11.765-3.16 14.526zm78.238-78.052c-4.783-2.762-11.122-.735-14.16 4.526-3.037 5.261-1.623 11.765 3.16 14.526 4.783 2.762 11.123.735 14.16-4.526 3.038-5.261 1.623-11.765-3.16-14.526zm-16.238 29c-4.782-2.762-11.122-.735-14.16 4.526-3.037 5.261-1.622 11.765 3.16 14.526 4.783 2.762 11.123.735 14.16-4.526 3.038-5.261 1.623-11.765-3.16-14.526zm-17 28c-4.782-2.762-11.122-.735-14.16 4.526-3.037 5.261-1.622 11.765 3.16 14.526 4.783 2.762 11.123.735 14.16-4.526 3.038-5.261 1.623-11.765-3.16-14.526zM128.5 69c-6.351 0-11.5 4.925-11.5 11s5.149 11 11.5 11S140 86.075 140 80s-5.149-11-11.5-11z"></path> </g> </g></svg>
-    </button>
-
-  
-   {/*Mood  TEXTT button*/}
-        <button  ref={buttonRef} 
-          onClick={() => setOpenModal(!isOpenModal)}
-          className="rounded-full px-4 w-max  h-full flex items-center justify-center transition-all hover:brightness-110 active:scale-95"
-          style={{ backgroundColor: `rgb(var(--contrast-rgb))` }}
-        >
-          <p className="text-black label-font font-bold uppercase text-xs tracking-wider">
-            {currentMood || 'MOOD'} 
-          </p>
-        </button>
-
-        
-
-    {/* PLAY */}
-    <button
-      className="active:scale-120 transition-all  w-max duration-200 rounded-full flex justify-center p-1"
-      style={{
-        backgroundColor: `rgb(var(--contrast-rgb))`,
-      }}
-      onClick={togglePlayPause}
-    >
-      {isPlaying ? (
-        <svg
-          className="active:scale-120 transition-all duration-200  w-max text-gray-800"
-          style={{
-            color: `rgb(var(--theme-rgb))`,
-          }}
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M9 6H8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Zm7 0h-1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Z"
-          />
-        </svg>
-      ) : (
-        <svg
-          className="active:scale-120 transition-all duration-200  w-max text-gray-800"
-          style={{
-            color: `rgb(var(--theme-rgb))`,
-          }}
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fillRule="evenodd"
-            d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z"
-            clipRule="evenodd"
-          />
-        </svg>
-      )}
-    </button>
+    <div className="flex flex-row justify-center h-fit pb-2 gap-3">
 
 
-    {/* REPEAT */}
-    <button className="active:scale-120 transition-all duration-200">
-      <svg
-        className="w-4 h-4 text-gray-800 dark:text-white"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        fill="none"
-        viewBox="0 0 24 24"
+      {/* SHUFFLE BUTTON */}
+      <button className="active:scale-120 transition-all duration-200 "
+        onClick={onShuffle}
+        disabled={loading}
       >
-        <path
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"
-        />
-      </svg>
-    </button>
-  </div>
+        <svg className={loading ? "animate-tumble" : " "}
+
+          fill="rgb(var(--contrast-rgb))" width="32px" height="32px" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier"
+            strokeWidth="0"></g><g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fillRule="evenodd">
+
+                {LoadingPathSVG.map((d, i) => (
+                  <path key={i} d={d}></path>
+                ))}
+
+              </g> </g></svg>
+      </button>
+
+
+      {/*Mood  TEXTT button*/}
+      <button ref={buttonRef}
+        onClick={() => setOpenModal(!isOpenModal)}
+        className="rounded-full px-4 w-max  h-full flex items-center justify-center transition-all hover:brightness-110 active:scale-95"
+        style={{ backgroundColor: `rgb(var(--contrast-rgb))` }}
+      >
+        <p className="text-black label-font font-bold uppercase text-xs tracking-wider">
+          {currentMood || 'MOOD'}
+        </p>
+      </button>
+
+
+
+      {/* PLAY */}
+      <button
+        className="active:scale-120 transition-all  w-max duration-200 rounded-full flex justify-center p-1"
+        style={{
+          backgroundColor: `rgb(var(--contrast-rgb))`,
+        }}
+        onClick={togglePlayPause}
+      >
+        {loading || isBuffering ? (
+          <svg
+            className={`animate-tumble w-6 h-6 text-[rgba(var(--box-Linear-1-rgb))]`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+
+
+        ) : isPlaying ? (
+          <svg
+            className="active:scale-120 transition-all duration-200 w-max text-gray-800"
+            style={{
+              color: `rgb(var(--theme-rgb))`,
+            }}
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 6H8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Zm7 0h-1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1Z"
+            />
+          </svg>
+        ) : (
+          // 3️⃣ Play Icon
+          <svg
+            className="active:scale-120 transition-all duration-200 w-max text-gray-800"
+            style={{
+              color: `rgb(var(--theme-rgb))`,
+            }}
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fillRule="evenodd"
+              d="M8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8l8-6a1 1 0 0 0 0-1.6l-8-6Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        )}
+      </button>
+
+
+      {/* REPEAT */}
+
+    </div>
   )
 }
 

@@ -9,11 +9,15 @@ export const OverlayDropdown = ({
 }) => {
   return (
     <div ref={dropdownRef}
-      className={`absolute -translate-y-12 border flex justify-between h-max  bottom-0 overflow-hidden  border-[rgb(var(--contrast-rgb))] rounded-xl shadow-xl
-      transition-all duration-300 
+      className={`
+        absolute -translate-y-12 border flex justify-between h-max  bottom-0 overflow-y-scroll  border-[rgb(var(--contrast-rgb))] rounded-xl shadow-xl 
+        transition-all duration-300 
       ${isOpenModal ? `w-full opacity-100`: `w-0 opacity-2`}
       `}
       style={{
+        scrollbarWidth: `thin`,
+          scrollbarColor: `rgb(var(--contrast-rgb)) rgb(var(--contrast-rgb))`,
+
         background: `linear-gradient(
           to bottom,
           rgba(var(--box-Linear-1-rgb)),
@@ -21,6 +25,7 @@ export const OverlayDropdown = ({
         )`,
       }}
     >
+      
       {availableMoods?.map((option) => (
         <button
           key={option.id}

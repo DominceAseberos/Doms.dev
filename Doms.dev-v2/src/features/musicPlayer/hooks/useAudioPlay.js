@@ -4,48 +4,54 @@ export const useAudioPlayback = (onEnded) => {
   const audioRef = useRef(new Audio());
   const [progress, setProgress] = useState(0);
   const [isPlaying, setPlaying] = useState(false);
+  const [isBuffering, setBuffering] = useState(false);
 
-  // 1. Init the Ref
   const onEndedRef = useRef(onEnded);
 
-  // 2. FIXED: Keep the Ref updated! (You were missing this)
   useEffect(() => {
     onEndedRef.current = onEnded;
   }, [onEnded]);
 
   useEffect(() => {
-    audioRef.current.crossOrigin = 'anonymous';
+    const audio = audioRef.current;
+    audio.crossOrigin = 'anonymous';
 
     const handleTimeUpdate = () => {
-      const current = audioRef.current.currentTime;
-      const duration = audioRef.current.duration;
+      const current = audio.currentTime;
+      const duration = audio.duration;
       setProgress(duration > 0 ? (current / duration) * 100 : 0);
     };
 
     const handleEnded = () => {
       setPlaying(false);
       setProgress(0);
-      
-      // Call the Ref (It always has the latest function)
-      if (onEndedRef.current) {
-        onEndedRef.current();
-      }
+      if (onEndedRef.current) onEndedRef.current();
     };
 
-    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-    audioRef.current.addEventListener('ended', handleEnded);
+    const handleWaiting = () => setBuffering(true);
+    const handlePlaying = () => setBuffering(false);
+    const handlePlay = () => setPlaying(true);
+    const handlePause = () => setPlaying(false);
+
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('waiting', handleWaiting);
+    audio.addEventListener('playing', handlePlaying);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
 
     return () => {
-      audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-      audioRef.current.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('waiting', handleWaiting);
+      audio.removeEventListener('playing', handlePlaying);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
     };
-    
-    // 3. FIXED: Dependency array MUST be empty so listeners never "flicker"
-  }, []); 
+  }, []);
 
   const play = useCallback(() => {
     if (!audioRef.current.src) return;
-
     audioRef.current.play()
       .then(() => setPlaying(true))
       .catch(e => console.log('Playback prevented (User interaction needed):', e));
@@ -57,22 +63,17 @@ export const useAudioPlayback = (onEnded) => {
   }, []);
 
   const setAudioSrc = useCallback((src, autoPlay = true) => {
-    audioRef.current.src = src;
-    audioRef.current.load();
+    const audio = audioRef.current;
+    audio.src = src;
+    audio.load();
 
     if (autoPlay) {
-        const playPromise = audioRef.current.play();
-
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              setPlaying(true);
-            })
-            .catch((error) => {
-              console.log("Auto-play prevented (Expected on first load).");
-              setPlaying(false); 
-            });
-        }
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => setPlaying(true))
+          .catch(() => setPlaying(false));
+      }
     }
   }, []);
 
@@ -80,14 +81,15 @@ export const useAudioPlayback = (onEnded) => {
     audioRef.current.currentTime = time;
   }, []);
 
-  return { 
-    audioRef, 
+  return {
+    audioRef,
     progress,
     isPlaying,
-    setPlaying, 
+    setPlaying,
+    isBuffering, // this will now work
     play,
-    pause, 
-    setAudioSrc, 
-    setCurrentTime 
+    pause,
+    setAudioSrc,
+    setCurrentTime
   };
 };

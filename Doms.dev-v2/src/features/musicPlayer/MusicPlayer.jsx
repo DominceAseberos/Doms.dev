@@ -111,7 +111,7 @@ useEffect(() => {
       <style>{marqueeStyle}</style>
 
       <div
-        className="music-style flex flex-col gap-2 justify-around relative z-20"
+        className="music-style flex flex-col gap-2 justify-around relative z-20 overflow-hidden"
         style={{
           background: `linear-gradient(
             to bottom,

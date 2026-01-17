@@ -11,10 +11,30 @@
 }
 
 :root {
-  --theme-rgb: 21 18 38;      /* Default Dark */
-  --contrast-rgb: 230 230 255; /* Default Light */
+  --theme-rgb: 21 18 38;     
+  --contrast-rgb: 230 230 255; 
 }
 
+.your-class::-webkit-scrollbar {
+  width: 8px;          
+}
+
+.your-class::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+}
+
+.your-class::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.3);  
+  border-radius: 4px;
+  border: 2px solid transparent;
+}
+
+/* For Firefox */
+.scrollbar-visible {
+  scrollbar-width: thin;   
+  scrollbar-color: #ffffff #eee;
+}
 
 
 .label-font{
