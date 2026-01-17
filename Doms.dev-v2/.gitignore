@@ -23,4 +23,3 @@ dist-ssr
 *.sln
 *.sw?
 
-src/features/musicPlayer/config/trackList.js

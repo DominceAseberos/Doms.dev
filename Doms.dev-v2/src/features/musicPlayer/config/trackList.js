@@ -1,29 +1,29 @@
 
-  export const TRACKLIST = {
+export const TRACKLIST = {
     chill: [
-      { id: '932988438' }, 
-      { id: '1586803530' },  
-      { id: '1718890166' },
-      { id: '313426506' },
-      { id: '633064604' },
-      { id: '413494' },
-      { id: '971544' },
+      { id: '932988438', imgSrc: '/images/chill/chill-1.jpg' }, 
+      { id: '1586803530', imgSrc: '/images/chill/chill-2.jpg' },  
+      { id: '1718890166', imgSrc: '/images/chill/chill-3.jpg' }, 
+      { id: '313426506', imgSrc: '/images/chill/chill-4.jpg' }, 
+      { id: '633064604', imgSrc: '/images/chill/chill-5.jpg' }, 
+      { id: '413494', imgSrc: '/images/chill/chill-6.jpg' }, 
+      { id: '971544', imgSrc: '/images/chill/chill-7.jpg' }, 
 
     ],
     drift: [
-      { id: '658465526' },    
-      { id: '902189369' },  
-      { id: '1728867985' },  
-      { id: '265802' },  
-      { id: '265861' },  
+      { id: '658465526', imgSrc: '/images/drift/dirft-1.jpg' },    
+      { id: '902189369', imgSrc: '/images/drift/dirft-2.jpg' },  
+      { id: '1728867985', imgSrc: '/images/drift/dirft-3.jpg' },  
+      { id: '265802', imgSrc: '/images/drift/dirft-4.jpg' },  
+      { id: '265861', imgSrc: '/images/drift/dirft-5.jpg' },  
 
     ],
     moody: [
-      { id: '15921' },
-      { id: '424675' },
-      { id: '749798543' },
-      { id: '1594457367755175' },
-      { id: '457367' },
+      { id: '15921', imgSrc: '/images/moody/moody-1.jpg' }, 
+      { id: '424675', imgSrc: '/images/moody/moody-2.jpg' },
+      { id: '749798543', imgSrc: '/images/moody/moody-3.jpg' },
+      { id: '1594755175', imgSrc: '/images/moody/moody-4.jpg' },
+      { id: '457367', imgSrc: '/images/moody/moody-5.jpg' },
 
     ],
 
