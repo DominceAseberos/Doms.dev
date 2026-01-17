@@ -11,15 +11,23 @@ export const useMusicPlayer = (activeTrackId, onNextTrack) => {
   });
 
   const visualizer = useVisualizer();
-  const hasInteractedRef = useRef(false); // Track user clicks
+  const hasInteractedRef = useRef(false); // Track user clicks play btn
 
 const handleTrackLoaded = useCallback((streamURL) => {
       const shouldAutoPlay = hasInteractedRef.current;
       
-
       audioPlayback.setAudioSrc(streamURL, shouldAutoPlay);
+
+      if (shouldAutoPlay) {
+        if (!visualizer.audioContextRef.current && audioPlayback.audioRef.current) {
+           visualizer.setupVisualizer(audioPlayback.audioRef.current);
+        }
+        
+        visualizer.resumeAudioContext();
+        visualizer.drawVisualizer();
+      }
     },
-    [audioPlayback]
+    [audioPlayback, visualizer] 
   );
 
   const trackData = useFetchTrack(activeTrackId, handleTrackLoaded, onNextTrack);
@@ -58,6 +66,7 @@ const handleTrackLoaded = useCallback((streamURL) => {
     togglePlayPause,
     progress: audioPlayback.progress,
     audioRef: audioPlayback.audioRef,
+    isBuffering: audioPlayback.isBuffering,
     setCurrentTime: audioPlayback.setCurrentTime,
     currentPlaying: trackData.currentPlaying,
     coverPhotoSrc: trackData.coverPhotoSrc,

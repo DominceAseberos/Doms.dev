@@ -213,8 +213,6 @@ export const useVisualizer = (options = {}) => {
   }, [colors.base, colors.highlight, colors.hueSpeed]);
   
   const stopVisualization = useCallback(() => {
-     // Just signal that we are paused. The loop will self-destruct 
-     // when the bars reach zero size.
      isPlayingRef.current = false;
   }, []);
 
