@@ -14,10 +14,8 @@ export const useMusicPlayer = (activeTrackId, onNextTrack) => {
   const hasInteractedRef = useRef(false); // Track user clicks
 
 const handleTrackLoaded = useCallback((streamURL) => {
-      // Logic: AutoPlay ONLY if user has interacted previously
       const shouldAutoPlay = hasInteractedRef.current;
       
-      console.log("💿 Track Loaded. Should AutoPlay?", shouldAutoPlay); // <--- LOG THIS
 
       audioPlayback.setAudioSrc(streamURL, shouldAutoPlay);
     },
@@ -39,7 +37,6 @@ const handleTrackLoaded = useCallback((streamURL) => {
   const marquee = useMarqueeText(title);
 
   const togglePlayPause = useCallback(() => {
-    // ... visualizer setup ...
     if (!visualizer.audioContextRef.current) {
        visualizer.setupVisualizer(audioPlayback.audioRef.current);
     }
@@ -54,11 +51,9 @@ const handleTrackLoaded = useCallback((streamURL) => {
     }
 
     hasInteractedRef.current = true; 
-    console.log(hasInteractedRef)
   }, [audioPlayback, visualizer]);
 
   return {
-    // ... all your returns are fine ...
     isPlaying: audioPlayback.isPlaying,
     togglePlayPause,
     progress: audioPlayback.progress,

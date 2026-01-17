@@ -43,37 +43,30 @@ const MusicPlayer = () => {
     console.log(`⏭️ New Mood: ${nextMood} | Song: ${nextSongIndex} | ID: ${nextTrackId}`);
     console.groupEnd();
 
-    // ✅ IMPORTANT: Update BOTH State and ID so the Dropdown updates too!
     setCurrentMood(nextMood);
     setTrackID(nextTrackId);
   };
 
 
   const handleShuffle = () => {
-    console.log("🎲 Shuffling...");
     const moods = Object.keys(TRACKLIST);
     const randomMood = moods[Math.floor(Math.random() * moods.length)];
 
     const playlist = TRACKLIST[randomMood];
     const randomTrack = playlist[Math.floor(Math.random() * playlist.length)];
 
-    // Update both to trigger "New Song" logic
     setCurrentMood(randomMood);
     setTrackID(randomTrack.id);
   };
 
 
   const handleMoodSelect = (selectedMood) => {
-    console.log(`🎯 Switching to Mood: ${selectedMood}`);
 
-    // 1. Get the playlist for the chosen mood
     const playlist = TRACKLIST[selectedMood];
 
-    // 2. Pick a random song from THIS playlist
     const randomTrackIndex = Math.floor(Math.random() * playlist.length);
     const randomTrackId = playlist[randomTrackIndex].id;
 
-    // 3. Update State (Plays immediately)
     setCurrentMood(selectedMood);
     setTrackID(randomTrackId);
   };

@@ -7,7 +7,6 @@ export const OverlayDropdown = ({
   setOpenModal,
   dropdownRef,
 }) => {
- console.log(isOpenModal)
   return (
     <div ref={dropdownRef}
       className={`absolute -translate-y-12 border flex justify-between h-max  bottom-0 overflow-hidden  border-[rgb(var(--contrast-rgb))] rounded-xl shadow-xl
@@ -28,7 +27,7 @@ export const OverlayDropdown = ({
           onClick={() => {
             onMoodChange(option.id);
           }}
-          className={`rounded-xl text-left w-full px-4 py-2 label-font uppercase font-bold tracking-wide 
+          className={`rounded-xl  w-full px-4 py-2 label-font uppercase text-center font-bold tracking-wide 
             transition-all duration-300
             ${currentMood === option.id
               ? 'bg-[rgb(var(--contrast-rgb))] text-black'

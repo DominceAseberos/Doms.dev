@@ -12,7 +12,6 @@ export const useTrackID = () => {
 
   const setTrackID = useCallback((newID) => {
     setTrackIDState(newID);
-    console.log("Track ID updated to:", newID);
   }, []);
 
 

@@ -19,7 +19,6 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
         );
         const track = res.data.data;
         setCurrentPlaying(track);
-        console.log(activeTrackID);
 
         const streamURL = `https://api.audius.co/v1/tracks/${track.id}/stream?app_name=${AUDIUS_APP_NAME}`;
         /* pass data  */
