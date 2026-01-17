@@ -1,78 +1,98 @@
-import React, { useState } from 'react'; 
+import React, { useState, useRef, useEffect } from 'react';
 import { useMusicPlayer } from './hooks';
 import { AlbumInfo, Controls, ProgressBar, Visualizer } from './components';
 import { marqueeStyle } from './styles/Marques';
 import { useTrackID } from './hooks/useTrackID';
-import { TRACKLIST } from './config/trackList';
+import { TRACKLIST, MOOD_OPTIONS } from './config/trackList';
+import { OverlayDropdown } from './components/OverlayDropdown';
+
 const MusicPlayer = () => {
   const { trackID, setTrackID } = useTrackID();
   const [currentMood, setCurrentMood] = useState(Object.keys(TRACKLIST)[0]);
-  
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
+
+
   const handleNextTrack = () => {
-    console.group("🎵 Changing Track...");
 
-    // 1. Find Current Category & Index
-    const categories = Object.keys(TRACKLIST); // ['chill', 'gym', 'focus']
-    let currentCategory = categories[0];
-    
-    // Robust search for current category
-    for (const cat of categories) {
-       if (TRACKLIST[cat].find(t => String(t.id) === String(trackID))) {
-         currentCategory = cat;
-         break;
-       }
-    }
-
-    const currentPlaylist = TRACKLIST[currentCategory];
+    const currentPlaylist = TRACKLIST[currentMood];
     const currentIndex = currentPlaylist.findIndex(t => String(t.id) === String(trackID));
-    
-    // 2. Calculate Next
+
     let nextSongIndex = currentIndex + 1;
-    let nextCategory = currentCategory;
+    let nextMood = currentMood;
 
-    // 3. Logic: Did we finish this category?
     if (nextSongIndex >= currentPlaylist.length || currentIndex === -1) {
-        console.log(`✅ Finished ${currentCategory}. Moving to next category...`);
-        
-        // Find index of current category (e.g., 0 for chill)
-        const currentCatIndex = categories.indexOf(currentCategory);
-        let nextCatIndex = currentCatIndex + 1;
 
-        // If we ran out of categories, loop back to the start (Chill)
-        if (nextCatIndex >= categories.length) {
-            console.log(" Playlist Loop: Back to Start");
-            nextCatIndex = 0;
-        }
+      const moods = Object.keys(TRACKLIST);
+      const currentMoodIndex = moods.indexOf(currentMood);
+      let nextMoodIndex = currentMoodIndex + 1;
 
-        // Set up the new category
-        nextCategory = categories[nextCatIndex];
-        nextSongIndex = 0; // Start of new list
+      if (nextMoodIndex >= moods.length) {
+        nextMoodIndex = 0;
+      }
+
+      nextMood = moods[nextMoodIndex];
+      nextSongIndex = 0;
     }
 
-    // 4. Get the ID
-    const nextPlaylist = TRACKLIST[nextCategory];
+    // 4. Update Everything
+    const nextPlaylist = TRACKLIST[nextMood];
     const nextTrackId = nextPlaylist[nextSongIndex].id;
 
-    console.log(`⏭️ Next: ${nextCategory} [${nextSongIndex}] -> ID: ${nextTrackId}`);
+    console.log(`⏭️ New Mood: ${nextMood} | Song: ${nextSongIndex} | ID: ${nextTrackId}`);
     console.groupEnd();
 
+    // ✅ IMPORTANT: Update BOTH State and ID so the Dropdown updates too!
+    setCurrentMood(nextMood);
     setTrackID(nextTrackId);
   };
 
 
-
- const handleShuffle = () => {
+  const handleShuffle = () => {
     console.log("🎲 Shuffling...");
     const moods = Object.keys(TRACKLIST);
     const randomMood = moods[Math.floor(Math.random() * moods.length)];
-    
+
     const playlist = TRACKLIST[randomMood];
     const randomTrack = playlist[Math.floor(Math.random() * playlist.length)];
-    
+
     // Update both to trigger "New Song" logic
     setCurrentMood(randomMood);
     setTrackID(randomTrack.id);
   };
+
+
+  const handleMoodSelect = (selectedMood) => {
+    console.log(`🎯 Switching to Mood: ${selectedMood}`);
+
+    // 1. Get the playlist for the chosen mood
+    const playlist = TRACKLIST[selectedMood];
+
+    // 2. Pick a random song from THIS playlist
+    const randomTrackIndex = Math.floor(Math.random() * playlist.length);
+    const randomTrackId = playlist[randomTrackIndex].id;
+
+    // 3. Update State (Plays immediately)
+    setCurrentMood(selectedMood);
+    setTrackID(randomTrackId);
+  };
+
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    // If dropdown exists and click is NOT inside dropdown
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpenModal(false);
+    } else {
+      // Click is inside dropdown, do nothing
+      setIsOpenModal(true); // optional, can omit if it's already true
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => document.removeEventListener("mousedown", handleClickOutside);
+}, [dropdownRef]);
+
 
 
   const {
@@ -98,7 +118,7 @@ const MusicPlayer = () => {
       <style>{marqueeStyle}</style>
 
       <div
-        className="music-style flex flex-col gap-2 justify-around"
+        className="music-style flex flex-col gap-2 justify-around relative z-20"
         style={{
           background: `linear-gradient(
             to bottom,
@@ -119,13 +139,30 @@ const MusicPlayer = () => {
 
         <ProgressBar progress={progress} audioRef={audioRef} />
 
-      <Controls 
-         isPlaying={isPlaying} 
-         togglePlayPause={togglePlayPause}
-         onShuffle={handleShuffle}   // ✅ Pass logic
-         currentMood={currentMood}
-         loading={loading}   // ✅ Pass text
-      />
+        <Controls
+          isPlaying={isPlaying}
+          togglePlayPause={togglePlayPause}
+          onShuffle={handleShuffle}
+          currentMood={currentMood}
+          loading={loading}
+          setOpenModal={setIsOpenModal}
+          isOpenModal={isOpenModal}
+          buttonRef={buttonRef}
+
+        />
+
+        
+        <OverlayDropdown
+
+          currentMood={currentMood}
+          onMoodChange={handleMoodSelect}
+          availableMoods={MOOD_OPTIONS}
+          setOpenModal={setIsOpenModal}
+          isOpenModal={isOpenModal}
+          dropdownRef={dropdownRef}
+
+        />
+
 
         <div className="fixed flex justify-center items-center h-58 w-58 rounded-full bottom-0 -right-4 z-100">
           <Visualizer canvasRef={canvasRef} />
