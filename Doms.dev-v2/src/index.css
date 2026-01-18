@@ -1,12 +1,7 @@
-
-
 @import "tailwindcss";
 
 @theme {
-  /* The Main Color */
   --color-primary: rgb(var(--theme-rgb));
-  
-  /* The New Contrast Color */
   --color-contrast: rgb(var(--contrast-rgb));
 }
 
@@ -15,21 +10,28 @@
   --contrast-rgb: 230 230 255; 
 }
 
-.your-class::-webkit-scrollbar {
-  width: 8px;          
+/* --- SCROLLBAR CUSTOMIZATION --- */
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px; 
 }
 
-.your-class::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.05);
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: transparent;
   border-radius: 4px;
 }
 
-.your-class::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.3);  
-  border-radius: 4px;
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--contrast-rgb)) transparent; 
+  border-radius: 10px;
+  
   border: 2px solid transparent;
+  background-clip: content-box; 
 }
 
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(var(--contrast-rgb), 0.8);
+}
 /* For Firefox */
 .scrollbar-visible {
   scrollbar-width: thin;   

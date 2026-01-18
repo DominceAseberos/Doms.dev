@@ -9,18 +9,14 @@ const ThemeToggle = () => {
     <div className="flex flex-col gap-1  justify-center ">
       
       {/* Label */}
-      <div className="flex justify-between  font-mono uppercase tracking-widest">
+      <div className="flex justify-between  font-mono uppercase tracking-widest text-white">
         <p className="label-font"
-        style={{
-          color: `rgb(var(--contrast-rgb))`
-        }}
+       
         >
           Dark
         </p>
         <p className="label-font"
-         style={{
-          color: `rgb(var(--contrast-rgb))`
-        }}
+       
         >Vibrant
         </p>
 
