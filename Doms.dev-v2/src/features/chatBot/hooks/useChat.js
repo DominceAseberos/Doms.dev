@@ -4,6 +4,18 @@ import { PORTFOLIO_CONTEXT } from "../data/portfolioData";
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
+// 1. Define the Master List of all possible suggestions
+const ALL_SUGGESTIONS = [
+  "Tech Stack",
+  "Show Projects",
+  "Contact Info",
+  "About You",
+  "Education",      // New
+  "GitHub Link",    // New
+  "Work Experience",// New
+  "Soft Skills"     // New
+];
+
 export const useChat = () => {
   const [messages, setMessages] = useState([
     {
@@ -14,20 +26,40 @@ export const useChat = () => {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  
+  // 2. State for visible suggestions (Start with first 4)
+  const [displayedSuggestions, setDisplayedSuggestions] = useState(ALL_SUGGESTIONS.slice(0, 4));
+  // 3. Keep track of the next available index in the Master List
+  const [nextSuggestionIndex, setNextSuggestionIndex] = useState(4);
+
   const chatContainerRef = useRef(null);
   const historyRef = useRef([]);
 
-  // CHANGED: Accept 'textOverride' for the suggestion chips
   const sendMessage = async (textOverride = null) => {
-    
-    // 1. PREVENT DUPLICATES: If already waiting for AI, ignore clicks/enters
     if (isTyping) return;
 
-    // Determine what text to send (Input field OR Chip text)
     const messageText = (typeof textOverride === "string" ? textOverride : input).trim();
-    
-    // If empty, do nothing
     if (!messageText) return;
+
+    // --- NEW LOGIC: Suggestion Replacement ---
+    // If the message sent matches a currently visible suggestion, replace it.
+    if (displayedSuggestions.includes(messageText)) {
+      setDisplayedSuggestions((prev) => {
+        // Remove the clicked suggestion
+        const remaining = prev.filter((s) => s !== messageText);
+        
+        // If there are more items in the master list, add the next one
+        if (nextSuggestionIndex < ALL_SUGGESTIONS.length) {
+          const nextItem = ALL_SUGGESTIONS[nextSuggestionIndex];
+          setNextSuggestionIndex((i) => i + 1); // Increment index for next time
+          return [...remaining, nextItem];
+        }
+        
+        // If no more items in master list, just return the remaining ones
+        return remaining;
+      });
+    }
+    // -----------------------------------------
 
     const userMessage = {
       id: Date.now().toString(),
@@ -36,8 +68,8 @@ export const useChat = () => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInput(""); // Clear input bar even if chip was clicked
-    setIsTyping(true); // Lock the chat
+    setInput("");
+    setIsTyping(true);
 
     historyRef.current.push({ role: "user", parts: [{ text: messageText }] });
 
@@ -90,7 +122,7 @@ export const useChat = () => {
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
-      setIsTyping(false); // Unlock the chat
+      setIsTyping(false);
     }
   };
 
@@ -104,5 +136,13 @@ export const useChat = () => {
     }
   }, [messages, isTyping]);
 
-  return { messages, input, setInput, sendMessage, isTyping, chatContainerRef };
+  return { 
+    messages, 
+    input, 
+    setInput, 
+    sendMessage, 
+    isTyping, 
+    chatContainerRef,
+    suggestions: displayedSuggestions // Return the dynamic list
+  };
 };

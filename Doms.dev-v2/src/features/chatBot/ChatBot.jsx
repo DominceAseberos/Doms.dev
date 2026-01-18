@@ -4,22 +4,16 @@ import { useChat } from "./hooks/useChat";
 import { Send, Bot, Sparkles } from "lucide-react"; 
 
 const ChatBot = () => {
-  const { messages, input, setInput, sendMessage, isTyping, chatContainerRef } = useChat();
+  // 1. Destructure 'suggestions' from the hook
+  const { messages, input, setInput, sendMessage, isTyping, chatContainerRef, suggestions } = useChat();
 
   const handleKeyDown = (e) => {
-    // PREVENT DUPLICATE: Check isTyping before sending
     if (e.key === "Enter" && !isTyping) {
       sendMessage();
     }
   };
 
-  // Suggestion Chips Data
-  const suggestions = [
-    "My Tech Stack",
-    "Show Projects",
-    "Contact Info",
-    "About You"
-  ];
+  // REMOVED: const suggestions = [...] (Logic moved to useChat)
 
   return (
     <div
@@ -53,7 +47,7 @@ const ChatBot = () => {
             <div
               className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-300 ${
                 msg.sender === "user"
-                  ? "bg-[rgba(var(--contrast-rgb))] text-white rounded-br-none"
+                  ? "bg-[rgba(var(--contrast-rgb))] text-black rounded-br-none"
                   : "bg-white/10 text-gray-100 backdrop-blur-sm rounded-bl-none border border-white/10"
               }`}
             >
@@ -77,12 +71,15 @@ const ChatBot = () => {
         
         {/* Chips Row - Horizontal Scroll */}
         <div className="flex gap-2 p-2 overflow-x-auto no-scrollbar mask-gradient">
+          {/* Loop over the dynamic suggestions from the hook */}
           {suggestions.map((chip) => (
             <button
               key={chip}
-              onClick={() => sendMessage(chip)} // Click triggers immediate send
-              disabled={isTyping} // Disable chips while thinking
-              className="flex-none px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-gray-200 hover:bg-white/20 hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              onClick={() => sendMessage(chip)} 
+              disabled={isTyping} 
+              className="flex-none px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-gray-200 hover:bg-white/20 hover:text-white  disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap 
+              transition-all duration-200 hover:-rotate-3 hover:scale-110 active:-rotate-3 active:scale-110
+              "
             >
               {chip}
             </button>
@@ -90,20 +87,21 @@ const ChatBot = () => {
         </div>
 
         {/* Input Row */}
-        <div className="p-3 pt-0 flex gap-2">
+        <div className="p-3 pt-2 flex gap-3">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            disabled={isTyping} // Disable typing while thinking
+            disabled={isTyping} 
             placeholder={isTyping ? "Waiting for response..." : "Ask about my projects..."}
-            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all disabled:opacity-50"
+
+            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-white focus:outline-none focus:ring-1 transition-all duration-200 focus:ring-[rgba(var(--contrast-rgb))] disabled:opacity-50"
           />
           <button
             onClick={() => sendMessage()}
-            disabled={!input.trim() || isTyping} // Disable if empty OR typing
-            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!input.trim() || isTyping} 
+            className="p-2 bg-[rgba(var(--contrast-rgb))] hover:scale-110 text-black rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Send className="w-5 h-5" />
           </button>

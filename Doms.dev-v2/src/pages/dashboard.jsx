@@ -31,7 +31,7 @@ const Dashboard = () => {
             </div>
 
             {/* ABOUT ME */}
-            <div className="col-span-1 row-span-1 h-50">
+            <div className="col-span-1 row-span-1 h-full">
                 <AboutMe />
             </div>
 
