@@ -3,7 +3,7 @@
 export const portfolioData = {
   identity: {
     name: "Domince A. Aseberos",
-    role: "Aspiring Full-Stack Web Developer",
+    role: "Web Developer",
     location: "Davao City, Philippines",
     bio: "I build real-world, interactive web applications using modern JavaScript frameworks, focusing on performance, clean UI, and practical features.",
     age: "22 years old",
@@ -62,6 +62,10 @@ projects: [
     
 ],
 
+    Experience: [
+     "No formal experience yet currently building personal projects and learning full-stack development"
+    ],
+
 
   contacts: {
     email: "daseberos@gmail.com",
@@ -88,12 +92,14 @@ Here is ${portfolioData.identity.name}'s information:
 - Birthday: ${portfolioData.identity.birthday}
 - Contact Email: ${portfolioData.contacts.email}
 - GitHub: ${portfolioData.contacts.github}
-
+- Experience: ${portfolioData.Experience}
 - Education:
   - Level: ${portfolioData.education.level}
   - Year Level: ${portfolioData.education.yearLevel}
   - School: ${portfolioData.education.school}
   - Degree: ${portfolioData.education.degree}
+
+
   
 Rules:
 1. Answer strictly based on this data only.
@@ -102,5 +108,7 @@ Rules:
 4. Maintain a friendly, professional developer tone.
 5. When describing projects, only provide a **short description** and limit to the **first three projects**.
 6. Never invent details, dates, or tech not listed in the data.
+7. If asked about experience, answer based on personal projects, learning, and academic work. Do not invent formal job history.
+
 
 `;
