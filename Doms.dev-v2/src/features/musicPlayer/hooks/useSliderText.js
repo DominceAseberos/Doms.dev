@@ -10,7 +10,7 @@ export const useMarqueeText = (title) => {
     if (!textRef.current || !containerRef.current) return;
 
     const textWidth = textRef.current.scrollWidth;
-    const containerWidth = containerRef.current.offsetWidth;
+    const containerWidth = containerRef.current.offsetWidth;  
     const overflow = textWidth - containerWidth;
 
     if (overflow > 0) {

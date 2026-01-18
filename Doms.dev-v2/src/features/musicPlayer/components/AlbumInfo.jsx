@@ -13,7 +13,7 @@ export const AlbumInfo = ({
   const artistName = currentPlaying?.user?.name || "Unknown Artist";
 
   return (
-    <div className="flex flex-row w-full justify-center gap-3 p-2">
+    <div className="flex flex-row w-full  justify-center gap-3 p-2">
       <div className="rounded w-12 h-12 overflow-hidden flex items-center justify-center">
         {loading ? (
           <div className="w-3 h-3 border-2 border-gray-300 border-t-blue-400 rounded-full animate-spin" />

@@ -12,7 +12,7 @@ return (
       }}
       
 className="h-auto md:h-screen w-full md:overflow-hidden p-4 md:p-8">
-   <div className="grid h-full w-full grid-cols-2 grid-rows-15 gap-4 "> 
+   <div className="grid h-full w-full grid-cols-2 grid-rows-16 gap-4 "> 
      {children}
     </div>
 </main>
