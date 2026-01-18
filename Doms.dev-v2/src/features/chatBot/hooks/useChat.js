@@ -2,147 +2,121 @@
 import { useState, useRef, useEffect } from "react";
 import { PORTFOLIO_CONTEXT } from "../data/portfolioData";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
-// 1. Define the Master List of all possible suggestions
 const ALL_SUGGESTIONS = [
-  "Tech Stack",
-  "Show Projects",
-  "Contact Info",
-  "About You",
-  "Education",      // New
-  "GitHub Link",    // New
-  "Work Experience",// New
-  "Soft Skills"     // New
+  "Tech Stack", "Show Projects", "Contact Info", "About You", 
+  "Education", "GitHub Link", "Work Experience", "Soft Skills" 
 ];
-
 export const useChat = () => {
-  const [messages, setMessages] = useState([
-    {
-      id: "init",
-      text: "Hi! I'm an AI assistant. Ask me anything about my portfolio.",
-      sender: "bot",
-    },
-  ]);
+  const [messages, setMessages] = useState([{ id: "init", text: "Hi! I'm an AI assistant. Ask me anything.", sender: "bot" }]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const chatContainerRef = useRef(null);
   
-  // 2. State for visible suggestions (Start with first 4)
+  // Suggestion logic
+  const ALL_SUGGESTIONS = ["Tech Stack", "Show Projects", "Contact Info", "About You"];
   const [displayedSuggestions, setDisplayedSuggestions] = useState(ALL_SUGGESTIONS.slice(0, 4));
-  // 3. Keep track of the next available index in the Master List
   const [nextSuggestionIndex, setNextSuggestionIndex] = useState(4);
 
-  const chatContainerRef = useRef(null);
-  const historyRef = useRef([]);
+  // History for OpenRouter models
+  const historyRef = useRef([{ role: "system", content: PORTFOLIO_CONTEXT }]);
 
   const sendMessage = async (textOverride = null) => {
     if (isTyping) return;
-
     const messageText = (typeof textOverride === "string" ? textOverride : input).trim();
     if (!messageText) return;
 
-    // --- NEW LOGIC: Suggestion Replacement ---
-    // If the message sent matches a currently visible suggestion, replace it.
+    // Suggestion logic replacement
     if (displayedSuggestions.includes(messageText)) {
       setDisplayedSuggestions((prev) => {
-        // Remove the clicked suggestion
         const remaining = prev.filter((s) => s !== messageText);
-        
-        // If there are more items in the master list, add the next one
         if (nextSuggestionIndex < ALL_SUGGESTIONS.length) {
           const nextItem = ALL_SUGGESTIONS[nextSuggestionIndex];
-          setNextSuggestionIndex((i) => i + 1); // Increment index for next time
+          setNextSuggestionIndex((i) => i + 1);
           return [...remaining, nextItem];
         }
-        
-        // If no more items in master list, just return the remaining ones
         return remaining;
       });
     }
-    // -----------------------------------------
 
-    const userMessage = {
-      id: Date.now().toString(),
-      text: messageText,
-      sender: "user",
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => [...prev, { id: Date.now().toString(), text: messageText, sender: "user" }]);
     setInput("");
     setIsTyping(true);
+    historyRef.current.push({ role: "user", content: messageText });
 
-    historyRef.current.push({ role: "user", parts: [{ text: messageText }] });
-
+    // --- 3-LEVEL WATERFALL FALLBACK ---
     try {
-      const MODEL_NAME = "gemini-flash-latest"; 
-      
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [
-              {
-                role: "user",
-                parts: [{ text: PORTFOLIO_CONTEXT }] 
-              },
-              ...historyRef.current 
-            ]
-          }),
+      console.log("🚀 Level 1: Attempting Gemini...");
+      const botResponse = await tryGemini(messageText);
+      addBotMessage(botResponse);
+    } 
+    catch (geminiError) {
+      console.warn("⚠️ Gemini failed. Switching to Level 2: Mistral...");
+      try {
+        const mistralResponse = await tryOpenRouter("mistralai/devstral-2512:free");
+        addBotMessage(mistralResponse);
+      } 
+      catch (mistralError) {
+        console.warn("⚠️ Mistral failed. Switching to Level 3: DeepSeek R1...");
+        try {
+          const r1Response = await tryOpenRouter("deepseek/deepseek-r1-0528:free");
+          addBotMessage(r1Response);
+        } 
+        catch (r1Error) {
+          console.error("❌ All models failed.");
+          addBotMessage("I'm currently resting my brain. Please try again in a minute!");
         }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error?.message || `API Error: ${response.status}`);
       }
-
-      const botResponseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response.";
-
-      const botMessage = {
-        id: (Date.now() + 1).toString(),
-        text: botResponseText,
-        sender: "bot",
-      };
-      
-      setMessages((prev) => [...prev, botMessage]);
-      historyRef.current.push({ role: "model", parts: [{ text: botResponseText }] });
-
-    } catch (error) {
-      console.error("AI Detailed Error:", error);
-      const isRateLimit = error.message.includes("429");
-      const errorMessage = {
-        id: (Date.now() + 1).toString(),
-        text: isRateLimit 
-          ? "Please slow down, I'm thinking too fast!" 
-          : "I'm having trouble connecting. Try again.",
-        sender: "bot",
-      };
-      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsTyping(false);
     }
   };
 
+  // Helper: Gemini Call (Fastest)
+  const tryGemini = async (text) => {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: PORTFOLIO_CONTEXT + "\n\nUser: " + text }] }]
+      })
+    });
+    if (!response.ok) throw new Error(`Gemini ${response.status}`);
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
+  };
+
+  // Helper: OpenRouter Call (Mistral or DeepSeek)
+  const tryOpenRouter = async (modelId) => {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${OPENROUTER_KEY}`,
+        "Content-Type": "application/json",
+        "X-Title": "Portfolio Assistant"
+      },
+      body: JSON.stringify({
+        "model": modelId,
+        "messages": historyRef.current
+      })
+    });
+    if (!response.ok) throw new Error(`OpenRouter ${response.status}`);
+    const data = await response.json();
+    return data.choices[0].message.content;
+  };
+
+  const addBotMessage = (text) => {
+    setMessages((prev) => [...prev, { id: Date.now().toString(), text, sender: "bot" }]);
+    historyRef.current.push({ role: "assistant", content: text });
+  };
+
   useEffect(() => {
     if (chatContainerRef.current) {
-      const { scrollHeight, clientHeight } = chatContainerRef.current;
-      chatContainerRef.current.scrollTo({
-        top: scrollHeight - clientHeight,
-        behavior: "smooth",
-      });
+      chatContainerRef.current.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: "smooth" });
     }
   }, [messages, isTyping]);
 
-  return { 
-    messages, 
-    input, 
-    setInput, 
-    sendMessage, 
-    isTyping, 
-    chatContainerRef,
-    suggestions: displayedSuggestions // Return the dynamic list
-  };
+  return { messages, input, setInput, sendMessage, isTyping, chatContainerRef, suggestions: displayedSuggestions };
 };
