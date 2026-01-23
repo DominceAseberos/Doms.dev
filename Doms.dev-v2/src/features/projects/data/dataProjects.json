@@ -32,7 +32,7 @@
     "image": "/assets/projects/cover/Baylora.png",
     "stacks": [
       "React",
-      "Firebase",
+      "Supabase",
       "Tailwind"
     ],
     "shortDescription": "A modern marketplace and trading platform where users can sell, trade, or mix transactions, with bidding, verified profiles, and secure authentication.",

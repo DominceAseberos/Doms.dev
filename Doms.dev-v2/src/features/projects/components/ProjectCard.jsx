@@ -104,7 +104,7 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                                 rel="noopener noreferrer"
                                 className="flex-1 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-inter font-bold text-sm flex items-center justify-center gap-2 hover:bg-white/20 transition-all transform active:scale-95 cursor-pointer"
                             >
-                                Source Code <Code2 size={16} />
+                                Github <Code2 size={16} />
                             </a>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useMusicPlayer } from './hooks';
 import { AlbumInfo, Controls, ProgressBar, Visualizer } from './components';
 import { marqueeStyle } from './styles/Marques';
@@ -14,7 +15,7 @@ const MusicPlayer = () => {
   const buttonRef = useRef(null);
 
 
-const handleNextTrack = () => {
+  const handleNextTrack = () => {
     const currentPlaylist = TRACKLIST[currentMood];
     const currentIndex = currentPlaylist.findIndex(t => String(t.id) === String(trackID));
 
@@ -24,7 +25,7 @@ const handleNextTrack = () => {
 
     if (nextSongIndex >= currentPlaylist.length || currentIndex === -1) {
       console.log(`✅ Finished ${currentMood}. Switching Mood...`);
-      
+
       const moods = Object.keys(TRACKLIST);
       const currentMoodIndex = moods.indexOf(currentMood);
       let nextMoodIndex = currentMoodIndex + 1;
@@ -40,12 +41,12 @@ const handleNextTrack = () => {
     }
 
 
-     const nextTrackId = nextPlaylist[nextSongIndex].id;
+    const nextTrackId = nextPlaylist[nextSongIndex].id;
 
     console.log(`⏭️ New Mood: ${nextMood} | Song: ${nextSongIndex} | ID: ${nextTrackId}`);
     console.groupEnd();
 
-    setCurrentMood(nextMood); 
+    setCurrentMood(nextMood);
     setTrackID(nextTrackId);
   };
 
@@ -73,18 +74,18 @@ const handleNextTrack = () => {
     setTrackID(randomTrackId);
   };
 
-useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpenModal(false);
-    } else {
-      setIsOpenModal(true); 
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpenModal(false);
+      } else {
+        setIsOpenModal(true);
+      }
+    };
 
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => document.removeEventListener("mousedown", handleClickOutside);
-}, [dropdownRef]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownRef]);
 
 
 
@@ -110,7 +111,7 @@ useEffect(() => {
       <style>{marqueeStyle}</style>
 
       <div
-        className="music-style w-full h-full flex flex-col gap-2 justify-around relative z-20 overflow-hidden"
+        className="music-style w-full h-full flex flex-col justify-around relative z-20 overflow-hidden"
         style={{
           background: `linear-gradient(
             to bottom,
@@ -140,12 +141,10 @@ useEffect(() => {
           setOpenModal={setIsOpenModal}
           isOpenModal={isOpenModal}
           buttonRef={buttonRef}
-          isBuffering = {isBuffering}
+          isBuffering={isBuffering}
           onNext={handleNextTrack}
-
         />
 
-        
         <OverlayDropdown
           currentMood={currentMood}
           onMoodChange={handleMoodSelect}
@@ -153,14 +152,16 @@ useEffect(() => {
           setOpenModal={setIsOpenModal}
           isOpenModal={isOpenModal}
           dropdownRef={dropdownRef}
-
         />
-
-
-        <div className="fixed flex justify-center items-center h-58 w-58 rounded-full bottom-0 -right-4 z-100">
-          <Visualizer canvasRef={canvasRef} />
-        </div>
       </div>
+
+      {/* Portal visualizer out of the card to bypass transform constraints */}
+      {createPortal(
+        <div className="fixed flex justify-center items-center h-48 w-48 bottom-0 right-4 z-[9999] pointer-events-none opacity-80">
+          <Visualizer canvasRef={canvasRef} />
+        </div>,
+        document.body
+      )}
     </>
   );
 };
