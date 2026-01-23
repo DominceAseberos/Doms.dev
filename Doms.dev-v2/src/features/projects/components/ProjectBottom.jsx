@@ -1,5 +1,5 @@
 
-const InteractiveGame = () => {
+const ProjectBottom = () => {
 
 return (
      <>
@@ -11,9 +11,9 @@ return (
                          rgba(var(--box-Linear-2-rgb))  
                     )`
                     }}>
-           <p>Interactive Game</p>
+           <p>Project Bottom</p>
       </div>
     </>
   );
 };
-export default InteractiveGame;
+export default ProjectBottom;

@@ -24,7 +24,7 @@ html, body {
 }
 
 body {
-  background-color: #ffff;
+  background-color: #151226; /* Match --theme-rgb: 21 18 38 */
   color: white;
   font-family: 'Inter', sans-serif;
 }

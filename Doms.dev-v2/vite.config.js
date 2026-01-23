@@ -3,9 +3,12 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  server:{
+      host: '0.0.0.0',
+      port: 5173
+  },
   plugins: [
     react(),
     tailwindcss(),
   ],
-  // Server/Proxy block is removed because OpenRouter supports direct browser fetch
 })

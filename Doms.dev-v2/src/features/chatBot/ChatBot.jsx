@@ -13,7 +13,6 @@ const ChatBot = () => {
     }
   };
 
-  // REMOVED: const suggestions = [...] (Logic moved to useChat)
 
   return (
     <div

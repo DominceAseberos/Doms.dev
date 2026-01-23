@@ -1,14 +1,16 @@
-// src/features/chat/hooks/useChat.js
 import { useState, useRef, useEffect } from "react";
 import { PORTFOLIO_CONTEXT } from "../data/portfolioData";
 
 const GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
+
 const ALL_SUGGESTIONS = [
   "Tech Stack", "Show Projects", "Contact Info", "About You", 
   "Education", "GitHub Link", "Work Experience", "Soft Skills" 
 ];
+
+
 export const useChat = () => {
   const [messages, setMessages] = useState([{ id: "init", text: "Hi! I'm an AI assistant. Ask me anything.", sender: "bot" }]);
   const [input, setInput] = useState("");
@@ -19,6 +21,7 @@ export const useChat = () => {
   const ALL_SUGGESTIONS = ["Tech Stack", "Show Projects", "Contact Info", "About You"];
   const [displayedSuggestions, setDisplayedSuggestions] = useState(ALL_SUGGESTIONS.slice(0, 4));
   const [nextSuggestionIndex, setNextSuggestionIndex] = useState(4);
+
 
   // History for OpenRouter models
   const historyRef = useRef([{ role: "system", content: PORTFOLIO_CONTEXT }]);
@@ -40,6 +43,7 @@ export const useChat = () => {
         return remaining;
       });
     }
+
 
     setMessages((prev) => [...prev, { id: Date.now().toString(), text: messageText, sender: "user" }]);
     setInput("");
@@ -74,6 +78,7 @@ export const useChat = () => {
     }
   };
 
+
   // Helper: Gemini Call (Fastest)
   const tryGemini = async (text) => {
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`, {
@@ -87,6 +92,7 @@ export const useChat = () => {
     const data = await response.json();
     return data.candidates[0].content.parts[0].text;
   };
+
 
   // Helper: OpenRouter Call (Mistral or DeepSeek)
   const tryOpenRouter = async (modelId) => {
