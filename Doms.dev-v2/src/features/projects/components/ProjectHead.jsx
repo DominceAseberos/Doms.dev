@@ -37,7 +37,7 @@ const ProjectHead = () => {
         ease: "power3.out",
       }, "-=1.2");
 
-    // 2. Liquid Drift Animation for Background Glows
+
     glows.current.forEach((glow, i) => {
       gsap.to(glow, {
         x: i % 2 === 0 ? "15%" : "-15%",
@@ -48,7 +48,7 @@ const ProjectHead = () => {
         ease: "sine.inOut",
       });
 
-      // Subtle scale pulse for "liquid" feel
+
       gsap.to(glow, {
         scale: 1.2,
         duration: 5 + i * 2,
@@ -81,7 +81,7 @@ const ProjectHead = () => {
       <div className="relative z-10 flex flex-col items-center gap-1 md:gap-2">
         {/* Main Aesthetic Headline */}
         <h1 className="animate-portfolio text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter font-playfair text-white/95 leading-none">
-          Portfolio
+          Projects
         </h1>
 
         {/* Horizontal Breadcrumbs Row */}

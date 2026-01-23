@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "Banana Leaf Detection",
+    "image": "/assets/projects/cover/BananaLeaf.png",
+    "stacks": [
+      "React",
+      "Python",
+      "Flask",
+      "OpenCV"
+    ],
+    "shortDescription": "A machine learning web application built with Python, OpenCV, scikit-learn, and Flask to detect whether a banana leaf is Healthy, Unhealthy, or Not a Leaf using image processing and KNN classification.",
+    "fullDetailsLink": "https://github.com/Domincee",
+    "livePreviewLink": "https://domincee-portfolio.vercel.app/"
+  },
+  {
+    "id": 2,
+    "title": "Focus Quest App",
+    "image": "/assets/projects/cover/FocusQuest.png",
+    "stacks": [
+      "React",
+      "Tailwind CSS",
+      "GSAP"
+    ],
+    "shortDescription": "A productivity RPG app turning tasks into quests with XP and stats.",
+    "fullDetailsLink": "https://github.com/Domincee",
+    "livePreviewLink": "https://domincee-portfolio.vercel.app/"
+  },
+  {
+    "id": 3,
+    "title": "Baylora",
+    "image": "/assets/projects/cover/Baylora.png",
+    "stacks": [
+      "React",
+      "Firebase",
+      "Tailwind"
+    ],
+    "shortDescription": "A modern marketplace and trading platform where users can sell, trade, or mix transactions, with bidding, verified profiles, and secure authentication.",
+    "fullDetailsLink": "https://github.com/Domincee",
+    "livePreviewLink": "https://domincee-portfolio.vercel.app/"
+  },
+  {
+    "id": 4,
+    "title": "Templyx",
+    "image": "/assets/projects/cover/Templyx.png",
+    "stacks": [
+      "React",
+      "Lucide",
+      "Vite"
+    ],
+    "shortDescription": "A modern portfolio platform for developers with authentication, real-time features, and community interaction.",
+    "fullDetailsLink": "https://github.com/Domincee",
+    "livePreviewLink": "https://domincee-portfolio.vercel.app/"
+  },
+  {
+    "id": 5,
+    "title": "AI Text Summarizer",
+    "image": "/assets/projects/cover/summarizer.png",
+    "stacks": [
+      "React",
+      "NLP",
+      "API"
+    ],
+    "shortDescription": "A web application that generates concise summaries from long text or articles using an AI-powered NLP API.",
+    "fullDetailsLink": "https://github.com/Domincee",
+    "livePreviewLink": "https://domincee-portfolio.vercel.app/"
+  }
+]
