@@ -63,7 +63,7 @@ const ProjectHead = () => {
   return (
     <div
       ref={container}
-      className="relative flex flex-col justify-center items-center w-full h-full min-h-[90px] overflow-hidden rounded-2xl p-3 md:p-6"
+      className="relative flex flex-col justify-center items-center w-full h-full min-h-22.5 overflow-hidden rounded-2xl p-3 md:p-6"
       style={{
         background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`
       }}

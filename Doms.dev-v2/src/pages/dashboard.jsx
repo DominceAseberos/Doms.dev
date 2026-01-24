@@ -6,8 +6,8 @@ import AboutMe from '../features/abooutMe/AboutMe'
 import ChatBot from '../features/chatBot/ChatBot'
 import StatsGitHub from '../features/github/StatsGitHub'
 import Contacts from '../features/contact/contact'
-import TechStackIcons from '../features/TechStackIcons'
-import Calendar from '../features/Calendar'
+import GitHubFocusCard from '../features/FocusCard'
+import TechStacks from '../features/techStacks/TechStacks'
 import ProjectHead from '../features/projects/components/ProjectHead'
 import Projects from '../features/projects/components/Projects'
 import ProjectBottom from '../features/projects/components/ProjectBottom'
@@ -23,7 +23,7 @@ const Dashboard = () => {
                     <div className='w-48 h-full overflow-hidden'>
                         <Profile />
                     </div>
-                    <div className='w-full h-full flex flex-col gap-4'> {/* Changed vertical gap to 4 too */}
+                    <div className='w-full h-full flex flex-col gap-4'>
                         <div className="flex-1">
                             <MusicPlayer />
                         </div>
@@ -63,13 +63,13 @@ const Dashboard = () => {
          </div>
 
             <div className="col-span-1 row-span-1 h-75">
-                <div className='flex justify w-full h-full gap-4'>
-                    <div className='w-full flex flex-col gap-4'>
+                <div className='flex flex-col justify h-55  gap-4'>
+                    <div className='w-full h-full flex flex-row gap-4'>
                         <Contacts />
-                        <TechStackIcons />
+                        <GitHubFocusCard />
                     </div>
-                    <div className='bento-card w-100'>
-                        <Calendar />
+                    <div className='bento-card w-full h-25'>
+                        <TechStacks />
                     </div>
                 </div>
             </div>
