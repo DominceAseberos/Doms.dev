@@ -157,7 +157,7 @@ const MusicPlayer = () => {
 
       {/* Portal visualizer out of the card to bypass transform constraints */}
       {createPortal(
-        <div className="fixed flex justify-center items-center h-48 w-48 bottom-0 right-4 z-[9999] pointer-events-none opacity-80">
+        <div className="fixed flex justify-center items-center h-48 w-48 bottom-0 right-4 z-9999 pointer-events-none opacity-80">
           <Visualizer canvasRef={canvasRef} />
         </div>,
         document.body

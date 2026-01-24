@@ -55,7 +55,7 @@ const TechMarquee = () => {
         {[...techStack, ...techStack].map((tech, index) => (
           <div 
             key={index} 
-            className="group relative flex flex-col items-center justify-center p-6 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-green-400/50 transition-all duration-500 w-18 h-18"
+            className="group relative flex flex-col items-center justify-center p-6 rounded-2xl bg-white border border-white/10 hover:border-green-400/50 transition-all duration-500 w-18 h-18"
           >
             {/* Logic-based Badges */}
             {tech.type === "learning" && (

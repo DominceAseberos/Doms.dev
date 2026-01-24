@@ -46,7 +46,7 @@ const Projects = () => {
         {/* Visual Indicator for scrolling */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40 animate-pulse pointer-events-none">
           <span className="text-[8px] font-inter font-bold uppercase tracking-widest text-white/50">Scroll</span>
-          <div className="w-[1px] h-4 bg-white/20" />
+          <div className="w-px h-4 bg-white/20" />
         </div>
       </div>
 
