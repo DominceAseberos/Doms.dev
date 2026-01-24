@@ -12,11 +12,8 @@ import ProjectHead from '../features/projects/components/ProjectHead'
 import Projects from '../features/projects/components/Projects'
 import ProjectBottom from '../features/projects/components/ProjectBottom'
 import FloatingChat from '../features/chatBot/floatingChat'
-<<<<<<< HEAD
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
-=======
->>>>>>> 2a8cacd31568a12190118017f15c27e634cd56a9
 
 
 const Dashboard = () => {
@@ -163,15 +160,11 @@ const Dashboard = () => {
                         <div className='col-span-6 desktop-anim-item'>
                             <TechStacks />
                         </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 2a8cacd31568a12190118017f15c27e634cd56a9
                         <FloatingChat />
-                    </div>
-                </div>
-            </div>
-        </main>
+                    </div >
+                </div >
+            </div >
+        </main >
     )
 }
 
