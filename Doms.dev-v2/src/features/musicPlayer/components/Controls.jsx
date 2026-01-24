@@ -23,7 +23,7 @@ export const Controls = ({
 
 
       {/* SHUFFLE BUTTON */}
-      <button className="active:scale-120 transition-all duration-200 "
+      <button className="active:scale-120 transition-all duration-200  hover:scale-110 hover:cursor-pointer"
         onClick={onShuffle}
         disabled={loading}
       >
@@ -45,7 +45,7 @@ export const Controls = ({
       {/*Mood  TEXTT button*/}
       <button ref={buttonRef}
         onClick={() => setOpenModal(!isOpenModal)}
-        className="rounded-full px-4 w-max  m-1 flex items-center justify-center transition-all hover:brightness-110 active:scale-95"
+        className="rounded-full px-4 w-max  m-1 flex items-center justify-center transition-all hover:brightness-110 active:scale-95 hover:scale-110 hover:cursor-pointer"
         style={{ backgroundColor: `rgb(var(--contrast-rgb))` }}
       >
         <p className="text-black label-font font-bold uppercase text-xs tracking-wider">
@@ -57,16 +57,16 @@ export const Controls = ({
 
       {/* PLAY */}
       <button
-        className="active:scale-120 transition-all  w-8 h-8 duration-200 rounded-full flex justify-center p-1"
+        className="active:scale-120 transition-all  w-8 h-8 duration-200 rounded-full flex justify-center p-1 hover:scale-110 hover:cursor-pointer"
         style={{
           backgroundColor: `rgb(var(--contrast-rgb))`,
         }}
         onClick={togglePlayPause}
       >
         {loading || isBuffering ? (
-         
-             <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-400 rounded-full animate-spin" />
-         
+
+          <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-400 rounded-full animate-spin" />
+
 
 
         ) : isPlaying ? (
@@ -115,8 +115,8 @@ export const Controls = ({
 
 
       {/* NEXT */}
-      <button 
-      onClick={onNext} className="active:scale-120 transition-all  w-max duration-200">
+      <button
+        onClick={onNext} className="active:scale-120 transition-all  w-max duration-200 hover:scale-110 hover:cursor-pointer">
 
         <svg className="w-6 h-6 text-gray-800
        dark:text-white"
@@ -130,10 +130,10 @@ export const Controls = ({
           }}
         >
           <path stroke="currentColor" strokeLinecap="round"
-           strokeLinejoin="round" strokeWidth="2" d="M16 6v12M8 6v12l8-6-8-6Z" />
+            strokeLinejoin="round" strokeWidth="2" d="M16 6v12M8 6v12l8-6-8-6Z" />
         </svg>
       </button>
- 
+
 
     </div>
   )

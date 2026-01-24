@@ -9,7 +9,7 @@ const Contacts = () => {
 
   const handleMouseEnter = () => {
     gsap.to(cardRef.current, {
-      scale: 1.1,
+      scale: 1.05,
       duration: 0.4,
       ease: "power2.out"
     });

@@ -93,8 +93,7 @@ const StatsGitHub = () => {
   }, { scope: containerRef });
 
   const theme = {
-    light: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
-    dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
+    dark: ['#4e4e4eff', '#babab1ff', '#dfdec3ff', '#eceaa5ff', '#7bff00ff']
   };
 
   if (loading) return (

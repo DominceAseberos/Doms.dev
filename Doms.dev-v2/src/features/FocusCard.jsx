@@ -121,25 +121,25 @@ const FocusCard = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
             </span>
-            <span className="text-[8px] text-gray-400 font-bold uppercase tracking-wider">Live Feed</span>
+            <span className="text-[8px] md:text-[12px]  font-bold uppercase tracking-wider" style={{ color: 'rgb(var(--contrast-rgb))' }}>Live Feed</span>
           </div>
           <SiGithub className="text-white/10 text-base" />
         </div>
 
         <div>
-          <p className="text-[9px] text-green-400 font-mono mb-0.5 uppercase opacity-80 tracking-tight truncate">
+          <p className="text-[9px] md:text-[14px] text-green-400 font-mono mb-0.5 uppercase opacity-80 tracking-tight truncate">
             {data.repo}
           </p>
-          <p className="text-[11px] text-gray-100 font-medium leading-tight line-clamp-2 italic">
+          <p className="text-[11px] md:text-[15px] text-gray-100 font-medium leading-tight line-clamp-2 italic">
             "{data.commit}"
           </p>
         </div>
 
         <div className="space-y-2">
-          <p className="text-[8px] text-gray-500 font-bold uppercase tracking-widest">Stack</p>
+          <p className="text-[8px] md:text-[12px] text-gray-500 font-bold uppercase tracking-widest" style={{ color: 'rgb(var(--contrast-rgb))' }}>Stack</p>
           {data.languages.map(([name, count]) => (
             <div key={name} className="w-full">
-              <div className="flex justify-between text-[9px] text-gray-300 mb-0.5 font-mono">
+              <div className="flex justify-between text-[9px] md:text-[14px] text-gray-300 mb-0.5 font-mono">
                 <span>{name}</span>
                 <span className="opacity-50">{count}</span>
               </div>
@@ -154,7 +154,7 @@ const FocusCard = () => {
         </div>
       </div>
 
-      <p className="text-[8px] text-gray-100 font-mono uppercase mt-2 italic opacity-50">GitHub Sync</p>
+      <p className="text-[8px] md:text-[12px] text-{rgb(var(--contrast-rgb))} font-mono uppercase mt-2 italic opacity-50">GitHub Sync</p>
     </div>
   );
 };

@@ -41,11 +41,11 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
         return (
             <div
                 ref={cardRef}
-                className="absolute inset-0 z-50 rounded-2xl p-4 flex flex-col overflow-y-auto scrollbar-custom"
+                className="absolute inset-0 z-50 rounded-2xl p-4 flex flex-col overflow-y-auto"
                 style={{
-                    background: 'rgba(21, 18, 38, 0.95)',
+                    background: `linear-gradient(135deg, rgb(var(--box-Linear-1-rgb) / 0.95), rgb(var(--box-Linear-2-rgb) / 0.95))`,
                     backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(230, 230, 255, 0.1)'
+                    border: '1px solid rgb(var(--contrast-rgb) / 0.2)'
                 }}
             >
                 <button
@@ -53,7 +53,10 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                         e.stopPropagation();
                         onCollapse();
                     }}
-                    className="mb-4 flex items-center text-sm font-inter font-medium text-white/60 hover:text-white transition-colors cursor-pointer"
+                    className="mb-4 flex items-center text-sm font-inter font-medium transition-colors cursor-pointer"
+                    style={{ color: 'rgb(var(--contrast-rgb) / 0.6)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgb(var(--contrast-rgb) / 1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgb(var(--contrast-rgb) / 0.6)'}
                 >
                     <ArrowLeft size={16} className="mr-2" /> Back
                 </button>
@@ -72,20 +75,28 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <h2 className="text-2xl font-playfair font-black text-white leading-tight">
+                        <h2 className="text-2xl font-playfair font-black leading-tight" style={{ color: 'rgb(var(--contrast-rgb))' }}>
                             {project.title}
                         </h2>
 
                         <div className="flex flex-wrap gap-2">
                             {project.stacks.map((stack, idx) => (
-                                <span key={idx} className="flex items-center px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] font-inter font-semibold text-white/80 uppercase tracking-wider">
+                                <span key={idx}
+                                    className="flex items-center px-2 py-1 rounded-md text-[10px] font-inter font-semibold uppercase tracking-wider"
+                                    style={{
+                                        backgroundColor: 'rgb(var(--contrast-rgb) / 0.05)',
+                                        borderColor: 'rgb(var(--contrast-rgb) / 0.1)',
+                                        borderWidth: '1px',
+                                        color: 'rgb(var(--contrast-rgb) / 0.8)'
+                                    }}
+                                >
                                     {IconComponent(stack)}
                                     {stack}
                                 </span>
                             ))}
                         </div>
 
-                        <p className="text-sm font-inter text-white/70 leading-relaxed mt-2">
+                        <p className="text-sm font-inter leading-relaxed mt-2" style={{ color: 'rgb(var(--contrast-rgb) / 0.7)' }}>
                             {project.shortDescription}
                         </p>
 
@@ -94,7 +105,11 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                                 href={project.livePreviewLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-1 py-3 rounded-xl bg-white text-[#151226] font-inter font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#e6e6ff] transition-all transform active:scale-95 cursor-pointer"
+                                className="flex-1 py-3 rounded-xl font-inter font-bold text-sm flex items-center justify-center gap-2 transition-all transform active:scale-95 cursor-pointer"
+                                style={{
+                                    backgroundColor: 'rgb(var(--contrast-rgb))',
+                                    color: 'rgb(var(--theme-rgb))'
+                                }}
                             >
                                 Live Preview <ExternalLink size={16} />
                             </a>
@@ -102,7 +117,12 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                                 href={project.fullDetailsLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-1 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-inter font-bold text-sm flex items-center justify-center gap-2 hover:bg-white/20 transition-all transform active:scale-95 cursor-pointer"
+                                className="flex-1 py-3 rounded-xl border font-inter font-bold text-sm flex items-center justify-center gap-2 transition-all transform active:scale-95 cursor-pointer"
+                                style={{
+                                    backgroundColor: 'rgb(var(--contrast-rgb) / 0.1)',
+                                    borderColor: 'rgb(var(--contrast-rgb) / 0.2)',
+                                    color: 'rgb(var(--contrast-rgb))'
+                                }}
                             >
                                 Github <Code2 size={16} />
                             </a>
@@ -119,8 +139,8 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
             onClick={() => onExpand(project.id)}
             className="relative shrink-0 w-full h-full rounded-2xl overflow-hidden cursor-pointer group snap-center"
             style={{
-                background: 'rgba(30, 27, 47, 0.6)',
-                border: '1px solid rgba(230, 230, 255, 0.1)'
+                background: `linear-gradient(135deg, rgb(var(--box-Linear-1-rgb) / 0.6), rgb(var(--box-Linear-2-rgb) / 0.6))`,
+                border: '1px solid rgb(var(--contrast-rgb) / 0.1)'
             }}
         >
             <div className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-500">
@@ -138,18 +158,28 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
             <div className="absolute bottom-0 left-0 p-4 w-full flex flex-col gap-1 z-10">
                 <div className="flex flex-wrap gap-1 mb-1">
                     {project.stacks.slice(0, 3).map((stack, idx) => (
-                        <span key={idx} className="px-1.5 py-0.5 rounded-sm bg-black/40 backdrop-blur-md text-[8px] font-inter font-bold text-white/60 uppercase tracking-tighter">
+                        <span key={idx}
+                            className="px-1.5 py-0.5 rounded-sm backdrop-blur-md text-[8px] font-inter font-bold uppercase tracking-tighter"
+                            style={{
+                                backgroundColor: 'rgb(0 0 0 / 0.4)',
+                                color: 'rgb(var(--contrast-rgb) / 0.8)'
+                            }}
+                        >
                             {stack}
                         </span>
                     ))}
                 </div>
-                <h3 className="text-lg font-playfair font-black text-white/95 leading-none transition-transform duration-300 group-hover:translate-x-1">
+                <h3 className="text-lg font-playfair font-black leading-none transition-transform duration-300 group-hover:translate-x-1" style={{ color: 'rgb(var(--contrast-rgb) / 0.95)' }}>
                     {project.title}
                 </h3>
             </div>
 
             {/* Interactive Overlay Glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_50%,rgba(230,230,255,0.05)_0%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                style={{
+                    background: `radial-gradient(60% 60% at 50% 50%, rgb(var(--contrast-rgb) / 0.05) 0%, transparent 100%)`
+                }}
+            />
         </div>
     );
 };

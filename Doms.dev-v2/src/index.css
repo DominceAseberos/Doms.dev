@@ -12,33 +12,33 @@
   --contrast-rgb: 230 230 255;
 }
 
-/* --- SCROLLBAR CUSTOMIZATION --- */
+/* --- GLOBAL SCROLLBAR CUSTOMIZATION --- */
 
-.scrollbar-custom::-webkit-scrollbar {
-  width: 8px;
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.scrollbar-custom::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: transparent;
-  border-radius: 4px;
 }
 
-.scrollbar-custom::-webkit-scrollbar-thumb {
-  background-color: rgb(var(--contrast-rgb)) transparent;
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--contrast-rgb) / 0.5);
   border-radius: 10px;
-
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   background-clip: content-box;
 }
 
-.scrollbar-custom::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(var(--contrast-rgb), 0.8);
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(var(--contrast-rgb) / 0.8);
 }
 
-/* For Firefox */
-.scrollbar-visible {
+/* Firefox */
+* {
   scrollbar-width: thin;
-  scrollbar-color: #ffffff #eee;
+  scrollbar-color: rgb(var(--contrast-rgb) / 0.5) transparent;
 }
 
 

@@ -86,13 +86,13 @@ const Dashboard = () => {
                 <div className='col-span-1'>
                     <div className='grid grid-cols-6  gap-2'>
 
-                        <div className='col-span-2 h-55'>
+                        <div className='col-span-2 h-45'>
                             <Profile />
                         </div>
 
-                        <div className='col-span-4 '>
-                            <div className='flex flex-col h-full justify-between gap-2'>
-                                <div className="flex-1">
+                        <div className='col-span-4 h-45'>
+                            <div className='flex flex-col  justify-between gap-2'>
+                                <div className="h-35">
                                     <AboutMe />
                                 </div>
                                 <ThemeToggle />
@@ -110,7 +110,7 @@ const Dashboard = () => {
 
                         </div>
 
-                        <div className='col-span-6 h-50'>
+                        <div className='col-span-6 h-62'>
 
 
                             <StatsGitHub />
@@ -132,13 +132,13 @@ const Dashboard = () => {
 
                         </div>
 
-                  <div className='col-span-6 h-75'>
+                        <div className='col-span-6 h-75'>
                             <div className="flex flex-row h-full justify-between gap-2">
                                 <div className="flex-1">
                                     <Projects />
 
                                 </div>
-                                <div className="w-55 ">
+                                <div className="md:45 lg:w-55 ">
                                     <GitHubFocusCard />
 
                                 </div>
@@ -146,7 +146,7 @@ const Dashboard = () => {
                             </div>
 
                         </div>
-                     
+
                         <div className='col-span-6 '>
                             <ProjectBottom />
 

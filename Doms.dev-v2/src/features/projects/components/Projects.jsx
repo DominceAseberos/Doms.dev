@@ -28,7 +28,7 @@ const Projects = () => {
       {/* Main Snap Carousel */}
       <div
         ref={containerRef}
-        className={`w-full h-full flex flex-col gap-4 p-4 overflow-y-auto snap-y snap-mandatory scrollbar-none transition-opacity duration-300 ${expandedId ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        className={`w-full h-full flex flex-col gap-4 p-4 overflow-y-auto snap-y snap-mandatory transition-opacity duration-300 ${expandedId ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         style={{
           scrollBehavior: 'smooth'
         }}
@@ -45,8 +45,8 @@ const Projects = () => {
 
         {/* Visual Indicator for scrolling */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40 animate-pulse pointer-events-none">
-          <span className="text-[8px] font-inter font-bold uppercase tracking-widest text-white/50">Scroll</span>
-          <div className="w-px h-4 bg-white/20" />
+          <span className="text-[8px] font-inter font-bold uppercase tracking-widest" style={{ color: 'rgb(var(--contrast-rgb) / 0.5)' }}>Scroll</span>
+          <div className="w-px h-4" style={{ backgroundColor: 'rgb(var(--contrast-rgb) / 0.2)' }} />
         </div>
       </div>
 
