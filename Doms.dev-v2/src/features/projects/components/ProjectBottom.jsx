@@ -61,7 +61,7 @@ const ProjectBottom = () => {
   return (
     <div
       ref={container}
-      className="relative flex items-center justify-center w-full h-full min-h-15 overflow-hidden rounded-2xl p-6 lg:p-2"
+      className="relative flex items-center justify-center w-full h-full min-h-15 overflow-hidden rounded-2xl p-6 md:p-2 lg:p-2"
       style={{
         background: `linear-gradient(
           to bottom,
@@ -81,13 +81,14 @@ const ProjectBottom = () => {
       />
 
       {/* Text + scroll label */}
-      <div className="relative z-10 flex flex-col items-center gap-4 text-center">
+      <div className="relative z-10 flex flex-col items-center  text-center">
         {/* Main words */}
-        <div className="flex flex-nowrap justify-center items-center gap-x-3 sm:gap-x-6 md:gap-x-12">
+        <div className="
+        flex flex-nowrap justify-center items-center  sm:gap-x-6 ">
           {["Crafted.", "Tested.", "Improved."].map((word) => (
             <div
               key={word}
-              className="animate-bottom-line font-playfair font-black text-lg sm:text-2xl md:text-4xl lg:text-2xl tracking-tighter text-white/95 whitespace-nowrap"
+              className="animate-bottom-line font-playfair font-black text-lg sm:text-2xl md:text-[14px] lg:text-2xl tracking-tighter text-white/95 whitespace-nowrap"
             >
               {word}
             </div>
@@ -97,7 +98,7 @@ const ProjectBottom = () => {
         {/* Scroll for More micro-label */}
         <div
           ref={scrollLabel}
-          className="opacity-30 text-xs sm:text-sm md:text-base lg:text-xs tracking-widest uppercase text-white"
+          className="opacity-30 text-xs sm:text-sm md:text-[12px] lg:text-xs tracking-widest uppercase text-white"
         >
           Commit by Commit
         </div>

@@ -113,6 +113,7 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                             >
                                 Live Preview <ExternalLink size={16} />
                             </a>
+
                             <a
                                 href={project.fullDetailsLink}
                                 target="_blank"

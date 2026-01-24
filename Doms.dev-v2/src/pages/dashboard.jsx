@@ -11,9 +11,35 @@ import TechStacks from '../features/techStacks/TechStacks'
 import ProjectHead from '../features/projects/components/ProjectHead'
 import Projects from '../features/projects/components/Projects'
 import ProjectBottom from '../features/projects/components/ProjectBottom'
+import FloatingChat from '../features/chatBot/floatingChat'
+import { useLayoutEffect, useRef } from 'react'
+import gsap from 'gsap'
 
 
 const Dashboard = () => {
+    const comp = useRef(null);
+
+    useLayoutEffect(() => {
+        let ctx = gsap.context(() => {
+            let mm = gsap.matchMedia();
+
+            mm.add("(min-width: 768px)", () => {
+                gsap.fromTo(".desktop-anim-item",
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        stagger: 0.1,
+                        ease: "power3.out"
+                    }
+                );
+            });
+        }, comp);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
         <>
             {/* Mobile first */}
@@ -57,9 +83,9 @@ const Dashboard = () => {
                     <ProjectBottom />
                 </div>
 
+                {/* Stats */}
                 <div className="bento-card col-span-1 row-span-1 h-75">
                     <StatsGitHub />
-
                 </div>
 
                 <div className="col-span-1 row-span-1 h-75">
@@ -79,83 +105,59 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* MD SCREEN */}
 
-            <div className='hidden md:grid md:grid-cols-2 gap-x-5  px-12'>
 
+            {/* large SCREEN */}
+            <div ref={comp} className='hidden md:grid md:grid-cols-2 gap-x-5 px-12'>
                 <div className='col-span-1'>
-                    <div className='grid grid-cols-6  gap-2'>
-
-                        <div className='col-span-2 h-45'>
+                    <div className='grid grid-cols-6 gap-2'>
+                        <div className='col-span-2 w-full md:h-40 lg:h-50  items-center desktop-anim-item'>
                             <Profile />
                         </div>
-
-                        <div className='col-span-4 h-45'>
-                            <div className='flex flex-col  justify-between gap-2'>
-                                <div className="h-35">
+                        <div className='col-span-4 md:40 lg:h-50 desktop-anim-item'>
+                            <div className='flex flex-col justify-between gap-2 h-full'>
+                                <div className="md:h-30 lg:h-40">
                                     <AboutMe />
                                 </div>
+
                                 <ThemeToggle />
                             </div>
-
                         </div>
-
-
-                        <div className='col-span-4 '>
+                        <div className='col-span-4 md:h-45 lg:h-40 desktop-anim-item'>
                             <MusicPlayer />
                         </div>
-
-                        <div className='col-span-2'>
+                        <div className='col-span-2  md:h-45 lg:h-40 desktop-anim-item'>
                             <Contacts />
-
                         </div>
-
-                        <div className='col-span-6 h-62'>
-
-
+                        <div className='col-span-6 md:h-50 lg:h-50 desktop-anim-item'>
                             <StatsGitHub />
-
                         </div>
-
                     </div>
                 </div>
 
-
                 <div className='col-span-1'>
                     <div className='grid grid-cols-6 gap-5'>
-
-
-                        <div className='col-span-6 '>
-
+                        <div className='col-span-6 desktop-anim-item'>
                             <ProjectHead />
-
-
                         </div>
 
-                        <div className='col-span-6 h-75'>
+                        <div className='col-span-6 md:h-75 lg:h-75 desktop-anim-item'>
                             <div className="flex flex-row h-full justify-between gap-2">
                                 <div className="flex-1">
                                     <Projects />
-
                                 </div>
-                                <div className="md:45 lg:w-55 ">
+                                <div className="md:w-35  lg:w-full lg:max-w-40 lg:min-w-25">
                                     <GitHubFocusCard />
-
                                 </div>
-
                             </div>
-
                         </div>
-
-                        <div className='col-span-6 '>
+                        <div className='col-span-6 desktop-anim-item'>
                             <ProjectBottom />
-
                         </div>
-
-
-                        <div className='col-span-6'>
+                        <div className='col-span-6 desktop-anim-item'>
                             <TechStacks />
                         </div>
+                        <FloatingChat />
                     </div>
                 </div>
             </div>

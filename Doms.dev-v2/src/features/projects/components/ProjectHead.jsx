@@ -63,7 +63,7 @@ const ProjectHead = () => {
   return (
     <div
       ref={container}
-      className="relative flex flex-col justify-center items-center w-full h-full min-h-15.5 overflow-hidden rounded-2xl p-3 lg:p-2"
+      className="relative flex flex-col justify-center items-center w-full h-full min-h-15.5 overflow-hidden rounded-2xl p-3 md:p-2 lg:p-2"
       style={{
         background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`
       }}
@@ -85,7 +85,7 @@ const ProjectHead = () => {
         </h1>
 
         {/* Horizontal Breadcrumbs Row */}
-        <div className="flex items-center gap-2 md:gap-4 px-2 overflow-hidden whitespace-nowrap">
+        <div className="flex items-center gap-2 md:gap-2 px-2 overflow-hidden whitespace-nowrap">
           {['Idea', 'Experiments', 'Real Projects'].map((step, i) => (
             <React.Fragment key={step}>
               <span className="animate-breadcrumb text-[8px] md:text-[10px] font-bold tracking-[0.25em] uppercase text-white/30 font-inter">

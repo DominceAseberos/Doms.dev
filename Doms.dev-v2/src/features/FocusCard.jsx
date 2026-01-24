@@ -44,7 +44,7 @@ const FocusCard = () => {
 
         const topLangs = Object.entries(langMap)
           .sort((a, b) => b[1] - a[1])
-          .slice(0, 2);
+          .slice(0, 4);
 
         const commitMsg = lastPush?.payload?.commits?.[0]?.message || "Architecting solutions.";
         const repoName = lastPush?.repo?.name?.split('/')?.[1] || "Development";
@@ -137,8 +137,13 @@ const FocusCard = () => {
 
         <div className="space-y-2">
           <p className="text-[8px] md:text-[12px] text-gray-500 font-bold uppercase tracking-widest" style={{ color: 'rgb(var(--contrast-rgb))' }}>Stack</p>
-          {data.languages.map(([name, count]) => (
-            <div key={name} className="w-full">
+          {data.languages.map(([name, count], idx) => (
+            <div
+              key={name}
+              // This hide/show logic ensures mobile stays clean (first 2) 
+              // while desktop fills the space (all 4)
+              className={`w-full ${idx >= 2 ? 'hidden md:block' : 'block'}`}
+            >
               <div className="flex justify-between text-[9px] md:text-[14px] text-gray-300 mb-0.5 font-mono">
                 <span>{name}</span>
                 <span className="opacity-50">{count}</span>
