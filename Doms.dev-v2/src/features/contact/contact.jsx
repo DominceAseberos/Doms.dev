@@ -1,5 +1,5 @@
 
-const ActionButton = () => {
+const Contacts = () => {
 
   return (
     <>
@@ -16,4 +16,4 @@ const ActionButton = () => {
     </>
   );
 };
-export default ActionButton;
+export default Contacts;

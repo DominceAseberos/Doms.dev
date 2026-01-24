@@ -99,7 +99,7 @@ const ProjectBottom = () => {
           ref={scrollLabel}
           className="opacity-30 text-xs sm:text-sm md:text-base tracking-widest uppercase text-white"
         >
-          Scroll for More
+          Commit by Commit
         </div>
       </div>
     </div>

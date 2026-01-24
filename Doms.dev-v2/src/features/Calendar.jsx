@@ -11,7 +11,7 @@ const Calendar = () => {
                           rgba(var(--box-Linear-2-rgb))  
                      )`
         }}>
-        <p className="font-playfair font-black text-2xl tracking-tight text-white/90 animate-item text-center">CALENDAR</p>
+        <p className="font-playfair font-black text-2xl tracking-tight text-white/90 animate-item text-center">EMPTY</p>
       </div>
     </>
   );
