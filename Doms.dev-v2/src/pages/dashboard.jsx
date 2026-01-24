@@ -11,6 +11,7 @@ import TechStacks from '../features/techStacks/TechStacks'
 import ProjectHead from '../features/projects/components/ProjectHead'
 import Projects from '../features/projects/components/Projects'
 import ProjectBottom from '../features/projects/components/ProjectBottom'
+import FloatingChat from '../features/chatBot/floatingChat'
 
 
 const Dashboard = () => {
@@ -156,6 +157,8 @@ const Dashboard = () => {
                         <div className='col-span-6'>
                             <TechStacks />
                         </div>
+
+                        <FloatingChat />
                     </div>
                 </div>
             </div>
