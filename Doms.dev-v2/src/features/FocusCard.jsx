@@ -60,6 +60,13 @@ const FocusCard = () => {
     fetchData();
   }, []);
 
+  // Cleanup GSAP animations on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      gsap.killTweensOf(cardRef.current);
+    };
+  }, []);
+
   if (loading) return (
     <div
       ref={cardRef}

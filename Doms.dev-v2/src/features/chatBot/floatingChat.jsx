@@ -89,6 +89,9 @@ const FloatingChat = () => {
             <div
                 ref={containerRef}
                 onClick={() => !isOpen && setIsOpen(true)}
+                role="dialog"
+                aria-expanded={isOpen}
+                aria-label="Chat interface"
                 className={`rounded-2xl 
                     pointer-events-auto cursor-pointer overflow-hidden border-2 border-white/10 shadow-2xl relative ${isOpen ? "cursor-default" : "hover:border-white/40"}`}
                 style={{
@@ -117,7 +120,8 @@ const FloatingChat = () => {
                         e.stopPropagation();
                         setIsOpen(false);
                     }}
-                    className={`absolute top-4 right-4 z-[110] p-1 bg-black/20 hover:bg-black/40 rounded-md transition-colors ${!isOpen ? 'pointer-events-none' : 'pointer-events-auto'}`}
+                    aria-label="Close chat"
+                    className={`absolute top-4 right-4 z-[110] p-2 bg-black/20 hover:bg-black/40 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 ${!isOpen ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 >
                     <X size={20} className="text-white" />
                 </button>

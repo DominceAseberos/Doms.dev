@@ -7,7 +7,7 @@ const AboutMe = () => {
 
 
   return (
-    <div 
+    <div
       className="flex flex-col justify-between gap-1 rounded-2xl p-4 md:p-3 lg:p-5 h-full w-full overflow-hidden border border-white/5"
       style={{
         background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`
@@ -24,14 +24,14 @@ const AboutMe = () => {
 
       {/* Theme-Matched Action Button */}
       <div className="w-full flex justify-end">
-      <button
-        className="w-fit px-4 py-1.5 rounded-full text-black font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] transition-all duration-200 active:scale-110 active:-rotate-2 hover:scale-110 hover:-rotate-1 hover:cursor-pointer"
-        style={{
-          background: `rgb(var(--contrast-rgb))`,
-        }}
-      >
-        About Me
-      </button>
+        <button
+          className="w-fit px-4 py-2.5 rounded-full text-black font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] transition-all duration-200 active:scale-110 active:-rotate-2 hover:scale-110 hover:-rotate-1 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50"
+          style={{
+            background: `rgb(var(--contrast-rgb))`,
+          }}
+        >
+          About Me
+        </button>
       </div>
     </div>
   );

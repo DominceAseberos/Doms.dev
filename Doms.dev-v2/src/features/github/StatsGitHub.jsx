@@ -43,6 +43,12 @@ const StatsGitHub = () => {
       }));
     } catch (err) {
       console.error('GitHub fetch error:', err);
+      // Detect rate limiting
+      if (err.response?.status === 403) {
+        console.warn('GitHub API rate limit exceeded');
+        // Set fallback data to show rate limit message
+        setStats(prev => ({ ...prev, repos: '--', followers: '--', following: '--' }));
+      }
     } finally {
       setLoading(false);
     }
