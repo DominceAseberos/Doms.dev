@@ -12,9 +12,12 @@ const MainLayout = ({ children }) => {
       }}
       className="h-auto md:h-screen w-full md:overflow-hidden p-4 md:p-8"
     >
-    <div className="flex flex-col h-auto w-full gap-8 md:grid md:h-full md:grid-cols-1 md:grid-rows-7 z-50">
+    <div>
         {children}
-      </div>
+    </div>
+
+
+
     </main>
   );
 };

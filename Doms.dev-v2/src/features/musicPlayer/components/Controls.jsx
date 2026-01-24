@@ -45,7 +45,7 @@ export const Controls = ({
       {/*Mood  TEXTT button*/}
       <button ref={buttonRef}
         onClick={() => setOpenModal(!isOpenModal)}
-        className="rounded-full px-4 w-max  h-full flex items-center justify-center transition-all hover:brightness-110 active:scale-95"
+        className="rounded-full px-4 w-max  m-1 flex items-center justify-center transition-all hover:brightness-110 active:scale-95"
         style={{ backgroundColor: `rgb(var(--contrast-rgb))` }}
       >
         <p className="text-black label-font font-bold uppercase text-xs tracking-wider">

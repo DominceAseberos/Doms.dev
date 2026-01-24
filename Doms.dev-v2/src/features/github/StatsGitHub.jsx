@@ -97,6 +97,34 @@ const StatsGitHub = () => {
     dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
   };
 
+  if (loading) return (
+    <div
+      ref={containerRef}
+      className="relative rounded-2xl w-full h-full p-4 flex flex-col overflow-hidden"
+      style={{
+        background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`
+      }}
+    >
+      <div className="animate-pulse space-y-4">
+        {/* Title ghost */}
+        <div className="h-6 w-32 bg-white/10 rounded mx-auto" />
+
+        {/* Calendar ghost */}
+        <div className="w-full h-32 bg-white/5 rounded" />
+
+        {/* Stats Row Ghost */}
+        <div className="flex justify-around pt-3 mt-2 border-t border-white/5">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="text-center space-y-1">
+              <div className="h-2 w-12 bg-white/10 rounded mx-auto" />
+              <div className="h-3 w-8 bg-white/10 rounded mx-auto" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div
       ref={containerRef}
@@ -128,7 +156,7 @@ const StatsGitHub = () => {
 
 
       {/* Stats */}
-      <div className="flex justify-around pt-3  mt-2">
+      <div className="flex justify-around pt-3  mt-2 md:mt-0 md:pt-2">
         {[
           ['Repos', stats.repos],
           ['Followers', stats.followers],

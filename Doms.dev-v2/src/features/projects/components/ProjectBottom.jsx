@@ -61,7 +61,7 @@ const ProjectBottom = () => {
   return (
     <div
       ref={container}
-      className="relative flex items-center justify-center w-full h-full overflow-hidden rounded-2xl p-6"
+      className="relative flex items-center justify-center w-full h-full min-h-15 overflow-hidden rounded-2xl p-6 lg:p-2"
       style={{
         background: `linear-gradient(
           to bottom,
@@ -87,7 +87,7 @@ const ProjectBottom = () => {
           {["Crafted.", "Tested.", "Improved."].map((word) => (
             <div
               key={word}
-              className="animate-bottom-line font-playfair font-black text-lg sm:text-2xl md:text-4xl lg:text-6xl tracking-tighter text-white/95 whitespace-nowrap"
+              className="animate-bottom-line font-playfair font-black text-lg sm:text-2xl md:text-4xl lg:text-2xl tracking-tighter text-white/95 whitespace-nowrap"
             >
               {word}
             </div>
@@ -97,7 +97,7 @@ const ProjectBottom = () => {
         {/* Scroll for More micro-label */}
         <div
           ref={scrollLabel}
-          className="opacity-30 text-xs sm:text-sm md:text-base tracking-widest uppercase text-white"
+          className="opacity-30 text-xs sm:text-sm md:text-base lg:text-xs tracking-widest uppercase text-white"
         >
           Commit by Commit
         </div>

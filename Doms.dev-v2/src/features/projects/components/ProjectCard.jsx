@@ -59,7 +59,7 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                 </button>
 
                 <div ref={contentRef} className="flex flex-col gap-4">
-                    <div className="relative aspect-video w-full rounded-xl overflow-hidden group">
+                    <div className="relative aspect-video w-full lg:h-55 rounded-xl overflow-hidden group">
                         <img
                             src={project.image}
                             alt={project.title}

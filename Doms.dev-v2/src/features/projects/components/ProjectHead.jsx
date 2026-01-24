@@ -63,7 +63,7 @@ const ProjectHead = () => {
   return (
     <div
       ref={container}
-      className="relative flex flex-col justify-center items-center w-full h-full min-h-22.5 overflow-hidden rounded-2xl p-3 md:p-6"
+      className="relative flex flex-col justify-center items-center w-full h-full min-h-15.5 overflow-hidden rounded-2xl p-3 lg:p-2"
       style={{
         background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`
       }}
@@ -80,7 +80,7 @@ const ProjectHead = () => {
 
       <div className="relative z-10 flex flex-col items-center gap-1 md:gap-2">
         {/* Main Aesthetic Headline */}
-        <h1 className="animate-portfolio text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter font-playfair text-white/95 leading-none">
+        <h1 className="animate-portfolio text-4xl md:text-2xl lg:text-3xl font-black tracking-tighter font-playfair text-white/95 leading-none">
           Projects
         </h1>
 
