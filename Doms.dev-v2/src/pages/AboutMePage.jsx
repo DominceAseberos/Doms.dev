@@ -4,8 +4,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FileText, Github, Linkedin, ArrowLeft, X, Mail, MessageCircle } from 'lucide-react';
 import { portfolioData } from '../features/chatBot/data/portfolioData';
-
-
+import umtcLogo from '../assets/umtc-logo.png';
+import heroImage from '../assets/hero-image.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -180,7 +180,7 @@ const AboutMePage = () => {
             }}
         >
             <div className="
-            md:grid md:grid-cols-12 md:gap-2 md:max-w-5xl 
+            md:grid md:grid-cols-12 md:gap-2 md:max-w-5xl
             lg:grid lg:grid-cols-12
             page-content max-w-2xl mx-auto space-y-6"
             >
@@ -202,14 +202,11 @@ const AboutMePage = () => {
                         onClick={() => handleImageExpand('hero')}
                         style={{ background: 'rgba(var(--contrast-rgb), 0.1)' }}
                     >
-                        <div className="w-full h-full flex items-center justify-center">
-                            <span
-                                className="text-6xl font-bold opacity-20"
-                                style={{ color: 'rgb(var(--contrast-rgb))' }}
-                            >
-                                DA
-                            </span>
-                        </div>
+                        <img
+                            src={heroImage}
+                            alt="Hero"
+                            className="w-full h-full object-cover"
+                        />
                     </div>
                 </div>
 
@@ -345,24 +342,24 @@ const AboutMePage = () => {
                 >
                     {/* Logo Placeholder */}
                     <div
-                        className="scroll-reveal w-full h-full rounded-xl flex items-center justify-center 
-                        md:w-1/2 md:h-full md:flex md:flex-row md:justify-center 
-                        lg:w-1/2 lg:h-full lg:flex lg:flex-row lg:justify-center 
-                        
+                        className="scroll-reveal w-full h-full rounded-xl flex items-center justify-center
+                        md:w-1/2 md:h-full md:flex md:flex-row md:justify-center
+                        lg:w-1/2 lg:h-full lg:flex lg:flex-row lg:justify-center
 
+
+                        bg-white
                         border cursor-pointer hover:scale-105 transition-transform duration-300"
                         onClick={() => handleImageExpand('education')}
                         style={{
-                            background: 'rgba(var(--contrast-rgb), 0.05)',
+                            background: '#fff', // Force white background for the logo
                             borderColor: 'rgba(var(--contrast-rgb), 0.2)'
                         }}
                     >
-                        <span
-                            className="text-4xl font-bold opacity-30"
-                            style={{ color: 'rgb(var(--contrast-rgb))' }}
-                        >
-                            UMTC
-                        </span>
+                        <img
+                            src={umtcLogo}
+                            alt="University of Mindanao"
+                            className="w-full h-full object-contain p-4"
+                        />
                     </div>
 
                     {/* Education Details */}
@@ -560,20 +557,18 @@ const AboutMePage = () => {
                             >
                                 <div className="w-full h-full flex items-center justify-center">
                                     {expandedImage === 'hero' && (
-                                        <span
-                                            className="text-9xl font-bold opacity-20"
-                                            style={{ color: 'rgb(var(--contrast-rgb))' }}
-                                        >
-                                            DA
-                                        </span>
+                                        <img
+                                            src={heroImage}
+                                            alt="Hero"
+                                            className="w-full h-full object-cover"
+                                        />
                                     )}
                                     {expandedImage === 'education' && (
-                                        <span
-                                            className="text-8xl font-bold opacity-30"
-                                            style={{ color: 'rgb(var(--contrast-rgb))' }}
-                                        >
-                                            UMTC
-                                        </span>
+                                        <img
+                                            src={umtcLogo}
+                                            alt="University of Mindanao"
+                                            className="w-full h-full object-contain p-8 bg-white"
+                                        />
                                     )}
                                     {expandedImage === 'resume' && (
                                         <FileText

@@ -1,17 +1,20 @@
 /* src/styles/custom.css */
-html, body {
+html,
+body {
   height: auto;
   overflow-y: auto;
   margin: 0;
 }
 
-/* 2. Desktop Only: Lock the screen */
+/* 2. Desktop: Allow scrolling for all pages */
 @media (min-width: 768px) {
-  html, body {
+
+  html,
+  body {
     height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
   }
-  
+
 
 }
 
@@ -24,7 +27,8 @@ html, body {
 }
 
 body {
-  background-color: #151226; /* Match --theme-rgb: 21 18 38 */
+  background-color: #151226;
+  /* Match --theme-rgb: 21 18 38 */
   color: white;
   font-family: 'Inter', sans-serif;
 }
@@ -35,13 +39,28 @@ body {
 }
 
 @keyframes tumble {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(90deg); }
-  50% { transform: rotate(180deg); }
-  75% { transform: rotate(270deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(90deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  75% {
+    transform: rotate(270deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-tumble {
-  animation: tumble 0.5s steps(4) infinite; /* steps(4) makes it snap like a dice */
+  animation: tumble 0.5s steps(4) infinite;
+  /* steps(4) makes it snap like a dice */
 }

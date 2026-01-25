@@ -117,3 +117,25 @@
         scroll-behavior: auto !important;
     }
 }
+/* --- CUSTOM THIN SCROLLBAR FOR PROJECT DETAILS --- */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--contrast-rgb), 0.3) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--contrast-rgb), 0.3);
+    border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(var(--contrast-rgb), 0.5);
+}

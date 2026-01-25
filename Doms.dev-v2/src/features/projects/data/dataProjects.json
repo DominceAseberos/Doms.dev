@@ -1,39 +1,33 @@
-[
+﻿[
   {
     "id": "banana-leaf-detection",
-    "title": "Banana Leaf Detection",
+    "title": "Banana Leaf Disease Detector",
     "projectType": "AI/Research",
     "dateCreated": "2023-11-20",
     "image": "/assets/projects/cover/BananaLeaf.png",
     "images": [
-      "/assets/projects/cover/BananaLeaf.png",
-      "/assets/projects/cover/BananaLeaf.png",
       "/assets/projects/cover/BananaLeaf.png"
     ],
     "stacks": [
-      "React",
       "Python",
+      "OpenCV",
       "Flask",
-      "OpenCV"
+      "scikit-learn"
     ],
     "shortDescription": "A machine learning web application built with Python, OpenCV, scikit-learn, and Flask to detect whether a banana leaf is Healthy, Unhealthy, or Not a Leaf using image processing and KNN classification.",
-    "fullDocumentation": "## Overview\n\nThe **Banana Leaf Detection** project is a machine learning-powered web application designed to analyze banana leaves and classify their health status. Using advanced image processing techniques and K-Nearest Neighbors (KNN) classification, the system can accurately determine whether a banana leaf is:\n\n- **Healthy**: The leaf shows no signs of disease or stress\n- **Unhealthy**: The leaf exhibits symptoms of disease or nutrient deficiency  \n- **Not a Leaf**: The image does not contain a banana leaf\n\n## Technical Architecture\n\n### Backend Stack\n\n- **Python 3.8+**: Core programming language\n- **Flask**: Lightweight web framework for API endpoints\n- **OpenCV**: Computer vision library for image preprocessing\n- **scikit-learn**: Machine learning library for KNN classification\n- **NumPy**: Numerical computing for feature extraction\n\n### Frontend Stack\n\n- **React**: Modern UI library for responsive interface\n- **Axios**: HTTP client for API communication\n- **Tailwind CSS**: Utility-first CSS framework\n\n## How It Works\n\n1. **Image Upload**: User uploads an image through the React interface\n2. **Preprocessing**: OpenCV processes the image (resize, normalize, extract features)\n3. **Feature Extraction**: Color histograms and texture features are computed\n4. **Classification**: KNN model predicts the leaf's health status\n5. **Results Display**: Confidence scores and classification are shown to the user\n\n## Key Features\n\n- Real-time image analysis\n- High accuracy classification (92% on test dataset)\n- Responsive web interface\n- Detailed confidence scores\n- Support for various image formats (JPG, PNG, WebP)\n\n## Use Cases\n\n- **Agricultural Monitoring**: Farmers can quickly assess crop health\n- **Research**: Scientists can analyze large datasets of leaf images\n- **Education**: Students can learn about plant disease detection\n\n## Future Enhancements\n\n- Expand to detect specific banana diseases (Sigatoka, Panama disease)\n- Mobile app for field use\n- Integration with IoT sensors for automated monitoring\n- Multi-crop support beyond bananas",
+    "fullDocumentation": "## Project Overview\n\nThis project extracts texture and color-based features (using **GLCM**, **LBP**, and **HOG**) from banana leaf images, trains a **K-Nearest Neighbors (KNN)** classifier, and serves the prediction through a simple Flask web app.\n\n### Key Features\n\n- Trained KNN model for 3-class classification\n- Uses advanced image feature extraction (GLCM, LBP, HOG)\n- Visualizes feature importance and class balance\n- Flask web interface for uploading and detecting banana leaves\n- Dataset augmentation and scaling with MinMaxScaler\n\n## Project Structure\n\n```\nproject/\n├── app.py                  # Flask app (main entry)\n├── extract_features.py     # Feature extraction functions\n├── generate_aug.py         # Data augmentation script\n├── knn_trainer.py         # Model training script\n├── scale.py               # Feature scaling and preprocessing\n├── visualization.ipynb    # Data visualization and analysis\n├── dataset/               # Dataset organization\n│   ├── raw_data/         # Original dataset\n│   │   ├── Diseased_leaf/\n│   │   ├── Healthy_leaf/\n│   │   └── Non_leaf/\n│   ├── train_data/       # Training dataset\n│   └── test_data/        # Testing dataset\n├── static/               # Static files for web interface\n│   └── styles.css        # CSS styling\n├── templates/            # HTML templates\n│   └── index.html       # Main web interface\n├── uploads/             # Temporary storage for uploaded images\n├── requirements.txt     # Python dependencies\n└── README.md           # Project documentation\n```\n\n## How to Run the App\n\n### 1. Clone the repository\n\n```bash\ngit clone https://github.com/Domincee/Banana-Leaf-Detector.git\ncd Banana-Leaf-Detector\n```\n\n### 2. Create a virtual environment (recommended)\n\n```bash\n# Windows\npython -m venv venv\n.\\venv\\Scripts\\Activate.ps1\n\n# Linux/MacOS\npython3 -m venv venv\nsource venv/bin/activate\n```\n\n### 3. Install dependencies\n\n```bash\npip install -r requirements.txt\n```\n\n### 4. Run the Flask app\n\n```bash\npython app.py\n```\n\n### 5. Open in your browser\n\n```\nhttp://127.0.0.1:5000\n```\n\n## Model Performance\n\n| Metric | Training Accuracy | Test Accuracy |\n|--------|------------------|---------------|\n| **KNN** | 0.9991 | 0.90423 |\n\n### Classification Report (Test Set)\n\n```\n                precision    recall  f1-score   support\n\n  Healthy Leaf       0.91      0.94      0.92       149\n     None-leaf       0.93      0.87      0.90       150\nUnhealthy leaf       0.88      0.90      0.89       150\n\n      accuracy                           0.90       449\n     macro avg       0.90      0.90      0.90       449\n  weighted avg       0.90      0.90      0.90       449\n```\n\n## Dataset Information\n\nThe dataset consists of **2,245 images** resized to **128×128**, organized into three categories:\n\n| Category | Image Count | Description |\n|----------|-------------|-------------|\n| **Healthy Leaf** | 745 | Augmented images of healthy banana leaves |\n| **Unhealthy Leaf** | 750 | Actual images of diseased banana leaves |\n| **Non-Leaf** | 750 | Negative samples (self-collected) |\n| **Total** | **2,245** | Complete dataset |\n\n### Dataset Split\n\n- **Training Set**: 1,796 images (80%)\n- **Test Set**: 449 images (20%)\n\n> **Note**: Raw and training datasets are not included in this repository due to file size limits. You can download them from: [Google Drive](https://drive.google.com/drive/folders/1mng06d0Y_U4hC7WM5hnbBNbuC5ohulcq?usp=sharing)\n\n## Technologies Used\n\n- **Python 3.11**\n- **OpenCV** - Computer vision and image processing\n- **NumPy & Pandas** - Data manipulation\n- **scikit-learn** - Machine learning algorithms\n- **scikit-image** - Image processing utilities\n- **Matplotlib / Seaborn** - Data visualization\n- **Flask** - Web framework\n\n## License\n\n© 2025 Domince Aseberos. All rights reserved.\n\nThis project is released under the **MIT License**.\n\nYou are free to use, copy, modify, and distribute this software for educational or research purposes, provided that proper credit is given to the author.\n\n> **Note**: The dataset and sample images are for demonstration and research purposes only. They may contain content collected from public sources and are **not included in this repository** to comply with data-sharing and copyright policies.",
     "documentationFiles": [
       {
-        "label": "Technical Paper (PDF)",
-        "path": "/docs/banana-leaf-paper.pdf"
+        "label": "Dataset (Google Drive)",
+        "path": "https://drive.google.com/drive/folders/1mng06d0Y_U4hC7WM5hnbBNbuC5ohulcq?usp=sharing"
       },
       {
-        "label": "Dataset Documentation",
-        "path": "/docs/banana-dataset.pdf"
-      },
-      {
-        "label": "User Manual",
-        "path": "/docs/banana-manual.pdf"
+        "label": "GitHub Repository",
+        "path": "https://github.com/Domincee/Banana-Leaf-Detector"
       }
     ],
     "fullDetailsLink": "https://github.com/Domincee",
-    "livePreviewLink": "https://domincee-portfolio.vercel.app/"
+    "livePreviewLink": "https://banana-leaf-detector.onrender.com/"
   },
   {
     "id": "focus-quest",
