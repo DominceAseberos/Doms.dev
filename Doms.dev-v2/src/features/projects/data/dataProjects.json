@@ -1,8 +1,15 @@
 [
   {
-    "id": 1,
+    "id": "banana-leaf-detection",
     "title": "Banana Leaf Detection",
+    "projectType": "AI/Research",
+    "dateCreated": "2023-11-20",
     "image": "/assets/projects/cover/BananaLeaf.png",
+    "images": [
+      "/assets/projects/cover/BananaLeaf.png",
+      "/assets/projects/cover/BananaLeaf.png",
+      "/assets/projects/cover/BananaLeaf.png"
+    ],
     "stacks": [
       "React",
       "Python",
@@ -10,58 +17,101 @@
       "OpenCV"
     ],
     "shortDescription": "A machine learning web application built with Python, OpenCV, scikit-learn, and Flask to detect whether a banana leaf is Healthy, Unhealthy, or Not a Leaf using image processing and KNN classification.",
+    "fullDocumentation": "## Overview\n\nThe **Banana Leaf Detection** project is a machine learning-powered web application designed to analyze banana leaves and classify their health status. Using advanced image processing techniques and K-Nearest Neighbors (KNN) classification, the system can accurately determine whether a banana leaf is:\n\n- **Healthy**: The leaf shows no signs of disease or stress\n- **Unhealthy**: The leaf exhibits symptoms of disease or nutrient deficiency  \n- **Not a Leaf**: The image does not contain a banana leaf\n\n## Technical Architecture\n\n### Backend Stack\n\n- **Python 3.8+**: Core programming language\n- **Flask**: Lightweight web framework for API endpoints\n- **OpenCV**: Computer vision library for image preprocessing\n- **scikit-learn**: Machine learning library for KNN classification\n- **NumPy**: Numerical computing for feature extraction\n\n### Frontend Stack\n\n- **React**: Modern UI library for responsive interface\n- **Axios**: HTTP client for API communication\n- **Tailwind CSS**: Utility-first CSS framework\n\n## How It Works\n\n1. **Image Upload**: User uploads an image through the React interface\n2. **Preprocessing**: OpenCV processes the image (resize, normalize, extract features)\n3. **Feature Extraction**: Color histograms and texture features are computed\n4. **Classification**: KNN model predicts the leaf's health status\n5. **Results Display**: Confidence scores and classification are shown to the user\n\n## Key Features\n\n- Real-time image analysis\n- High accuracy classification (92% on test dataset)\n- Responsive web interface\n- Detailed confidence scores\n- Support for various image formats (JPG, PNG, WebP)\n\n## Use Cases\n\n- **Agricultural Monitoring**: Farmers can quickly assess crop health\n- **Research**: Scientists can analyze large datasets of leaf images\n- **Education**: Students can learn about plant disease detection\n\n## Future Enhancements\n\n- Expand to detect specific banana diseases (Sigatoka, Panama disease)\n- Mobile app for field use\n- Integration with IoT sensors for automated monitoring\n- Multi-crop support beyond bananas",
+    "documentationFiles": [
+      {
+        "label": "Technical Paper (PDF)",
+        "path": "/docs/banana-leaf-paper.pdf"
+      },
+      {
+        "label": "Dataset Documentation",
+        "path": "/docs/banana-dataset.pdf"
+      },
+      {
+        "label": "User Manual",
+        "path": "/docs/banana-manual.pdf"
+      }
+    ],
     "fullDetailsLink": "https://github.com/Domincee",
     "livePreviewLink": "https://domincee-portfolio.vercel.app/"
   },
   {
-    "id": 2,
+    "id": "focus-quest",
     "title": "Focus Quest App",
+    "projectType": "Productivity/Personal",
+    "dateCreated": "2024-02-15",
     "image": "/assets/projects/cover/FocusQuest.png",
+    "images": [
+      "/assets/projects/cover/FocusQuest.png"
+    ],
     "stacks": [
       "React",
       "Tailwind CSS",
       "GSAP"
     ],
     "shortDescription": "A productivity RPG app turning tasks into quests with XP and stats.",
+    "fullDocumentation": "## Introduction\n\n**Focus Quest** gamifies productivity by transforming your daily tasks into RPG-style quests. Level up your character, unlock achievements, and watch your stats grow as you complete real-world goals.\n\n## Core Features\n\n- Task-to-Quest conversion system\n- XP and level progression\n- Character stats (Focus, Productivity, Consistency)\n- Achievement badges\n- Streak tracking\n- GSAP-powered animations\n\n## Technology\n\nBuilt with React for a responsive SPA experience, styled with Tailwind CSS for rapid UI development, and animated with GSAP for smooth, engaging interactions.",
+    "documentationFiles": [],
     "fullDetailsLink": "https://github.com/Domincee",
     "livePreviewLink": "https://domincee-portfolio.vercel.app/"
   },
   {
-    "id": 3,
+    "id": "baylora",
     "title": "Baylora",
+    "projectType": "E-commerce/Platform",
+    "dateCreated": "2024-05-10",
     "image": "/assets/projects/cover/Baylora.png",
+    "images": [
+      "/assets/projects/cover/Baylora.png"
+    ],
     "stacks": [
       "React",
       "Supabase",
       "Tailwind"
     ],
     "shortDescription": "A modern marketplace and trading platform where users can sell, trade, or mix transactions, with bidding, verified profiles, and secure authentication.",
+    "fullDocumentation": "## Platform Overview\n\n**Baylora** is a next-generation marketplace that combines traditional buying/selling with modern trading mechanics. Users can list items for direct sale, open trades, or enable hybrid transactions.\n\n## Key Capabilities\n\n- **Multi-Transaction Modes**: Buy, Sell, Trade, or Mix\n- **Real-time Bidding**: Live auction system powered by Supabase Realtime\n- **Verified Profiles**: Trust system with user ratings\n- **Secure Auth**: Supabase authentication with email and social logins\n- **Responsive Design**: Mobile-first Tailwind CSS implementation\n\n## Technical Stack\n\nBuilt on Supabase for backend (PostgreSQL + Realtime + Auth), React for frontend state management, and Tailwind for a modern, consistent design system.",
+    "documentationFiles": [],
     "fullDetailsLink": "https://github.com/Domincee",
     "livePreviewLink": "https://domincee-portfolio.vercel.app/"
   },
   {
-    "id": 4,
+    "id": "templyx",
     "title": "Templyx",
+    "projectType": "Platform/Community",
+    "dateCreated": "2024-08-22",
     "image": "/assets/projects/cover/Templyx.png",
+    "images": [
+      "/assets/projects/cover/Templyx.png"
+    ],
     "stacks": [
       "React",
       "Lucide",
       "Vite"
     ],
     "shortDescription": "A modern portfolio platform for developers with authentication, real-time features, and community interaction.",
+    "fullDocumentation": "## About Templyx\n\n**Templyx** is a portfolio showcase platform designed for developers to share their work, connect with peers, and discover inspiration.\n\n## Features\n\n- User authentication and profiles\n- Project showcase with rich media\n- Community interaction (likes, comments)\n- Real-time updates\n- Lucide icon system for consistent UI\n\n## Built With\n\nVite for lightning-fast development, React for component-based architecture, and Lucide for a beautiful icon set.",
+    "documentationFiles": [],
     "fullDetailsLink": "https://github.com/Domincee",
     "livePreviewLink": "https://domincee-portfolio.vercel.app/"
   },
   {
-    "id": 5,
+    "id": "ai-text-summarizer",
     "title": "AI Text Summarizer",
+    "projectType": "AI/Utility",
+    "dateCreated": "2024-10-05",
     "image": "/assets/projects/cover/summarizer.png",
+    "images": [
+      "/assets/projects/cover/summarizer.png"
+    ],
     "stacks": [
       "React",
       "NLP",
       "API"
     ],
     "shortDescription": "A web application that generates concise summaries from long text or articles using an AI-powered NLP API.",
+    "fullDocumentation": "## AI-Powered Summarization\n\nThe **AI Text Summarizer** uses state-of-the-art Natural Language Processing to condense lengthy articles, documents, or text into concise, readable summaries.\n\n## How It Works\n\n1. User pastes or uploads text content\n2. Text is sent to NLP API for processing\n3. AI extracts key sentences and concepts\n4. Summary is generated and displayed\n5. User can adjust summary length\n\n## Use Cases\n\n- Research paper summarization\n- News article digests\n- Document review\n- Content curation\n\n## Technology\n\nReact frontend integrated with third-party NLP API for intelligent text processing.",
+    "documentationFiles": [],
     "fullDetailsLink": "https://github.com/Domincee",
     "livePreviewLink": "https://domincee-portfolio.vercel.app/"
   }

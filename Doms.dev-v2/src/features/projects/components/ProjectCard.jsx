@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ArrowLeft, ExternalLink, Code2, Layers, Cpu, Globe, Database, BookOpen, FileText } from 'lucide-react';
@@ -106,10 +107,8 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                                 Live Preview <ExternalLink size={16} />
                             </a>
 
-                            <a
-                                href={project.fullDetailsLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link
+                                to={`/project/${project.id}`}
                                 className="flex-1 py-3 rounded-xl border font-inter font-bold text-[12px] md:text-[14px] flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
                                 style={{
                                     backgroundColor: 'rgb(var(--contrast-rgb) / 0.1)',
@@ -119,7 +118,7 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                             >
                                 {/* Using BookOpen specifically for the Documentation button label */}
                                 Documentation <BookOpen size={16} />
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -158,7 +157,7 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                     ))}
                 </div>
                 {/* Collapsed Title: Ensures horizontal fit on tablet grid */}
-                <h3 className="text-[clamp(14px,2.5vw,18px)] font-playfair font-black leading-none tracking-tight group-hover:translate-x-1 transition-transform duration-300" 
+                <h3 className="text-[clamp(14px,2.5vw,18px)] font-playfair font-black leading-none tracking-tight group-hover:translate-x-1 transition-transform duration-300"
                     style={{ color: 'rgb(var(--contrast-rgb) / 0.95)' }}>
                     {project.title}
                 </h3>

@@ -52,7 +52,44 @@
 }
 
 .font-inter {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* Optimize elements that will be animated by GSAP */
+.desktop-anim-item,
+.scroll-reveal,
+.animate-portfolio,
+.animate-breadcrumb,
+.animate-bottom-line,
+.animate-item {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    /* Force GPU acceleration */
+    backface-visibility: hidden;
+    /* Prevent flickering */
+    perspective: 1000px;
+    /* Enable 3D rendering context */
+}
+
+/* Optimize glow/blur elements specifically */
+[class*="blur-"] {
+    will-change: transform;
+    transform: translateZ(0);
+    contain: layout style paint;
+    /* CSS containment for better performance */
+}
+
+/* Remove will-change after animations complete to free up GPU resources */
+.animation-complete {
+    will-change: auto;
+}
+
+/* Optimize rounded elements (social icons, buttons) */
+.rounded-full,
+.rounded-2xl {
+    transform: translateZ(0);
 }
 
 /* --- ACCESSIBILITY: SCREEN READER ONLY --- */

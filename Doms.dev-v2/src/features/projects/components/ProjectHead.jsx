@@ -11,33 +11,55 @@ const ProjectHead = () => {
   const glows = useRef([]);
 
   useGSAP(() => {
-    // 1. Entrance Stagger for Text
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: container.current,
-        start: "top 95%",
-        toggleActions: "play none none none",
-        once: true,
-      },
-      defaults: { ease: "power4.out", duration: 1.4 },
+    // Use matchMedia to handle desktop vs mobile differently
+    let mm = gsap.matchMedia();
+
+    // Mobile: Use ScrollTrigger
+    mm.add("(max-width: 767px)", () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container.current,
+          start: "top 95%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+        defaults: { ease: "power4.out", duration: 1.4 },
+      });
+
+      tl.from(".animate-portfolio", {
+        y: 70,
+        opacity: 0,
+        skewY: 5,
+        duration: 1.6,
+        ease: "power4.out",
+      })
+        .from(".animate-breadcrumb", {
+          y: 35,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 1.2,
+          ease: "power3.out",
+        }, "-=1.2");
     });
 
-    tl.from(".animate-portfolio", {
-      y: 70,
-      opacity: 0,
-      skewY: 5,
-      duration: 1.6,
-      ease: "power4.out",
-    })
-      .from(".animate-breadcrumb", {
-        y: 35,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 1.2,
-        ease: "power3.out",
-      }, "-=1.2");
+    // Desktop: No animation - just show text immediately
+    mm.add("(min-width: 768px)", () => {
+      // Set text to be fully visible immediately, no animations
+      gsap.set(".animate-portfolio, .animate-breadcrumb", {
+        autoAlpha: 1,
+        y: 0,
+        skewY: 0
+      });
 
+      // Clean up will-change immediately
+      setTimeout(() => {
+        document.querySelectorAll('.animate-portfolio, .animate-breadcrumb').forEach(el => {
+          el.classList.add('animation-complete');
+        });
+      }, 100);
+    });
 
+    // Glow animations (same for all screens)
     glows.current.forEach((glow, i) => {
       gsap.to(glow, {
         x: i % 2 === 0 ? "15%" : "-15%",
@@ -71,11 +93,11 @@ const ProjectHead = () => {
       {/* Liquid Background Glows - Contained inside the card */}
       <div
         ref={el => glows.current[0] = el}
-        className="absolute -top-1/2 -right-1/4 w-[120%] h-[120%] bg-blue-500/10 blur-[60px] md:blur-[100px] rounded-full pointer-events-none transform-gpu"
+        className="absolute -top-1/2 -right-1/4 w-[120%] h-[120%] bg-blue-500/10 blur-[30px] md:blur-[50px] rounded-full pointer-events-none transform-gpu"
       />
       <div
         ref={el => glows.current[1] = el}
-        className="absolute -bottom-1/2 -left-1/4 w-[120%] h-[120%] bg-purple-500/10 blur-[60px] md:blur-[100px] rounded-full pointer-events-none transform-gpu"
+        className="absolute -bottom-1/2 -left-1/4 w-[120%] h-[120%] bg-purple-500/10 blur-[30px] md:blur-[50px] rounded-full pointer-events-none transform-gpu"
       />
 
       <div className="relative z-10 flex flex-col items-center gap-1 md:gap-2">

@@ -12,32 +12,63 @@ const ProjectBottom = () => {
   const scrollLabel = useRef(null);
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: container.current,
-        start: "top 95%",
-        toggleActions: "play none none none",
-        once: true,
-      },
-      defaults: { ease: "power4.out", duration: 1.4 },
+    // Use matchMedia to handle desktop vs mobile differently
+    let mm = gsap.matchMedia();
+
+    // Mobile: Use ScrollTrigger
+    mm.add("(max-width: 767px)", () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container.current,
+          start: "top 95%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+        defaults: { ease: "power4.out", duration: 1.4 },
+      });
+
+      tl.from(".animate-bottom-line", {
+        y: 60,
+        opacity: 0,
+        skewY: 4,
+        stagger: 0.15,
+      })
+        .from(scrollLabel.current, {
+          y: 20,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        }, "+=0.2");
     });
 
-    // Animate main words
-    tl.from(".animate-bottom-line", {
-      y: 60,
-      opacity: 0,
-      skewY: 4,
-      stagger: 0.15,
-    })
-      // Animate "Scroll for More" AFTER main text
-      .from(scrollLabel.current, {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      }, "+=0.2"); // slight delay after main text
+    // Desktop: No animation - just show text immediately
+    mm.add("(min-width: 768px)", () => {
+      // Set text to be fully visible immediately, no animations
+      gsap.set(".animate-bottom-line", {
+        autoAlpha: 1,
+        y: 0,
+        skewY: 0
+      });
 
-    // Animate glows
+      if (scrollLabel.current) {
+        gsap.set(scrollLabel.current, {
+          autoAlpha: 1,
+          y: 0
+        });
+      }
+
+      // Clean up will-change immediately
+      setTimeout(() => {
+        document.querySelectorAll('.animate-bottom-line').forEach(el => {
+          el.classList.add('animation-complete');
+        });
+        if (scrollLabel.current) {
+          scrollLabel.current.classList.add('animation-complete');
+        }
+      }, 100);
+    });
+
+    // Animate glows (same for all screens)
     glows.current.forEach((glow, i) => {
       gsap.to(glow, {
         x: i % 2 === 0 ? "15%" : "-15%",
@@ -73,11 +104,11 @@ const ProjectBottom = () => {
       {/* Liquid glows */}
       <div
         ref={(el) => (glows.current[0] = el)}
-        className="absolute -top-1/2 -left-1/4 w-[120%] h-[120%] bg-blue-500/10 blur-[80px] rounded-full pointer-events-none transform-gpu"
+        className="absolute -top-1/2 -left-1/4 w-[120%] h-[120%] bg-blue-500/10 blur-[40px] rounded-full pointer-events-none transform-gpu"
       />
       <div
         ref={(el) => (glows.current[1] = el)}
-        className="absolute -bottom-1/2 -right-1/4 w-[120%] h-[120%] bg-purple-500/10 blur-[80px] rounded-full pointer-events-none transform-gpu"
+        className="absolute -bottom-1/2 -right-1/4 w-[120%] h-[120%] bg-purple-500/10 blur-[40px] rounded-full pointer-events-none transform-gpu"
       />
 
       {/* Text + scroll label */}

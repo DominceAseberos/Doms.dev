@@ -95,6 +95,10 @@ const AboutMePage = () => {
                 scrollTrigger: {
                     trigger: heroCardRef.current,
                     start: 'top 90%',
+                },
+                onComplete: () => {
+                    // Remove will-change after animation to free GPU resources
+                    cardEls.forEach(el => el?.classList.add('animation-complete'));
                 }
             }
         );
@@ -119,6 +123,10 @@ const AboutMePage = () => {
                         trigger: cardRef.current,
                         start: 'top 85%',
                         toggleActions: 'play none none reverse',
+                    },
+                    onComplete: () => {
+                        // Clean up will-change after animation
+                        contentElements.forEach(el => el?.classList.add('animation-complete'));
                     }
                 }
             );

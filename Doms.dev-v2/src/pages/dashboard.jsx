@@ -14,31 +14,45 @@ import ProjectBottom from '../features/projects/components/ProjectBottom'
 import FloatingChat from '../features/chatBot/floatingChat'
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
+import { useNavigationStore } from '../store/navigationStore'
 
 
 const Dashboard = () => {
     const comp = useRef(null);
+    const { dashboardVisited, setDashboardVisited } = useNavigationStore();
 
     useLayoutEffect(() => {
-        let ctx = gsap.context(() => {
-            let mm = gsap.matchMedia();
+        // Only run animation if dashboard hasn't been visited before
+        if (!dashboardVisited) {
+            let ctx = gsap.context(() => {
+                let mm = gsap.matchMedia();
 
-            mm.add("(min-width: 768px)", () => {
-                gsap.fromTo(".desktop-anim-item",
-                    { opacity: 0, y: 30 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.8,
-                        stagger: 0.1,
-                        ease: "power3.out"
-                    }
-                );
-            });
-        }, comp);
+                mm.add("(min-width: 768px)", () => {
+                    gsap.fromTo(".desktop-anim-item",
+                        { opacity: 0, y: 30 },
+                        {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            stagger: 0.1,
+                            ease: "power3.out",
+                            onComplete: () => {
+                                // Remove will-change after animation completes
+                                document.querySelectorAll('.desktop-anim-item').forEach(el => {
+                                    el.classList.add('animation-complete');
+                                });
+                            }
+                        }
+                    );
+                });
+            }, comp);
 
-        return () => ctx.revert();
-    }, []);
+            // Mark dashboard as visited
+            setDashboardVisited(true);
+
+            return () => ctx.revert();
+        }
+    }, [dashboardVisited, setDashboardVisited]);
 
     return (
         <main role="main" aria-label="Portfolio Dashboard">
