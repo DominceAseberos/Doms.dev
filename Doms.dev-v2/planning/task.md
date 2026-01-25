@@ -1,0 +1,269 @@
+# Portfolio Manager Implementation Tasks
+
+## Infrastructure & Setup
+- [ ] Install `@supabase/supabase-js` package
+- [ ] Add Supabase credentials to `.env` file
+- [ ] Create Supabase client initialization file
+- [ ] Set up database migrations
+  - [ ] Create `profile` table with RLS policies
+  - [ ] Create `projects` table with RLS policies
+  - [ ] Create `project-images` storage bucket with policies
+  - [ ] **Configure Supabase Auth URLs**
+    - [ ] Set Site URL to production domain (https://doms.dev)
+    - [ ] Add redirect URLs for production and development
+- [ ] **CRITICAL:** Create image migration script
+  - [ ] Install `sharp` package for image conversion
+  - [ ] Create `convertToWebP.js` script
+  - [ ] Convert all PNG/JPG images to WebP format (quality: 85)
+  - [ ] Create `migrateImages.js` script
+  - [ ] Read all WebP images from output directory
+  - [ ] Upload to Supabase Storage `project-images` bucket
+  - [ ] **Set cache control headers:** `max-age=31536000` (1 year)
+  - [ ] Return URL mapping for database updates
+- [ ] Seed existing data to Supabase
+  - [ ] Run image migration script
+  - [ ] Migrate `dataProjects.json` to projects table with new image URLs
+  - [ ] Add initial profile data
+
+## Services Layer
+- [ ] Build `authService.js`
+  - [ ] Implement `signIn()` method
+  - [ ] Implement `signOut()` method
+  - [ ] Implement `getSession()` method
+  - [ ] Implement `onAuthStateChange()` listener
+- [ ] Build `profileService.js`
+  - [ ] Implement `getProfile()` method
+  - [ ] Implement `updateProfile()` method with auth check
+  - [ ] **Add input sanitization with DOMPurify**
+- [ ] Build `projectService.js`
+  - [ ] Install `dompurify` package
+  - [ ] Create `sanitizeInput()` helper function
+  - [ ] Implement `getProjects()` with ordering
+  - [ ] Implement `getProjectById()` method
+  - [ ] Implement `createProject()` with sanitization
+  - [ ] Implement `updateProject()` with sanitization
+  - [ ] Implement `deleteProject()` with storage cleanup
+  - [ ] Implement `uploadProjectImage()` with WebP support
+  - [ ] **Add cache control headers:** `cacheControl: '31536000'` (1 year)
+- [ ] **CRITICAL:** Create Supabase client with validation
+  - [ ] Add environment variable checks
+  - [ ] Throw clear error if credentials missing
+  - [ ] Validate Supabase URL format
+
+## Authentication & Routing
+- [ ] Create `ProtectedRoute.jsx` component
+  - [ ] Add session check logic
+  - [ ] Add redirect to home on unauthorized
+  - [ ] Add loading state
+  - [ ] **CRITICAL:** Ensure session persists on page refresh
+- [ ] Build `LoginPage.jsx`
+  - [ ] Design form with theme integration
+  - [ ] Implement login logic
+  - [ ] Add GSAP entrance animation
+  - [ ] Add error handling
+- [ ] **CRITICAL:** Update router with React lazy loading
+  - [ ] Import `lazy` and `Suspense` from React
+  - [ ] Lazy load all admin components
+  - [ ] Add `/admin/login` route (lazy)
+  - [ ] Add protected `/admin` routes (lazy)
+  - [ ] Wrap in Suspense with loading fallback
+  - [ ] Verify admin code not in main bundle
+
+## Admin Dashboard
+- [ ] Build `AdminDashboard.jsx` layout
+  - [ ] Create navigation sidebar
+  - [ ] Add theme-matched styling
+  - [ ] Implement GSAP staggered nav animation
+  - [ ] Make responsive for tablet (782px)
+  - [ ] Add logout functionality
+
+## Admin Modules
+- [ ] Build `ProfileManager.jsx`
+  - [ ] Create bento-style form container
+  - [ ] Add name input field
+  - [ ] Add bio textarea with character counter
+  - [ ] Add live feed status input
+  - [ ] Implement save logic with Supabase
+  - [ ] Add GSAP form animation
+  - [ ] Add success/error toasts
+- [ ] Build `ProjectsManager.jsx`
+  - [ ] Create project cards grid (list view)
+  - [ ] Build create/edit modal
+    - [ ] Add title input
+    - [ ] Add description textarea
+    - [ ] Add tech stack multi-select
+    - [ ] Add image upload integration
+    - [ ] Add live link & doc link inputs
+    - [ ] Add display order input
+  - [ ] Implement CRUD operations
+  - [ ] Add drag-and-drop reordering
+  - [ ] Add delete confirmation modal
+  - [ ] Add GSAP animations (list stagger, modal slide)
+- [ ] Build `MediaCenter.jsx`
+  - [ ] Create drag-and-drop upload zone
+  - [ ] Add file validation (images only, max 5MB)
+  - [ ] Implement upload to Supabase Storage
+  - [ ] Show upload progress
+  - [ ] Display uploaded images gallery
+  - [ ] Add copy-to-clipboard URL functionality
+  - [ ] **CRITICAL:** Add delete with storage cleanup
+    - [ ] Delete from Supabase Storage when image deleted
+    - [ ] Prevent orphaned "ghost files"
+  - [ ] Add GSAP dragover animation
+
+## Live Preview
+- [ ] Build `LivePreview.jsx` component
+  - [ ] Create split-screen layout
+  - [ ] Implement toggle functionality
+  - [ ] Sync preview with form state
+  - [ ] Make responsive (stack vertically on tablet)
+
+## Shared Components
+- [ ] Build `FormInput.jsx`
+  - [ ] Add theme-matched styling
+  - [ ] Support text, textarea, number types
+  - [ ] Add error state display
+  - [ ] Add character counter for textarea
+- [ ] Build `FormButton.jsx`
+  - [ ] Create variant styles (primary, secondary, danger)
+  - [ ] Add loading state
+  - [ ] Add GSAP hover micro-animations
+- [ ] Build `Toast.jsx`
+  - [ ] Create success, error, info variants
+  - [ ] Implement auto-dismiss (3s)
+  - [ ] Add GSAP slide-in animation
+- [ ] **CRITICAL:** Build `SkeletonLoader.jsx`
+  - [ ] Add width, height, className props
+  - [ ] Create shimmer gradient animation
+  - [ ] Match theme CSS variables
+  - [ ] Support custom border radius
+  - [ ] Add `data-skeleton` attribute for GSAP transitions
+- [ ] Build `EmptyState.jsx`
+  - [ ] Create bento-style empty state design
+  - [ ] Add ghost outline to maintain layout
+  - [ ] Use theme CSS variables
+  - [ ] Support custom message and icon props
+- [ ] Build `ErrorBoundary.jsx`
+  - [ ] Implement React Error Boundary class
+  - [ ] Create fallback UI with retry button
+  - [ ] Log errors to console
+  - [ ] Wrap Dashboard in ErrorBoundary
+
+## Frontend Data Integration
+- [ ] **CRITICAL:** Modify `AboutMe.jsx` to prevent FOCH
+  - [ ] Import `profileService`
+  - [ ] Add state management (data, loading, error)
+  - [ ] **REMOVE all hardcoded strings**
+  - [ ] Fetch profile data on mount
+  - [ ] Add skeleton loaders matching typography (`clamp` sizes)
+  - [ ] Conditional rendering: loading → skeleton, success → data, error → retry
+  - [ ] **GSAP coordination:** 
+    - [ ] Create `isDataReady` state
+    - [ ] Use `Promise.all()` for multiple data sources
+    - [ ] Fire GSAP only when ready
+    - [ ] Smooth fade: skeleton out, content in
+  - [ ] **Add retry logic:** `refetchProfile()` function
+  - [ ] **Add live status UI:**
+    - [ ] Display `live_feed_status` text
+    - [ ] Add animated green dot (pulse animation)
+    - [ ] Style with fluid typography
+  - [ ] Verify no flash of old content on slow network
+- [ ] **CRITICAL:** Modify `Projects.jsx` to prevent empty carousel
+  - [ ] Import `projectService`
+  - [ ] Add state management (data, loading, error)
+  - [ ] Fetch projects on mount
+  - [ ] Replace `projectData` JSON import
+  - [ ] Render 3 skeleton `ProjectCard` components during loading
+  - [ ] **Add empty state:** Clean bento design when no projects
+    - [ ] "No projects yet" message
+    - [ ] Ghost outline to maintain layout
+  - [ ] **Add error state with retry:** `refetchProjects()` function
+  - [ ] **GSAP coordination:**
+    - [ ] Only animate when `projects.length > 0`
+    - [ ] Smooth skeleton → content fade transition
+  - [ ] Map Supabase data (image_url = WebP from Storage)
+  - [ ] Add error state with retry
+- [ ] Modify `ProjectCard.jsx`
+  - [ ] Add `Supabase` to `stackIcons` mapping with Database icon
+
+## SEO & Accessibility
+- [ ] Add JSON-LD schema to `index.html`
+  - [ ] Person schema with name, job title
+  - [ ] Add GitHub profile link
+  - [ ] List tech skills (React, GSAP, Supabase)
+- [ ] Add ARIA labels to `ThemeToggle.jsx`
+  - [ ] role="slider" with aria-valuemin/max/now
+  - [ ] aria-label describing theme control
+- [ ] Add ARIA labels to `MusicPlayer.jsx`
+  - [ ] Play/Pause buttons with descriptive labels
+  - [ ] Progress bar with role="progressbar"
+  - [ ] Current time/duration in aria-valuetext
+- [ ] Add semantic HTML to `AboutMe.jsx`
+  - [ ] Wrap in <section aria-label="About Me">
+  - [ ] Button with descriptive aria-label
+  - [ ] **Add live status display with subtle CSS pulse animation**
+    - [ ] Opacity range: 0.4 to 1.0 (not distracting)
+    - [ ] Green dot: rgb(34, 197, 94)
+    - [ ] Animation duration: 2s infinite
+- [ ] Add ARIA navigation to `Projects.jsx`
+  - [ ] role="region" for carousel
+  - [ ] aria-describedby for scroll hint
+  - [ ] Screen reader text explaining interaction
+- [ ] **Create `robots.txt` for SEO**
+  - [ ] Disallow `/admin` and `/admin/*` paths
+  - [ ] Add sitemap reference
+  - [ ] Prevent admin routes from search indexing
+  - [ ] Verify it blocks /admin/login, /admin/profile, /admin/projects, /admin/media
+- [ ] **Create `sitemap.xml` (optional)**
+  - [ ] Add home page URL
+  - [ ] Set priority and changefreq
+
+## Testing & Verification
+- [ ] Write service layer unit tests
+  - [ ] Test `profileService`
+  - [ ] Test `projectService`
+  - [ ] Test `authService`
+- [ ] Write component tests
+  - [ ] Test `ProtectedRoute`
+- [ ] Manual verification
+  - [ ] Test authentication flow
+  - [ ] Test profile manager CRUD
+  - [ ] Test projects manager CRUD
+  - [ ] **CRITICAL:** Test storage cleanup on project deletion
+  - [ ] Test media center uploads
+  - [ ] Test live preview toggle
+  - [ ] Test responsive design (782px)
+  - [ ] Test theme integration
+  - [ ] **CRITICAL:** Test theme hot-reload in admin panel
+  - [ ] Test GSAP animations
+  - [ ] **CRITICAL:** Test no FOCH with slow network throttling
+  - [ ] **CRITICAL:** Test session persistence on refresh
+  - [ ] Test error handling
+  - [ ] Cross-browser testing
+
+## Deployment Preparation
+- [ ] **Run WebP conversion:** `node scripts/convertToWebP.js`
+  - [ ] Verify all images converted (60-80% smaller)
+  - [ ] Check output quality (85% setting)
+- [ ] Run database migrations on production Supabase
+- [ ] **CRITICAL:** Run image migration script on production
+  - [ ] Upload all WebP images to Supabase Storage
+  - [ ] Update projects table with new image URLs
+  - [ ] Verify all images accessible via Supabase CDN
+  - [ ] Test WebP format support in browsers
+- [ ] Seed production database with migrated data
+- [ ] Create admin user in production
+- [ ] Add production Supabase credentials to `.env`
+- [ ] **Verify environment variables load correctly**
+  - [ ] Check error is thrown if missing
+  - [ ] Confirm Supabase client initializes
+- [ ] Test production build
+  - [ ] Verify bundle size (admin code lazy-loaded)
+  - [ ] Verify no admin code in main bundle
+  - [ ] Check Lighthouse scores (Performance, SEO, Accessibility)
+- [ ] Test session persistence on refresh
+- [ ] Test storage cleanup on project deletion
+- [ ] **Test input sanitization**
+  - [ ] Try adding HTML in bio field
+  - [ ] Verify HTML is stripped before save
+- [ ] Document admin credentials securely

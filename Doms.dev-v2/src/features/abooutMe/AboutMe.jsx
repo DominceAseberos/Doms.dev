@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 
 const AboutMe = () => {
@@ -22,16 +23,18 @@ const AboutMe = () => {
         </p>
       </div>
 
-      {/* Theme-Matched Action Button */}
+      {/* Theme-Matched Action Button - Now with Link */}
       <div className="w-full flex justify-end">
-        <button
-          className="w-fit px-4 py-2.5 rounded-full text-black font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] transition-all duration-200 active:scale-110 active:-rotate-2 hover:scale-110 hover:-rotate-1 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50"
-          style={{
-            background: `rgb(var(--contrast-rgb))`,
-          }}
-        >
-          About Me
-        </button>
+        <Link to="/about">
+          <button
+            className="w-fit px-4 py-2.5 rounded-full text-black font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] transition-all duration-200 active:scale-110 active:-rotate-2 hover:scale-110 hover:-rotate-1 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50"
+            style={{
+              background: `rgb(var(--contrast-rgb))`,
+            }}
+          >
+            About Me
+          </button>
+        </Link>
       </div>
     </div>
   );
