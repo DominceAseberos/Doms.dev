@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GitHubCalendar } from 'react-github-calendar';
-import axios from 'axios';
 import {
   BarChart,
   Bar,
@@ -14,52 +13,37 @@ import { useGSAP } from '@gsap/react';
 
 import { usePortfolioData } from '../../hooks/usePortfolioData';
 
+import { useGitHubStore } from './store/useGitHubStore';
+
 const StatsGitHub = () => {
   const { profile } = usePortfolioData();
   const username = profile.githubUsername;
 
+  // Use the persistent store
+  const { profile: githubProfile, loading, fetchGitHubData, error } = useGitHubStore();
+
   const containerRef = useRef(null);
   const calendarDataRef = useRef([]);
 
-  const [stats, setStats] = useState({
-    repos: 0,
-    followers: 0,
-    following: 0,
-    totalContributions: 0
-  });
+  // Trigger fetch on mount
+  useEffect(() => {
+    fetchGitHubData(username);
+  }, [username, fetchGitHubData]);
 
-  const [contribData, setContribData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Local state for contributions which comes from the calendar, not the store
+  const [totalContributions, setTotalContributions] = useState(0);
 
-  const fetchGitHubStats = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        `https://api.github.com/users/${username}`
-      );
-
-      setStats(prev => ({
-        ...prev,
-        repos: data.public_repos,
-        followers: data.followers,
-        following: data.following
-      }));
-    } catch (err) {
-      console.error('GitHub fetch error:', err);
-      // Detect rate limiting
-      if (err.response?.status === 403) {
-        console.warn('GitHub API rate limit exceeded');
-        // Set fallback data to show rate limit message
-        setStats(prev => ({ ...prev, repos: '--', followers: '--', following: '--' }));
-      }
-    } finally {
-      setLoading(false);
-    }
+  // Derive stats from the store data safely
+  const stats = {
+    repos: githubProfile?.public_repos ?? 0,
+    followers: githubProfile?.followers ?? 0,
+    following: githubProfile?.following ?? 0,
+    totalContributions: totalContributions // Use local state
   };
 
-  useEffect(() => {
-    fetchGitHubStats();
-  }, []);
+  const [contribData, setContribData] = useState([]);
+  // Loading state is now handled by the store, but we can also use local derivative if needed
+  // implementation details...
 
   const handleTransformData = useCallback((weeks = []) => {
     calendarDataRef.current = weeks;
@@ -81,7 +65,7 @@ const StatsGitHub = () => {
     const total = data.reduce((sum, w) => sum + w.contributions, 0);
 
     setContribData(data);
-    setStats(prev => ({ ...prev, totalContributions: total }));
+    setTotalContributions(total);
   }, [loading]);
 
   useGSAP(() => {

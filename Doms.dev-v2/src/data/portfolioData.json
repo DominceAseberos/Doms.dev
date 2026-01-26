@@ -163,7 +163,7 @@
         "bio": "I build real-world, interactive web applications using modern JavaScript frameworks, focusing on performance, clean UI, and practical features.",
         "age": "22 years old",
         "birthday": "September 7, 2003",
-        "avatar": "/profile.png",
+        "avatar": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/avatars/profile.png",
         "githubUsername": "Domincee"
     },
     "education": {
@@ -280,7 +280,7 @@
             "title": "Banana Leaf Disease Detector",
             "projectType": "AI/Research",
             "dateCreated": "2023-11-20",
-            "image": "/assets/projects/cover/BananaLeaf.png",
+            "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/banana-leaf.png",
             "images": [
                 "/assets/projects/cover/BananaLeaf.png"
             ],
@@ -306,7 +306,7 @@
             "title": "Focus Quest App",
             "projectType": "Productivity/Personal",
             "dateCreated": "2024-02-15",
-            "image": "/assets/projects/cover/FocusQuest.png",
+            "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/focus-quest.png",
             "images": [
                 "/assets/projects/cover/FocusQuest.png"
             ],
@@ -325,7 +325,7 @@
             "title": "Baylora",
             "projectType": "E-commerce/Platform",
             "dateCreated": "2024-05-10",
-            "image": "/assets/projects/cover/Baylora.png",
+            "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/baylora.png",
             "images": [
                 "/assets/projects/cover/Baylora.png"
             ],
@@ -344,7 +344,7 @@
             "title": "Templyx",
             "projectType": "Platform/Community",
             "dateCreated": "2024-08-22",
-            "image": "/assets/projects/cover/Templyx.png",
+            "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/templyx.png",
             "images": [
                 "/assets/projects/cover/Templyx.png"
             ],
@@ -363,7 +363,7 @@
             "title": "AI Text Summarizer",
             "projectType": "AI/Utility",
             "dateCreated": "2024-10-05",
-            "image": "/assets/projects/cover/summarizer.png",
+            "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/summarizer.png",
             "images": [
                 "/assets/projects/cover/summarizer.png"
             ],
