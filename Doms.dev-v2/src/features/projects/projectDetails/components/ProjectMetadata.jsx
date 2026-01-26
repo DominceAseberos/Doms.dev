@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Calendar, Tag, ExternalLink, Github } from 'lucide-react';
-import { getStackIcon } from '../utils/stackIcons';
+import { getIconByName } from '../../../../utils/IconRegistry';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -83,7 +83,12 @@ const ProjectMetadata = ({
                                         border: '1px solid rgba(var(--contrast-rgb), 0.2)'
                                     }}
                                 >
-                                    <span className="text-sm">{getStackIcon(stack)}</span>
+                                    <span className="text-sm">
+                                        {(() => {
+                                            const Icon = getIconByName(stack);
+                                            return <Icon size={16} />;
+                                        })()}
+                                    </span>
                                     <span>{stack}</span>
                                 </div>
                             ))}

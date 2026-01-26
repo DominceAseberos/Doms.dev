@@ -1,9 +1,11 @@
 // src/features/chat/ChatBot.jsx
 import React from "react";
 import { useChat } from "./hooks/useChat";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { Send, Bot, Sparkles } from "lucide-react";
 
 const ChatBot = () => {
+  const { chatbotConfig } = usePortfolioData();
   // 1. Destructure 'suggestions' from the hook
   const { messages, input, setInput, sendMessage, isTyping, chatContainerRef, suggestions } = useChat();
 
@@ -28,7 +30,7 @@ const ChatBot = () => {
       {/* 1. Header */}
       <div className="p-4 border-b border-white/10 bg-black/20 backdrop-blur-md flex-none animate-item">
         <p className="text-white font-black tracking-tight font-playfair text-xl flex items-center gap-2">
-          <Bot className="w-5 h-5 text-blue-400" /> Portfolio AI
+          <Bot className="w-5 h-5 text-blue-400" /> {chatbotConfig.botName}
         </p>
       </div>
 
@@ -45,8 +47,8 @@ const ChatBot = () => {
           >
             <div
               className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-300 ${msg.sender === "user"
-                  ? "bg-[rgba(var(--contrast-rgb))] text-black rounded-br-none"
-                  : "bg-white/10 text-gray-100 backdrop-blur-sm rounded-bl-none border border-white/10"
+                ? "bg-[rgba(var(--contrast-rgb))] text-black rounded-br-none"
+                : "bg-white/10 text-gray-100 backdrop-blur-sm rounded-bl-none border border-white/10"
                 }`}
             >
               {msg.text}

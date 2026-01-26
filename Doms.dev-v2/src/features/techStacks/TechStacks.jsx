@@ -1,43 +1,23 @@
 import React, { useEffect, useRef, useMemo } from "react";
 import { gsap } from "gsap";
-import {
-  SiReact, SiNextdotjs, SiTailwindcss,
-  SiGreensock, SiTypescript, SiThreedotjs,
-  SiPython, SiFigma, SiSupabase, SiDocker,
-  SiJavascript, SiNodedotjs, SiReactquery,
-  SiGit
-} from "react-icons/si";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
+import { getIconByName } from "../../utils/IconRegistry";
 
 const TechMarquee = () => {
   const scrollRef = useRef(null);
   const animRef = useRef(null);
   const { techStack: rawTechStack } = usePortfolioData();
 
-  // Mapping string names from JSON to React Icon components
-  const iconMap = {
-    "React": <SiReact color="#61DAFB" />,
-    "Next.js": <SiNextdotjs color="#ffffff" />,
-    "GSAP": <SiGreensock color="#88CE02" />,
-    "Tailwind": <SiTailwindcss color="#06B6D4" />,
-    "Figma": <SiFigma color="#F24E1E" />,
-    "Supabase": <SiSupabase color="#3ECF8E" />,
-    "Python": <SiPython color="#FFE873" />,
-    "Three.js": <SiThreedotjs color="#ffffff" />,
-    "Docker": <SiDocker color="#2496ED" />,
-    "JavaScript (ES6+)": <SiJavascript color="#F7DF1E" />,
-    "Node.js": <SiNodedotjs color="#339933" />,
-    "TanStack Query": <SiReactquery color="#FF4154" />,
-    "Git": <SiGit color="#F05032" />
-  };
-
   const techStack = useMemo(() => {
     return rawTechStack
       .filter(t => t.type === "core" || t.type === "tool" || t.type === "learning")
-      .map(t => ({
-        ...t,
-        icon: iconMap[t.name] || <SiReact /> // Fallback icon
-      }));
+      .map(t => {
+        const Icon = getIconByName(t.iconName || t.name);
+        return {
+          ...t,
+          icon: <Icon color={t.color || "white"} />
+        };
+      });
   }, [rawTechStack]);
 
   useEffect(() => {

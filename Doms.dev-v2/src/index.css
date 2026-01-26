@@ -117,6 +117,7 @@
         scroll-behavior: auto !important;
     }
 }
+
 /* --- CUSTOM THIN SCROLLBAR FOR PROJECT DETAILS --- */
 .custom-scrollbar {
     scrollbar-width: thin;
@@ -138,4 +139,10 @@
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: rgba(var(--contrast-rgb), 0.5);
+}
+
+/* --- PROJECT DETAILS STABILITY --- */
+.project-card {
+    opacity: 1 !important;
+    visibility: visible !important;
 }

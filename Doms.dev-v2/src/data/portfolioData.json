@@ -23,6 +23,19 @@
         ],
         "projectBottomSubtext": "Commit by Commit"
     },
+    "chatbotConfig": {
+        "botName": "Portfolio AI",
+        "role": "You are a helpful AI assistant for Domince's portfolio.",
+        "tone": "Friendly, professional, and slightly playful developer tone.",
+        "conciseness": "Keep answers between 1-3 sentences.",
+        "customRules": [
+            "Answer strictly based on portfolio data provided.",
+            "If asked about topics outside this portfolio, politely say you only know information about Domince.",
+            "When describing projects, only provide a short description.",
+            "Never invent details, dates, or tech not listed in the data.",
+            "If the input is an expression or reaction, respond with a short, playful character-appropriate reaction."
+        ]
+    },
     "trackList": {
         "chill": [
             {
@@ -170,71 +183,86 @@
     "techStack": [
         {
             "name": "React",
+            "iconName": "React",
             "color": "#61DAFB",
             "type": "core"
         },
         {
             "name": "Next.js",
+            "iconName": "Next.js",
             "color": "#ffffff",
             "type": "core"
         },
         {
             "name": "GSAP",
+            "iconName": "GSAP",
             "color": "#88CE02",
             "type": "core"
         },
         {
             "name": "Tailwind",
+            "iconName": "Tailwind",
             "color": "#06B6D4",
             "type": "tool"
         },
         {
             "name": "Figma",
+            "iconName": "Palette",
             "color": "#F24E1E",
             "type": "tool"
         },
         {
             "name": "Supabase",
+            "iconName": "Supabase",
             "color": "#3ECF8E",
             "type": "tool"
         },
         {
             "name": "Python",
+            "iconName": "Python",
             "color": "#FFE873",
             "type": "learning"
         },
         {
             "name": "Three.js",
+            "iconName": "Box",
             "color": "#ffffff",
             "type": "learning"
         },
         {
             "name": "Docker",
+            "iconName": "Layers",
             "color": "#2496ED",
             "type": "learning"
         },
         {
             "name": "JavaScript (ES6+)",
+            "iconName": "Code2",
             "type": "core"
         },
         {
             "name": "Node.js",
+            "iconName": "Server",
             "type": "core"
         },
         {
             "name": "TanStack Query",
+            "iconName": "Zap",
             "type": "core"
         },
         {
             "name": "Zustand",
+            "iconName": "Layers",
             "type": "core"
         },
         {
             "name": "Axios",
+            "iconName": "Globe",
             "type": "core"
         },
         {
             "name": "Git",
+            "iconName": "Github",
             "type": "tool"
         }
     ],

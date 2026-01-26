@@ -2,23 +2,8 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ArrowLeft, ExternalLink, Code2, Layers, Cpu, Globe, Database, BookOpen, FileText } from 'lucide-react';
-
-// Icon mapping for stacks
-const stackIcons = {
-    'React': Globe,
-    'Tailwind CSS': Layers,
-    'GSAP': Cpu,
-    'Python': Code2,
-    'Flask': Database,
-    'OpenCV': Cpu,
-    'Firebase': Database,
-    'Lucide': Layers,
-    'Vite': Globe,
-    'NLP': Cpu,
-    'API': Globe,
-    'Documentation': BookOpen
-};
+import { ArrowLeft, ExternalLink, BookOpen, Code2 } from 'lucide-react';
+import { getIconByName } from '../../../utils/IconRegistry';
 
 const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
     const cardRef = useRef(null);
@@ -34,7 +19,7 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
     }, [isExpanded]);
 
     const IconComponent = (name) => {
-        const Icon = stackIcons[name] || Code2;
+        const Icon = getIconByName(name);
         return <Icon size={14} className="mr-1" />;
     };
 

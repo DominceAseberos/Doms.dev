@@ -14,7 +14,9 @@ export const usePortfolioData = () => {
         interests: portfolioData.interests,
         projects: portfolioData.projects,
         trackList: portfolioData.trackList,
-        uiConfig: portfolioData.uiConfig
+        uiConfig: portfolioData.uiConfig,
+        chatbotConfig: portfolioData.chatbotConfig,
+        chatSuggestions: portfolioData.chatSuggestions
     };
 };
 

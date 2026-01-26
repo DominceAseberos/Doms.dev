@@ -1,22 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import { generatePortfolioContext } from "../utils/contextHelper";
-import portfolioData from "../../../data/portfolioData.json";
-
-const PORTFOLIO_CONTEXT = generatePortfolioContext();
-const ALL_SUGGESTIONS = portfolioData.chatSuggestions;
+import { usePortfolioData } from "../../../hooks/usePortfolioData";
 
 const GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
-
 export const useChat = () => {
-  const [messages, setMessages] = useState([{ id: "init", text: "Hi! I'm an AI assistant. Ask me anything.", sender: "bot" }]);
+  const { chatbotConfig, chatSuggestions: ALL_SUGGESTIONS } = usePortfolioData();
+  const PORTFOLIO_CONTEXT = generatePortfolioContext();
+
+  const [messages, setMessages] = useState([
+    { id: "init", text: `Hi! I'm ${chatbotConfig.botName}. Ask me anything about Doms!`, sender: "bot" }
+  ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const chatContainerRef = useRef(null);
 
   // Suggestion logic
-  const [displayedSuggestions, setDisplayedSuggestions] = useState(ALL_SUGGESTIONS.slice(0, 4));
+  const suggestionsList = Array.isArray(ALL_SUGGESTIONS) ? ALL_SUGGESTIONS : [];
+  const [displayedSuggestions, setDisplayedSuggestions] = useState(suggestionsList.slice(0, 4));
   const [nextSuggestionIndex, setNextSuggestionIndex] = useState(4);
 
 

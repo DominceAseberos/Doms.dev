@@ -1,9 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { usePortfolioData } from '../hooks/usePortfolioData';
+import { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useProjectDetails } from '../features/projects/projectDetails/hooks/useProjectDetails';
 
 // Feature Components
 import ProjectHeader from '../features/projects/projectDetails/components/ProjectHeader';
@@ -11,76 +8,10 @@ import ProjectCarousel from '../features/projects/projectDetails/components/Proj
 import ProjectMetadata from '../features/projects/projectDetails/components/ProjectMetadata';
 import ProjectDocumentation from '../features/projects/projectDetails/components/ProjectDocumentation';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const ProjectDetails = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
-    const { projects: projectData } = usePortfolioData();
-    const project = projectData.find(p => p.id === id);
-
-    const containerRef = useRef(null);
+    const { project, containerRef } = useProjectDetails(id);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-    // SEO - Dynamic Meta Tags
-    useEffect(() => {
-        if (project) {
-            document.title = `${project.title} | Domince A.Aseberos`;
-
-            const metaDescription = document.querySelector('meta[name="description"]');
-            if (metaDescription) {
-                metaDescription.setAttribute('content', project.shortDescription);
-            }
-        }
-
-        // Cleanup on unmount
-        return () => {
-            document.title = 'Domince A.Aseberos - Portfolio';
-        };
-    }, [project]);
-
-    // GSAP Animations
-    useGSAP(() => {
-        if (!containerRef.current) return;
-
-        // SAFE MODE: Only animate the documentation text on scroll
-        // This avoids the "blank page" issue for the main content (Carousel/Header)
-
-        const animateScrollText = () => {
-            const docParagraphs = gsap.utils.toArray(".doc-paragraph");
-
-            if (docParagraphs.length > 0) {
-                // Determine start position based on device (mobile vs desktop)
-                const isMobile = window.innerWidth < 768;
-                const startTrigger = isMobile ? "top 90%" : "top 85%";
-
-                docParagraphs.forEach(p => {
-                    gsap.fromTo(p,
-                        {
-                            opacity: 0,
-                            y: 20
-                        },
-                        {
-                            opacity: 1,
-                            y: 0,
-                            duration: 0.6,
-                            ease: "power2.out",
-                            scrollTrigger: {
-                                trigger: p,
-                                start: startTrigger,
-                                toggleActions: "play none none reverse"
-                            }
-                        }
-                    );
-                });
-            }
-        };
-
-        // 100ms delay to ensure Markdown has parsed and DOM is ready
-        const timer = setTimeout(animateScrollText, 100);
-        return () => clearTimeout(timer);
-
-    }, { scope: containerRef, dependencies: [id] });
 
     // Carousel navigation
     const nextImage = () => {
@@ -99,7 +30,7 @@ const ProjectDetails = () => {
 
     if (!project) {
         return (
-            <div className="min-h-screen flex items-center justify-center" style={{ background: 'rgb(var(--body-Linear-rgb))' }}>
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold mb-4" style={{ color: 'rgb(var(--contrast-rgb))' }}>
                         Project Not Found
