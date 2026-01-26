@@ -17,7 +17,9 @@ export const useGitHubStore = create(
             error: null,
 
             fetchGitHubData: async (username) => {
-                const { lastChecked, profileETag, reposETag, eventsETag } = get();
+                const { lastChecked, profileETag, reposETag, eventsETag, loading } = get(); // Check loading
+                if (loading) return; // Prevent race conditions/double invocations
+
                 const now = Date.now();
                 const THROTTLE_PERIOD = 5 * 60 * 1000; // 5 minutes
 
@@ -74,16 +76,20 @@ export const useGitHubStore = create(
                     });
 
                 } catch (err) {
-                    console.warn('GitHub Sync Error:', err);
+                    if (err.response?.status !== 403) {
+                        console.warn('GitHub Sync Error:', err.message);
+                    }
 
                     set((state) => ({
                         loading: false,
+                        lastChecked: now, // CRITICAL: Update throttle timestamp even on error to prevent infinite retry loop
                         error: err.response?.status === 403
                             ? 'Rate limit exceeded. Using cached data.'
                             : 'Sync failed. Using cached data.',
                         // Fallback to existing data
                         profile: state.profile,
-                        repos: state.repos
+                        repos: state.repos,
+                        events: state.events
                     }));
                 }
             }
