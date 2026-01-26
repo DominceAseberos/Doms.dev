@@ -66,7 +66,7 @@ export const Controls = memo(({
       >
         {isMetadataLoading || isBuffering ? (
 
-          <div className="loading-spinner" />
+          <div className="loading-spinner animate-spin" />
 
         ) : isPlaying ? (
           <svg

@@ -61,7 +61,10 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### Supabase Configuration
 
-#### Database Schema
+### Supabase Configuration
+> [!NOTE]
+> **Status: COMPLETE** (Schema created, Tables seeded, Storage bucket configured)
+
 
 Create three core tables via Supabase migrations:
 
@@ -248,6 +251,9 @@ Authentication service:
 ---
 
 ### Authentication & Protected Routes
+> [!NOTE]
+> **Status: IN PROGRESS** - Current Focus
+
 
 #### [NEW] [src/pages/admin/LoginPage.jsx](file:///c:/Users/daseb/OneDrive/Desktop/Doms.dev/Doms.dev-v2/src/pages/admin/LoginPage.jsx)
 Login page with Theme Integration:
@@ -360,6 +366,9 @@ Split-screen preview component:
 ---
 
 ### Frontend Data Integration
+> [!NOTE]
+> **Status: COMPLETE** (usePortfolioData Hook refactored, Images migrated, Tech Stack optimized)
+
 
 #### [MODIFY] [src/features/abooutMe/AboutMe.jsx](file:///c:/Users/daseb/OneDrive/Desktop/Doms.dev/Doms.dev-v2/src/features/abooutMe/AboutMe.jsx)
 Replace hardcoded data with Supabase fetch:

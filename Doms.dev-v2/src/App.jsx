@@ -32,35 +32,43 @@ ScrollTrigger.config({
   autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" // Only refresh on these events
 });
 
+import PreLoader from './components/PreLoader'
+
+// ... (GSAP Setup remains)
+
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <Router>
-      <ScrollToTop />
-      <Routes>
-        {/* Main Dashboard Route */}
-        <Route
-          path="/"
-          element={
-            <MainLayout>
-              <Dashboard />
-            </MainLayout>
-          }
-        />
+    <>
+      {isLoading && <PreLoader onLoadComplete={() => setIsLoading(false)} />}
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          {/* Main Dashboard Route */}
+          <Route
+            path="/"
+            element={
+              <MainLayout>
+                <Dashboard />
+              </MainLayout>
+            }
+          />
 
-        {/* Dedicated About Me Page Route */}
-        <Route
-          path="/about"
-          element={<AboutMePage />}
-        />
+          {/* Dedicated About Me Page Route */}
+          <Route
+            path="/about"
+            element={<AboutMePage />}
+          />
 
-        {/* Project Details Page Route */}
-        <Route
-          path="/project/:id"
-          element={<ProjectDetails />}
-        />
-      </Routes>
-    </Router>
+          {/* Project Details Page Route */}
+          <Route
+            path="/project/:id"
+            element={<ProjectDetails />}
+          />
+        </Routes>
+      </Router>
+    </>
   )
 }
 export default App

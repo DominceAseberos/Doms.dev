@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { SiGithub } from "react-icons/si";
 import { gsap } from "gsap";
 import { usePortfolioData } from "../hooks/usePortfolioData";
+import { useGitHubStore } from "./github/store/useGitHubStore";
 
 const FocusCard = () => {
   const cardRef = useRef(null);
@@ -26,41 +27,37 @@ const FocusCard = () => {
     });
   };
 
+  // Use centralized store
+  const { repos, events, loading: storeLoading, fetchGitHubData } = useGitHubStore();
+
+  // Trigger fetch if needed (store handles throttling)
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const eventRes = await fetch(`https://api.github.com/users/${username}/events/public`);
-        const events = await eventRes.json();
+    if (username) fetchGitHubData(username);
+  }, [username, fetchGitHubData]);
 
-        const lastPush = Array.isArray(events)
-          ? events.find(e => e.type === "PushEvent" && e.payload?.commits?.length > 0)
-          : null;
+  // Derive data from store
+  useEffect(() => {
+    if (!repos || !events) return;
 
-        const repoRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=15&sort=updated`);
-        const repos = await repoRes.json();
+    const lastPush = Array.isArray(events)
+      ? events.find(e => e.type === "PushEvent" && e.payload?.commits?.length > 0)
+      : null;
 
-        const langMap = Array.isArray(repos) ? repos.reduce((acc, repo) => {
-          if (repo.language) acc[repo.language] = (acc[repo.language] || 0) + 1;
-          return acc;
-        }, {}) : {};
+    const langMap = Array.isArray(repos) ? repos.reduce((acc, repo) => {
+      if (repo.language) acc[repo.language] = (acc[repo.language] || 0) + 1;
+      return acc;
+    }, {}) : {};
 
-        const topLangs = Object.entries(langMap)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 4);
+    const topLangs = Object.entries(langMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4);
 
-        const commitMsg = lastPush?.payload?.commits?.[0]?.message || "Architecting solutions.";
-        const repoName = lastPush?.repo?.name?.split('/')?.[1] || "Development";
+    const commitMsg = lastPush?.payload?.commits?.[0]?.message || "Architecting solutions.";
+    const repoName = lastPush?.repo?.name?.split('/')?.[1] || "Development";
 
-        setData({ repo: repoName, commit: commitMsg, languages: topLangs });
-      } catch (e) {
-        console.error("GitHub Fetch Error:", e);
-        setData(prev => ({ ...prev, commit: "Pushing code...", repo: "Dev Lab" }));
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+    setData({ repo: repoName, commit: commitMsg, languages: topLangs });
+    setLoading(false);
+  }, [repos, events, storeLoading]);
 
   // Cleanup GSAP animations on unmount to prevent memory leaks
   useEffect(() => {

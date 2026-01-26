@@ -29,6 +29,7 @@ import {
     Binary,
     Bot
 } from 'lucide-react';
+import { ReactIcon, NextJsIcon, TailwindIcon, GSAPIcon, FigmaIcon, SupabaseIcon } from './BrandIcons';
 
 /**
  * Universal Icon Registry
@@ -70,10 +71,15 @@ export const IconRegistry = {
     'MessageCircle': MessageCircle,
     'Facebook': Facebook,
 
-    // Custom mappings for tech stack
-    'React': Globe,
-    'Tailwind': Palette,
-    'GSAP': Zap,
+    // Custom mappings for tech stack with Real Brand Icons
+    'React': ReactIcon,
+    'Next.js': NextJsIcon,
+    'Tailwind': TailwindIcon,
+    'GSAP': GSAPIcon,
+    'Figma': FigmaIcon,
+    'Supabase': SupabaseIcon,
+
+    // Fallbacks or others still using Lucide
     'Python': Binary,
     'Flask': Server,
     'OpenCV': Cpu,
@@ -81,8 +87,7 @@ export const IconRegistry = {
     'Lucide': Layers,
     'Vite': Zap,
     'NLP': Bot,
-    'API': Terminal,
-    'Supabase': Database
+    'API': Terminal
 };
 
 /**

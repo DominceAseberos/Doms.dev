@@ -10,7 +10,8 @@ const TechMarquee = () => {
 
   const techStack = useMemo(() => {
     return rawTechStack
-      .filter(t => t.type === "core" || t.type === "tool" || t.type === "learning")
+      .filter(t => t.type === "core" || t.type === "tool")
+      .slice(0, 5) // User Request: Limit to 5 icons only (Client-side trim)
       .map(t => {
         const Icon = getIconByName(t.iconName || t.name);
         return {
@@ -23,13 +24,18 @@ const TechMarquee = () => {
   useEffect(() => {
     if (!scrollRef.current) return;
     const element = scrollRef.current;
+
+    // Performance: Hardware acceleration
+    gsap.set(element, { willChange: "transform" });
+
     const totalWidth = element.scrollWidth / 2;
 
     animRef.current = gsap.to(element, {
       x: -totalWidth,
-      duration: 15,
+      duration: 20, // Slower for smoother visual
       ease: "none",
       repeat: -1,
+      force3D: true, // Force GPU layer
     });
 
     return () => animRef.current?.kill();

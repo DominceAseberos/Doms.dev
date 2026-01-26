@@ -56,22 +56,28 @@ const fetchSupabaseData = async () => {
         // documentationFiles missing in DB currently, falling back if needed
     })) || [];
 
+    // Transform Tech Stack
+    const formattedTechStack = techStack?.map(t => ({
+        ...t,
+        iconName: t.icon_name // Map icon_name -> iconName
+    })) || [];
+
     // Transform Profile
     const formattedProfile = profile ? {
         ...profile,
         githubUsername: profile.github_username,
         avatar: profile.avatar_url,
-        cv: profile.cv_url // Added CV placeholder
+        cv: profile.cv_url
     } : null;
 
     return {
         profile: formattedProfile || portfolioData.profile,
         education: education || portfolioData.education,
         contacts: contacts || portfolioData.contacts,
-        techStack: techStack || portfolioData.techStack,
+        techStack: formattedTechStack.length > 0 ? formattedTechStack : portfolioData.techStack,
         projects: formattedProjects.length > 0 ? formattedProjects : portfolioData.projects,
         trackList: Object.keys(trackList).length > 0 ? trackList : portfolioData.trackList,
-        // Configs still from JSON for now as they are static or less critical
+        // Configs
         experience: portfolioData.experience,
         interests: portfolioData.interests,
         uiConfig: portfolioData.uiConfig,
