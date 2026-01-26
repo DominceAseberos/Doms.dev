@@ -97,15 +97,17 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                            <a
-                                href={project.livePreviewLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex-1 py-3 rounded-xl font-inter font-bold text-[12px] md:text-[14px] flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-lg"
-                                style={{ backgroundColor: 'rgb(var(--contrast-rgb))', color: 'rgb(var(--theme-rgb))' }}
-                            >
-                                Live Preview <ExternalLink size={16} />
-                            </a>
+                            {project.livePreviewLink && (
+                                <a
+                                    href={project.livePreviewLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex-1 py-3 rounded-xl font-inter font-bold text-[12px] md:text-[14px] flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-lg"
+                                    style={{ backgroundColor: 'rgb(var(--contrast-rgb))', color: 'rgb(var(--theme-rgb))' }}
+                                >
+                                    Live Preview <ExternalLink size={16} />
+                                </a>
+                            )}
 
                             <Link
                                 to={`/project/${project.id}`}
@@ -116,7 +118,6 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                                     color: 'rgb(var(--contrast-rgb))'
                                 }}
                             >
-                                {/* Using BookOpen specifically for the Documentation button label */}
                                 Documentation <BookOpen size={16} />
                             </Link>
                         </div>

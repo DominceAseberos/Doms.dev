@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import projectData from '../features/projects/data/dataProjects.json';
+import { usePortfolioData } from '../hooks/usePortfolioData';
 
 // Feature Components
 import ProjectHeader from '../features/projects/projectDetails/components/ProjectHeader';
@@ -16,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 const ProjectDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { projects: projectData } = usePortfolioData();
     const project = projectData.find(p => p.id === id);
 
     const containerRef = useRef(null);
@@ -145,6 +146,7 @@ const ProjectDetails = () => {
                     projectType={project.projectType}
                     stacks={project.stacks}
                     livePreviewLink={project.livePreviewLink}
+                    githubLink={project.githubLink}
                 />
 
                 {/* 3. Documentation (md:col-span-12) */}

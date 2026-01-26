@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { usePortfolioData } from '../hooks/usePortfolioData';
 
 const Profile = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { profile } = usePortfolioData();
 
   return (
     <>
@@ -18,8 +20,8 @@ const Profile = () => {
       )}
       <img
         className={`w-full h-full rounded-2xl object-cover ${!imageLoaded ? 'hidden' : ''}`}
-        src="./profile.png"
-        alt=""
+        src={profile.avatar}
+        alt={profile.name}
         onLoad={() => setImageLoaded(true)}
         style={{
           border: `1px solid rgb(var(--theme-rgb))`,

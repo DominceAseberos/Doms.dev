@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 import ProjectCard from './ProjectCard';
-import projectData from '../data/dataProjects.json';
+import { usePortfolioData } from '../../../hooks/usePortfolioData';
 
 const Projects = () => {
+    const { projects: projectData } = usePortfolioData();
     const [expandedId, setExpandedId] = useState(null);
     const containerRef = useRef(null);
 

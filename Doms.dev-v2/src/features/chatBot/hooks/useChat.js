@@ -1,14 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { PORTFOLIO_CONTEXT } from "../data/portfolioData";
+import { generatePortfolioContext } from "../utils/contextHelper";
+import portfolioData from "../../../data/portfolioData.json";
+
+const PORTFOLIO_CONTEXT = generatePortfolioContext();
+const ALL_SUGGESTIONS = portfolioData.chatSuggestions;
 
 const GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
-
-
-const ALL_SUGGESTIONS = [
-  "Tech Stack", "Show Projects", "Contact Info", "About You", 
-  "Education", "GitHub Link", "Work Experience", "Soft Skills" 
-];
 
 
 export const useChat = () => {
@@ -16,9 +14,8 @@ export const useChat = () => {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const chatContainerRef = useRef(null);
-  
+
   // Suggestion logic
-  const ALL_SUGGESTIONS = ["Tech Stack", "Show Projects", "Contact Info", "About You"];
   const [displayedSuggestions, setDisplayedSuggestions] = useState(ALL_SUGGESTIONS.slice(0, 4));
   const [nextSuggestionIndex, setNextSuggestionIndex] = useState(4);
 
@@ -55,19 +52,19 @@ export const useChat = () => {
       console.log("🚀 Level 1: Attempting Gemini...");
       const botResponse = await tryGemini(messageText);
       addBotMessage(botResponse);
-    } 
+    }
     catch (geminiError) {
       console.warn("⚠️ Gemini failed. Switching to Level 2: Mistral...");
       try {
         const mistralResponse = await tryOpenRouter("mistralai/devstral-2512:free");
         addBotMessage(mistralResponse);
-      } 
+      }
       catch (mistralError) {
         console.warn("⚠️ Mistral failed. Switching to Level 3: DeepSeek R1...");
         try {
           const r1Response = await tryOpenRouter("deepseek/deepseek-r1-0528:free");
           addBotMessage(r1Response);
-        } 
+        }
         catch (r1Error) {
           console.error("❌ All models failed.");
           addBotMessage("I'm currently resting my brain. Please try again in a minute!");

@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "gsap";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
 
 const AboutMe = () => {
   const btnRef = useRef(null);
-
-
+  const { profile } = usePortfolioData();
 
   return (
     <div
@@ -16,10 +16,10 @@ const AboutMe = () => {
     >
       <div className="space-y-1">
         <h1 className="font-bold tracking-tight text-[clamp(14px,2vw,20px)] leading-none" style={{ color: 'rgb(var(--contrast-rgb))' }}>
-          Domince A. Aseberos
+          {profile.name}
         </h1>
         <p className="text-gray-300 font-medium leading-snug text-[clamp(10px,1.2vw,13px)] line-clamp-3 md:line-clamp-2 lg:line-clamp-3">
-          Welcome to my portfolio! Here, I share my projects, experiments, and creative ideas.
+          {profile.bio}
         </p>
       </div>
 

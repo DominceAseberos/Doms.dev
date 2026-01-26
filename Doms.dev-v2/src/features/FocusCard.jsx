@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { SiGithub } from "react-icons/si";
 import { gsap } from "gsap";
+import { usePortfolioData } from "../hooks/usePortfolioData";
 
 const FocusCard = () => {
   const cardRef = useRef(null);
   const [data, setData] = useState({ commit: "", repo: "", languages: [] });
   const [loading, setLoading] = useState(true);
-  const username = "Domincee";
+  const { profile } = usePortfolioData();
+  const username = profile.githubUsername;
 
   const handleMouseEnter = () => {
     gsap.to(cardRef.current, {

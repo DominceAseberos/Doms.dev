@@ -6,6 +6,7 @@ import MainLayout from "./layout/MainLayout.jsx"
 import Dashboard from "./pages/dashboard.jsx"
 import AboutMePage from "./pages/AboutMePage.jsx"
 import ProjectDetails from "./pages/ProjectDetails.jsx"
+import ScrollToTop from "./components/ScrollToTop.jsx"
 
 // GSAP Performance Optimization
 import gsap from 'gsap'
@@ -35,6 +36,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         {/* Main Dashboard Route */}
         <Route

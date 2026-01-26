@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import projectData from '../../data/dataProjects.json';
+import { usePortfolioData } from '../../../hooks/usePortfolioData';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export const useProjectDetails = (projectId) => {
     const containerRef = useRef(null);
+    const { projects: projectData } = usePortfolioData();
     const project = projectData.find(p => p.id === projectId);
 
     // Set document title and meta description

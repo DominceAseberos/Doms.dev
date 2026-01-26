@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react';
-import { TRACKLIST } from '../config/trackList';
+import { usePortfolioData } from '../../../hooks/usePortfolioData';
 
 export const useTrackID = () => {
+  const { trackList: TRACKLIST } = usePortfolioData();
   const preferredDefault = '2019678919';
 
   const firstCategory = Object.keys(TRACKLIST)[0];

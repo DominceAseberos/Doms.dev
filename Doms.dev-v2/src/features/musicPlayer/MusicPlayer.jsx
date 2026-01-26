@@ -1,14 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useMusicPlayer } from './hooks';
+import { usePortfolioData } from '../../hooks/usePortfolioData';
 import { AlbumInfo, Controls, ProgressBar, Visualizer } from './components';
 import { marqueeStyle } from './styles/Marques';
 import { useTrackID } from './hooks/useTrackID';
-import { TRACKLIST, MOOD_OPTIONS } from './config/trackList';
 import { OverlayDropdown } from './components/OverlayDropdown';
 
 const MusicPlayer = () => {
   const { trackID, setTrackID } = useTrackID();
+  const { trackList: TRACKLIST } = usePortfolioData();
+
+  // Generate MOOD_OPTIONS dynamically from TRACKLIST
+  const MOOD_OPTIONS = Object.keys(TRACKLIST).map(key => ({
+    id: key,
+    label: key.charAt(0).toUpperCase() + key.slice(1)
+  }));
+
   const [currentMood, setCurrentMood] = useState(Object.keys(TRACKLIST)[0]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const dropdownRef = useRef(null);

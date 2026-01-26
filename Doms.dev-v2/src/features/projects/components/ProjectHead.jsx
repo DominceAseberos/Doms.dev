@@ -3,12 +3,14 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { usePortfolioData } from '../../../hooks/usePortfolioData';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ProjectHead = () => {
   const container = useRef(null);
   const glows = useRef([]);
+  const { uiConfig } = usePortfolioData();
 
   useGSAP(() => {
     // Use matchMedia to handle desktop vs mobile differently
@@ -108,7 +110,7 @@ const ProjectHead = () => {
 
         {/* Horizontal Breadcrumbs Row */}
         <div className="flex items-center gap-2 md:gap-2 px-2 overflow-hidden whitespace-nowrap">
-          {['Idea', 'Experiments', 'Real Projects'].map((step, i) => (
+          {uiConfig.projectHeadBreadcrumbs.map((step, i) => (
             <React.Fragment key={step}>
               <span className="animate-breadcrumb text-[8px] md:text-[10px] font-bold tracking-[0.25em] uppercase text-white/30 font-inter">
                 {step}

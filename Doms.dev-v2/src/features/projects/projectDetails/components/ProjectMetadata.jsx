@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Calendar, Tag, ExternalLink } from 'lucide-react';
+import { Calendar, Tag, ExternalLink, Github } from 'lucide-react';
 import { getStackIcon } from '../utils/stackIcons';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -12,28 +12,32 @@ const ProjectMetadata = ({
     dateCreated,
     projectType,
     stacks = [],
-    livePreviewLink
+    livePreviewLink,
+    githubLink
 }) => {
-    const buttonRef = useRef(null);
-    const { contextSafe } = useGSAP({ scope: buttonRef });
+    const liveBtnRef = useRef(null);
+    const gitBtnRef = useRef(null);
+    const { contextSafe: liveSafe } = useGSAP({ scope: liveBtnRef });
+    const { contextSafe: gitSafe } = useGSAP({ scope: gitBtnRef });
 
-    const handleHover = contextSafe(() => {
-        gsap.to(buttonRef.current, {
+    const handleHover = (ref) => {
+        gsap.to(ref.current, {
             rotation: -2,
-            scale: 1.1,
+            scale: 1.05,
             duration: 0.3,
             ease: "back.out(1.7)"
         });
-    });
+    };
 
-    const handleLeave = contextSafe(() => {
-        gsap.to(buttonRef.current, {
+    const handleLeave = (ref) => {
+        gsap.to(ref.current, {
             rotation: 0,
             scale: 1,
             duration: 0.3,
             ease: "power2.out"
         });
-    });
+    };
+
     return (
         <div className="project-card md:col-span-4">
             <div
@@ -86,28 +90,52 @@ const ProjectMetadata = ({
                         </div>
                     </div>
 
-                    {/* Live Preview Button */}
-                    {livePreviewLink && (
-                        <a
-                            ref={buttonRef}
-                            href={livePreviewLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onMouseEnter={handleHover}
-                            onMouseLeave={handleLeave}
-                            onTouchStart={handleHover}
-                            onTouchEnd={handleLeave}
-                            className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-inter font-semibold text-sm transition-shadow shadow-md"
-                            style={{
-                                background: 'rgb(var(--contrast-rgb))',
-                                color: 'rgb(0,0,0)',
-                                boxShadow: '0 4px 12px rgba(var(--contrast-rgb), 0.3)'
-                            }}
-                        >
-                            <ExternalLink size={18} />
-                            <span>Live Preview</span>
-                        </a>
-                    )}
+                    {/* Action Buttons */}
+                    <div className="flex flex-col gap-3 pt-4">
+                        {livePreviewLink && (
+                            <a
+                                ref={liveBtnRef}
+                                href={livePreviewLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onMouseEnter={() => handleHover(liveBtnRef)}
+                                onMouseLeave={() => handleLeave(liveBtnRef)}
+                                onTouchStart={() => handleHover(liveBtnRef)}
+                                onTouchEnd={() => handleLeave(liveBtnRef)}
+                                className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-inter font-semibold text-sm transition-shadow shadow-md"
+                                style={{
+                                    background: 'rgb(var(--contrast-rgb))',
+                                    color: 'rgb(0,0,0)',
+                                    boxShadow: '0 4px 12px rgba(var(--contrast-rgb), 0.3)'
+                                }}
+                            >
+                                <ExternalLink size={18} />
+                                <span>Live Preview</span>
+                            </a>
+                        )}
+
+                        {githubLink && (
+                            <a
+                                ref={gitBtnRef}
+                                href={githubLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onMouseEnter={() => handleHover(gitBtnRef)}
+                                onMouseLeave={() => handleLeave(gitBtnRef)}
+                                onTouchStart={() => handleHover(gitBtnRef)}
+                                onTouchEnd={() => handleLeave(gitBtnRef)}
+                                className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-inter font-semibold text-sm border transition-all"
+                                style={{
+                                    borderColor: 'rgba(var(--contrast-rgb), 0.2)',
+                                    color: 'rgb(var(--contrast-rgb))',
+                                    background: 'rgba(var(--contrast-rgb), 0.05)'
+                                }}
+                            >
+                                <Github size={18} />
+                                <span>View Source Code</span>
+                            </a>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

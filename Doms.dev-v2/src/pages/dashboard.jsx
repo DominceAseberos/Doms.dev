@@ -15,11 +15,13 @@ import FloatingChat from '../features/chatBot/floatingChat'
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useNavigationStore } from '../store/navigationStore'
+import { usePortfolioData } from '../hooks/usePortfolioData'
 
 
 const Dashboard = () => {
     const comp = useRef(null);
     const { dashboardVisited, setDashboardVisited } = useNavigationStore();
+    const { uiConfig } = usePortfolioData();
 
     useLayoutEffect(() => {
         // Only run animation if dashboard hasn't been visited before
@@ -57,7 +59,7 @@ const Dashboard = () => {
     return (
         <main role="main" aria-label="Portfolio Dashboard">
             {/* Screen reader accessible H1 for SEO */}
-            <h1 className="sr-only">Domince A. Aseberos - Portfolio Dashboard</h1>
+            <h1 className="sr-only">{uiConfig.dashboardTitle}</h1>
 
             {/* Mobile first */}
             <div className="flex flex-col h-auto w-full gap-8 md:hidden z-50">

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FileText, Github, Linkedin, ArrowLeft, X, Mail, MessageCircle } from 'lucide-react';
-import { portfolioData } from '../features/chatBot/data/portfolioData';
+import { usePortfolioData } from '../hooks/usePortfolioData';
 import umtcLogo from '../assets/umtc-logo.png';
 import heroImage from '../assets/hero-image.png';
 
@@ -69,6 +69,7 @@ const Animated = ({ children, className = '', style = {} }) => {
 
 const AboutMePage = () => {
     const [expandedImage, setExpandedImage] = useState(null); // null, 'hero', 'education', 'resume'
+    const { profile, education, contacts, techStack } = usePortfolioData();
     const heroCardRef = useRef(null);
     const identityCardRef = useRef(null);
     const educationCardRef = useRef(null);
@@ -229,13 +230,13 @@ const AboutMePage = () => {
                                 fontSize: 'clamp(24px, 4vw, 32px)'
                             }}
                         >
-                            {portfolioData.identity.name}
+                            {profile.name}
                         </h1>
                         <p
                             className="text-gray-400 font-medium mt-1"
                             style={{ fontSize: 'clamp(12px, 2vw, 14px)' }}
                         >
-                            {portfolioData.identity.age} • {portfolioData.identity.location}
+                            {profile.age} • {profile.location}
                         </p>
                     </div>
 
@@ -244,7 +245,7 @@ const AboutMePage = () => {
                             className="text-gray-300 leading-relaxed"
                             style={{ fontSize: 'clamp(13px, 2.2vw, 15px)' }}
                         >
-                            {portfolioData.identity.bio}
+                            {profile.bio}
                         </p>
                     </div>
 
@@ -266,7 +267,7 @@ const AboutMePage = () => {
                                 background: 'rgba(var(--contrast-rgb), 0.05)'
                             }}
                         >
-                            {portfolioData.techStack.slice(0, 6).map((tech, index) => (
+                            {techStack.slice(0, 6).map((tech, index) => (
                                 <Animated key={index}>
                                     <div className="rounded-full text-xs font-medium  border  px-3 py-2 w-32 cursor-pointer select-none touch-manipulation"
                                         style={{
@@ -275,7 +276,7 @@ const AboutMePage = () => {
                                             background: 'rgba(var(--contrast-rgb), 0.05)'
                                         }}
                                     >
-                                        {tech}
+                                        {tech.name}
                                     </div>
                                 </Animated>
                             ))}
@@ -307,7 +308,7 @@ const AboutMePage = () => {
                         Tech Stack
                     </h3>
                     <div className="flex flex-wrap gap-2 text-center">
-                        {portfolioData.techStack.slice(0, 6).map((tech, index) => (
+                        {techStack.slice(0, 6).map((tech, index) => (
                             <Animated key={index}>
                                 <div className="rounded-full text-xs font-medium  border  px-3 py-2 w-fit cursor-pointer select-none touch-manipulation"
                                     style={{
@@ -316,7 +317,7 @@ const AboutMePage = () => {
                                         background: 'rgba(var(--contrast-rgb), 0.05)'
                                     }}
                                 >
-                                    {tech}
+                                    {tech.name}
                                 </div>
                             </Animated>
                         ))}
@@ -372,19 +373,19 @@ const AboutMePage = () => {
                                 fontSize: 'clamp(16px, 3vw, 18px)'
                             }}
                         >
-                            {portfolioData.education.school}
+                            {education.school}
                         </h3>
                         <p
                             className="text-gray-300 font-medium"
                             style={{ fontSize: 'clamp(13px, 2vw, 14px)' }}
                         >
-                            {portfolioData.education.degree}
+                            {education.degree}
                         </p>
                         <p
                             className="text-gray-400 text-sm"
                             style={{ fontSize: 'clamp(11px, 1.8vw, 12px)' }}
                         >
-                            {portfolioData.education.level} • Year {portfolioData.education.yearLevel}
+                            {education.level} • Year {education.yearLevel}
                         </p>
                     </div>
                 </div>
@@ -473,7 +474,7 @@ const AboutMePage = () => {
                             background: 'rgba(var(--contrast-rgb), 0.05)'
                         }}>
                             <a
-                                href={portfolioData.contacts.github}
+                                href={contacts.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center justify-center"
@@ -505,7 +506,7 @@ const AboutMePage = () => {
                             background: 'rgba(var(--contrast-rgb), 0.05)'
                         }}>
                             <a
-                                href={`mailto:${portfolioData.contacts.email}`}
+                                href={`mailto:${contacts.email}`}
                                 className="flex items-center justify-center"
                             >
                                 <Mail
@@ -520,7 +521,7 @@ const AboutMePage = () => {
                             background: 'rgba(var(--contrast-rgb), 0.05)'
                         }}>
                             <a
-                                href={portfolioData.contacts.messenger}
+                                href={contacts.messenger}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center justify-center"
@@ -538,7 +539,7 @@ const AboutMePage = () => {
                         className="scroll-reveal text-center text-gray-400"
                         style={{ fontSize: 'clamp(10px, 1.5vw, 11px)' }}
                     >
-                        © 2026 {portfolioData.identity.name}
+                        © 2026 {profile.name}
                     </p>
                 </div>
             </div>

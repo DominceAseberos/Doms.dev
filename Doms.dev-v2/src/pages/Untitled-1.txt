@@ -1,0 +1,47 @@
+[0] (500,500)<div  />
+	[1] (98,67)<button class='flex items-center gap-2 text-sm font-inter font-medium transition-colors cursor-pointer group' />
+		[2] (108,67)<span >Back to Dashboard />
+	[3] (85,271)<button class='absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity' />
+	[4] (290,271)<button class='absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rotate-180' />
+	1
+	/
+	3
+	Banana Leaf Detection
+	November 2023
+	AI/Research
+	Tech Stack
+	⚛️
+	React
+	🐍
+	Python
+	🌶️
+	Flask
+	👁️
+	OpenCV
+	Overview
+	The
+	Banana Leaf Detection
+	project is a machine learning-powered web application designed to analyze banana leaves and classify their health status. Using advanced image processing techniques and K-Nearest Neighbors (KNN) classification, the system can accurately determine whether a banana leaf is:
+	Healthy
+	: The leaf shows no signs of disease or stress
+	Unhealthy
+	: The leaf exhibits symptoms of disease or nutrient deficiency
+	Not a Leaf
+	: The image does not contain a banana leaf
+	Technical Architecture
+	Backend Stack
+	Python 3.8+
+	: Core programming language
+	Flask
+	: Lightweight web framework for API endpoints
+	OpenCV
+	: Computer vision library for image preprocessing
+	scikit-learn
+	: Machine learning library for KNN classification
+	Frontend Stack
+	React
+	: Modern UI library for responsive interface
+	Axios
+	: HTTP client for API communication
+	Tailwind CSS
+	: Utility-first CSS framework

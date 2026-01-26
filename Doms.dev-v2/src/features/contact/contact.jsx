@@ -1,11 +1,13 @@
 import React, { useRef, useState } from "react";
 import { SiLinkedin, SiGithub, SiFacebook, SiGmail } from "react-icons/si";
 import { gsap } from "gsap";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
 
 const Contacts = () => {
   const cardRef = useRef(null);
   const [copied, setCopied] = useState(false);
-  const email = "daseberos@gmail.com";
+  const { contacts } = usePortfolioData();
+  const email = contacts.email;
 
   const handleMouseEnter = () => {
     gsap.to(cardRef.current, {
@@ -52,9 +54,9 @@ const Contacts = () => {
       {/* Social Grid - Standard Links */}
       <div className="grid grid-cols-2 gap-2 relative z-10 ">
         {[
-          { icon: <SiLinkedin size={14} />, href: "https://linkedin.com/in/domincee/" },
-          { icon: <SiGithub size={14} />, href: "https://facebook.com/domince.aseberos" },
-          { icon: <SiFacebook size={14} />, href: "#" },
+          { icon: <SiLinkedin size={14} />, href: contacts.linkedin },
+          { icon: <SiGithub size={14} />, href: contacts.github },
+          { icon: <SiFacebook size={14} />, href: contacts.facebook },
           { icon: <SiGmail size={14} />, action: copyToClipboard }
         ].map((item, idx) => (
           item.action ? (

@@ -12,8 +12,11 @@ import {
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
+import { usePortfolioData } from '../../hooks/usePortfolioData';
+
 const StatsGitHub = () => {
-  const username = 'Domincee';
+  const { profile } = usePortfolioData();
+  const username = profile.githubUsername;
 
   const containerRef = useRef(null);
   const calendarDataRef = useRef([]);

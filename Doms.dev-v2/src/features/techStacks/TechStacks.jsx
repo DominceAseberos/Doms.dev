@@ -1,44 +1,63 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import { gsap } from "gsap";
 import {
   SiReact, SiNextdotjs, SiTailwindcss,
   SiGreensock, SiTypescript, SiThreedotjs,
-  SiPython, SiFigma, SiSupabase, SiDocker
+  SiPython, SiFigma, SiSupabase, SiDocker,
+  SiJavascript, SiNodedotjs, SiReactquery,
+  SiGit
 } from "react-icons/si";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
 
 const TechMarquee = () => {
   const scrollRef = useRef(null);
   const animRef = useRef(null);
+  const { techStack: rawTechStack } = usePortfolioData();
+
+  // Mapping string names from JSON to React Icon components
+  const iconMap = {
+    "React": <SiReact color="#61DAFB" />,
+    "Next.js": <SiNextdotjs color="#ffffff" />,
+    "GSAP": <SiGreensock color="#88CE02" />,
+    "Tailwind": <SiTailwindcss color="#06B6D4" />,
+    "Figma": <SiFigma color="#F24E1E" />,
+    "Supabase": <SiSupabase color="#3ECF8E" />,
+    "Python": <SiPython color="#FFE873" />,
+    "Three.js": <SiThreedotjs color="#ffffff" />,
+    "Docker": <SiDocker color="#2496ED" />,
+    "JavaScript (ES6+)": <SiJavascript color="#F7DF1E" />,
+    "Node.js": <SiNodedotjs color="#339933" />,
+    "TanStack Query": <SiReactquery color="#FF4154" />,
+    "Git": <SiGit color="#F05032" />
+  };
+
+  const techStack = useMemo(() => {
+    return rawTechStack
+      .filter(t => t.type === "core" || t.type === "tool" || t.type === "learning")
+      .map(t => ({
+        ...t,
+        icon: iconMap[t.name] || <SiReact /> // Fallback icon
+      }));
+  }, [rawTechStack]);
 
   useEffect(() => {
+    if (!scrollRef.current) return;
     const element = scrollRef.current;
     const totalWidth = element.scrollWidth / 2;
 
     animRef.current = gsap.to(element, {
       x: -totalWidth,
-      duration: 15, // Slightly faster for mobile to keep it engaging
+      duration: 15,
       ease: "none",
       repeat: -1,
     });
 
     return () => animRef.current?.kill();
-  }, []);
+  }, [techStack]);
 
   // Pause/Play logic for both Mouse and Touch
   const pause = () => animRef.current?.pause();
   const play = () => animRef.current?.play();
-
-  const techStack = [
-    { icon: <SiReact color="#61DAFB" />, name: "React", type: "core" },
-    { icon: <SiNextdotjs color="#ffffff" />, name: "Next.js", type: "core" },
-    { icon: <SiGreensock color="#88CE02" />, name: "GSAP", type: "core" },
-    { icon: <SiTailwindcss color="#06B6D4" />, name: "Tailwind", type: "tool" },
-    { icon: <SiFigma color="#F24E1E" />, name: "Figma", type: "tool" },
-    { icon: <SiSupabase color="#3ECF8E" />, name: "Supabase", type: "tool" },
-    { icon: <SiPython color="#FFE873" />, name: "Python", type: "learning" },
-    { icon: <SiThreedotjs color="#ffffff" />, name: "Three.js", type: "learning" },
-    { icon: <SiDocker color="#2496ED" />, name: "Docker", type: "learning" },
-  ];
 
   return (
     <div

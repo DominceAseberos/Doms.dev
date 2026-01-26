@@ -3,6 +3,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { usePortfolioData } from "../../../hooks/usePortfolioData";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,6 +11,7 @@ const ProjectBottom = () => {
   const container = useRef(null);
   const glows = useRef([]);
   const scrollLabel = useRef(null);
+  const { uiConfig } = usePortfolioData();
 
   useGSAP(() => {
     // Use matchMedia to handle desktop vs mobile differently
@@ -116,7 +118,7 @@ const ProjectBottom = () => {
         {/* Main words */}
         <div className="
         flex flex-nowrap justify-center items-center  sm:gap-x-6 ">
-          {["Crafted.", "Tested.", "Improved."].map((word) => (
+          {uiConfig.projectBottomSlogan.map((word) => (
             <div
               key={word}
               className="animate-bottom-line font-playfair font-black text-lg sm:text-2xl md:text-[14px] lg:text-2xl tracking-tighter text-white/95 whitespace-nowrap"
@@ -131,7 +133,7 @@ const ProjectBottom = () => {
           ref={scrollLabel}
           className="opacity-30 text-xs sm:text-sm md:text-[12px] lg:text-xs tracking-widest uppercase text-white"
         >
-          Commit by Commit
+          {uiConfig.projectBottomSubtext}
         </div>
       </div>
     </div>

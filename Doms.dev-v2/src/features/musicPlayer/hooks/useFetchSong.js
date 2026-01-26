@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TRACKLIST } from '../config/trackList';
+import { usePortfolioData } from '../../../hooks/usePortfolioData';
 
 const PLACEHOLDER_ALBUM = '/placeholderAlbum.jpg';
 const AUDIUS_APP_NAME = 'MyPortfolio';
 
 export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
+  const { trackList: TRACKLIST } = usePortfolioData();
   const [currentPlaying, setCurrentPlaying] = useState(null);
   const [coverPhotoSrc, setCoverPhotoSrc] = useState(PLACEHOLDER_ALBUM);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!activeTrackID) return; 
+    if (!activeTrackID) return;
     const fetchMusicToPlay = async () => {
       try {
         setLoading(true);
@@ -32,7 +33,7 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
         /* pass data  */
         onTrackLoaded(streamURL);
 
-       if (localImageSrc) {
+        if (localImageSrc) {
           const img = new Image();
           img.src = localImageSrc;
           img.onload = () => {
@@ -40,20 +41,20 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
             setLoading(false);
           };
 
-          
-        img.onerror = () => {
+
+          img.onerror = () => {
             setCoverPhotoSrc(PLACEHOLDER_ALBUM);
             setLoading(false);
           };
         }
-         else {
+        else {
           setCoverPhotoSrc(PLACEHOLDER_ALBUM);
           setLoading(false);
         }
       } catch (err) {
 
         if (onError) {
-            onError(); 
+          onError();
         }
 
         setCoverPhotoSrc(PLACEHOLDER_ALBUM);
