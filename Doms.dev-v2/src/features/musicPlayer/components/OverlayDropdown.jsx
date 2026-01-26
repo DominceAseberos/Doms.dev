@@ -1,5 +1,6 @@
+import { memo } from 'react';
 
-export const OverlayDropdown = ({
+export const OverlayDropdown = memo(({
   currentMood,
   availableMoods,
   onMoodChange,
@@ -12,11 +13,11 @@ export const OverlayDropdown = ({
       className={`
         absolute -translate-y-12 border flex justify-between h-max  bottom-0 overflow-y-scroll  border-[rgb(var(--contrast-rgb))] rounded-xl shadow-xl 
         transition-all duration-300 
-      ${isOpenModal ? `w-full opacity-100`: `w-0 opacity-2`}
+      ${isOpenModal ? `w-full opacity-100` : `w-0 opacity-2`}
       `}
       style={{
         scrollbarWidth: `thin`,
-          scrollbarColor: `rgb(var(--contrast-rgb)) rgb(var(--contrast-rgb))`,
+        scrollbarColor: `rgb(var(--contrast-rgb)) rgb(var(--contrast-rgb))`,
 
         background: `linear-gradient(
           to bottom,
@@ -25,7 +26,7 @@ export const OverlayDropdown = ({
         )`,
       }}
     >
-      
+
       {availableMoods?.map((option) => (
         <button
           key={option.id}
@@ -44,4 +45,4 @@ export const OverlayDropdown = ({
       ))}
     </div>
   );
-};
+});

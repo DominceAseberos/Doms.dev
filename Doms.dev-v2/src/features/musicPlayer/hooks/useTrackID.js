@@ -14,12 +14,15 @@ export const useTrackID = () => {
   // Use preferred default if firstTrackID is missing
   const defaultTrackID = preferredDefault || firstTrackID;
 
-  // State
-  const [trackID, setTrackIDState] = useState(defaultTrackID);
+  // State - initialized from localStorage if available
+  const [trackID, setTrackIDState] = useState(() => {
+    return localStorage.getItem('lastTrackID') || defaultTrackID;
+  });
 
-  // Setter
+  // Setter with persistence
   const setTrackID = useCallback((newID) => {
     setTrackIDState(newID);
+    localStorage.setItem('lastTrackID', newID);
   }, []);
 
   return {

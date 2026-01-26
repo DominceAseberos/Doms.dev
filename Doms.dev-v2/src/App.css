@@ -60,7 +60,22 @@ body {
   }
 }
 
-.animate-tumble {
-  animation: tumble 0.5s steps(4) infinite;
-  /* steps(4) makes it snap like a dice */
+.loading-spinner {
+  border: 2px solid rgb(169, 186, 255);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border-top-color: blue;
+  animation: spinner 2s linear infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+
 }

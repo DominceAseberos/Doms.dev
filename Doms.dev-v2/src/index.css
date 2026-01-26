@@ -3,6 +3,34 @@
 @theme {
     --color-primary: rgb(var(--theme-rgb));
     --color-contrast: rgb(var(--contrast-rgb));
+
+    /* --- CUSTOM ANIMATIONS --- */
+    --animate-spin: spin 1s linear infinite;
+    --animate-tumble: tumble 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes tumble {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.2);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
 }
 
 /* Fonts now loaded via <link> in index.html for better performance */

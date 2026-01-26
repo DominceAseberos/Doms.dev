@@ -1,13 +1,16 @@
+import { memo } from 'react';
+
 // components/AlbumInfo.jsx
-export const AlbumInfo = ({
+export const AlbumInfo = memo(({
   currentPlaying,
   coverPhotoSrc,
-  loading,
+  isMetadataLoading,
+  isImageLoading,
   textRef,
   containerRef,
   shouldSlide,
   durationSlide,
-  
+
 }) => {
   const title = currentPlaying?.title || "Unknown Song";
   const artistName = currentPlaying?.user?.name || "Unknown Artist";
@@ -15,7 +18,7 @@ export const AlbumInfo = ({
   return (
     <div className="flex flex-row w-full  justify-center gap-3 p-2">
       <div className="rounded w-12 h-12 overflow-hidden flex items-center justify-center">
-        {loading ? (
+        {isMetadataLoading || isImageLoading ? (
           <div className="w-3 h-3 border-2 border-gray-300 border-t-blue-400 rounded-full animate-spin" />
         ) : (
           <img
@@ -35,9 +38,9 @@ export const AlbumInfo = ({
           style={
             shouldSlide
               ? {
-                  animation: `seamless-loop ${durationSlide}s linear infinite`,
-                  width: "max-content",
-                }
+                animation: `seamless-loop ${durationSlide}s linear infinite`,
+                width: "max-content",
+              }
               : {}
           }
         >
@@ -53,4 +56,4 @@ export const AlbumInfo = ({
       </div>
     </div>
   );
-};
+});

@@ -13,21 +13,21 @@ export const useMusicPlayer = (activeTrackId, onNextTrack) => {
   const visualizer = useVisualizer();
   const hasInteractedRef = useRef(false); // Track user clicks play btn
 
-const handleTrackLoaded = useCallback((streamURL) => {
-      const shouldAutoPlay = hasInteractedRef.current;
-      
-      audioPlayback.setAudioSrc(streamURL, shouldAutoPlay);
+  const handleTrackLoaded = useCallback((streamURL) => {
+    const shouldAutoPlay = hasInteractedRef.current;
 
-      if (shouldAutoPlay) {
-        if (!visualizer.audioContextRef.current && audioPlayback.audioRef.current) {
-           visualizer.setupVisualizer(audioPlayback.audioRef.current);
-        }
-        
-        visualizer.resumeAudioContext();
-        visualizer.drawVisualizer();
+    audioPlayback.setAudioSrc(streamURL, shouldAutoPlay);
+
+    if (shouldAutoPlay) {
+      if (!visualizer.audioContextRef.current && audioPlayback.audioRef.current) {
+        visualizer.setupVisualizer(audioPlayback.audioRef.current);
       }
-    },
-    [audioPlayback, visualizer] 
+
+      visualizer.resumeAudioContext();
+      visualizer.drawVisualizer();
+    }
+  },
+    [audioPlayback, visualizer]
   );
 
   const trackData = useFetchTrack(activeTrackId, handleTrackLoaded, onNextTrack);
@@ -46,7 +46,7 @@ const handleTrackLoaded = useCallback((streamURL) => {
 
   const togglePlayPause = useCallback(() => {
     if (!visualizer.audioContextRef.current) {
-       visualizer.setupVisualizer(audioPlayback.audioRef.current);
+      visualizer.setupVisualizer(audioPlayback.audioRef.current);
     }
     visualizer.resumeAudioContext();
 
@@ -58,7 +58,7 @@ const handleTrackLoaded = useCallback((streamURL) => {
       visualizer.drawVisualizer();
     }
 
-    hasInteractedRef.current = true; 
+    hasInteractedRef.current = true;
   }, [audioPlayback, visualizer]);
 
   return {
@@ -70,7 +70,8 @@ const handleTrackLoaded = useCallback((streamURL) => {
     setCurrentTime: audioPlayback.setCurrentTime,
     currentPlaying: trackData.currentPlaying,
     coverPhotoSrc: trackData.coverPhotoSrc,
-    loading: trackData.loading,
+    isMetadataLoading: trackData.isMetadataLoading,
+    isImageLoading: trackData.isImageLoading,
     title,
     artistName,
     textRef: marquee.textRef,

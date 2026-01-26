@@ -30,6 +30,9 @@ export const useAudioPlayback = (onEnded) => {
 
     const handleWaiting = () => setBuffering(true);
     const handlePlaying = () => setBuffering(false);
+    const handleCanPlay = () => setBuffering(false);
+    const handleStalled = () => setBuffering(true);
+    const handleLoadStart = () => setBuffering(true);
     const handlePlay = () => setPlaying(true);
     const handlePause = () => setPlaying(false);
 
@@ -37,6 +40,9 @@ export const useAudioPlayback = (onEnded) => {
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('waiting', handleWaiting);
     audio.addEventListener('playing', handlePlaying);
+    audio.addEventListener('canplaythrough', handleCanPlay);
+    audio.addEventListener('stalled', handleStalled);
+    audio.addEventListener('loadstart', handleLoadStart);
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
 
@@ -45,6 +51,9 @@ export const useAudioPlayback = (onEnded) => {
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('waiting', handleWaiting);
       audio.removeEventListener('playing', handlePlaying);
+      audio.removeEventListener('canplaythrough', handleCanPlay);
+      audio.removeEventListener('stalled', handleStalled);
+      audio.removeEventListener('loadstart', handleLoadStart);
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
     };

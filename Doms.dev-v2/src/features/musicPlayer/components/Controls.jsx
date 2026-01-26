@@ -1,12 +1,13 @@
+import { memo } from 'react';
 import { LoadingPathSVG, buttonPausePathSVG, buttonPlayPathSVG } from "../svgPath"
 
-export const Controls = ({
+export const Controls = memo(({
 
   isPlaying,
   togglePlayPause,
   onShuffle,
   currentMood,
-  loading,
+  isMetadataLoading,
   setOpenModal,
   isOpenModal,
   buttonRef,
@@ -25,9 +26,9 @@ export const Controls = ({
       {/* SHUFFLE BUTTON */}
       <button className="active:scale-120 transition-all duration-200  hover:scale-110 hover:cursor-pointer"
         onClick={onShuffle}
-        disabled={loading}
+        disabled={isMetadataLoading}
       >
-        <svg className={loading ? "animate-tumble" : " "}
+        <svg className={isMetadataLoading ? "animate-tumble" : " "}
 
           fill="rgb(var(--contrast-rgb))" width="32px" height="32px" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier"
             strokeWidth="0"></g><g
@@ -63,11 +64,9 @@ export const Controls = ({
         }}
         onClick={togglePlayPause}
       >
-        {loading || isBuffering ? (
+        {isMetadataLoading || isBuffering ? (
 
-          <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-400 rounded-full animate-spin" />
-
-
+          <div className="loading-spinner" />
 
         ) : isPlaying ? (
           <svg
@@ -137,5 +136,4 @@ export const Controls = ({
 
     </div>
   )
-}
-
+});

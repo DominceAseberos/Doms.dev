@@ -9,13 +9,15 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
   const { trackList: TRACKLIST } = usePortfolioData();
   const [currentPlaying, setCurrentPlaying] = useState(null);
   const [coverPhotoSrc, setCoverPhotoSrc] = useState(PLACEHOLDER_ALBUM);
-  const [loading, setLoading] = useState(true);
+  const [isMetadataLoading, setIsMetadataLoading] = useState(true);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   useEffect(() => {
     if (!activeTrackID) return;
     const fetchMusicToPlay = async () => {
       try {
-        setLoading(true);
+        setIsMetadataLoading(true);
+        setIsImageLoading(true);
 
         const allTracks = Object.values(TRACKLIST).flat();
         const localTrackData = allTracks.find(t => String(t.id) === String(activeTrackID));
@@ -33,23 +35,26 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
         /* pass data  */
         onTrackLoaded(streamURL);
 
+        // Metadata is loaded once we have the track data and stream URL
+        setIsMetadataLoading(false);
+
         if (localImageSrc) {
           const img = new Image();
           img.src = localImageSrc;
           img.onload = () => {
             setCoverPhotoSrc(localImageSrc);
-            setLoading(false);
+            setIsImageLoading(false);
           };
 
 
           img.onerror = () => {
             setCoverPhotoSrc(PLACEHOLDER_ALBUM);
-            setLoading(false);
+            setIsImageLoading(false);
           };
         }
         else {
           setCoverPhotoSrc(PLACEHOLDER_ALBUM);
-          setLoading(false);
+          setIsImageLoading(false);
         }
       } catch (err) {
 
@@ -58,7 +63,8 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
         }
 
         setCoverPhotoSrc(PLACEHOLDER_ALBUM);
-        setLoading(false);
+        setIsMetadataLoading(false);
+        setIsImageLoading(false);
       }
     };
 
@@ -72,6 +78,7 @@ export const useFetchTrack = (activeTrackID, onTrackLoaded, onError) => {
   return {
     currentPlaying,
     coverPhotoSrc,
-    loading,
+    isMetadataLoading,
+    isImageLoading,
   };
 };

@@ -17,7 +17,9 @@ const MusicPlayer = () => {
     label: key.charAt(0).toUpperCase() + key.slice(1)
   }));
 
-  const [currentMood, setCurrentMood] = useState(Object.keys(TRACKLIST)[0]);
+  const [currentMood, setCurrentMood] = useState(() => {
+    return localStorage.getItem('lastMood') || Object.keys(TRACKLIST)[0];
+  });
   const [isOpenModal, setIsOpenModal] = useState(false);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
@@ -56,6 +58,7 @@ const MusicPlayer = () => {
 
     setCurrentMood(nextMood);
     setTrackID(nextTrackId);
+    localStorage.setItem('lastMood', nextMood);
   };
 
 
@@ -68,6 +71,7 @@ const MusicPlayer = () => {
 
     setCurrentMood(randomMood);
     setTrackID(randomTrack.id);
+    localStorage.setItem('lastMood', randomMood);
   };
 
 
@@ -80,6 +84,7 @@ const MusicPlayer = () => {
 
     setCurrentMood(selectedMood);
     setTrackID(randomTrackId);
+    localStorage.setItem('lastMood', selectedMood);
   };
 
   useEffect(() => {
@@ -104,7 +109,8 @@ const MusicPlayer = () => {
     audioRef,
     currentPlaying,
     coverPhotoSrc,
-    loading,
+    isMetadataLoading,
+    isImageLoading,
     artistName,
     textRef,
     containerRef,
@@ -131,7 +137,8 @@ const MusicPlayer = () => {
         <AlbumInfo
           currentPlaying={currentPlaying}
           coverPhotoSrc={coverPhotoSrc}
-          loading={loading}
+          isMetadataLoading={isMetadataLoading}
+          isImageLoading={isImageLoading}
           textRef={textRef}
           containerRef={containerRef}
           shouldSlide={shouldSlide}
@@ -145,7 +152,7 @@ const MusicPlayer = () => {
           togglePlayPause={togglePlayPause}
           onShuffle={handleShuffle}
           currentMood={currentMood}
-          loading={loading}
+          isMetadataLoading={isMetadataLoading}
           setOpenModal={setIsOpenModal}
           isOpenModal={isOpenModal}
           buttonRef={buttonRef}
