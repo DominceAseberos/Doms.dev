@@ -21,6 +21,14 @@ export const projectService = {
     },
 
     createProject: async (projectData) => {
+        // Shift existing projects if needed
+        if (projectData.display_order !== undefined) {
+            await supabase.rpc('shift_project_orders', {
+                new_order: projectData.display_order,
+                project_id: null // null indicates a new project
+            });
+        }
+
         const { data, error } = await supabase
             .from('projects')
             .insert([projectData])
@@ -31,6 +39,22 @@ export const projectService = {
     },
 
     updateProject: async (id, projectData) => {
+        // If display_order is being updated, shift others
+        if (projectData.display_order !== undefined) {
+            const { data: current } = await supabase
+                .from('projects')
+                .select('display_order')
+                .eq('id', id)
+                .single();
+
+            if (current && current.display_order !== projectData.display_order) {
+                await supabase.rpc('shift_project_orders', {
+                    new_order: projectData.display_order,
+                    target_project_id: id
+                });
+            }
+        }
+
         const { data, error } = await supabase
             .from('projects')
             .update(projectData)
