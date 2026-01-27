@@ -21,6 +21,17 @@ const AboutMe = () => {
         <p className="text-gray-300 font-medium leading-snug text-[clamp(10px,1.2vw,13px)] line-clamp-3 md:line-clamp-2 lg:line-clamp-3">
           {profile.bio}
         </p>
+        <div className="flex items-center gap-1.5 mt-2">
+          <div
+            className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"
+            style={{
+              boxShadow: '0 0 8px rgb(34, 197, 94)'
+            }}
+          />
+          <span className="text-[9px] uppercase tracking-wider font-bold opacity-60" style={{ color: 'rgb(var(--contrast-rgb))' }}>
+            {profile.live_feed_status || 'Active Now'}
+          </span>
+        </div>
       </div>
 
       {/* Theme-Matched Action Button - Now with Link */}
