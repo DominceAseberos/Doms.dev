@@ -32,43 +32,66 @@ ScrollTrigger.config({
   autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" // Only refresh on these events
 });
 
-import PreLoader from './components/PreLoader'
+import { lazy, Suspense } from 'react'
 
-// ... (GSAP Setup remains)
+import PreLoader from './components/PreLoader'
+import ProtectedRoute from './components/ProtectedRoute'
+import ErrorBoundary from './components/ErrorBoundary'
+
+// Lazy Load Admin Pages
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <>
+    <ErrorBoundary>
       {isLoading && <PreLoader onLoadComplete={() => setIsLoading(false)} />}
       <Router>
         <ScrollToTop />
-        <Routes>
-          {/* Main Dashboard Route */}
-          <Route
-            path="/"
-            element={
-              <MainLayout>
-                <Dashboard />
-              </MainLayout>
-            }
-          />
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
+            <div className="w-8 h-8 border-4 border-white/10 border-t-white rounded-full animate-spin" />
+          </div>
+        }>
+          <Routes>
+            {/* Main Dashboard Route */}
+            <Route
+              path="/"
+              element={
+                <MainLayout>
+                  <Dashboard />
+                </MainLayout>
+              }
+            />
 
-          {/* Dedicated About Me Page Route */}
-          <Route
-            path="/about"
-            element={<AboutMePage />}
-          />
+            {/* Dedicated About Me Page Route */}
+            <Route
+              path="/about"
+              element={<AboutMePage />}
+            />
 
-          {/* Project Details Page Route */}
-          <Route
-            path="/project/:id"
-            element={<ProjectDetails />}
-          />
-        </Routes>
+            {/* Project Details Page Route */}
+            <Route
+              path="/project/:id"
+              element={<ProjectDetails />}
+            />
+
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<LoginPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Suspense>
       </Router>
-    </>
+    </ErrorBoundary>
   )
 }
 export default App

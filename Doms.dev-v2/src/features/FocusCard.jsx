@@ -28,7 +28,7 @@ const FocusCard = () => {
   };
 
   // Use centralized store
-  const { repos, events, loading: storeLoading, fetchGitHubData } = useGitHubStore();
+  const { repos = [], events = [], loading: storeLoading, fetchGitHubData } = useGitHubStore();
 
   // Trigger fetch if needed (store handles throttling)
   useEffect(() => {
@@ -37,6 +37,12 @@ const FocusCard = () => {
 
   // Derive data from store
   useEffect(() => {
+    // If the store is loading, we can keep the local loading state true.
+    // If the store is NOT loading (throttled or finished), we must dismiss the skeleton.
+    if (storeLoading) return;
+
+    setLoading(false);
+
     if (!repos || !events) return;
 
     const lastPush = Array.isArray(events)
@@ -56,7 +62,6 @@ const FocusCard = () => {
     const repoName = lastPush?.repo?.name?.split('/')?.[1] || "Development";
 
     setData({ repo: repoName, commit: commitMsg, languages: topLangs });
-    setLoading(false);
   }, [repos, events, storeLoading]);
 
   // Cleanup GSAP animations on unmount to prevent memory leaks
