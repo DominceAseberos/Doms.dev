@@ -114,10 +114,24 @@ const ProjectsManager = () => {
         if (window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
             try {
                 await projectService.deleteProject(id);
+                await projectService.fixProjectSequence();
                 fetchProjects();
             } catch (err) {
                 console.error('Failed to delete project:', err);
             }
+        }
+    };
+
+    const handleFixSequence = async () => {
+        try {
+            setIsSaving(true);
+            await projectService.fixProjectSequence();
+            await fetchProjects();
+            alert('Sequence restored successfully! (1, 2, 3...)');
+        } catch (err) {
+            console.error('Failed to fix sequence:', err);
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -145,13 +159,22 @@ const ProjectsManager = () => {
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                         Back to Dashboard
                     </button>
-                    <button
-                        onClick={() => handleOpenModal()}
-                        className="px-6 py-3 rounded-full flex items-center gap-2 font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 cursor-pointer shadow-lg"
-                        style={{ background: 'rgb(var(--contrast-rgb))', color: '#000' }}
-                    >
-                        <Plus size={14} /> New Project
-                    </button>
+                    <div className="flex gap-4">
+                        <button
+                            onClick={handleFixSequence}
+                            disabled={isSaving}
+                            className="px-6 py-3 rounded-full flex items-center gap-2 font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 cursor-pointer border border-white/10 hover:bg-white/5 opacity-50 hover:opacity-100 disabled:opacity-20"
+                        >
+                            <Save size={14} /> Restore Sequence
+                        </button>
+                        <button
+                            onClick={() => handleOpenModal()}
+                            className="px-6 py-3 rounded-full flex items-center gap-2 font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 cursor-pointer shadow-lg"
+                            style={{ background: 'rgb(var(--contrast-rgb))', color: '#000' }}
+                        >
+                            <Plus size={14} /> New Project
+                        </button>
+                    </div>
                 </div>
 
                 <header className="space-y-1">

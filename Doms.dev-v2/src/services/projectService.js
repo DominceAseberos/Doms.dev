@@ -21,13 +21,12 @@ export const projectService = {
     },
 
     createProject: async (projectData) => {
-        // Shift existing projects if needed
-        if (projectData.display_order !== undefined) {
-            await supabase.rpc('shift_project_orders', {
-                new_order: projectData.display_order,
-                project_id: null // null indicates a new project
-            });
-        }
+        // Shift existing projects
+        const order = projectData.display_order || 999;
+        await supabase.rpc('reorder_projects', {
+            p_id: 'TEMP_NEW', // Placeholder for shift logic
+            p_new_order: order
+        });
 
         const { data, error } = await supabase
             .from('projects')
@@ -35,24 +34,20 @@ export const projectService = {
             .select()
             .single();
         if (error) throw error;
+
+        // Clean up sequence
+        await supabase.rpc('fix_project_sequence');
         return data;
     },
 
     updateProject: async (id, projectData) => {
-        // If display_order is being updated, shift others
         if (projectData.display_order !== undefined) {
-            const { data: current } = await supabase
-                .from('projects')
-                .select('display_order')
-                .eq('id', id)
-                .single();
-
-            if (current && current.display_order !== projectData.display_order) {
-                await supabase.rpc('shift_project_orders', {
-                    new_order: projectData.display_order,
-                    target_project_id: id
-                });
-            }
+            await supabase.rpc('reorder_projects', {
+                p_id: id,
+                p_new_order: projectData.display_order
+            });
+            // Sequence fix handles consolidation after shift
+            await supabase.rpc('fix_project_sequence');
         }
 
         const { data, error } = await supabase
@@ -63,6 +58,11 @@ export const projectService = {
             .single();
         if (error) throw error;
         return data;
+    },
+
+    fixProjectSequence: async () => {
+        const { error } = await supabase.rpc('fix_project_sequence');
+        if (error) throw error;
     },
 
     deleteProject: async (id) => {
