@@ -6,6 +6,7 @@ import { getAvailableIconNames, getIconByName } from '../../utils/IconRegistry';
 import { Plus, Edit2, Trash2, ArrowLeft, ExternalLink, BookOpen, X, Save, Image as ImageIcon, Upload } from 'lucide-react';
 
 const ProjectsManager = () => {
+    // Note: display_order must NOT be an identity column (GENERATED ALWAYS) to allow manual reordering.
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
