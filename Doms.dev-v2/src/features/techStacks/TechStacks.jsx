@@ -68,13 +68,13 @@ const TechMarquee = () => {
       scale: 1,
       y: 0,
       backgroundColor: 'rgba(255, 255, 255, 0.03)',
-      borderColor: 'rgba(255, 255, 255, 0.05)',
+      borderColor: 'rgb(var(--contrast-rgb)',
       boxShadow: 'none',
       duration: 0.3,
       ease: "power1.inOut"
     });
     gsap.to(e.currentTarget.querySelector('.icon-wrapper'), {
-      color: 'rgba(255, 255, 255, 0.2)',
+      color: 'rgb(var(--contrast-rgb)',
       filter: 'none',
       duration: 0.3,
       ease: "power1.inOut"
@@ -110,7 +110,7 @@ const TechMarquee = () => {
               <span
                 className="icon-wrapper"
                 style={{
-                  color: 'rgba(255, 255, 255, 0.2)',
+                  color: 'rgb(var(--contrast-rgb)',
                 }}
               >
                 <tech.Icon size={20} strokeWidth={2} />

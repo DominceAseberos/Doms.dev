@@ -38,7 +38,7 @@ const ProjectDocumentation = ({ documentation, documentationFiles = [] }) => {
     }
 
     return (
-        <div ref={containerRef} className="project-card md:col-span-12">
+        <div ref={containerRef} className="project-card">
             <div
                 className="rounded-2xl p-6 md:p-8"
                 style={{

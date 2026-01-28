@@ -39,7 +39,7 @@ const ProjectMetadata = ({
     };
 
     return (
-        <div className="project-card md:col-span-4">
+        <div className="project-card">
             <div
                 className="rounded-2xl p-6 h-full"
                 style={{

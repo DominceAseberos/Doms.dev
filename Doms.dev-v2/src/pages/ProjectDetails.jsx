@@ -59,32 +59,38 @@ const ProjectDetails = () => {
             <ProjectHeader />
 
             {/* Bento Grid Container */}
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
 
-                {/* 1. Image Carousel (md:col-span-8) */}
-                <ProjectCarousel
-                    images={project.images}
-                    title={project.title}
-                    currentImageIndex={currentImageIndex}
-                    nextImage={nextImage}
-                    prevImage={prevImage}
-                />
+                {/* 1. Image Carousel (Top on mobile, Left on desktop) */}
+                <div className="md:col-span-8">
+                    <ProjectCarousel
+                        images={project.images}
+                        title={project.title}
+                        currentImageIndex={currentImageIndex}
+                        nextImage={nextImage}
+                        prevImage={prevImage}
+                    />
+                </div>
 
-                {/* 2. Metadata Card (md:col-span-4) */}
-                <ProjectMetadata
-                    title={project.title}
-                    dateCreated={project.dateCreated}
-                    projectType={project.projectType}
-                    stacks={project.stacks}
-                    livePreviewLink={project.livePreviewLink}
-                    githubLink={project.githubLink}
-                />
+                {/* 2. Metadata Card (Middle on mobile, Sticky Right on desktop) */}
+                <div className="md:col-span-4 md:row-span-2 md:sticky md:top-8">
+                    <ProjectMetadata
+                        title={project.title}
+                        dateCreated={project.dateCreated}
+                        projectType={project.projectType}
+                        stacks={project.stacks}
+                        livePreviewLink={project.livePreviewLink}
+                        githubLink={project.githubLink}
+                    />
+                </div>
 
-                {/* 3. Documentation (md:col-span-12) */}
-                <ProjectDocumentation
-                    documentation={project.fullDocumentation}
-                    documentationFiles={project.documentationFiles}
-                />
+                {/* 3. Documentation (Bottom on mobile, Left on desktop) */}
+                <div className="md:col-span-8">
+                    <ProjectDocumentation
+                        documentation={project.fullDocumentation}
+                        documentationFiles={project.documentationFiles}
+                    />
+                </div>
             </div>
         </div>
     );

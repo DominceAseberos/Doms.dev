@@ -75,7 +75,7 @@ const ProjectCarousel = ({
     if (!images || images.length === 0) return null;
 
     return (
-        <div className="project-card md:col-span-8">
+        <div className="project-card">
             <div
                 className="rounded-2xl overflow-hidden p-6 h-full"
                 style={{
