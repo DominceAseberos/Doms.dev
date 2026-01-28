@@ -1,7 +1,7 @@
-// src/features/chat/FloatingChat.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { X } from "lucide-react";
 import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import ChatBot from "./ChatBot";
 
 const FloatingChat = () => {
@@ -11,6 +11,28 @@ const FloatingChat = () => {
     const closeBtnRef = useRef(null);
     const dotsRef = useRef(null);
     const timelineRef = useRef(null);
+
+    const { contextSafe } = useGSAP({ scope: containerRef });
+
+    const onContainerEnter = contextSafe(() => {
+        if (!isOpen) {
+            gsap.to(containerRef.current, { borderColor: "rgba(255, 255, 255, 0.4)", duration: 0.3 });
+        }
+    });
+
+    const onContainerLeave = contextSafe(() => {
+        if (!isOpen) {
+            gsap.to(containerRef.current, { borderColor: "rgba(255, 255, 255, 0.1)", duration: 0.3 });
+        }
+    });
+
+    const onCloseEnter = contextSafe(() => {
+        gsap.to(closeBtnRef.current, { backgroundColor: "rgba(0, 0, 0, 0.4)", duration: 0.3 });
+    });
+
+    const onCloseLeave = contextSafe(() => {
+        gsap.to(closeBtnRef.current, { backgroundColor: "rgba(0, 0, 0, 0.2)", duration: 0.3 });
+    });
 
     useEffect(() => {
         let idleTween;
@@ -89,11 +111,13 @@ const FloatingChat = () => {
             <div
                 ref={containerRef}
                 onClick={() => !isOpen && setIsOpen(true)}
+                onMouseEnter={onContainerEnter}
+                onMouseLeave={onContainerLeave}
                 role="dialog"
                 aria-expanded={isOpen}
                 aria-label="Chat interface"
                 className={`rounded-2xl 
-                    pointer-events-auto cursor-pointer overflow-hidden border-2 border-white/10 shadow-2xl relative ${isOpen ? "cursor-default" : "hover:border-white/40"}`}
+                    pointer-events-auto cursor-pointer overflow-hidden border-2 border-white/10 shadow-2xl relative ${isOpen ? "cursor-default" : ""}`}
                 style={{
                     width: "60px",
                     height: "40px",
@@ -120,8 +144,10 @@ const FloatingChat = () => {
                         e.stopPropagation();
                         setIsOpen(false);
                     }}
+                    onMouseEnter={onCloseEnter}
+                    onMouseLeave={onCloseLeave}
                     aria-label="Close chat"
-                    className={`absolute top-4 right-4 z-[110] p-2 bg-black/20 hover:bg-black/40 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 ${!isOpen ? 'pointer-events-none' : 'pointer-events-auto'}`}
+                    className={`absolute top-4 right-4 z-[110] p-2 bg-black/20 rounded-md focus:outline-none focus:ring-2 focus:ring-white/50 ${!isOpen ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 >
                     <X size={20} className="text-white" />
                 </button>

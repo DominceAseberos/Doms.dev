@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useMemo, useState } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { getIconByName, getBrandColorByName } from "../../utils/IconRegistry";
 
 const TechMarquee = () => {
   const scrollRef = useRef(null);
   const animRef = useRef(null);
+  const containerRef = useRef(null);
   const { techStack: rawTechStack } = usePortfolioData();
-  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const techStack = useMemo(() => {
     return rawTechStack
@@ -19,6 +20,8 @@ const TechMarquee = () => {
         Icon: getIconByName(t.iconName || t.name)
       }));
   }, [rawTechStack]);
+
+  const { contextSafe } = useGSAP({ scope: containerRef });
 
   useEffect(() => {
     if (!scrollRef.current) return;
@@ -41,8 +44,46 @@ const TechMarquee = () => {
   const pause = () => animRef.current?.pause();
   const play = () => animRef.current?.play();
 
+  const onIconEnter = contextSafe((e) => {
+    const brandColor = e.currentTarget.dataset.color;
+    gsap.to(e.currentTarget, {
+      scale: 1.1,
+      y: -2,
+      backgroundColor: `${brandColor}10`,
+      borderColor: `${brandColor}40`,
+      boxShadow: `0 0 20px ${brandColor}20`,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+    gsap.to(e.currentTarget.querySelector('.icon-wrapper'), {
+      color: brandColor,
+      filter: `drop-shadow(0 0 8px ${brandColor}80)`,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  });
+
+  const onIconLeave = contextSafe((e) => {
+    gsap.to(e.currentTarget, {
+      scale: 1,
+      y: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.03)',
+      borderColor: 'rgba(255, 255, 255, 0.05)',
+      boxShadow: 'none',
+      duration: 0.3,
+      ease: "power1.inOut"
+    });
+    gsap.to(e.currentTarget.querySelector('.icon-wrapper'), {
+      color: 'rgba(255, 255, 255, 0.2)',
+      filter: 'none',
+      duration: 0.3,
+      ease: "power1.inOut"
+    });
+  });
+
   return (
     <div
+      ref={containerRef}
       className="relative h-full w-full overflow-hidden rounded-3xl flex items-center p-2 group/marquee"
       onMouseEnter={pause}
       onMouseLeave={play}
@@ -54,33 +95,28 @@ const TechMarquee = () => {
 
       <div ref={scrollRef} className="flex flex-row gap-3 px-4 whitespace-nowrap">
         {[...techStack, ...techStack].map((tech, index) => {
-          const isHovered = hoveredIndex === index;
-          const brandColor = tech.brandColor;
-
           return (
             <div
               key={index}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className="relative flex flex-col items-center justify-center w-12 h-12 shrink-0 rounded-xl border transition-all duration-500 cursor-pointer group/icon"
+              data-color={tech.brandColor}
+              onMouseEnter={onIconEnter}
+              onMouseLeave={onIconLeave}
+              className="relative flex flex-col items-center justify-center w-12 h-12 shrink-0 rounded-xl border cursor-pointer"
               style={{
-                backgroundColor: isHovered ? `${brandColor}10` : 'rgba(255, 255, 255, 0.03)',
-                borderColor: isHovered ? `${brandColor}40` : 'rgba(255, 255, 255, 0.05)',
-                boxShadow: isHovered ? `0 0 20px ${brandColor}20` : 'none',
-                transform: isHovered ? 'scale(1.1) translateY(-2px)' : 'scale(1)'
+                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                borderColor: 'rgba(255, 255, 255, 0.05)',
               }}
             >
               <span
-                className="transition-all duration-500"
+                className="icon-wrapper"
                 style={{
-                  color: isHovered ? brandColor : 'rgba(255, 255, 255, 0.2)',
-                  filter: isHovered ? `drop-shadow(0 0 8px ${brandColor}80)` : 'none'
+                  color: 'rgba(255, 255, 255, 0.2)',
                 }}
               >
-                <tech.Icon size={20} strokeWidth={isHovered ? 2.5 : 2} />
+                <tech.Icon size={20} strokeWidth={2} />
               </span>
 
-              {tech.type === "learning" && !isHovered && (
+              {tech.type === "learning" && (
                 <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
               )}
             </div>

@@ -8,6 +8,16 @@ import { getIconByName } from '../../../utils/IconRegistry';
 const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
     const cardRef = useRef(null);
     const contentRef = useRef(null);
+    const headerRef = useRef(null);
+    const imgRef = useRef(null);
+    const liveBtnRef = useRef(null);
+    const docBtnRef = useRef(null);
+
+    // Collapsed state refs
+    const collapsedImgRef = useRef(null);
+    const collapsedTitleRef = useRef(null);
+
+    const { contextSafe } = useGSAP({ scope: cardRef });
 
     useGSAP(() => {
         if (isExpanded) {
@@ -17,6 +27,40 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
             );
         }
     }, [isExpanded]);
+
+    // Header Hover
+    const onHeaderEnter = contextSafe(() => {
+        gsap.to(headerRef.current, { color: 'rgb(var(--contrast-rgb))', duration: 0.3 });
+    });
+    const onHeaderLeave = contextSafe(() => {
+        gsap.to(headerRef.current, { color: 'rgb(var(--contrast-rgb) / 0.6)', duration: 0.3 });
+    });
+
+    // Image Hover (Expanded)
+    const onImageEnter = contextSafe(() => {
+        gsap.to(imgRef.current, { scale: 1.05, duration: 0.7, ease: "power2.out" });
+    });
+    const onImageLeave = contextSafe(() => {
+        gsap.to(imgRef.current, { scale: 1, duration: 0.7, ease: "power2.out" });
+    });
+
+    // Button Hovers
+    const onBtnEnter = contextSafe((target) => {
+        gsap.to(target, { scale: 1.02, duration: 0.3, ease: "power2.out" });
+    });
+    const onBtnLeave = contextSafe((target) => {
+        gsap.to(target, { scale: 1, duration: 0.3, ease: "power2.out" });
+    });
+
+    // Collapsed Card Hover
+    const onCardEnter = contextSafe(() => {
+        gsap.to(collapsedImgRef.current, { scale: 1.1, opacity: 0.6, duration: 0.5, ease: "power2.out" });
+        gsap.to(collapsedTitleRef.current, { x: 4, duration: 0.3, ease: "power2.out" });
+    });
+    const onCardLeave = contextSafe(() => {
+        gsap.to(collapsedImgRef.current, { scale: 1, opacity: 0.4, duration: 0.5, ease: "power2.out" });
+        gsap.to(collapsedTitleRef.current, { x: 0, duration: 0.3, ease: "power2.out" });
+    });
 
     const IconComponent = (name) => {
         const Icon = getIconByName(name);
@@ -35,28 +79,33 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                 }}
             >
                 <button
+                    ref={headerRef}
                     onClick={(e) => { e.stopPropagation(); onCollapse(); }}
-                    className="mb-4 flex items-center text-sm font-inter font-medium transition-colors cursor-pointer w-fit"
+                    onMouseEnter={onHeaderEnter}
+                    onMouseLeave={onHeaderLeave}
+                    className="mb-4 flex items-center text-sm font-inter font-medium cursor-pointer w-fit"
                     style={{ color: 'rgb(var(--contrast-rgb) / 0.6)' }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = 'rgb(var(--contrast-rgb) / 1)'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = 'rgb(var(--contrast-rgb) / 0.6)'}
                 >
                     <ArrowLeft size={16} className="mr-2" /> Back
                 </button>
 
                 <div ref={contentRef} className="flex flex-col gap-4">
-                    <div className="relative aspect-video w-full lg:h-55 rounded-xl overflow-hidden group border border-white/5">
+                    <div
+                        onMouseEnter={onImageEnter}
+                        onMouseLeave={onImageLeave}
+                        className="relative aspect-video w-full lg:h-55 rounded-xl overflow-hidden group border border-white/5"
+                    >
                         <img
+                            ref={imgRef}
                             src={project.image}
                             alt={project.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            className="w-full h-full object-cover"
                             onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop'; }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#151226] via-transparent to-transparent opacity-60" />
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        {/* FLUID TITLE: Squeezes tracking on md to prevent overlap */}
                         <h2 className="text-[clamp(1.2rem,4vw,2rem)] font-playfair font-black leading-tight tracking-tight md:tracking-tighter lg:tracking-normal" style={{ color: 'rgb(var(--contrast-rgb))' }}>
                             {project.title}
                         </h2>
@@ -84,10 +133,13 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                         <div className="flex flex-col sm:flex-row gap-3 mt-4">
                             {project.livePreviewLink && (
                                 <a
+                                    ref={liveBtnRef}
+                                    onMouseEnter={() => onBtnEnter(liveBtnRef.current)}
+                                    onMouseLeave={() => onBtnLeave(liveBtnRef.current)}
                                     href={project.livePreviewLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex-1 py-3 rounded-xl font-inter font-bold text-[12px] md:text-[14px] flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer shadow-lg"
+                                    className="flex-1 py-3 rounded-xl font-inter font-bold text-[12px] md:text-[14px] flex items-center justify-center gap-2 active:scale-95 cursor-pointer shadow-lg"
                                     style={{ backgroundColor: 'rgb(var(--contrast-rgb))', color: 'rgb(var(--theme-rgb))' }}
                                 >
                                     Live Preview <ExternalLink size={16} />
@@ -95,8 +147,11 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                             )}
 
                             <Link
+                                ref={docBtnRef}
+                                onMouseEnter={() => onBtnEnter(docBtnRef.current)}
+                                onMouseLeave={() => onBtnLeave(docBtnRef.current)}
                                 to={`/project/${project.id}`}
-                                className="flex-1 py-3 rounded-xl border font-inter font-bold text-[12px] md:text-[14px] flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+                                className="flex-1 py-3 rounded-xl border font-inter font-bold text-[12px] md:text-[14px] flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
                                 style={{
                                     backgroundColor: 'rgb(var(--contrast-rgb) / 0.1)',
                                     borderColor: 'rgb(var(--contrast-rgb) / 0.2)',
@@ -116,16 +171,19 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
         <div
             ref={cardRef}
             onClick={() => onExpand(project.id)}
+            onMouseEnter={onCardEnter}
+            onMouseLeave={onCardLeave}
             className="relative shrink-0 w-full h-full rounded-2xl overflow-hidden cursor-pointer group snap-center border border-white/5"
             style={{
                 background: `linear-gradient(135deg, rgb(var(--box-Linear-1-rgb) / 0.6), rgb(var(--box-Linear-2-rgb) / 0.6))`,
             }}
         >
-            <div className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-500">
+            <div className="absolute inset-0 opacity-40 transition-opacity">
                 <img
+                    ref={collapsedImgRef}
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover"
                     onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop'; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#151226] to-transparent" />
@@ -142,8 +200,9 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                         </span>
                     ))}
                 </div>
-                {/* Collapsed Title: Ensures horizontal fit on tablet grid */}
-                <h3 className="text-[clamp(14px,2.5vw,18px)] font-playfair font-black leading-none tracking-tight group-hover:translate-x-1 transition-transform duration-300"
+                <h3
+                    ref={collapsedTitleRef}
+                    className="text-[clamp(14px,2.5vw,18px)] font-playfair font-black leading-none tracking-tight"
                     style={{ color: 'rgb(var(--contrast-rgb) / 0.95)' }}>
                     {project.title}
                 </h3>

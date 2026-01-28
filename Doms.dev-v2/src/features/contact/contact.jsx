@@ -52,20 +52,40 @@ const Contacts = () => {
       </div>
 
       {/* Social Grid - Standard Links */}
-      <div className="grid grid-cols-2 gap-2 relative z-10 ">
+      <div className="grid grid-cols-2 gap-2 relative z-10">
         {[
-          { icon: <SiLinkedin size={14} />, href: contacts.linkedin },
-          { icon: <SiGithub size={14} />, href: contacts.github },
-          { icon: <SiFacebook size={14} />, href: contacts.facebook },
-          { icon: <SiGmail size={14} />, action: copyToClipboard }
-        ].map((item, idx) => (
-          item.action ? (
+          { icon: <SiLinkedin size={14} />, href: contacts.linkedin, rotate: 3 },
+          { icon: <SiGithub size={14} />, href: contacts.github, rotate: 3 },
+          { icon: <SiFacebook size={14} />, href: contacts.facebook, rotate: 3 },
+          { icon: <SiGmail size={14} />, action: copyToClipboard, rotate: -3 }
+        ].map((item, idx) => {
+          const onEnter = (e) => {
+            gsap.to(e.currentTarget, {
+              rotate: item.rotate,
+              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              color: "#ffffff",
+              duration: 0.3,
+              ease: "power2.out"
+            });
+          };
+
+          const onLeave = (e) => {
+            gsap.to(e.currentTarget, {
+              rotate: 0,
+              backgroundColor: "rgba(255, 255, 255, 0.05)",
+              color: "rgba(255, 255, 255, 0.5)",
+              duration: 0.3,
+              ease: "power2.out"
+            });
+          };
+
+          return item.action ? (
             <button
               key={idx}
               onClick={item.action}
-              className="flex items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/20 transition-all duration-200 cursor-pointer 
-               active:-rotate-3 hover:-rotate-3
-             "
+              onMouseEnter={onEnter}
+              onMouseLeave={onLeave}
+              className="flex items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 cursor-pointer"
             >
               {item.icon}
             </button>
@@ -75,16 +95,14 @@ const Contacts = () => {
               href={item.href}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/20 transition-all duration-200 cursor-pointer
-               active:rotate-3 hover:rotate-3
-              
-              "
-
+              onMouseEnter={onEnter}
+              onMouseLeave={onLeave}
+              className="flex items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 cursor-pointer"
             >
               {item.icon}
             </a>
-          )
-        ))}
+          );
+        })}
       </div>
       {/* Label */}
       <p className="text-[8px] text-gray-100 font-mono uppercase mt-2 italic opacity-50 ">

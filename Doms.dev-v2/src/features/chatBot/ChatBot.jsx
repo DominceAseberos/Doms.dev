@@ -1,23 +1,57 @@
-// src/features/chat/ChatBot.jsx
-import React from "react";
+import React, { useRef } from "react";
 import { useChat } from "./hooks/useChat";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { Send, Bot, Sparkles } from "lucide-react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const ChatBot = () => {
   const { chatbotConfig } = usePortfolioData();
-  // 1. Destructure 'suggestions' from the hook
   const { messages, input, setInput, sendMessage, isTyping, chatContainerRef, suggestions } = useChat();
+  const componentRef = useRef(null);
+
+  const { contextSafe } = useGSAP({ scope: componentRef });
+
+  const onChipEnter = contextSafe((e) => {
+    gsap.to(e.currentTarget, {
+      scale: 1.1,
+      rotate: -3,
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+      color: "#ffffff",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  });
+
+  const onChipLeave = contextSafe((e) => {
+    gsap.to(e.currentTarget, {
+      scale: 1,
+      rotate: 0,
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
+      color: "rgba(156, 163, 175, 1)", // gray-300
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  });
+
+  const onSendEnter = contextSafe((e) => {
+    gsap.to(e.currentTarget, { scale: 1.1, duration: 0.3, ease: "power2.out" });
+  });
+
+  const onSendLeave = contextSafe((e) => {
+    gsap.to(e.currentTarget, { scale: 1, duration: 0.3, ease: "power2.out" });
+  });
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !isTyping) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       sendMessage();
     }
   };
 
-
   return (
     <div
+      ref={componentRef}
       className="rounded-2xl w-full h-full max-h-full flex flex-col overflow-hidden shadow-xl border border-white/20"
       style={{
         background: `linear-gradient(
@@ -71,15 +105,14 @@ const ChatBot = () => {
 
         {/* Chips Row - Horizontal Scroll */}
         <div className="flex gap-2 p-2 overflow-x-auto no-scrollbar mask-gradient">
-          {/* Loop over the dynamic suggestions from the hook */}
           {suggestions.map((chip) => (
             <button
               key={chip}
               onClick={() => sendMessage(chip)}
+              onMouseEnter={onChipEnter}
+              onMouseLeave={onChipLeave}
               disabled={isTyping}
-              className="flex-none px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold tracking-wider uppercase text-gray-300 hover:bg-white/20 hover:text-white  disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap 
-              transition-all duration-200 hover:-rotate-3 hover:scale-110 active:-rotate-3 active:scale-110
-              "
+              className="flex-none px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold tracking-wider uppercase text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
             >
               {chip}
             </button>
@@ -95,13 +128,14 @@ const ChatBot = () => {
             onKeyDown={handleKeyDown}
             disabled={isTyping}
             placeholder={isTyping ? "Waiting for response..." : "Ask about my projects..."}
-
             className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white font-inter text-sm placeholder-white/40 focus:outline-none focus:ring-1 transition-all duration-200 focus:ring-[rgba(var(--contrast-rgb))] disabled:opacity-50"
           />
           <button
             onClick={() => sendMessage()}
+            onMouseEnter={onSendEnter}
+            onMouseLeave={onSendLeave}
             disabled={!input.trim() || isTyping}
-            className="p-2 bg-[rgba(var(--contrast-rgb))] hover:scale-110 text-black rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 bg-[rgba(var(--contrast-rgb))] text-black rounded-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Send className="w-5 h-5" />
           </button>

@@ -1,9 +1,32 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { usePortfolioData } from "../../../hooks/usePortfolioData";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const AboutMeCard = () => {
     const { profile } = usePortfolioData();
+    const buttonRef = useRef(null);
+
+    const { contextSafe } = useGSAP({ scope: buttonRef });
+
+    const onMouseEnter = contextSafe(() => {
+        gsap.to(buttonRef.current, {
+            scale: 1.1,
+            rotate: -1,
+            duration: 0.3,
+            ease: "power2.out"
+        });
+    });
+
+    const onMouseLeave = contextSafe(() => {
+        gsap.to(buttonRef.current, {
+            scale: 1,
+            rotate: 0,
+            duration: 0.3,
+            ease: "power2.out"
+        });
+    });
 
     return (
         <div
@@ -24,7 +47,10 @@ const AboutMeCard = () => {
             <div className="w-full flex justify-end">
                 <Link to="/about">
                     <button
-                        className="w-fit px-4 py-2.5 rounded-full text-black font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] transition-all duration-200 active:scale-110 active:-rotate-2 hover:scale-110 hover:-rotate-1 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50"
+                        ref={buttonRef}
+                        onMouseEnter={onMouseEnter}
+                        onMouseLeave={onMouseLeave}
+                        className="w-fit px-4 py-2.5 rounded-full text-black font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50 cursor-pointer"
                         style={{
                             background: `rgb(var(--contrast-rgb))`,
                         }}

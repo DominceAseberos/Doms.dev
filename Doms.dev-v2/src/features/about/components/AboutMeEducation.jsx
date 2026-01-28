@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import umtcLogo from '../../../assets/umtc-logo.png';
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
+    const logoRef = useRef(null);
+    const { contextSafe } = useGSAP({ scope: logoRef });
+
+    const onEnter = contextSafe(() => {
+        gsap.to(logoRef.current, { scale: 1.05, duration: 0.3, ease: "power2.out" });
+    });
+
+    const onLeave = contextSafe(() => {
+        gsap.to(logoRef.current, { scale: 1, duration: 0.3, ease: "power2.out" });
+    });
+
     return (
         <div
             ref={educationCardRef}
@@ -15,10 +28,13 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
             }}
         >
             <div
+                ref={logoRef}
+                onMouseEnter={onEnter}
+                onMouseLeave={onLeave}
                 className="scroll-reveal w-full h-full rounded-xl flex items-center justify-center
                 md:w-1/2 md:h-full md:flex md:flex-row md:justify-center
                 lg:w-1/2 lg:h-full lg:flex lg:flex-row lg:justify-center
-                bg-white border cursor-pointer hover:scale-105 transition-transform duration-300"
+                bg-white border cursor-pointer"
                 onClick={() => onExpand('education')}
                 style={{
                     background: '#fff',
