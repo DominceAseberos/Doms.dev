@@ -79,5 +79,6 @@ export const useMusicPlayer = (activeTrackId, onNextTrack) => {
     shouldSlide: marquee.shouldSlide,
     durationSlide: marquee.durationSlide,
     canvasRef: visualizer.canvasRef,
+    drawVisualizer: visualizer.drawVisualizer,
   };
 };

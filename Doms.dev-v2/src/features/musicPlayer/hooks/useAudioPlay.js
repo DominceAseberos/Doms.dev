@@ -56,6 +56,11 @@ export const useAudioPlayback = (onEnded) => {
       audio.removeEventListener('loadstart', handleLoadStart);
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
+
+      // Clean up the audio instance itself to prevent orphaned playing audio
+      audio.pause();
+      audio.src = '';
+      audio.load();
     };
   }, []);
 

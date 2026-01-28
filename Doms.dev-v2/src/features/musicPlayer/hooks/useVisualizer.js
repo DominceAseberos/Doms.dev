@@ -50,19 +50,27 @@ export const useVisualizer = (options = {}) => {
     isPlayingRef.current = true;
     if (animationRef.current) return;
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
     const bufferLength = analyserRef.current.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
     const renderFrame = () => {
-      // Auto-sleep check
+      // Setup dynamic canvas lookup
+      const canvas = canvasRef.current;
+      if (!canvas) {
+        animationRef.current = requestAnimationFrame(renderFrame);
+        return;
+      }
+      const ctx = canvas.getContext('2d');
+
+      // Auto-sleep check (Disabled to maintain idle/shrink state visibility)
+      /*
       if (!isPlayingRef.current && smoothBassRef.current < 0.01 && particlesRef.current.length === 0) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
         return;
       }
+      */
 
       animationRef.current = requestAnimationFrame(renderFrame);
 
@@ -78,9 +86,8 @@ export const useVisualizer = (options = {}) => {
       const cy = height / 2;
       const PADDING = 10;
 
-      const MAX_CIRCLE_SIZE = 120;
       const availableSpace = Math.min(width, height) / 2;
-      const maxRadius = Math.min(availableSpace, MAX_CIRCLE_SIZE) - PADDING;
+      const maxRadius = availableSpace - PADDING;
 
 
       const now = performance.now();
