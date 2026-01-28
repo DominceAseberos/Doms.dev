@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/authService';
+import { LayoutGrid, User, FolderKanban, Music, Contact, GraduationCap, Github, ExternalLink, HardDrive } from 'lucide-react';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -30,26 +31,61 @@ const AdminDashboard = () => {
                     </button>
                 </header>
 
-                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div className="p-6 rounded-2xl border border-white/5 bg-white/5 space-y-4">
-                        <h2 className="text-xl font-bold">Profile Manager</h2>
-                        <p className="text-xs opacity-50">Edit your name, bio, and live status.</p>
-                        <div className="pt-4">
-                            <span className="text-[10px] uppercase font-bold tracking-widest px-3 py-1 bg-white/10 rounded-full opacity-50">Coming Soon</span>
+                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {/* Dashboard Manager - NEW */}
+                    <div
+                        onClick={() => navigate('/admin/dashboard')}
+                        className="group p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer space-y-4"
+                    >
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <LayoutGrid size={24} style={{ color: 'rgb(var(--contrast-rgb))' }} />
+                        </div>
+                        <div className="space-y-1">
+                            <h2 className="text-xl font-bold">Dashboard</h2>
+                            <p className="text-[10px] opacity-50 uppercase tracking-widest font-mono">Bento / Socials / Stacks</p>
                         </div>
                     </div>
 
-                    <div className="p-6 rounded-2xl border border-white/5 bg-white/5 space-y-4">
-                        <h2 className="text-xl font-bold">Project Manager</h2>
-                        <p className="text-xs opacity-50">Add, move, or delete portfolio projects.</p>
-                        <div className="pt-4">
-                            <span className="text-[10px] uppercase font-bold tracking-widest px-3 py-1 bg-white/10 rounded-full opacity-50">Coming Soon</span>
+                    {/* Profile Manager */}
+                    <div
+                        onClick={() => navigate('/admin/profile')}
+                        className="group p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer space-y-4"
+                    >
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <User size={24} style={{ color: 'rgb(var(--contrast-rgb))' }} />
+                        </div>
+                        <div className="space-y-1">
+                            <h2 className="text-xl font-bold">Profile</h2>
+                            <p className="text-[10px] opacity-50 uppercase tracking-widest font-mono">Identity / Persona</p>
                         </div>
                     </div>
 
-                    <div className="p-6 rounded-2xl border border-white/5 bg-white/5 space-y-4 opacity-50">
-                        <h2 className="text-xl font-bold">Media Center</h2>
-                        <p className="text-xs">Manage project assets and optimizations.</p>
+                    {/* Project Manager */}
+                    <div
+                        onClick={() => navigate('/admin/projects')}
+                        className="group p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer space-y-4"
+                    >
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <FolderKanban size={24} style={{ color: 'rgb(var(--contrast-rgb))' }} />
+                        </div>
+                        <div className="space-y-1">
+                            <h2 className="text-xl font-bold">Projects</h2>
+                            <p className="text-[10px] opacity-50 uppercase tracking-widest font-mono">Portfolio / Case Studies</p>
+                        </div>
+                    </div>
+
+                    {/* Media Center */}
+                    <div
+                        onClick={() => navigate('/admin/media')}
+                        className="group p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer space-y-4"
+                    >
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <HardDrive size={24} style={{ color: 'rgb(var(--contrast-rgb))' }} />
+                        </div>
+                        <div className="space-y-1">
+                            <h2 className="text-xl font-bold">Media</h2>
+                            <p className="text-[10px] opacity-50 uppercase tracking-widest font-mono">Assets / Storage</p>
+                        </div>
                     </div>
                 </section>
             </div>

@@ -2,12 +2,6 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 
-import MainLayout from "./layout/MainLayout.jsx"
-import Dashboard from "./pages/dashboard.jsx"
-import AboutMePage from "./pages/AboutMePage.jsx"
-import ProjectDetails from "./pages/ProjectDetails.jsx"
-import ScrollToTop from "./components/ScrollToTop.jsx"
-
 // GSAP Performance Optimization
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -37,10 +31,21 @@ import { lazy, Suspense } from 'react'
 import PreLoader from './components/PreLoader'
 import ProtectedRoute from './components/ProtectedRoute'
 import ErrorBoundary from './components/ErrorBoundary'
+import ScrollToTop from "./components/ScrollToTop.jsx"
+
+// Lazy Load Portfolio Pages
+const MainLayout = lazy(() => import('./layout/MainLayout.jsx'));
+const Dashboard = lazy(() => import('./pages/dashboard.jsx'));
+const AboutMePage = lazy(() => import('./pages/AboutMePage.jsx'));
+const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'));
 
 // Lazy Load Admin Pages
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
+const ProjectsManager = lazy(() => import('./pages/admin/ProjectsManager'));
+const ProfileManager = lazy(() => import('./pages/admin/ProfileManager'));
+const MediaCenter = lazy(() => import('./pages/admin/MediaCenter'));
+const DashboardManager = lazy(() => import('./pages/admin/DashboardManager'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -85,6 +90,38 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/projects"
+              element={
+                <ProtectedRoute>
+                  <ProjectsManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfileManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/media"
+              element={
+                <ProtectedRoute>
+                  <MediaCenter />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardManager />
                 </ProtectedRoute>
               }
             />

@@ -101,7 +101,7 @@ export const projectService = {
         const fileExt = file.name.split('.').pop();
         const filePath = `projects/${fileName || Math.random()}.${fileExt}`;
 
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
             .from('project-images')
             .upload(filePath, file, {
                 cacheControl: '31536000',

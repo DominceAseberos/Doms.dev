@@ -13,8 +13,8 @@ const ProjectHeader = () => {
 
     const { contextSafe } = useGSAP({ scope: buttonRef });
 
-    const handleHover = contextSafe(() => {
-        gsap.to(buttonRef.current, {
+    const handleHover = contextSafe((e) => {
+        gsap.to(e.currentTarget, {
             rotation: -2,
             scale: 1.1,
             duration: 0.3,
@@ -22,8 +22,8 @@ const ProjectHeader = () => {
         });
     });
 
-    const handleLeave = contextSafe(() => {
-        gsap.to(buttonRef.current, {
+    const handleLeave = contextSafe((e) => {
+        gsap.to(e.currentTarget, {
             rotation: 0,
             scale: 1,
             duration: 0.3,

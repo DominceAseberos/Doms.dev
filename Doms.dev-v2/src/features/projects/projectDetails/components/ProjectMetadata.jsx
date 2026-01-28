@@ -17,8 +17,8 @@ const ProjectMetadata = ({
 }) => {
     const liveBtnRef = useRef(null);
     const gitBtnRef = useRef(null);
-    const { contextSafe: liveSafe } = useGSAP({ scope: liveBtnRef });
-    const { contextSafe: gitSafe } = useGSAP({ scope: gitBtnRef });
+    useGSAP({ scope: liveBtnRef });
+    useGSAP({ scope: gitBtnRef });
 
     const handleHover = (ref) => {
         gsap.to(ref.current, {

@@ -20,7 +20,7 @@ const StatsGitHub = () => {
   const username = profile.githubUsername;
 
   // Use the persistent store
-  const { profile: githubProfile, loading, fetchGitHubData, error } = useGitHubStore();
+  const { profile: githubProfile, loading, fetchGitHubData } = useGitHubStore();
 
   const containerRef = useRef(null);
   const calendarDataRef = useRef([]);
@@ -41,7 +41,7 @@ const StatsGitHub = () => {
     totalContributions: totalContributions // Use local state
   };
 
-  const [contribData, setContribData] = useState([]);
+  // contribData removed as it was unused
   // Loading state is now handled by the store, but we can also use local derivative if needed
   // implementation details...
 
@@ -64,7 +64,7 @@ const StatsGitHub = () => {
 
     const total = data.reduce((sum, w) => sum + w.contributions, 0);
 
-    setContribData(data);
+    // setContribData(data); // Removed unused state
     setTotalContributions(total);
   }, [loading]);
 

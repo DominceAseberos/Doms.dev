@@ -59,14 +59,14 @@ const ProjectDocumentation = ({ documentation, documentationFiles = [] }) => {
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 components={{
-                                    p: ({ node, ...props }) => <p className="doc-paragraph mb-4 leading-relaxed" style={{ color: 'rgba(var(--contrast-rgb), 0.8)' }} {...props} />,
-                                    h2: ({ node, ...props }) => <h2 className="doc-paragraph text-xl font-playfair font-bold mt-8 mb-4" style={{ color: 'rgb(var(--contrast-rgb))' }} {...props} />,
-                                    h3: ({ node, ...props }) => <h3 className="doc-paragraph text-lg font-playfair font-bold mt-6 mb-3" style={{ color: 'rgb(var(--contrast-rgb))' }} {...props} />,
-                                    ul: ({ node, ...props }) => <ul className="doc-paragraph list-disc ml-6 mb-4 space-y-2" style={{ color: 'rgba(var(--contrast-rgb), 0.8)' }} {...props} />,
-                                    ol: ({ node, ...props }) => <ol className="doc-paragraph list-decimal ml-6 mb-4 space-y-2" style={{ color: 'rgba(var(--contrast-rgb), 0.8)' }} {...props} />,
-                                    strong: ({ node, ...props }) => <strong className="font-bold" style={{ color: 'rgb(var(--contrast-rgb))' }} {...props} />,
-                                    code: ({ node, ...props }) => <code className="px-1.5 py-0.5 rounded text-sm" style={{ background: 'rgba(var(--contrast-rgb), 0.1)', color: 'rgb(var(--contrast-rgb))' }} {...props} />,
-                                    pre: ({ node, ...props }) => (
+                                    p: ({ ...props }) => <p className="doc-paragraph mb-4 leading-relaxed" style={{ color: 'rgba(var(--contrast-rgb), 0.8)' }} {...props} />,
+                                    h2: ({ ...props }) => <h2 className="doc-paragraph text-xl font-playfair font-bold mt-8 mb-4" style={{ color: 'rgb(var(--contrast-rgb))' }} {...props} />,
+                                    h3: ({ ...props }) => <h3 className="doc-paragraph text-lg font-playfair font-bold mt-6 mb-3" style={{ color: 'rgb(var(--contrast-rgb))' }} {...props} />,
+                                    ul: ({ ...props }) => <ul className="doc-paragraph list-disc ml-6 mb-4 space-y-2" style={{ color: 'rgba(var(--contrast-rgb), 0.8)' }} {...props} />,
+                                    ol: ({ ...props }) => <ol className="doc-paragraph list-decimal ml-6 mb-4 space-y-2" style={{ color: 'rgba(var(--contrast-rgb), 0.8)' }} {...props} />,
+                                    strong: ({ ...props }) => <strong className="font-bold" style={{ color: 'rgb(var(--contrast-rgb))' }} {...props} />,
+                                    code: ({ ...props }) => <code className="px-1.5 py-0.5 rounded text-sm" style={{ background: 'rgba(var(--contrast-rgb), 0.1)', color: 'rgb(var(--contrast-rgb))' }} {...props} />,
+                                    pre: ({ ...props }) => (
                                         <pre
                                             className="doc-paragraph mb-4 p-4 rounded-lg overflow-x-auto text-sm"
                                             style={{

@@ -91,7 +91,7 @@ const fetchSupabaseData = async () => {
  * Fetches from Supabase and falls back to local JSON if error or loading.
  */
 export const usePortfolioData = () => {
-    const { data, isLoading, isError } = useQuery({
+    const { data } = useQuery({
         queryKey: ['portfolioData'],
         queryFn: fetchSupabaseData,
         staleTime: 1000 * 60 * 60, // 1 hour cache

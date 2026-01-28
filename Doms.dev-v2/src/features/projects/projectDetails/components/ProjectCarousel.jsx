@@ -12,7 +12,6 @@ const ProjectCarousel = ({
     currentImageIndex,
     nextImage,
     prevImage,
-    setCurrentImageIndex
 }) => {
     const carouselRef = useRef(null);
     const buttonsRef = useRef([]);

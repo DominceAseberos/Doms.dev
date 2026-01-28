@@ -5,7 +5,6 @@ export const OverlayDropdown = memo(({
   availableMoods,
   onMoodChange,
   isOpenModal,
-  setOpenModal,
   dropdownRef,
 }) => {
   return (
@@ -13,7 +12,7 @@ export const OverlayDropdown = memo(({
       className={`
         absolute -translate-y-12 border flex justify-between h-max  bottom-0 overflow-y-scroll  border-[rgb(var(--contrast-rgb))] rounded-xl shadow-xl 
         transition-all duration-300 
-      ${isOpenModal ? `w-full opacity-100` : `w-0 opacity-2`}
+      ${isOpenModal ? `w-full opacity-100` : `w-0 opacity-0`}
       `}
       style={{
         scrollbarWidth: `thin`,

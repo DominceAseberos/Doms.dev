@@ -111,7 +111,6 @@ const MusicPlayer = () => {
     coverPhotoSrc,
     isMetadataLoading,
     isImageLoading,
-    artistName,
     textRef,
     containerRef,
     shouldSlide,

@@ -55,19 +55,19 @@ export const useChat = () => {
       const botResponse = await tryGemini(messageText);
       addBotMessage(botResponse);
     }
-    catch (geminiError) {
+    catch (_geminiError) {
       console.warn("⚠️ Gemini failed. Switching to Level 2: Mistral...");
       try {
         const mistralResponse = await tryOpenRouter("mistralai/devstral-2512:free");
         addBotMessage(mistralResponse);
       }
-      catch (mistralError) {
+      catch (_mistralError) {
         console.warn("⚠️ Mistral failed. Switching to Level 3: DeepSeek R1...");
         try {
           const r1Response = await tryOpenRouter("deepseek/deepseek-r1-0528:free");
           addBotMessage(r1Response);
         }
-        catch (r1Error) {
+        catch (_r1Error) {
           console.error("❌ All models failed.");
           addBotMessage("I'm currently resting my brain. Please try again in a minute!");
         }
