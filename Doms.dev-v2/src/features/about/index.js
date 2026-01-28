@@ -1,0 +1,8 @@
+export { default as AboutMeCard } from './components/AboutMeCard';
+export { default as AboutMeHero } from './components/AboutMeHero';
+export { default as AboutMeIdentity } from './components/AboutMeIdentity';
+export { default as AboutMeEducation } from './components/AboutMeEducation';
+export { default as AboutMeResume } from './components/AboutMeResume';
+export { default as AboutMeFooter } from './components/AboutMeFooter';
+export { default as AboutMeTechStack } from './components/AboutMeTechStack';
+export * from './hooks/useAboutMotion';

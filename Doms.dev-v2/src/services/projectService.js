@@ -21,35 +21,16 @@ export const projectService = {
     },
 
     createProject: async (projectData) => {
-        // Shift existing projects
-        const order = projectData.display_order || 999;
-        await supabase.rpc('reorder_projects', {
-            p_id: 'TEMP_NEW', // Placeholder for shift logic
-            p_new_order: order
-        });
-
         const { data, error } = await supabase
             .from('projects')
             .insert([projectData])
             .select()
             .single();
         if (error) throw error;
-
-        // Clean up sequence
-        await supabase.rpc('fix_project_sequence');
         return data;
     },
 
     updateProject: async (id, projectData) => {
-        if (projectData.display_order !== undefined) {
-            await supabase.rpc('reorder_projects', {
-                p_id: id,
-                p_new_order: projectData.display_order
-            });
-            // Sequence fix handles consolidation after shift
-            await supabase.rpc('fix_project_sequence');
-        }
-
         const { data, error } = await supabase
             .from('projects')
             .update(projectData)
@@ -58,11 +39,6 @@ export const projectService = {
             .single();
         if (error) throw error;
         return data;
-    },
-
-    fixProjectSequence: async () => {
-        const { error } = await supabase.rpc('fix_project_sequence');
-        if (error) throw error;
     },
 
     deleteProject: async (id) => {

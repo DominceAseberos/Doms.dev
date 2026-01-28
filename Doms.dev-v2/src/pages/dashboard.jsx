@@ -2,7 +2,7 @@
 import MusicPlayer from '../features/musicPlayer/MusicPlayer'
 import Profile from '../features/Profile'
 import ThemeToggle from '../features/ThemeToggle'
-import AboutMe from '../features/abooutMe/AboutMe'
+import { AboutMeCard } from '../features/about'
 import ChatBot from '../features/chatBot/ChatBot'
 import StatsGitHub from '../features/github/StatsGitHub'
 import Contacts from '../features/contact/contact'
@@ -79,7 +79,7 @@ const Dashboard = () => {
 
                 {/* ABOUT ME */}
                 <div className="col-span-1 row-span-1 h-full">
-                    <AboutMe />
+                    <AboutMeCard />
                 </div>
 
                 {/* CHATBOT */}
@@ -136,7 +136,7 @@ const Dashboard = () => {
                         <div className='col-span-4 md:40 lg:h-50 desktop-anim-item'>
                             <div className='flex flex-col justify-between gap-2 h-full'>
                                 <div className="md:h-30 lg:h-40">
-                                    <AboutMe />
+                                    <AboutMeCard />
                                 </div>
 
                                 <ThemeToggle />

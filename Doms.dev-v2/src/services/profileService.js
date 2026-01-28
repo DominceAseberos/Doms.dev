@@ -11,11 +11,13 @@ export const profileService = {
     },
 
     updateProfile: async (id, profileData) => {
-        const { error } = await supabase
+        const { data, error } = await supabase
             .from('profiles')
             .update(profileData)
-            .eq('id', id);
+            .eq('id', id)
+            .select()
+            .single();
         if (error) throw error;
-        return true;
+        return data;
     },
 };

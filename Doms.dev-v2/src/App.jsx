@@ -41,9 +41,6 @@ import ErrorBoundary from './components/ErrorBoundary'
 // Lazy Load Admin Pages
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
-const ProfileManager = lazy(() => import('./pages/admin/ProfileManager'));
-const ProjectsManager = lazy(() => import('./pages/admin/ProjectsManager'));
-const MediaCenter = lazy(() => import('./pages/admin/MediaCenter'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -88,30 +85,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/profile"
-              element={
-                <ProtectedRoute>
-                  <ProfileManager />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/projects"
-              element={
-                <ProtectedRoute>
-                  <ProjectsManager />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/media"
-              element={
-                <ProtectedRoute>
-                  <MediaCenter />
                 </ProtectedRoute>
               }
             />

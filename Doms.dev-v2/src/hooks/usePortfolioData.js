@@ -52,8 +52,8 @@ const fetchSupabaseData = async () => {
         livePreviewLink: p.live_preview_link, // Critical: Map to camelCase
         githubLink: p.github_link,
         fullDocumentation: p.full_documentation,
+        documentationFiles: p.documentation_files || [], // Critical: Map to camelCase
         displayOrder: p.display_order
-        // documentationFiles missing in DB currently, falling back if needed
     })) || [];
 
     // Transform Tech Stack
