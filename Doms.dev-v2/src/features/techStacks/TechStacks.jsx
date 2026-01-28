@@ -47,7 +47,7 @@ const TechMarquee = () => {
       onMouseEnter={pause}
       onMouseLeave={play}
       style={{
-        background: `rgba(255, 255, 255, 0.02)`,
+        background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`,
         backdropFilter: 'blur(10px)',
         border: '1px solid rgba(255, 255, 255, 0.05)'
       }}>
