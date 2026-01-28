@@ -80,9 +80,9 @@ const ChatBot = () => {
             className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-300 ${msg.sender === "user"
-                ? "bg-[rgba(var(--contrast-rgb))] text-black rounded-br-none"
-                : "bg-white/10 text-gray-100 backdrop-blur-sm rounded-bl-none border border-white/10"
+              className={`max-w-[85%] p-3.5 rounded-2xl text-sm leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-400 ${msg.sender === "user"
+                ? "bg-[rgba(var(--contrast-rgb))] text-black rounded-br-none font-medium shadow-lg"
+                : "bg-white/5 text-gray-100 backdrop-blur-xl rounded-bl-none border border-white/10 shadow-inner"
                 }`}
             >
               {msg.text}

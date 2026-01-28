@@ -176,10 +176,10 @@ const Dashboard = () => {
                         <div className='col-span-6 desktop-anim-item'>
                             <TechStacks />
                         </div>
-                        <FloatingChat />
                     </div >
                 </div >
             </div >
+            <FloatingChat />
         </main >
     )
 }
