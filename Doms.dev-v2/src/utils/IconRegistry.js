@@ -91,6 +91,41 @@ export const IconRegistry = {
 };
 
 /**
+ * Official Brand Colors Mapping
+ * Pairs icon names with their official hex colors for the "Vibrant Neon" styling.
+ */
+export const BrandColors = {
+    'React': '#61DAFB',
+    'Next.js': '#FFFFFF',
+    'Tailwind': '#06B6D4',
+    'GSAP': '#88CE02',
+    'Figma': '#F24E1E',
+    'Supabase': '#3ECF8E',
+    'Python': '#3776AB',
+    'Flask': '#FFFFFF',
+    'OpenCV': '#5C3EE8',
+    'Firebase': '#FFCA28',
+    'Vite': '#646CFF',
+    'Github': '#FFFFFF',
+    'Lucide': '#F59E0B',
+    'Linkedin': '#0A66C2',
+    'Mail': '#EA4335',
+    'Code2': '#7C3AED',
+    'Database': '#3B82F6',
+    'Terminal': '#10B981',
+    'Smartphone': '#F472B6',
+    'Server': '#6366F1'
+};
+
+/**
+ * Helper to get a brand color by name.
+ * Fallback to a neutral white/gray if not specified.
+ */
+export const getBrandColorByName = (name) => {
+    return BrandColors[name] || '#94a3b8'; // default to slate-400
+};
+
+/**
  * Helper to get an icon component by its registry name.
  * Fallback to Code2 if name is not found.
  */

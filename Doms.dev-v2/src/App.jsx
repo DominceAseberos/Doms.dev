@@ -46,6 +46,7 @@ const ProjectsManager = lazy(() => import('./pages/admin/ProjectsManager'));
 const ProfileManager = lazy(() => import('./pages/admin/ProfileManager'));
 const MediaCenter = lazy(() => import('./pages/admin/MediaCenter'));
 const DashboardManager = lazy(() => import('./pages/admin/DashboardManager'));
+const AdminLayout = lazy(() => import('./pages/admin/components/AdminLayout'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -89,7 +90,9 @@ function App() {
               path="/admin"
               element={
                 <ProtectedRoute>
-                  <AdminDashboard />
+                  <AdminLayout>
+                    <AdminDashboard />
+                  </AdminLayout>
                 </ProtectedRoute>
               }
             />
@@ -97,7 +100,9 @@ function App() {
               path="/admin/projects"
               element={
                 <ProtectedRoute>
-                  <ProjectsManager />
+                  <AdminLayout>
+                    <ProjectsManager />
+                  </AdminLayout>
                 </ProtectedRoute>
               }
             />
@@ -105,7 +110,9 @@ function App() {
               path="/admin/profile"
               element={
                 <ProtectedRoute>
-                  <ProfileManager />
+                  <AdminLayout>
+                    <ProfileManager />
+                  </AdminLayout>
                 </ProtectedRoute>
               }
             />
@@ -113,7 +120,9 @@ function App() {
               path="/admin/media"
               element={
                 <ProtectedRoute>
-                  <MediaCenter />
+                  <AdminLayout>
+                    <MediaCenter />
+                  </AdminLayout>
                 </ProtectedRoute>
               }
             />
@@ -121,7 +130,9 @@ function App() {
               path="/admin/dashboard"
               element={
                 <ProtectedRoute>
-                  <DashboardManager />
+                  <AdminLayout>
+                    <DashboardManager />
+                  </AdminLayout>
                 </ProtectedRoute>
               }
             />

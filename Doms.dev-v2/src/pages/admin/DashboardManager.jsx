@@ -7,10 +7,13 @@ import {
     Code2, Globe, Github, Linkedin, Twitter, MessageSquare
 } from 'lucide-react';
 
+import { useAdminStore } from '../../store/adminStore';
+
+import strings from '../../config/adminStrings.json';
+
 const DashboardManager = () => {
     const [activeTab, setActiveTab] = useState('socials');
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
+    const { setAdminLoading } = useAdminStore();
     const [data, setData] = useState({ socials: [], tech: [], education: [], tracks: [] });
     const [editingItem, setEditingItem] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,11 +22,11 @@ const DashboardManager = () => {
     const containerRef = useRef(null);
 
     useEffect(() => {
-        fetchAllData();
+        fetchAllData(true);
     }, []);
 
-    const fetchAllData = async () => {
-        setLoading(true);
+    const fetchAllData = async (showOverlay = false) => {
+        if (showOverlay) setAdminLoading(true, 'FETCHING ECOSYSTEM DATA');
         try {
             const [socials, tech, education, tracks] = await Promise.all([
                 dashboardService.getAll('contacts'),
@@ -35,12 +38,12 @@ const DashboardManager = () => {
         } catch (err) {
             console.error('Failed to fetch data:', err);
         } finally {
-            setLoading(false);
+            if (showOverlay) setAdminLoading(false);
         }
     };
 
     const handleSave = async (table, payload) => {
-        setSaving(true);
+        setAdminLoading(true, 'SYNCHRONIZING CHANGES');
         try {
             if (editingItem?.id) {
                 await dashboardService.update(table, editingItem.id, payload);
@@ -53,17 +56,20 @@ const DashboardManager = () => {
         } catch (err) {
             alert('Save failed: ' + err.message);
         } finally {
-            setSaving(false);
+            setAdminLoading(false);
         }
     };
 
     const handleDelete = async (table, id) => {
-        if (!window.confirm('Are you sure?')) return;
+        if (!window.confirm('Terminate this node?')) return;
+        setAdminLoading(true, 'DELETING NODE');
         try {
             await dashboardService.delete(table, id);
             await fetchAllData();
         } catch (err) {
             alert('Delete failed: ' + err.message);
+        } finally {
+            setAdminLoading(false);
         }
     };
 
@@ -93,13 +99,15 @@ const DashboardManager = () => {
                             className="flex items-center gap-2 text-[10px] uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity group cursor-pointer"
                         >
                             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                            System Hub
+                            {strings.common.backToHub}
                         </button>
                         <header className="space-y-1">
-                            <h1 className="text-5xl font-black tracking-tighter" style={{ color: 'rgb(var(--contrast-rgb))' }}>
-                                DASHBOARD <span className="opacity-20 text-white italic font-light">MANAGER</span>
+                            <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-white">
+                                {strings.dashboard.titlePrefix} <span className="text-primary italic font-light drop-shadow-[0_0_15px_rgba(var(--theme-rgb),0.5)]">{strings.dashboard.titleSuffix}</span>
                             </h1>
-                            <p className="text-xs uppercase tracking-[0.3em] opacity-40 font-mono">Bento Ecosystem Control / V2.0</p>
+                            <p className="text-[10px] uppercase tracking-[0.3em] opacity-40 font-mono">
+                                {strings.dashboard.subtitle}
+                            </p>
                         </header>
                     </div>
 
@@ -136,11 +144,7 @@ const DashboardManager = () => {
 
                 {/* Content Area */}
                 <div className="min-h-[400px]">
-                    {loading ? (
-                        <div className="flex items-center justify-center py-40">
-                            <RefreshCw className="animate-spin opacity-20" size={48} />
-                        </div>
-                    ) : renderTabContent()}
+                    {renderTabContent()}
                 </div>
             </div>
 
@@ -163,19 +167,19 @@ const DashboardManager = () => {
 const SocialsTab = ({ items, onEdit, onDelete }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
         {items.map(item => (
-            <div key={item.id} className="p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 transition-all group flex flex-col justify-between h-48">
+            <div key={item.id} className="p-6 rounded-2xl border border-white/5 bg-[#0f0f0f] hover:border-white/10 transition-all group flex flex-col justify-between h-48">
                 <div className="flex justify-between items-start">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
                         <Globe size={20} className="opacity-50" />
                     </div>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => onEdit(item)} className="p-2 hover:bg-white/10 rounded-xl transition-colors"><Edit3 size={14} /></button>
-                        <button onClick={() => onDelete(item.id)} className="p-2 hover:bg-red-500/10 text-red-500/50 hover:text-red-500 rounded-xl transition-colors"><Trash2 size={14} /></button>
+                        <button onClick={() => onEdit(item)} className="p-2 hover:bg-white/10 rounded-xl transition-colors cursor-pointer"><Edit3 size={14} /></button>
+                        <button onClick={() => onDelete(item.id)} className="p-2 hover:bg-red-500/10 text-red-500/50 hover:text-red-500 rounded-xl transition-colors cursor-pointer"><Trash2 size={14} /></button>
                     </div>
                 </div>
                 <div className="space-y-1">
                     <h3 className="text-xl font-bold tracking-tight">{item.platform}</h3>
-                    <p className="text-[10px] opacity-40 truncate font-mono">{item.url}</p>
+                    <p className="text-[10px] opacity-40 truncate font-mono uppercase tracking-widest">{item.url}</p>
                 </div>
             </div>
         ))}
@@ -185,7 +189,7 @@ const SocialsTab = ({ items, onEdit, onDelete }) => (
 const TechTab = ({ items, onEdit, onDelete }) => (
     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {items.map(item => (
-            <div key={item.id} className="aspect-square p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 transition-all group flex flex-col items-center justify-center relative">
+            <div key={item.id} className="aspect-square p-6 rounded-2xl border border-white/5 bg-[#0f0f0f] hover:border-white/10 transition-all group flex flex-col items-center justify-center relative">
                 {item.icon_url ? (
                     <img src={item.icon_url} alt={item.name} className="w-10 h-10 object-contain grayscale group-hover:grayscale-0 transition-all brightness-200 group-hover:brightness-100" />
                 ) : (
@@ -193,8 +197,8 @@ const TechTab = ({ items, onEdit, onDelete }) => (
                 )}
                 <span className="text-[9px] uppercase font-black tracking-widest mt-4 opacity-40 group-hover:opacity-100 transition-opacity">{item.name}</span>
                 <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacityScale">
-                    <button onClick={() => onEdit(item)} className="p-1.5 bg-black/40 hover:bg-white/10 rounded-lg transition-colors"><Edit3 size={10} /></button>
-                    <button onClick={() => onDelete(item.id)} className="p-1.5 bg-black/40 hover:bg-red-500/20 text-red-500 rounded-lg transition-colors"><Trash2 size={10} /></button>
+                    <button onClick={() => onEdit(item)} className="p-1.5 bg-black/40 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"><Edit3 size={10} /></button>
+                    <button onClick={() => onDelete(item.id)} className="p-1.5 bg-black/40 hover:bg-red-500/20 text-red-500 rounded-lg transition-colors cursor-pointer"><Trash2 size={10} /></button>
                 </div>
             </div>
         ))}
@@ -204,9 +208,9 @@ const TechTab = ({ items, onEdit, onDelete }) => (
 const EducationTab = ({ items, onEdit, onDelete }) => (
     <div className="space-y-4">
         {items.map(item => (
-            <div key={item.id} className="p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 transition-all group flex items-center justify-between">
+            <div key={item.id} className="p-6 rounded-2xl border border-white/5 bg-[#0f0f0f] hover:border-white/10 transition-all group flex items-center justify-between">
                 <div className="flex items-center gap-6">
-                    <div className="w-14 h-14 rounded-2xl bg-white/5 flex flex-col items-center justify-center border border-white/5 font-mono">
+                    <div className="w-14 h-14 rounded-xl bg-white/5 flex flex-col items-center justify-center border border-white/5 font-mono">
                         <span className="text-[10px] font-bold opacity-30">{item.start_year}</span>
                         <span className="text-[10px] font-bold">{item.end_year || 'NOW'}</span>
                     </div>
@@ -216,8 +220,8 @@ const EducationTab = ({ items, onEdit, onDelete }) => (
                     </div>
                 </div>
                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                    <button onClick={() => onEdit(item)} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"><Edit3 size={14} /> Edit</button>
-                    <button onClick={() => onDelete(item.id)} className="p-2 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 rounded-xl"><Trash2 size={18} /></button>
+                    <button onClick={() => onEdit(item)} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 cursor-pointer"><Edit3 size={14} /> Edit</button>
+                    <button onClick={() => onDelete(item.id)} className="p-2 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 rounded-xl cursor-pointer"><Trash2 size={18} /></button>
                 </div>
             </div>
         ))}
@@ -227,8 +231,8 @@ const EducationTab = ({ items, onEdit, onDelete }) => (
 const TracksTab = ({ items, onEdit, onDelete }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {items.map(item => (
-            <div key={item.id} className="p-4 rounded-3xl border border-white/5 bg-white/5 flex gap-4 hover:border-white/10 transition-all group">
-                <div className="w-20 h-20 rounded-2xl bg-black/40 overflow-hidden shrink-0 border border-white/5">
+            <div key={item.id} className="p-4 rounded-2xl border border-white/5 bg-[#0f0f0f] flex gap-4 hover:border-white/10 transition-all group">
+                <div className="w-20 h-20 rounded-xl bg-black/40 overflow-hidden shrink-0 border border-white/5">
                     {item.cover_url ? <img src={item.cover_url} className="w-full h-full object-cover" /> : <Music size={24} className="m-auto mt-7 opacity-10" />}
                 </div>
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
@@ -236,8 +240,8 @@ const TracksTab = ({ items, onEdit, onDelete }) => (
                     <p className="text-[10px] opacity-40 uppercase tracking-widest truncate">{item.artist}</p>
                 </div>
                 <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button onClick={() => onEdit(item)} className="p-2 hover:bg-white/10 rounded-xl"><Edit3 size={14} /></button>
-                    <button onClick={() => onDelete(item.id)} className="p-2 hover:bg-red-500/10 text-red-500/40 hover:text-red-500 rounded-xl"><Trash2 size={14} /></button>
+                    <button onClick={() => onEdit(item)} className="p-2 hover:bg-white/10 rounded-xl cursor-pointer"><Edit3 size={14} /></button>
+                    <button onClick={() => onDelete(item.id)} className="p-2 hover:bg-red-500/10 text-red-500/40 hover:text-red-500 rounded-xl cursor-pointer"><Trash2 size={14} /></button>
                 </div>
             </div>
         ))}
@@ -319,11 +323,10 @@ const Modal = ({ tab, item, onClose, onSave, isSaving }) => {
                                     tab === 'education' ? 'education' : 'tracks',
                             formData
                         )}
-                        disabled={isSaving}
-                        className="w-full py-5 rounded-[1.5rem] bg-white text-black font-black uppercase tracking-widest text-xs hover:bg-gray-200 transition-all disabled:opacity-50 flex items-center justify-center gap-3 active:scale-[0.98]"
+                        className="w-full py-5 rounded-[1.5rem] bg-white text-black font-black uppercase tracking-widest text-[10px] hover:bg-gray-200 transition-all flex items-center justify-center gap-3 active:scale-[0.98] cursor-pointer"
                     >
-                        {isSaving ? <RefreshCw size={16} className="animate-spin" /> : <Save size={16} />}
-                        {isSaving ? 'Synchronizing...' : 'Save Configuration'}
+                        <Save size={16} />
+                        Save Configuration
                     </button>
                 </div>
             </div>

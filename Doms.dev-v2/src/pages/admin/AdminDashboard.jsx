@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LayoutGrid, User, FolderKanban, HardDrive } from 'lucide-react';
 import { authService } from '../../services/authService';
-import { LayoutGrid, User, FolderKanban, Music, Contact, GraduationCap, Github, ExternalLink, HardDrive } from 'lucide-react';
+import strings from '../../config/adminStrings.json';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -12,85 +13,72 @@ const AdminDashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white p-8">
-            <div className="max-w-6xl mx-auto space-y-8">
-                <header className="flex justify-between items-center border-b border-white/5 pb-6">
+        <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8 font-inter">
+            <div className="max-w-6xl mx-auto space-y-12">
+                <header className="flex justify-between items-center border-b border-white/5 pb-10">
                     <div className="space-y-1">
-                        <h1 className="text-4xl font-black tracking-tighter" style={{ color: 'rgb(var(--contrast-rgb))' }}>
-                            ADMIN PANEL
+                        <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-white">
+                            {strings.hub.titlePrefix} <span className="text-primary italic font-light drop-shadow-[0_0_15px_rgba(var(--theme-rgb),0.5)]">{strings.hub.titleSuffix}</span>
                         </h1>
-                        <p className="text-xs uppercase tracking-widest opacity-50 font-mono">
-                            System Management Interface
+                        <p className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-mono">
+                            {strings.hub.subtitle}
                         </p>
                     </div>
                     <button
                         onClick={handleLogout}
-                        className="px-6 py-2 rounded-full border border-red-500/30 text-red-500 text-[10px] font-bold uppercase tracking-widest hover:bg-red-500/10 transition-colors cursor-pointer"
+                        className="px-6 py-3 rounded-xl border border-red-500/40 text-red-500/80 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-red-500/10 hover:text-red-500 transition-all active:scale-95 cursor-pointer shadow-[0_0_20px_rgba(239,68,68,0.1)]"
                     >
-                        Terminal Shutdown
+                        {strings.common.terminateSession}
                     </button>
                 </header>
 
                 <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {/* Dashboard Manager - NEW */}
-                    <div
+                    <AdminCard
                         onClick={() => navigate('/admin/dashboard')}
-                        className="group p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer space-y-4"
-                    >
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <LayoutGrid size={24} style={{ color: 'rgb(var(--contrast-rgb))' }} />
-                        </div>
-                        <div className="space-y-1">
-                            <h2 className="text-xl font-bold">Dashboard</h2>
-                            <p className="text-[10px] opacity-50 uppercase tracking-widest font-mono">Bento / Socials / Stacks</p>
-                        </div>
-                    </div>
+                        icon={LayoutGrid}
+                        title={strings.hub.cards.dashboard.title}
+                        subtitle={strings.hub.cards.dashboard.subtitle}
+                    />
 
-                    {/* Profile Manager */}
-                    <div
+                    <AdminCard
                         onClick={() => navigate('/admin/profile')}
-                        className="group p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer space-y-4"
-                    >
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <User size={24} style={{ color: 'rgb(var(--contrast-rgb))' }} />
-                        </div>
-                        <div className="space-y-1">
-                            <h2 className="text-xl font-bold">Profile</h2>
-                            <p className="text-[10px] opacity-50 uppercase tracking-widest font-mono">Identity / Persona</p>
-                        </div>
-                    </div>
+                        icon={User}
+                        title={strings.hub.cards.identity.title}
+                        subtitle={strings.hub.cards.identity.subtitle}
+                    />
 
-                    {/* Project Manager */}
-                    <div
+                    <AdminCard
                         onClick={() => navigate('/admin/projects')}
-                        className="group p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer space-y-4"
-                    >
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <FolderKanban size={24} style={{ color: 'rgb(var(--contrast-rgb))' }} />
-                        </div>
-                        <div className="space-y-1">
-                            <h2 className="text-xl font-bold">Projects</h2>
-                            <p className="text-[10px] opacity-50 uppercase tracking-widest font-mono">Portfolio / Case Studies</p>
-                        </div>
-                    </div>
+                        icon={FolderKanban}
+                        title={strings.hub.cards.portfolio.title}
+                        subtitle={strings.hub.cards.portfolio.subtitle}
+                    />
 
-                    {/* Media Center */}
-                    <div
+                    <AdminCard
                         onClick={() => navigate('/admin/media')}
-                        className="group p-6 rounded-3xl border border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/[0.07] transition-all cursor-pointer space-y-4"
-                    >
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <HardDrive size={24} style={{ color: 'rgb(var(--contrast-rgb))' }} />
-                        </div>
-                        <div className="space-y-1">
-                            <h2 className="text-xl font-bold">Media</h2>
-                            <p className="text-[10px] opacity-50 uppercase tracking-widest font-mono">Assets / Storage</p>
-                        </div>
-                    </div>
+                        icon={HardDrive}
+                        title={strings.hub.cards.storage.title}
+                        subtitle={strings.hub.cards.storage.subtitle}
+                    />
                 </section>
             </div>
         </div>
     );
 };
+
+const AdminCard = ({ onClick, icon: Icon, title, subtitle }) => (
+    <div
+        onClick={onClick}
+        className="group p-8 rounded-2xl border border-white/5 bg-[#0f0f0f] hover:border-primary/40 transition-all cursor-pointer space-y-6 admin-modal-gradient shadow-2xl relative overflow-hidden"
+    >
+        <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-500 border border-white/5 group-hover:border-primary/30">
+            <Icon size={24} className="text-primary opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+        </div>
+        <div className="space-y-1 relative z-10">
+            <h2 className="text-xl font-bold tracking-tight text-white/90 group-hover:text-white transition-colors">{title}</h2>
+            <p className="text-[10px] opacity-30 uppercase tracking-[0.15em] font-mono group-hover:opacity-60 transition-opacity">{subtitle}</p>
+        </div>
+    </div>
+);
 
 export default AdminDashboard;

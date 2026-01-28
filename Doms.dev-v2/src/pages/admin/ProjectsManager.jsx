@@ -1,19 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { gsap } from 'gsap';
+import {
+    Plus, Edit2, Trash2, X, Upload,
+    Image as ImageIcon, ExternalLink, BookOpen,
+    Eye, EyeOff, Link as LinkIcon, FileText, ArrowLeft, Save
+} from 'lucide-react';
+import gsap from 'gsap';
 import { projectService } from '../../services/projectService';
+import { useAdminStore } from '../../store/adminStore';
 import { getAvailableIconNames, getIconByName } from '../../utils/IconRegistry';
-import { Plus, Edit2, Trash2, ArrowLeft, ExternalLink, BookOpen, X, Save, Image as ImageIcon, Upload, Eye, EyeOff, FileText, Link as LinkIcon } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+import strings from '../../config/adminStrings.json';
+
 const ProjectsManager = () => {
     const [projects, setProjects] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { setAdminLoading } = useAdminStore();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentProject, setCurrentProject] = useState(null);
-    const [isSaving, setIsSaving] = useState(false);
-    const [uploading, setUploading] = useState(false);
     const [isPreviewMode, setIsPreviewMode] = useState(false);
 
     // Tech Stack available options
@@ -25,28 +30,29 @@ const ProjectsManager = () => {
     const gridRef = useRef(null);
 
     useEffect(() => {
-        fetchProjects();
+        fetchProjects(true);
     }, []);
 
-    const fetchProjects = async () => {
+    const fetchProjects = async (showOverlay = false) => {
+        if (showOverlay) setAdminLoading(true, 'FETCHING REPOSITORIES');
         try {
             const data = await projectService.getProjects();
             setProjects(data);
         } catch (err) {
             console.error('Failed to fetch projects:', err);
         } finally {
-            setLoading(false);
+            if (showOverlay) setAdminLoading(false);
         }
     };
 
     useEffect(() => {
-        if (!loading) {
+        if (projects.length > 0) {
             gsap.fromTo(".project-card-admin",
                 { y: 20, opacity: 0 },
                 { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out' }
             );
         }
-    }, [loading, projects]);
+    }, [projects]);
 
     const handleOpenModal = (project = null) => {
         setCurrentProject(project || {
@@ -74,7 +80,7 @@ const ProjectsManager = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        setUploading(true);
+        setAdminLoading(true, 'UPLOADING ASSET');
         try {
             const fileName = `proj_${Date.now()}`;
             const publicUrl = await projectService.uploadProjectImage(file, fileName);
@@ -83,7 +89,7 @@ const ProjectsManager = () => {
             console.error('Upload failed:', err);
             alert('Upload failed. Please check your storage bucket permissions.');
         } finally {
-            setUploading(false);
+            setAdminLoading(false);
         }
     };
 
@@ -118,9 +124,8 @@ const ProjectsManager = () => {
 
     const handleSave = async (e) => {
         e.preventDefault();
-        setIsSaving(true);
+        setAdminLoading(true, 'SYNCHRONIZING REPOSITORY');
         try {
-            // Clean up empty documentation files before saving
             const cleanedDocs = (currentProject.documentation_files || []).filter(d => d.label.trim() && d.path.trim());
             const projectToSave = { ...currentProject, documentation_files: cleanedDocs.length > 0 ? cleanedDocs : null };
 
@@ -131,44 +136,35 @@ const ProjectsManager = () => {
                 savedProject = await projectService.createProject(projectToSave);
             }
 
-            // Automatically handle sequencing
-            await projectService.resequenceProjects(savedProject.id, projectToSave.display_order || 1);
-
-            fetchProjects();
+            await projectService.resequencingProjects(savedProject.id, projectToSave.display_order || 1);
+            fetchProjects(false);
             handleCloseModal();
         } catch (err) {
             console.error('Failed to save project:', err);
-            alert(`Error: ${err.message}`);
         } finally {
-            setIsSaving(false);
+            setAdminLoading(false);
         }
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+        if (window.confirm('Delete this instance?')) {
+            setAdminLoading(true, 'PURGING DATA');
             try {
                 await projectService.deleteProject(id);
-                // Resequence with a dummy ID to fill gaps
-                await projectService.resequenceProjects('dummy', 9999);
-                fetchProjects();
+                await projectService.resequencingProjects('dummy', 9999);
+                fetchProjects(false);
             } catch (err) {
                 console.error('Failed to delete project:', err);
+            } finally {
+                setAdminLoading(false);
             }
         }
     };
 
     const IconWrapper = ({ name }) => {
         const Icon = getIconByName(name);
-        return <Icon size={12} />;
+        return <Icon size={12} className="text-primary opacity-80" />;
     };
-
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
-                <div className="w-8 h-8 border-4 border-white/10 border-t-white rounded-full animate-spin" />
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-8 font-inter">
@@ -179,40 +175,37 @@ const ProjectsManager = () => {
                         className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest opacity-50 hover:opacity-100 transition-opacity cursor-pointer group"
                     >
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                        Back to Admin
+                        {strings.common.backToAdmin}
                     </button>
                     <button
                         onClick={() => handleOpenModal()}
-                        className="px-6 py-3 rounded-full flex items-center gap-2 font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 cursor-pointer shadow-lg hover:brightness-110"
-                        style={{ background: 'rgb(var(--contrast-rgb))', color: '#000' }}
+                        className="px-6 py-3 rounded-2xl flex items-center gap-2 font-black uppercase tracking-widest text-[10px] transition-all active:scale-95 cursor-pointer shadow-lg hover:brightness-110 active:brightness-90 btn-primary"
                     >
-                        <Plus size={14} /> New Project
+                        <Plus size={14} /> {strings.common.newProject}
                     </button>
                 </div>
 
-                <header className="space-y-2 border-l-4 border-[rgb(var(--contrast-rgb))] pl-6">
-                    <h1 className="text-5xl font-black tracking-tighter" style={{ color: 'rgb(var(--contrast-rgb))' }}>
-                        PROJECTS<br />MANAGER
+                <header className="space-y-1 border-l-4 border-primary pl-6">
+                    <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-white">
+                        {strings.projects.titlePrefix}<br />
+                        <span className="text-primary italic font-light drop-shadow-[0_0_15px_rgba(var(--theme-rgb),0.5)]">{strings.projects.titleSuffix}</span>
                     </h1>
-                    <p className="text-[10px] uppercase tracking-[0.2em] opacity-50 font-mono">
-                        System Configuration / Portfolio Grid
+                    <p className="text-[10px] uppercase tracking-[0.2em] opacity-40 font-mono">
+                        {strings.projects.subtitle}
                     </p>
                 </header>
 
-                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
                     {projects.map((project) => (
                         <div
                             key={project.id}
-                            className="project-card-admin rounded-2xl border border-white/5 bg-white/5 overflow-hidden group hover:border-white/10 transition-all flex flex-col shadow-2xl"
-                            style={{
-                                background: `linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0.01))`
-                            }}
+                            className="project-card-admin rounded-2xl border border-white/5 bg-[#0f0f0f] overflow-hidden group hover:border-primary/20 transition-all flex flex-col shadow-2xl"
                         >
                             <div className="aspect-video w-full bg-black/40 relative group overflow-hidden">
                                 <img
                                     src={project.image_url}
                                     alt={project.title}
-                                    className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                                    className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80" />
                                 <div className="absolute bottom-4 left-4 right-4 flex justify-between items-baseline">
@@ -224,7 +217,7 @@ const ProjectsManager = () => {
                             <div className="p-6 flex-1 flex flex-col gap-4">
                                 <div className="space-y-1">
                                     <div className="flex items-center justify-between gap-2">
-                                        <h3 className="text-xl font-bold tracking-tight text-white/90">{project.title}</h3>
+                                        <h3 className="text-xl font-bold tracking-tight text-white/90 group-hover:text-white transition-colors">{project.title}</h3>
                                         <span className="text-[10px] font-mono opacity-20">#{project.display_order}</span>
                                     </div>
                                     <p className="text-[10px] opacity-40 font-mono uppercase tracking-wider">{project.date_created}</p>
@@ -234,9 +227,9 @@ const ProjectsManager = () => {
                                     {project.short_description}
                                 </p>
 
-                                <div className="flex flex-wrap gap-1.5 opacity-60">
+                                <div className="flex flex-wrap gap-1.5 opacity-80">
                                     {project.stacks?.slice(0, 4).map(s => (
-                                        <div key={s} className="w-6 h-6 rounded bg-white/5 flex items-center justify-center border border-white/5 hover:border-white/20 transition-colors" title={s}>
+                                        <div key={s} className="w-6 h-6 rounded bg-white/5 flex items-center justify-center border border-white/5 hover:border-primary/30 transition-colors" title={s}>
                                             <IconWrapper name={s} />
                                         </div>
                                     ))}
@@ -261,10 +254,9 @@ const ProjectsManager = () => {
                         </div>
                     ))}
 
-                    {/* Add New Project Ghost Card */}
                     <button
                         onClick={() => handleOpenModal()}
-                        className="rounded-2xl border-2 border-dashed border-white/5 bg-white/[0.02] flex flex-col items-center justify-center gap-4 py-12 hover:bg-white/[0.04] hover:border-white/10 transition-all group lg:min-h-[400px]"
+                        className="rounded-2xl border-2 border-dashed border-white/5 bg-white/[0.02] flex flex-col items-center justify-center gap-4 py-12 hover:bg-white/[0.04] hover:border-white/10 transition-all group lg:min-h-[400px] cursor-pointer"
                     >
                         <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Plus size={24} className="opacity-20 group-hover:opacity-100 transition-opacity" />
@@ -274,27 +266,25 @@ const ProjectsManager = () => {
                 </div>
             </div>
 
-            {/* Modal for Add/Edit */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/95 backdrop-blur-md" onClick={handleCloseModal} />
                     <div
-                        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 p-8 space-y-10 animate-in fade-in zoom-in duration-300 no-scrollbar"
-                        style={{ background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb), 0.8), rgba(var(--box-Linear-2-rgb), 0.9))` }}
+                        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 p-8 space-y-10 animate-in fade-in zoom-in duration-300 no-scrollbar admin-modal-gradient"
                     >
                         <header className="flex justify-between items-center border-b border-white/5 pb-6">
                             <div className="space-y-1">
-                                <h2 className="text-3xl font-black tracking-tighter" style={{ color: 'rgb(var(--contrast-rgb))' }}>
+                                <h2 className="text-3xl font-black tracking-tighter text-primary">
                                     {currentProject?.id ? 'EDIT INSTANCE' : 'NEW DEPLOYMENT'}
                                 </h2>
                                 <p className="text-[9px] uppercase tracking-widest opacity-40">Configuration Node: {currentProject?.id || 'Pending'}</p>
                             </div>
-                            <button onClick={handleCloseModal} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity">
+                            <button onClick={handleCloseModal} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
                                 <X size={20} />
                             </button>
                         </header>
 
-                        <form onSubmit={handleSave} className="space-y-8">
+                        <form onSubmit={handleSave} className="space-y-8 pb-10">
                             {/* BASIC INFO */}
                             <section className="space-y-6">
                                 <div className="flex items-center gap-4">
@@ -311,7 +301,7 @@ const ProjectsManager = () => {
                                             value={currentProject.title}
                                             onChange={(e) => setCurrentProject({ ...currentProject, title: e.target.value })}
                                             required
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors"
                                             placeholder="System Designation"
                                         />
                                     </div>
@@ -320,7 +310,7 @@ const ProjectsManager = () => {
                                         <select
                                             value={currentProject.project_type}
                                             onChange={(e) => setCurrentProject({ ...currentProject, project_type: e.target.value })}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors appearance-none"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors appearance-none"
                                         >
                                             <option value="Real Project">Real Project</option>
                                             <option value="Experiment">Experiment</option>
@@ -336,7 +326,7 @@ const ProjectsManager = () => {
                                         value={currentProject.short_description}
                                         onChange={(e) => setCurrentProject({ ...currentProject, short_description: e.target.value })}
                                         rows={2}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors resize-none"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors resize-none"
                                         placeholder="System summary..."
                                         required
                                     />
@@ -360,14 +350,14 @@ const ProjectsManager = () => {
                                                     type="text"
                                                     value={currentProject.image_url}
                                                     onChange={(e) => setCurrentProject({ ...currentProject, image_url: e.target.value })}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors"
                                                     placeholder="Asset URL"
                                                 />
                                                 <ImageIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20" />
                                             </div>
-                                            <label className="flex items-center justify-center w-14 h-14 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors cursor-pointer disabled:opacity-50 active:scale-95 group">
-                                                <input type="file" className="hidden" onChange={handleImageUpload} disabled={uploading} accept="image/*" />
-                                                {uploading ? <div className="w-5 h-5 border-2 border-white/10 border-t-white rounded-full animate-spin" /> : <Upload size={20} className="opacity-40 group-hover:opacity-100" />}
+                                            <label className="flex items-center justify-center w-14 h-14 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors cursor-pointer active:scale-95 group">
+                                                <input type="file" className="hidden" onChange={handleImageUpload} accept="image/*" />
+                                                <Upload size={20} className="opacity-40 group-hover:opacity-100" />
                                             </label>
                                         </div>
                                     </div>
@@ -378,7 +368,7 @@ const ProjectsManager = () => {
                                                 type="text"
                                                 value={currentProject.date_created}
                                                 onChange={(e) => setCurrentProject({ ...currentProject, date_created: e.target.value })}
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors text-center font-mono"
+                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors text-center font-mono"
                                                 placeholder="YYYY"
                                             />
                                         </div>
@@ -388,7 +378,7 @@ const ProjectsManager = () => {
                                                 type="number"
                                                 value={currentProject.display_order || 0}
                                                 onChange={(e) => setCurrentProject({ ...currentProject, display_order: parseInt(e.target.value) || 0 })}
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors text-center font-mono"
+                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors text-center font-mono"
                                                 placeholder="0"
                                             />
                                         </div>
@@ -396,7 +386,6 @@ const ProjectsManager = () => {
                                 </div>
                             </section>
 
-                            {/* TECH STACK */}
                             <section className="space-y-4">
                                 <div className="flex items-center gap-4">
                                     <div className="h-px flex-1 bg-white/5"></div>
@@ -409,8 +398,8 @@ const ProjectsManager = () => {
                                             key={stack}
                                             type="button"
                                             onClick={() => toggleStack(stack)}
-                                            className={`px-4 py-2 rounded-full text-[9px] uppercase font-black tracking-widest border transition-all flex items-center gap-2 active:scale-95 ${currentProject.stacks?.includes(stack)
-                                                ? 'bg-white/10 border-white/20 text-white shadow-lg'
+                                            className={`px-4 py-2 rounded-full text-[9px] uppercase font-black tracking-widest border transition-all flex items-center gap-2 active:scale-95 cursor-pointer ${currentProject.stacks?.includes(stack)
+                                                ? 'bg-primary border-primary text-black font-black'
                                                 : 'bg-transparent border-white/5 text-white/20 hover:border-white/20 hover:text-white/40'
                                                 }`}
                                         >
@@ -421,7 +410,6 @@ const ProjectsManager = () => {
                                 </div>
                             </section>
 
-                            {/* CONNECTIVITY */}
                             <section className="space-y-6">
                                 <div className="flex items-center gap-4">
                                     <div className="h-px flex-1 bg-white/5"></div>
@@ -437,7 +425,7 @@ const ProjectsManager = () => {
                                                 type="url"
                                                 value={currentProject.live_preview_link}
                                                 onChange={(e) => setCurrentProject({ ...currentProject, live_preview_link: e.target.value })}
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors"
+                                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors"
                                                 placeholder="https://preview"
                                             />
                                             <ExternalLink size={18} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20" />
@@ -450,7 +438,7 @@ const ProjectsManager = () => {
                                                 type="url"
                                                 value={currentProject.github_link}
                                                 onChange={(e) => setCurrentProject({ ...currentProject, github_link: e.target.value })}
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors"
+                                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors"
                                                 placeholder="https://github"
                                             />
                                             <BookOpen size={18} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20" />
@@ -463,8 +451,7 @@ const ProjectsManager = () => {
                                         <button
                                             type="button"
                                             onClick={() => setIsPreviewMode(!isPreviewMode)}
-                                            className="flex items-center gap-1.5 text-[9px] uppercase font-black tracking-widest px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
-                                            style={{ color: isPreviewMode ? 'rgb(var(--contrast-rgb))' : 'inherit' }}
+                                            className={`flex items-center gap-1.5 text-[9px] uppercase font-black tracking-widest px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 transition-colors cursor-pointer ${isPreviewMode ? 'text-primary' : ''}`}
                                         >
                                             {isPreviewMode ? <><EyeOff size={12} /> Edit Mode</> : <><Eye size={12} /> Preview Mode</>}
                                         </button>
@@ -484,14 +471,13 @@ const ProjectsManager = () => {
                                             value={currentProject.full_documentation}
                                             onChange={(e) => setCurrentProject({ ...currentProject, full_documentation: e.target.value })}
                                             rows={6}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-mono focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors resize-y"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-mono focus:outline-none focus:border-primary/50 transition-colors resize-y"
                                             placeholder="# Project Specification&#10;&#10;Use markdown to describe your architectural decisions..."
                                         />
                                     )}
                                 </div>
                             </section>
 
-                            {/* DYNAMIC DOCUMENTATION FILES */}
                             <section className="space-y-6">
                                 <div className="flex items-center justify-between gap-4">
                                     <div className="h-px flex-1 bg-white/5"></div>
@@ -528,14 +514,14 @@ const ProjectsManager = () => {
                                                     <button
                                                         type="button"
                                                         onClick={() => updateDocFile(idx, 'type', 'link')}
-                                                        className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-md text-[9px] font-black uppercase tracking-widest transition-all ${file.type === 'link' ? 'bg-white/10 text-white' : 'text-white/20'}`}
+                                                        className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-md text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer ${file.type === 'link' ? 'bg-white/10 text-white' : 'text-white/20'}`}
                                                     >
                                                         <LinkIcon size={10} /> Link
                                                     </button>
                                                     <button
                                                         type="button"
                                                         onClick={() => updateDocFile(idx, 'type', 'file')}
-                                                        className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-md text-[9px] font-black uppercase tracking-widest transition-all ${file.type === 'file' ? 'bg-white/10 text-white' : 'text-white/20'}`}
+                                                        className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-md text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer ${file.type === 'file' ? 'bg-white/10 text-white' : 'text-white/20'}`}
                                                     >
                                                         <FileText size={10} /> File
                                                     </button>
@@ -544,7 +530,7 @@ const ProjectsManager = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => removeDocFile(idx)}
-                                                className="mt-5 md:mt-6 p-2 h-10 w-10 rounded-lg bg-red-500/5 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 transition-all flex items-center justify-center border border-red-500/10"
+                                                className="mt-5 md:mt-6 p-2 h-10 w-10 rounded-lg bg-red-500/5 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 transition-all flex items-center justify-center border border-red-500/10 cursor-pointer"
                                             >
                                                 <Trash2 size={14} />
                                             </button>
@@ -554,7 +540,7 @@ const ProjectsManager = () => {
                                     <button
                                         type="button"
                                         onClick={addDocFile}
-                                        className="w-full py-4 rounded-2xl border border-dashed border-white/10 flex items-center justify-center gap-2 text-[10px] uppercase font-black tracking-widest opacity-40 hover:opacity-100 hover:bg-white/[0.02] transition-all"
+                                        className="w-full py-4 rounded-2xl border border-dashed border-white/10 flex items-center justify-center gap-2 text-[10px] uppercase font-black tracking-widest opacity-40 hover:opacity-100 hover:bg-white/[0.02] transition-all cursor-pointer"
                                     >
                                         <Plus size={14} /> Attach Resource Bundle
                                     </button>
@@ -563,12 +549,10 @@ const ProjectsManager = () => {
 
                             <button
                                 type="submit"
-                                disabled={isSaving}
-                                className="w-full py-5 rounded-2xl flex items-center justify-center gap-3 font-black uppercase tracking-[0.4em] text-xs transition-all active:scale-95 disabled:opacity-50 shadow-2xl hover:brightness-110 active:brightness-90"
-                                style={{ background: 'rgb(var(--contrast-rgb))', color: '#000' }}
+                                className="w-full py-5 rounded-2xl flex items-center justify-center gap-3 font-black uppercase tracking-[0.4em] text-xs transition-all active:scale-95 shadow-2xl hover:brightness-110 active:brightness-90 btn-primary"
                             >
                                 <Save size={18} />
-                                {isSaving ? 'Processing Protocol...' : 'Sync Instance to Cloud'}
+                                Sync Instance to Cloud
                             </button>
                         </form>
                     </div>
