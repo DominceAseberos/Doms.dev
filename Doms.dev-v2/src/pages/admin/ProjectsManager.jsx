@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { projectService } from '../../services/projectService';
 import { getAvailableIconNames, getIconByName } from '../../utils/IconRegistry';
-import { Plus, Edit2, Trash2, ArrowLeft, ExternalLink, BookOpen, X, Save, Image as ImageIcon, Upload } from 'lucide-react';
+import { Plus, Edit2, Trash2, ArrowLeft, ExternalLink, BookOpen, X, Save, Image as ImageIcon, Upload, Eye, EyeOff, FileText, Link as LinkIcon } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const ProjectsManager = () => {
     const [projects, setProjects] = useState([]);
@@ -12,6 +14,7 @@ const ProjectsManager = () => {
     const [currentProject, setCurrentProject] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [isPreviewMode, setIsPreviewMode] = useState(false);
 
     // Tech Stack available options
     const availableStacks = getAvailableIconNames().filter(name =>
@@ -64,6 +67,7 @@ const ProjectsManager = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setCurrentProject(null);
+        setIsPreviewMode(false);
     };
 
     const handleImageUpload = async (e) => {
@@ -120,11 +124,16 @@ const ProjectsManager = () => {
             const cleanedDocs = (currentProject.documentation_files || []).filter(d => d.label.trim() && d.path.trim());
             const projectToSave = { ...currentProject, documentation_files: cleanedDocs.length > 0 ? cleanedDocs : null };
 
+            let savedProject;
             if (currentProject.id) {
-                await projectService.updateProject(currentProject.id, projectToSave);
+                savedProject = await projectService.updateProject(currentProject.id, projectToSave);
             } else {
-                await projectService.createProject(projectToSave);
+                savedProject = await projectService.createProject(projectToSave);
             }
+
+            // Automatically handle sequencing
+            await projectService.resequenceProjects(savedProject.id, projectToSave.display_order || 1);
+
             fetchProjects();
             handleCloseModal();
         } catch (err) {
@@ -139,6 +148,8 @@ const ProjectsManager = () => {
         if (window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
             try {
                 await projectService.deleteProject(id);
+                // Resequence with a dummy ID to fill gaps
+                await projectService.resequenceProjects('dummy', 9999);
                 fetchProjects();
             } catch (err) {
                 console.error('Failed to delete project:', err);
@@ -447,14 +458,36 @@ const ProjectsManager = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase font-bold tracking-widest opacity-40 ml-1">Internal Documentation Path</label>
-                                    <input
-                                        type="text"
-                                        value={currentProject.full_documentation}
-                                        onChange={(e) => setCurrentProject({ ...currentProject, full_documentation: e.target.value })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors"
-                                        placeholder="/project/internal-id"
-                                    />
+                                    <div className="flex justify-between items-center ml-1">
+                                        <label className="text-[10px] uppercase font-bold tracking-widest opacity-40">Documentation Content (Markdown)</label>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsPreviewMode(!isPreviewMode)}
+                                            className="flex items-center gap-1.5 text-[9px] uppercase font-black tracking-widest px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+                                            style={{ color: isPreviewMode ? 'rgb(var(--contrast-rgb))' : 'inherit' }}
+                                        >
+                                            {isPreviewMode ? <><EyeOff size={12} /> Edit Mode</> : <><Eye size={12} /> Preview Mode</>}
+                                        </button>
+                                    </div>
+
+                                    {isPreviewMode ? (
+                                        <div
+                                            className="w-full bg-white/[0.02] border border-white/10 rounded-xl px-5 py-4 min-h-[150px] overflow-y-auto prose prose-invert prose-sm max-w-none"
+                                            style={{ borderColor: 'rgba(var(--contrast-rgb), 0.2)' }}
+                                        >
+                                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                {currentProject.full_documentation || "*No documentation content provided yet.*"}
+                                            </ReactMarkdown>
+                                        </div>
+                                    ) : (
+                                        <textarea
+                                            value={currentProject.full_documentation}
+                                            onChange={(e) => setCurrentProject({ ...currentProject, full_documentation: e.target.value })}
+                                            rows={6}
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm font-mono focus:outline-none focus:border-[rgb(var(--contrast-rgb))] transition-colors resize-y"
+                                            placeholder="# Project Specification&#10;&#10;Use markdown to describe your architectural decisions..."
+                                        />
+                                    )}
                                 </div>
                             </section>
 
@@ -491,14 +524,22 @@ const ProjectsManager = () => {
                                             </div>
                                             <div className="flex-shrink-0 space-y-2">
                                                 <label className="text-[8px] uppercase font-bold tracking-widest opacity-30 ml-1">Type</label>
-                                                <select
-                                                    value={file.type}
-                                                    onChange={(e) => updateDocFile(idx, 'type', e.target.value)}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-white/30"
-                                                >
-                                                    <option value="link">Link</option>
-                                                    <option value="file">File</option>
-                                                </select>
+                                                <div className="flex bg-white/5 border border-white/10 rounded-lg p-1">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => updateDocFile(idx, 'type', 'link')}
+                                                        className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-md text-[9px] font-black uppercase tracking-widest transition-all ${file.type === 'link' ? 'bg-white/10 text-white' : 'text-white/20'}`}
+                                                    >
+                                                        <LinkIcon size={10} /> Link
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => updateDocFile(idx, 'type', 'file')}
+                                                        className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-md text-[9px] font-black uppercase tracking-widest transition-all ${file.type === 'file' ? 'bg-white/10 text-white' : 'text-white/20'}`}
+                                                    >
+                                                        <FileText size={10} /> File
+                                                    </button>
+                                                </div>
                                             </div>
                                             <button
                                                 type="button"
