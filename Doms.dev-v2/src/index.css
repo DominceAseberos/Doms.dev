@@ -181,3 +181,42 @@
     will-change: transform;
     display: none;
 }
+
+/* --- TECH STACK PING-PONG ANIMATION --- */
+@keyframes ping-pong {
+    0% {
+        left: 0;
+        transform: translateX(0);
+    }
+
+    100% {
+        left: 100%;
+        transform: translateX(-100%);
+    }
+}
+
+.tech-row-animate {
+    position: absolute;
+    left: 0;
+    width: max-content;
+    animation: ping-pong 25s ease-in-out infinite alternate;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.tech-row-animate:hover {
+    animation-play-state: paused;
+}
+
+.tech-icon-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- FLOATING CHAT LAYOUT --- */
+.floating-chat-container {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: bottom right;
+}
