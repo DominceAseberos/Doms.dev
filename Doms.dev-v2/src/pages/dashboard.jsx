@@ -84,9 +84,7 @@ const Dashboard = () => {
                         <AboutMeCard />
                     </div>
 
-                    <div className="h-75">
-                        <ChatBot />
-                    </div>
+
 
                     <div className="h-25">
                         <ProjectHead />

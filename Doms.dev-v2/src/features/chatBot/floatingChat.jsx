@@ -75,11 +75,15 @@ const FloatingChat = () => {
             gsap.set(closeBtnRef.current, { opacity: 0, scale: 0.5 });
             gsap.set(contentRef.current, { display: "flex", opacity: 0 });
 
+            const isMobile = window.innerWidth <= 768;
+
             tl.to(iconRef.current, { opacity: 0, scale: 0, duration: 0.2 })
                 .to(containerRef.current, {
-                    width: window.innerWidth > 768 ? "400px" : "90vw",
-                    height: "460px",
-                    borderRadius: "24px",
+                    width: isMobile ? "calc(100vw - 34px)" : "400px",
+                    height: isMobile ? "60vh" : "500px",
+                    right: 0,
+                    bottom: 0,
+                    borderRadius: isMobile ? "24px" : "24px",
                     duration: 0.5,
                     ease: "power3.inOut",
                 })
@@ -112,7 +116,7 @@ const FloatingChat = () => {
     }, [isOpen]);
 
     return (
-        <div className="fixed bottom-8 right-8 z-[100] pointer-events-none flex flex-col items-end gap-3">
+        <div className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-[100] pointer-events-none flex flex-col items-end gap-3">
             {/* Proactive Welcome Bubble */}
             {showWelcome && !isOpen && (
                 <div
@@ -131,13 +135,12 @@ const FloatingChat = () => {
                 role="dialog"
                 aria-expanded={isOpen}
                 aria-label="Chat interface"
-                className={`pointer-events-auto cursor-pointer border border-white/10 shadow-2xl relative ${isOpen ? "cursor-default" : "rounded-full"}`}
+                className={`pointer-events-auto cursor-pointer border border-white/10 shadow-2xl relative floating-chat-container ${isOpen ? "cursor-default" : "rounded-full"}`}
                 style={{
                     width: "56px",
                     height: "56px",
                     background: `linear-gradient(135deg, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`,
                     backdropFilter: "blur(12px)",
-                    transformOrigin: "bottom right",
                 }}
             >
                 {/* Launcher Icon */}
