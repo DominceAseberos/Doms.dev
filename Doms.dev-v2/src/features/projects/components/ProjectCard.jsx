@@ -90,20 +90,42 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                 </button>
 
                 <div ref={contentRef} className="flex flex-col gap-4">
-                    <div
-                        onMouseEnter={onImageEnter}
-                        onMouseLeave={onImageLeave}
-                        className="relative aspect-video w-full lg:h-55 rounded-xl overflow-hidden group border border-white/5"
-                    >
-                        <img
-                            ref={imgRef}
-                            src={project.image}
-                            alt={project.title}
-                            className="w-full h-full object-cover"
-                            onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop'; }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#151226] via-transparent to-transparent opacity-60" />
-                    </div>
+                    {/* Carousel or Single Image */}
+                    {project.images && project.images.length > 0 ? (
+                        <div
+                            onMouseEnter={onImageEnter}
+                            onMouseLeave={onImageLeave}
+                            className="relative aspect-video w-full lg:h-55 rounded-xl overflow-x-auto snap-x snap-mandatory flex no-scrollbar border border-white/5"
+                        >
+                            {/* Primary/Thumbnail as first slide if needed, or just images array */}
+                            {/* Assuming project.images contains all images including primary if properly managed. 
+                                usePortfolioData ensures images array. If empty, we use project.image fallback logic below.
+                            */}
+                            {project.images.map((imgSrc, idx) => (
+                                <img
+                                    key={idx}
+                                    src={imgSrc}
+                                    alt={`${project.title} slide ${idx}`}
+                                    className="w-full h-full object-cover shrink-0 snap-center"
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <div
+                            onMouseEnter={onImageEnter}
+                            onMouseLeave={onImageLeave}
+                            className="relative aspect-video w-full lg:h-55 rounded-xl overflow-hidden group border border-white/5"
+                        >
+                            <img
+                                ref={imgRef}
+                                src={project.image}
+                                alt={project.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop'; }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#151226] via-transparent to-transparent opacity-60" />
+                        </div>
+                    )}
 
                     <div className="flex flex-col gap-2">
                         <h2 className="text-[clamp(1.2rem,4vw,2rem)] font-playfair font-black leading-tight tracking-tight md:tracking-tighter lg:tracking-normal" style={{ color: 'rgb(var(--contrast-rgb))' }}>
@@ -191,14 +213,13 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
 
             <div className="absolute bottom-0 left-0 p-4 w-full flex flex-col gap-1 z-10">
                 <div className="flex flex-wrap gap-1 mb-1">
-                    {project.stacks.slice(0, 3).map((stack, idx) => (
-                        <span key={idx}
-                            className="px-1.5 py-0.5 rounded-sm backdrop-blur-md text-[8px] font-inter font-bold uppercase tracking-tighter"
-                            style={{ backgroundColor: 'rgb(0 0 0 / 0.4)', color: 'rgb(var(--contrast-rgb) / 0.8)' }}
-                        >
-                            {stack}
-                        </span>
-                    ))}
+                    <span
+                        className="px-1.5 py-0.5 rounded-sm backdrop-blur-md text-[8px] font-inter font-bold uppercase tracking-tighter"
+                        style={{ backgroundColor: 'rgb(0 0 0 / 0.4)', color: 'rgb(var(--contrast-rgb) / 0.8)' }}
+                    >
+                        {/* Display Project Type instead of Stacks for cleaner look matching Admin Dashboard */}
+                        {project.projectType}
+                    </span>
                 </div>
                 <h3
                     ref={collapsedTitleRef}

@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: rgb(var(--theme-rgb));
+    --color-primary: #3b82f6;
+    /* Neon Blue highlight */
+    --color-primary-dark: #1d4ed8;
     --color-contrast: rgb(var(--contrast-rgb));
 
     /* --- CUSTOM ANIMATIONS --- */
@@ -38,6 +40,33 @@
 :root {
     --theme-rgb: 21 18 38;
     --contrast-rgb: 230 230 255;
+    --neon-blue: #3b82f6;
+    --box-Linear-1-rgb: 30, 30, 50;
+    --box-Linear-2-rgb: 15, 15, 30;
+}
+
+/* --- ADMIN UI HELPERS --- */
+.admin-modal-gradient {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+    backdrop-filter: blur(20px);
+}
+
+/* --- DATE PICKER STYLING --- */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1) brightness(2) !important;
+    opacity: 1 !important;
+    padding: 2px;
+    /* Add tap target size */
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 0.8 !important;
+    /* Slight feedback on hover */
+}
+
+input[type="date"] {
+    color-scheme: dark;
 }
 
 /* --- GLOBAL SCROLLBAR CUSTOMIZATION --- */

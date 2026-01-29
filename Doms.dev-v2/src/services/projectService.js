@@ -99,7 +99,7 @@ export const projectService = {
 
     uploadProjectImage: async (file, fileName) => {
         const fileExt = file.name.split('.').pop();
-        const filePath = `projects/${fileName || Math.random()}.${fileExt}`;
+        const filePath = `${fileName || Math.random()}.${fileExt}`;
 
         const { error } = await supabase.storage
             .from('project-images')
