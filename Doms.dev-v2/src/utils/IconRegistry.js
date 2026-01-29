@@ -118,6 +118,47 @@ export const BrandColors = {
 };
 
 /**
+ * Sound Category Mapping
+ * Associates tech stack items with specific audio frequency bands
+ * for real-time reactivity in the UI.
+ */
+export const TechSoundMapping = {
+    // Core / Foundation (Bass/Kick)
+    'React': 'foundation',
+    'Next.js': 'foundation',
+    'Supabase': 'foundation',
+    'Database': 'foundation',
+
+    // Creativity / Melody (Mids/Vocals)
+    'GSAP': 'creativity',
+    'Figma': 'creativity',
+    'Palette': 'creativity',
+
+    // Interaction / Detail (High-Mids)
+    'Tailwind': 'interaction',
+    'Lucide': 'interaction',
+    'Layers': 'interaction',
+
+    // Activity / Logic (Busy-Mids)
+    'Python': 'activity',
+    'Code2': 'activity',
+    'NLP': 'activity',
+    'API': 'activity',
+
+    // Sparkle / Feedback (Highs)
+    'Vite': 'sparkle',
+    'Zap': 'sparkle',
+    'Globe': 'sparkle'
+};
+
+/**
+ * Helper to get sound category for a given tech name.
+ */
+export const getSoundCategoryByName = (name) => {
+    return TechSoundMapping[name] || 'presence'; // fallback to general presence
+};
+
+/**
  * Helper to get a brand color by name.
  * Fallback to a neutral white/gray if not specified.
  */

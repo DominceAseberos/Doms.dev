@@ -1,41 +1,31 @@
 import { useRef } from 'react';
-import { gsap } from 'gsap';
 
 export const useButtonMotion = () => {
     const ref = useRef(null);
 
     const onEnter = () => {
         if (!ref.current) return;
-        gsap.killTweensOf(ref.current);
-        gsap.to(ref.current, {
-            scale: 1.1,
-            rotation: -4,
-            duration: 0.2,
-            ease: "power3.out"
-        });
+        ref.current.style.transition = "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        ref.current.style.transform = "scale(1.1) rotate(-4deg)";
     };
 
     const onLeave = () => {
         if (!ref.current) return;
-        gsap.killTweensOf(ref.current);
-        gsap.to(ref.current, {
-            scale: 1,
-            rotation: 0,
-            duration: 0.25,
-            ease: "elastic.out(1, 0.4)"
-        });
+        ref.current.style.transition = "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        ref.current.style.transform = "scale(1) rotate(0deg)";
     };
 
     const onTap = () => {
         if (!ref.current) return;
-        gsap.killTweensOf(ref.current);
-        gsap.to(ref.current, {
-            scale: 0.95,
-            duration: 0.12,
-            yoyo: true,
-            repeat: 1,
-            ease: "power2.out"
-        });
+        const currentTransform = ref.current.style.transform;
+        ref.current.style.transition = "all 0.1s ease-out";
+        ref.current.style.transform = `${currentTransform} scale(0.95)`;
+        setTimeout(() => {
+            if (ref.current) {
+                ref.current.style.transition = "all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)";
+                ref.current.style.transform = currentTransform;
+            }
+        }, 120);
     };
 
     return { ref, onEnter, onLeave, onTap };

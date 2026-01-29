@@ -10,8 +10,16 @@ export const useVisualizer = (options = {}) => {
 
   const isPlayingRef = useRef(false);
 
-  // LOGIC STATE
-  const smoothBassRef = useRef(0);
+  // Advanced mapping refs
+  const presenceRef = useRef(0);
+  const melodyRef = useRef(0);
+  const interactionRef = useRef(0);
+  const foundationRef = useRef(0);
+  const creativityRef = useRef(0);
+  const activityRef = useRef(0);
+  const sustainRef = useRef(0);
+  const sparkleRef = useRef(0);
+
   const particlesRef = useRef([]);
 
   // Refs defined at top level for consistent access
@@ -45,7 +53,7 @@ export const useVisualizer = (options = {}) => {
 
   const drawVisualizer = useCallback(() => {
     updateColors(); // Fetch colors once before starting animation loop
-    if (!analyserRef.current || !canvasRef.current) return;
+    if (!analyserRef.current) return;
 
     isPlayingRef.current = true;
     if (animationRef.current) return;
@@ -55,23 +63,6 @@ export const useVisualizer = (options = {}) => {
 
     const renderFrame = () => {
       // Setup dynamic canvas lookup
-      const canvas = canvasRef.current;
-      if (!canvas) {
-        animationRef.current = requestAnimationFrame(renderFrame);
-        return;
-      }
-      const ctx = canvas.getContext('2d');
-
-      // Auto-sleep check (Disabled to maintain idle/shrink state visibility)
-      /*
-      if (!isPlayingRef.current && smoothBassRef.current < 0.01 && particlesRef.current.length === 0) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-        return;
-      }
-      */
-
       animationRef.current = requestAnimationFrame(renderFrame);
 
       if (isPlayingRef.current) {
@@ -80,15 +71,15 @@ export const useVisualizer = (options = {}) => {
         dataArray.fill(0);
       }
 
-      const width = canvas.width;
-      const height = canvas.height;
+      const canvas = canvasRef.current;
+      const width = canvas ? canvas.width : 500;
+      const height = canvas ? canvas.height : 500;
       const cx = width / 2;
       const cy = height / 2;
       const PADDING = 10;
 
       const availableSpace = Math.min(width, height) / 2;
       const maxRadius = availableSpace - PADDING;
-
 
       const now = performance.now();
 
@@ -107,29 +98,55 @@ export const useVisualizer = (options = {}) => {
       // Sensitivity Scale
       const scale = 255 / (Math.max(maxVolRef.current, 40));
 
-      // --- FREQUENCY ANALYSIS ---
-      let bass = 0, mid = 0, treble = 0;
-      for (let i = 0; i < bufferLength; i++) {
-        const v = dataArray[i] / 255;
-        if (i < 20) bass += v;
-        else if (i < 100) mid += v;
-        else treble += v;
-      }
-      bass /= 20;
-      mid /= 80;
-      treble /= (bufferLength - 100);
+      // --- ADVANCED FREQUENCY MAPPING ---
+      let fnd = 0; for (let i = 0; i < 3; i++) fnd += dataArray[i] / 255; fnd /= 3;
+      let sus = 0; for (let i = 3; i < 7; i++) sus += dataArray[i] / 255; sus /= 4;
+      let cre = 0; for (let i = 2; i < 15; i++) cre += dataArray[i] / 255; cre /= 13;
+      let mel = 0; for (let i = 12; i < 59; i++) mel += dataArray[i] / 255; mel /= 47;
+      let int = 0; for (let i = 23; i < 47; i++) int += dataArray[i] / 255; int /= 24;
+      let act = 0; for (let i = 20; i < 101; i++) act += dataArray[i] / 255; act /= 81;
+      let spr = 0; for (let i = 58; i < 117; i++) spr += dataArray[i] / 255; spr /= 59;
+      let pre = (fnd + sus + cre) / 3;
 
-      // Apply Scale
-      bass *= scale;
-      mid *= scale;
-      treble *= scale;
+      const s = scale;
+      fnd *= s; sus *= s; cre *= s; mel *= s; int *= s; act *= s; spr *= s; pre *= s;
 
-      smoothBassRef.current += (bass - smoothBassRef.current) * 0.15;
-      const pulse = smoothBassRef.current;
-      const kick = Math.max(0, bass - pulse);
-      const kickPulse = Math.min(kick * 2.5, 1);
+      foundationRef.current += (fnd - foundationRef.current) * 0.2;
+      sustainRef.current += (sus - sustainRef.current) * 0.1;
+      creativityRef.current += (cre - creativityRef.current) * 0.15;
+      melodyRef.current += (mel - melodyRef.current) * 0.15;
+      interactionRef.current += (int - interactionRef.current) * 0.25;
+      activityRef.current += (act - activityRef.current) * 0.2;
+      sparkleRef.current += (spr - sparkleRef.current) * 0.25;
+      presenceRef.current += (pre - presenceRef.current) * 0.05;
 
-      const activeColor = kickPulse > 0.1
+      const pFound = Math.min(Math.max(0, fnd - foundationRef.current) * 3.5, 1);
+      const pSustain = Math.min(sustainRef.current * 0.8, 1);
+      const pCreat = Math.min(Math.max(0, cre - creativityRef.current) * 2.5, 1);
+      const pMelody = Math.min(melodyRef.current * 1.2, 1);
+      const pInteract = Math.min(Math.max(0, int - interactionRef.current) * 4.0, 1);
+      const pActivity = Math.min(Math.max(0, act - activityRef.current) * 3.0, 1);
+      const pSparkle = Math.min(Math.max(0, spr - sparkleRef.current) * 5.0, 1);
+      const pPresence = Math.min(presenceRef.current, 1);
+
+      // --- GLOBAL AUDIO REACTIVE UI ---
+      const root = document.documentElement.style;
+      root.setProperty('--music-presence', pPresence.toFixed(3));
+      root.setProperty('--music-melody', pMelody.toFixed(3));
+      root.setProperty('--music-interaction', pInteract.toFixed(3));
+      root.setProperty('--music-foundation', pFound.toFixed(3));
+      root.setProperty('--music-creativity', pCreat.toFixed(3));
+      root.setProperty('--music-activity', pActivity.toFixed(3));
+      root.setProperty('--music-sustain', pSustain.toFixed(3));
+      root.setProperty('--music-sparkle', pSparkle.toFixed(3));
+      root.setProperty('--music-pulse', pFound.toFixed(3));
+
+      // --- CANVAS RENDERING ---
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const activeColor = pFound > 0.1
         ? `rgb(${strokeColorRef.current})`
         : `rgb(${baseColorRef.current})`;
 
@@ -139,10 +156,10 @@ export const useVisualizer = (options = {}) => {
       const glowBaseSize = maxRadius * 0.05;
 
       // Outer Halo 
-      const glowRadius = glowBaseSize + (kickPulse * (maxRadius * 0.15) + pulse * (maxRadius * 0.15));
+      const glowRadius = glowBaseSize + (pFound * (maxRadius * 0.15) + pPresence * (maxRadius * 0.15));
 
       // Inner Core Base 
-      const glowRadiusSSmall = glowBaseSize + (kickPulse * (maxRadius * 0.04) + pulse * (maxRadius * 0.04));
+      const glowRadiusSSmall = glowBaseSize + (pFound * (maxRadius * 0.04) + pPresence * (maxRadius * 0.04));
 
       ctx.save();
 
@@ -159,7 +176,7 @@ export const useVisualizer = (options = {}) => {
       for (let angle = 0; angle <= Math.PI * 2; angle += step) {
 
         // A. LIQUID BASE (Subtle movement)
-        const liquid = Math.sin(angle * 5 + now * 0.002) * (bass * 2)
+        const liquid = Math.sin(angle * 5 + now * 0.002) * (fnd * 2)
           + Math.cos(angle * 5 - now * 0.003) * (mid * 2);
 
         // B. TREBLE SPIKES (Sharp but contained)

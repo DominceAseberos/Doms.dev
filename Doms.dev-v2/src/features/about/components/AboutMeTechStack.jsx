@@ -1,8 +1,10 @@
 import React from 'react';
 import { useButtonMotion } from '../hooks/useAboutMotion';
+import FrequencyCircles from '../../../components/FrequencyCircles';
 
 const AnimatedStack = ({ children, className = '', style = {} }) => {
     const motion = useButtonMotion();
+
     return (
         <span
             ref={motion.ref}
@@ -38,20 +40,23 @@ const AboutMeTechStack = ({ mdIconStack, techStack }) => {
             >
                 Tech Stack
             </h3>
+            <FrequencyCircles />
             <div className="flex flex-wrap gap-2 text-center">
-                {techStack.slice(0, 6).map((tech, index) => (
-                    <AnimatedStack key={index}>
-                        <div className="rounded-full text-xs font-medium border px-3 py-2 w-fit cursor-pointer select-none touch-manipulation"
-                            style={{
-                                color: 'rgb(var(--contrast-rgb))',
-                                borderColor: 'rgba(var(--contrast-rgb), 0.3)',
-                                background: 'rgba(var(--contrast-rgb), 0.05)'
-                            }}
-                        >
-                            {tech.name}
-                        </div>
-                    </AnimatedStack>
-                ))}
+                {techStack.slice(0, 10).map((tech, index) => {
+                    return (
+                        <AnimatedStack key={index}>
+                            <div className="rounded-full text-xs font-medium border px-3 py-2 w-fit cursor-pointer select-none touch-manipulation"
+                                style={{
+                                    color: 'rgb(var(--contrast-rgb))',
+                                    borderColor: 'rgba(var(--contrast-rgb), 0.3)',
+                                    background: 'rgba(var(--contrast-rgb), 0.05)'
+                                }}
+                            >
+                                {tech.name}
+                            </div>
+                        </AnimatedStack>
+                    );
+                })}
             </div>
         </div>
     );

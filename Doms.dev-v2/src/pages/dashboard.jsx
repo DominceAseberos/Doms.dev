@@ -130,19 +130,19 @@ const Dashboard = () => {
                             </div>
                             <div className='col-span-4 md:40 lg:h-50 desktop-anim-item'>
                                 <div className='flex flex-col justify-between gap-2 h-full'>
-                                    <div className="md:h-30 lg:h-40">
+                                    <div className="md:h-30 lg:h-40 bento-card">
                                         <AboutMeCard />
                                     </div>
                                     <ThemeToggle />
                                 </div>
                             </div>
-                            <div className='col-span-4 md:h-45 lg:h-40 desktop-anim-item'>
+                            <div className='col-span-4 bento-card md:h-45 lg:h-40 desktop-anim-item'>
                                 <MusicPlayer />
                             </div>
-                            <div className='col-span-2 md:h-45 lg:h-40 desktop-anim-item'>
+                            <div className='col-span-2 bento-card md:h-45 lg:h-40 desktop-anim-item'>
                                 <Contacts />
                             </div>
-                            <div className='col-span-6 md:h-50 lg:h-50 desktop-anim-item'>
+                            <div className='col-span-6 bento-card md:h-50 lg:h-50 desktop-anim-item'>
                                 <StatsGitHub />
                             </div>
                         </div>
@@ -163,10 +163,10 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-span-6 desktop-anim-item'>
+                            <div className='col-span-6 bento-card desktop-anim-item'>
                                 <ProjectBottom />
                             </div>
-                            <div className='col-span-6 desktop-anim-item'>
+                            <div className='col-span-6 bento-card desktop-anim-item'>
                                 <TechStacks />
                             </div>
                         </div>

@@ -1,19 +1,14 @@
-import React, { useEffect, useRef, useMemo } from "react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
+import React, { useMemo } from "react";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { getIconByName, getBrandColorByName } from "../../utils/IconRegistry";
 
 const TechMarquee = () => {
-  const scrollRef = useRef(null);
-  const animRef = useRef(null);
-  const containerRef = useRef(null);
   const { techStack: rawTechStack } = usePortfolioData();
 
   const techStack = useMemo(() => {
     return rawTechStack
       .filter(t => t.type === "core" || t.type === "tool")
-      .slice(0, 10) // Increased limit for better marquee flow
+      .slice(0, 12) // Slightly more icons for a fuller row
       .map(t => ({
         ...t,
         brandColor: getBrandColorByName(t.iconName || t.name),
@@ -21,99 +16,56 @@ const TechMarquee = () => {
       }));
   }, [rawTechStack]);
 
-  const { contextSafe } = useGSAP({ scope: containerRef });
-
-  useEffect(() => {
-    if (!scrollRef.current) return;
-    const element = scrollRef.current;
-
-    gsap.set(element, { willChange: "transform" });
-    const totalWidth = element.scrollWidth / 2;
-
-    animRef.current = gsap.to(element, {
-      x: -totalWidth,
-      duration: 30, // Slower marquee for premium feel
-      ease: "none",
-      repeat: -1,
-      force3D: true,
-    });
-
-    return () => animRef.current?.kill();
-  }, [techStack]);
-
-  const pause = () => animRef.current?.pause();
-  const play = () => animRef.current?.play();
-
-  const onIconEnter = contextSafe((e) => {
-    const brandColor = e.currentTarget.dataset.color;
-    gsap.to(e.currentTarget, {
-      scale: 1.1,
-      y: -2,
-      backgroundColor: `${brandColor}10`,
-      borderColor: `${brandColor}40`,
-      boxShadow: `0 0 20px ${brandColor}20`,
-      duration: 0.3,
-      ease: "power2.out"
-    });
-    gsap.to(e.currentTarget.querySelector('.icon-wrapper'), {
-      color: brandColor,
-      filter: `drop-shadow(0 0 8px ${brandColor}80)`,
-      duration: 0.3,
-      ease: "power2.out"
-    });
-  });
-
-  const onIconLeave = contextSafe((e) => {
-    gsap.to(e.currentTarget, {
-      scale: 1,
-      y: 0,
-      backgroundColor: 'rgba(255, 255, 255, 0.03)',
-      borderColor: 'rgb(var(--contrast-rgb)',
-      boxShadow: 'none',
-      duration: 0.3,
-      ease: "power1.inOut"
-    });
-    gsap.to(e.currentTarget.querySelector('.icon-wrapper'), {
-      color: 'rgb(var(--contrast-rgb)',
-      filter: 'none',
-      duration: 0.3,
-      ease: "power1.inOut"
-    });
-  });
+  const styleTag = `
+    .tech-icon-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  `;
 
   return (
     <div
-      ref={containerRef}
-      className="relative h-full w-full overflow-hidden rounded-3xl flex items-center p-2 group/marquee"
-      onMouseEnter={pause}
-      onMouseLeave={play}
+      className="relative h-full w-full overflow-hidden rounded-3xl flex items-center justify-center p-2 group/marquee"
       style={{
         background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`,
         backdropFilter: 'blur(10px)',
         border: '1px solid rgba(255, 255, 255, 0.05)'
       }}>
+      <style>{styleTag}</style>
 
-      <div ref={scrollRef} className="flex flex-row gap-3 px-4 whitespace-nowrap">
-        {[...techStack, ...techStack].map((tech, index) => {
+      <div className="flex flex-row flex-nowrap justify-center items-center gap-2 sm:gap-4 w-full py-4 px-2">
+        {techStack.map((tech, index) => {
           return (
             <div
               key={index}
-              data-color={tech.brandColor}
-              onMouseEnter={onIconEnter}
-              onMouseLeave={onIconLeave}
-              className="relative flex flex-col items-center justify-center w-12 h-12 shrink-0 rounded-xl border cursor-pointer"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                borderColor: 'rgba(255, 255, 255, 0.05)',
+              className="tech-icon-card relative flex flex-col items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-8 lg:w-9 xl:w-10 md:h-8 lg:h-9 xl:h-10 shrink-0 rounded-xl border cursor-pointer bg-white/[0.03] border-white/[0.05] hover:scale-110 hover:-translate-y-1"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = `${tech.brandColor}15`;
+                e.currentTarget.style.borderColor = `${tech.brandColor}40`;
+                e.currentTarget.style.boxShadow = `0 0 20px ${tech.brandColor}20`;
+                const icon = e.currentTarget.querySelector('.icon-wrapper');
+                if (icon) {
+                  icon.style.color = tech.brandColor;
+                  icon.style.filter = `drop-shadow(0 0 8px ${tech.brandColor}80)`;
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.boxShadow = 'none';
+                const icon = e.currentTarget.querySelector('.icon-wrapper');
+                if (icon) {
+                  icon.style.color = 'rgb(var(--contrast-rgb))';
+                  icon.style.filter = 'none';
+                }
               }}
             >
               <span
-                className="icon-wrapper"
+                className="icon-wrapper transition-all duration-300"
                 style={{
                   color: 'rgb(var(--contrast-rgb)',
                 }}
               >
-                <tech.Icon size={20} strokeWidth={2} />
+                <tech.Icon size={18} strokeWidth={2} />
               </span>
 
               {tech.type === "learning" && (
