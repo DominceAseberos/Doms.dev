@@ -64,12 +64,7 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
                 >
                     {education.degree}
                 </p>
-                <p
-                    className="text-gray-400 text-sm"
-                    style={{ fontSize: 'clamp(11px, 1.8vw, 12px)' }}
-                >
-                    {education.level} • Year {education.yearLevel}
-                </p>
+
             </div>
         </div>
     );

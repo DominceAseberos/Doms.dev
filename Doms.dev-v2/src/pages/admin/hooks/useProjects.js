@@ -4,7 +4,7 @@ import { useAdminStore } from '../../../store/adminStore';
 
 export const useProjects = () => {
     const [projects, setProjects] = useState([]);
-    const { setAdminLoading } = useAdminStore();
+    const { setAdminLoading, setSuccessMessage } = useAdminStore();
 
     const fetchProjects = useCallback(async (showOverlay = false) => {
         if (showOverlay) setAdminLoading(true, 'FETCHING REPOSITORIES');
@@ -33,6 +33,7 @@ export const useProjects = () => {
 
             await projectService.resequenceProjects(savedProject.id, projectToSave.display_order || 1);
             await fetchProjects(false);
+            setSuccessMessage('Project successfully synchronized!');
             return true;
         } catch (err) {
             console.error('Failed to save project:', err);
@@ -50,6 +51,7 @@ export const useProjects = () => {
             await projectService.deleteProject(id);
             await projectService.resequenceProjects('dummy', 9999);
             await fetchProjects(false);
+            setSuccessMessage('Project successfully purged.');
             return true;
         } catch (err) {
             console.error('Failed to delete project:', err);
