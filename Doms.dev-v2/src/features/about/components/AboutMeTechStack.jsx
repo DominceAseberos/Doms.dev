@@ -1,6 +1,5 @@
 import React from 'react';
 import { useButtonMotion } from '../hooks/useAboutMotion';
-import FrequencyCircles from '../../../components/FrequencyCircles';
 
 const AnimatedStack = ({ children, className = '', style = {} }) => {
     const motion = useButtonMotion();
@@ -40,7 +39,6 @@ const AboutMeTechStack = ({ mdIconStack, techStack }) => {
             >
                 Tech Stack
             </h3>
-            <FrequencyCircles />
             <div className="flex flex-wrap gap-2 text-center">
                 {techStack.slice(0, 10).map((tech, index) => {
                     return (

@@ -154,33 +154,6 @@ export const Controls = memo(({
         </svg>
       </button>
 
-      {/* FULL VIEW TOGGLE */}
-      <button
-        onClick={onToggleVisualizer}
-        onMouseEnter={onEnter}
-        onMouseLeave={onLeave}
-        onMouseDown={onActive}
-        onMouseUp={onEnter}
-        className="w-max hover:cursor-pointer ml-1"
-        title={isVisualizerFull ? "Collapse Visualizer" : "Expand Visualizer"}
-      >
-        <svg
-          className="w-5 h-5"
-          style={{ color: `rgb(var(--contrast-rgb))` }}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          {isVisualizerFull ? (
-            <path d="M8 3v5H3M16 3v5h5M16 21v-5h5M8 21v-5H3" />
-          ) : (
-            <path d="M15 3h6v6M9 21H3v-6M21 15v6h-6M3 9V3h6" />
-          )}
-        </svg>
-      </button>
     </div>
   );
 });
