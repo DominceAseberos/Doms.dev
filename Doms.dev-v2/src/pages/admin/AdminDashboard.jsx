@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     LayoutGrid, User, FolderKanban, HardDrive,
-    Shield, Activity, Database, CheckCircle2, UserCircle, Rss
+    Shield, Activity, Database, CheckCircle2, UserCircle, Rss, Music
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { profileService } from '../../services/profileService';
@@ -17,10 +17,8 @@ const AdminDashboard = () => {
     const { setAdminLoading } = useAdminStore();
     const [stats, setStats] = useState({
         projects: 0,
-        tech: 0,
-        education: 0,
-        media: 0,
-        socials: 0
+        tracks: 0,
+        media: 0
     });
     const [profile, setProfile] = useState(null);
 
@@ -28,21 +26,17 @@ const AdminDashboard = () => {
         const fetchSummary = async () => {
             setAdminLoading(true, 'INITIALIZING SYSTEM HUB');
             try {
-                const [prof, projects, tech, education, socials, media] = await Promise.all([
+                const [prof, projects, tracks, media] = await Promise.all([
                     profileService.getProfile(),
                     projectService.getProjects(),
-                    dashboardService.getAll('tech_stacks'),
-                    dashboardService.getAll('education'),
-                    dashboardService.getAll('contacts'),
+                    dashboardService.getAll('tracks'),
                     mediaService.getFiles()
                 ]);
 
                 setProfile(prof);
                 setStats({
                     projects: projects.length,
-                    tech: tech.length,
-                    education: education.length,
-                    socials: socials.length,
+                    tracks: tracks.length,
                     media: media.length
                 });
             } catch (err) {
@@ -109,11 +103,11 @@ const AdminDashboard = () => {
                 {/* Grid Cards */}
                 <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <AdminCard
-                        onClick={() => navigate('/admin/dashboard')}
-                        icon={LayoutGrid}
-                        title={strings.hub.cards.dashboard.title}
-                        subtitle={`${stats.socials} Socials • ${stats.tech} Technologies`}
-                        count={stats.tech + stats.socials}
+                        onClick={() => navigate('/admin/music')}
+                        icon={Music}
+                        title="Music Station"
+                        subtitle="Audio Registry Control"
+                        count={stats.tracks}
                     />
 
                     <AdminCard

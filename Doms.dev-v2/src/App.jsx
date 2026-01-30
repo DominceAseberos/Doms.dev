@@ -46,7 +46,7 @@ const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
 const ProjectsManager = lazy(() => import('./pages/admin/ProjectsManager'));
 const ProfileManager = lazy(() => import('./pages/admin/ProfileManager'));
 const MediaCenter = lazy(() => import('./pages/admin/MediaCenter'));
-const DashboardManager = lazy(() => import('./pages/admin/DashboardManager'));
+const MusicManager = lazy(() => import('./pages/admin/MusicManager'));
 const FeedManager = lazy(() => import('./pages/admin/FeedManager'));
 const AdminLayout = lazy(() => import('./pages/admin/components/AdminLayout'));
 
@@ -137,11 +137,11 @@ function App() {
               }
             />
             <Route
-              path="/admin/dashboard"
+              path="/admin/music"
               element={
                 <ProtectedRoute>
                   <AdminLayout>
-                    <DashboardManager />
+                    <MusicManager />
                   </AdminLayout>
                 </ProtectedRoute>
               }
