@@ -12,7 +12,7 @@ import ProjectHead from '../features/projects/components/ProjectHead'
 import Projects from '../features/projects/components/Projects'
 import ProjectBottom from '../features/projects/components/ProjectBottom'
 import FloatingChat from '../features/chatBot/floatingChat'
-import FrequencyCircles from '../components/FrequencyCircles'
+
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useNavigationStore } from '../store/navigationStore'
@@ -179,19 +179,6 @@ const Dashboard = () => {
             )}
             <FloatingChat />
 
-            {/* Premium Frequency Visualization Center */}
-            {!isMobile && (
-                <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[60] desktop-anim-item">
-                    <div
-                        className="px-6 py-3 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl"
-                        style={{
-                            background: 'rgba(255, 255, 255, 0.03)',
-                        }}
-                    >
-                        <FrequencyCircles />
-                    </div>
-                </div>
-            )}
         </main>
     )
 }

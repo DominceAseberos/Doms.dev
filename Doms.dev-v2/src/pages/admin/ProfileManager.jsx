@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, ShieldCheck, Save, RefreshCw, Upload, Image as ImageIcon, FileText, GraduationCap, Trash2, Plus, Image, Code2, Globe, Grid } from 'lucide-react';
+import { ArrowLeft, User, ShieldCheck, Save, RefreshCw, Upload, Image as ImageIcon, FileText, GraduationCap, Trash2, Plus, Image, Code2, Globe, Grid, X, ExternalLink } from 'lucide-react';
+
 import strings from '../../config/adminStrings.json';
 import { useAdminStore } from '../../store/adminStore';
 import { profileService } from '../../services/profileService';
@@ -8,6 +9,7 @@ import { educationService } from '../../services/educationService';
 import { projectService } from '../../services/projectService';
 import { dashboardService } from '../../services/dashboardService';
 import MediaPickerModal from '../../components/MediaPickerModal';
+import { getAvailableIconNames, getIconByName } from '../../utils/IconRegistry';
 
 const ProfileManager = () => {
     const navigate = useNavigate();
@@ -30,11 +32,19 @@ const ProfileManager = () => {
         year_level: '',
         logo_url: ''
     });
-    const [previewData, setPreviewData] = useState({ tech: [], socials: [] });
+
+    const [techStack, setTechStack] = useState([]);
+    const [socials, setSocials] = useState([]);
+    const [originalData, setOriginalData] = useState({ tech: [], socials: [] });
 
     // Media Picker State
     const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
     const [mediaPickerTarget, setMediaPickerTarget] = useState(null); // 'avatar' | 'hero' | 'cv' | 'edu_logo'
+
+    // Icon Registry
+    const availableStacks = getAvailableIconNames().filter(name =>
+        !['Github', 'Linkedin', 'Mail', 'ExternalLink', 'MessageCircle', 'Facebook', 'Youtube'].includes(name)
+    );
 
     useEffect(() => {
         fetchData();
@@ -55,7 +65,10 @@ const ProfileManager = () => {
                 cv_img_url: profileData.cv_img_url || ''
             });
             setEducation(educationData || {});
-            setPreviewData({ tech, socials });
+            setEducation(educationData || {});
+            setTechStack(tech || []);
+            setSocials(socials || []);
+            setOriginalData({ tech: tech || [], socials: socials || [] });
         } catch (err) {
             console.error('Failed to fetch data:', err);
             setErrorMessage('Failed to load identity data.');
@@ -70,7 +83,8 @@ const ProfileManager = () => {
         try {
             if (!profile.id) throw new Error('Profile ID missing. Database initialization required.');
 
-            await Promise.all([
+            // 1. Sync Profile & Education
+            const updates = [
                 profileService.updateProfile(profile.id, {
                     ...profile,
                     name: profile.name,
@@ -78,7 +92,34 @@ const ProfileManager = () => {
                     bio: profile.bio
                 }),
                 education.id ? educationService.updateEducation(education.id, education) : Promise.resolve()
-            ]);
+            ];
+
+            // 2. Sync Tech Stack
+            // Additions
+            const newTech = techStack.filter(t => !originalData.tech.find(ot => ot.name?.toLowerCase().trim() === t.name?.toLowerCase().trim()));
+            newTech.forEach(t => updates.push(dashboardService.create('tech_stacks', { name: t.name, display_order: t.display_order })));
+
+            // Deletions
+            const removedTech = originalData.tech.filter(ot => !techStack.find(t => t.name?.toLowerCase().trim() === ot.name?.toLowerCase().trim()));
+            removedTech.forEach(t => updates.push(dashboardService.delete('tech_stacks', t.id)));
+
+            // 3. Sync Socials
+            // Additions
+            const newSocials = socials.filter(s => !s.id);
+            newSocials.forEach(s => updates.push(dashboardService.create('contacts', { platform: s.platform, url: s.url, display_order: s.display_order })));
+
+            // Updates
+            const updatedSocials = socials.filter(s => s.id && (s.platform !== originalData.socials.find(os => os.id === s.id)?.platform || s.url !== originalData.socials.find(os => os.id === s.id)?.url));
+            updatedSocials.forEach(s => updates.push(dashboardService.update('contacts', s.id, { platform: s.platform, url: s.url })));
+
+            // Deletions
+            const removedSocials = originalData.socials.filter(os => !socials.find(s => s.id === os.id));
+            removedSocials.forEach(s => updates.push(dashboardService.delete('contacts', s.id)));
+
+            await Promise.all(updates);
+
+            // Refresh data to get new IDs
+            fetchData();
             setSuccessMessage('Identity Node synchronized successfully!');
         } catch (err) {
             console.error('Save failed:', err);
@@ -144,6 +185,41 @@ const ProfileManager = () => {
             ...prev,
             identity_images: prev.identity_images.filter((_, i) => i !== index)
         }));
+    };
+
+    // --- HELPER FUNCTIONS ---
+
+    const IconWrapper = ({ name, className }) => {
+        const Icon = getIconByName(name);
+        return <Icon size={12} className={className || "text-primary opacity-80"} />;
+    };
+
+    // Tech Stack Logic
+    const toggleStack = (stackName) => {
+        const exists = techStack.find(t => t.name?.toLowerCase().trim() === stackName.toLowerCase().trim());
+        if (exists) {
+            setTechStack(prev => prev.filter(t => t.name?.toLowerCase().trim() !== stackName.toLowerCase().trim()));
+        } else {
+            // Add new stack item (no ID yet)
+            setTechStack(prev => [...prev, { name: stackName, display_order: prev.length + 1 }]);
+        }
+    };
+
+    // Socials Logic
+    const addSocial = () => {
+        setSocials(prev => [...prev, { platform: '', url: 'https://', display_order: prev.length + 1 }]);
+    };
+
+    const removeSocial = (index) => {
+        setSocials(prev => prev.filter((_, i) => i !== index));
+    };
+
+    const updateSocial = (index, field, value) => {
+        setSocials(prev => {
+            const newSocials = [...prev];
+            newSocials[index] = { ...newSocials[index], [field]: value };
+            return newSocials;
+        });
     };
 
     return (
@@ -421,43 +497,80 @@ const ProfileManager = () => {
                             </div>
                         </section>
 
-                        {/* Tech & Socials Preview / Redirects */}
+                        {/* Tech & Socials Editors */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Tech Stack Preview */}
+                            {/* Tech Stack Editor */}
                             <section className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient bg-grid-white/[0.02]">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3 text-primary">
-                                        <Code2 size={18} />
-                                        <h3 className="text-xs font-black uppercase tracking-widest">Tech Stack</h3>
-                                    </div>
-                                    <button onClick={() => navigate('/admin?tab=tech')} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all">Manage</button>
+                                <div className="flex items-center gap-3 text-primary mb-2">
+                                    <Code2 size={18} />
+                                    <h3 className="text-xs font-black uppercase tracking-widest">Tech Stack</h3>
                                 </div>
-                                <div className="flex flex-wrap gap-2">
-                                    {previewData.tech.slice(0, 6).map(t => (
-                                        <span key={t.id} className="px-2 py-1 bg-white/5 rounded border border-white/5 text-[9px] font-mono uppercase">{t.name}</span>
+
+                                <div className="flex flex-wrap gap-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                                    {availableStacks.map(stack => (
+                                        <button
+                                            key={stack}
+                                            type="button"
+                                            onClick={() => toggleStack(stack)}
+                                            className={`px-3 py-2 rounded-lg text-[9px] uppercase font-black tracking-widest border transition-all flex items-center gap-2 active:scale-95 cursor-pointer ${techStack.find(t => t.name?.toLowerCase().trim() === stack.toLowerCase().trim())
+                                                ? 'bg-blue-600 border-blue-600 text-white font-black shadow-[0_0_15px_rgba(37,99,235,0.5)]'
+                                                : 'bg-white/5 border-white/5 text-white/30 hover:border-white/20 hover:text-white/60'
+                                                }`}
+                                        >
+                                            <IconWrapper name={stack} className={techStack.find(t => t.name?.toLowerCase().trim() === stack.toLowerCase().trim()) ? "text-white" : "text-white opacity-40"} />
+                                            {stack}
+                                        </button>
                                     ))}
-                                    {previewData.tech.length > 6 && <span className="px-2 py-1 text-[9px] opacity-40">+{previewData.tech.length - 6} more</span>}
-                                    {previewData.tech.length === 0 && <span className="text-[10px] opacity-30">No satellites detected.</span>}
                                 </div>
+                                <p className="text-[10px] text-white/20 italic text-center">Select technologies to display in your profile.</p>
                             </section>
 
-                            {/* Socials Preview */}
+                            {/* Socials Editor */}
                             <section className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient bg-grid-white/[0.02]">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3 text-primary">
-                                        <Globe size={18} />
-                                        <h3 className="text-xs font-black uppercase tracking-widest">Social Matrix</h3>
-                                    </div>
-                                    <button onClick={() => navigate('/admin?tab=socials')} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all">Manage</button>
+                                <div className="flex items-center gap-3 text-primary mb-2">
+                                    <Globe size={18} />
+                                    <h3 className="text-xs font-black uppercase tracking-widest">Social Matrix</h3>
                                 </div>
-                                <div className="space-y-2">
-                                    {previewData.socials.map(s => (
-                                        <div key={s.id} className="flex items-center justify-between text-[10px] font-mono border-b border-white/5 pb-2 last:border-0">
-                                            <span className="uppercase opacity-60">{s.platform}</span>
-                                            <span className="text-primary truncate max-w-[100px]">{s.url}</span>
+
+                                <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                                    {socials.map((social, idx) => (
+                                        <div key={idx} className="flex gap-2 items-center animate-in slide-in-from-right-2 duration-300">
+                                            <div className="w-1/3">
+                                                <input
+                                                    type="text"
+                                                    value={social.platform}
+                                                    onChange={(e) => updateSocial(idx, 'platform', e.target.value)}
+                                                    placeholder="PLATFORM"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 text-[10px] uppercase font-bold tracking-widest focus:outline-none focus:border-white/30 text-white"
+                                                />
+                                            </div>
+                                            <div className="flex-1 relative">
+                                                <input
+                                                    type="text"
+                                                    value={social.url}
+                                                    onChange={(e) => updateSocial(idx, 'url', e.target.value)}
+                                                    placeholder="URL"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-3 pr-8 py-3 text-[10px] font-mono focus:outline-none focus:border-white/30 text-primary/80"
+                                                />
+                                                <ExternalLink size={10} className="absolute right-3 top-1/2 -translate-y-1/2 opacity-20" />
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => removeSocial(idx)}
+                                                className="w-8 h-8 rounded-lg bg-red-500/5 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 border border-red-500/10 flex items-center justify-center transition-all cursor-pointer flex-shrink-0"
+                                            >
+                                                <X size={12} />
+                                            </button>
                                         </div>
                                     ))}
-                                    {previewData.socials.length === 0 && <span className="text-[10px] opacity-30">No comms channels open.</span>}
+
+                                    <button
+                                        type="button"
+                                        onClick={addSocial}
+                                        className="w-full py-3 rounded-xl border border-dashed border-white/10 flex items-center justify-center gap-2 text-[10px] uppercase font-black tracking-widest opacity-30 hover:opacity-100 hover:bg-white/[0.02] transition-all cursor-pointer group"
+                                    >
+                                        <Plus size={12} className="group-hover:rotate-90 transition-transform" /> Add Connection
+                                    </button>
                                 </div>
                             </section>
                         </div>

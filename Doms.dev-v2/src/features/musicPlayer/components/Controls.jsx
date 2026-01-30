@@ -14,8 +14,7 @@ export const Controls = memo(({
   buttonRef, // This is for the Mood button externally
   isBuffering,
   onNext,
-  isVisualizerFull,
-  onToggleVisualizer,
+
 }) => {
   const containerRef = useRef(null);
   const { contextSafe } = useGSAP({ scope: containerRef });

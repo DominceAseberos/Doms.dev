@@ -1,7 +1,7 @@
 // hooks/useMusicPlayer.js
 import { useCallback, useMemo, useRef } from 'react';
 import { useAudioPlayback } from './useAudioPlay';
-import { useVisualizer } from './useVisualizer';
+
 import { useMarqueeText } from './useSliderText';
 import { useFetchTrack } from './useFetchSong';
 
@@ -10,7 +10,7 @@ export const useMusicPlayer = (activeTrackId, onNextTrack) => {
     onNextTrack?.();
   });
 
-  const visualizer = useVisualizer();
+
   const hasInteractedRef = useRef(false); // Track user clicks play btn
 
   const handleTrackLoaded = useCallback((streamURL) => {
@@ -18,16 +18,8 @@ export const useMusicPlayer = (activeTrackId, onNextTrack) => {
 
     audioPlayback.setAudioSrc(streamURL, shouldAutoPlay);
 
-    if (shouldAutoPlay) {
-      if (!visualizer.audioContextRef.current && audioPlayback.audioRef.current) {
-        visualizer.setupVisualizer(audioPlayback.audioRef.current);
-      }
-
-      visualizer.resumeAudioContext();
-      visualizer.drawVisualizer();
-    }
   },
-    [audioPlayback, visualizer]
+    [audioPlayback]
   );
 
   const trackData = useFetchTrack(activeTrackId, handleTrackLoaded, onNextTrack);
@@ -45,21 +37,15 @@ export const useMusicPlayer = (activeTrackId, onNextTrack) => {
   const marquee = useMarqueeText(title);
 
   const togglePlayPause = useCallback(() => {
-    if (!visualizer.audioContextRef.current) {
-      visualizer.setupVisualizer(audioPlayback.audioRef.current);
-    }
-    visualizer.resumeAudioContext();
 
     if (audioPlayback.isPlaying) {
       audioPlayback.pause();
-      visualizer.stopVisualization();
     } else {
       audioPlayback.play();
-      visualizer.drawVisualizer();
     }
 
     hasInteractedRef.current = true;
-  }, [audioPlayback, visualizer]);
+  }, [audioPlayback]);
 
   return {
     isPlaying: audioPlayback.isPlaying,
@@ -78,7 +64,6 @@ export const useMusicPlayer = (activeTrackId, onNextTrack) => {
     containerRef: marquee.containerRef,
     shouldSlide: marquee.shouldSlide,
     durationSlide: marquee.durationSlide,
-    canvasRef: visualizer.canvasRef,
-    drawVisualizer: visualizer.drawVisualizer,
+
   };
 };

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useMusicPlayer } from './hooks';
 import { usePortfolioData } from '../../hooks/usePortfolioData';
-import { AlbumInfo, Controls, ProgressBar, Visualizer } from './components';
+import { AlbumInfo, Controls, ProgressBar } from './components';
 import { buttonPausePathSVG, buttonPlayPathSVG } from './svgPath';
 import { marqueeStyle } from './styles/Marques';
 import { useTrackID } from './hooks/useTrackID';
@@ -117,8 +117,6 @@ const MusicPlayer = () => {
     shouldSlide,
     durationSlide,
     isBuffering,
-    drawVisualizer,
-    canvasRef,
   } = useMusicPlayer(trackID, handleNextTrack);
 
 

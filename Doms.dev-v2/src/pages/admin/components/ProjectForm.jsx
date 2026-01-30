@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     X, Upload, Image as ImageIcon, ExternalLink, BookOpen,
-    Eye, EyeOff, Link as LinkIcon, FileText, Plus, Save, Trash2
+    Eye, EyeOff, Link as LinkIcon, FileText, Plus, Save, Trash2, Calendar
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -16,6 +16,7 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
     const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
     const [mediaPickerMode, setMediaPickerMode] = useState('single');
     const { setAdminLoading } = useAdminStore();
+    const dateInputRef = React.useRef(null);
 
     // Tech Stack
     const availableStacks = getAvailableIconNames().filter(name =>
@@ -75,8 +76,10 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
 
     const toggleStack = (stack) => {
         const stacks = currentProject.stacks || [];
-        if (stacks.includes(stack)) {
-            setCurrentProject({ ...currentProject, stacks: stacks.filter(s => s !== stack) });
+        const exists = stacks.some(s => s.toLowerCase() === stack.toLowerCase());
+
+        if (exists) {
+            setCurrentProject({ ...currentProject, stacks: stacks.filter(s => s.toLowerCase() !== stack.toLowerCase()) });
         } else {
             setCurrentProject({ ...currentProject, stacks: [...stacks, stack] });
         }
@@ -164,7 +167,7 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
                                                     type="button"
                                                     onClick={() => setCurrentProject({ ...currentProject, project_type: type })}
                                                     className={`px-3 py-1.5 rounded-lg text-[10px] uppercase font-bold tracking-wider border transition-all ${currentProject.project_type === type
-                                                        ? 'bg-primary border-primary text-black'
+                                                        ? 'bg-blue-600 border-blue-600 text-white font-black shadow-[0_0_15px_rgba(37,99,235,0.5)]'
                                                         : 'bg-white/5 border-white/5 text-white/40 hover:bg-white/10 hover:border-white/10'
                                                         }`}
                                                 >
@@ -275,12 +278,21 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
                                         <label className="text-[10px] uppercase font-bold tracking-widest opacity-40 ml-1">Timeline</label>
-                                        <input
-                                            type="date"
-                                            value={currentProject.date_created}
-                                            onChange={(e) => setCurrentProject({ ...currentProject, date_created: e.target.value })}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors text-center font-mono appearance-none"
-                                        />
+                                        <div className="relative">
+                                            <input
+                                                ref={dateInputRef}
+                                                type="date"
+                                                value={currentProject.date_created}
+                                                onChange={(e) => setCurrentProject({ ...currentProject, date_created: e.target.value })}
+                                                style={{ colorScheme: 'dark' }}
+                                                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors font-mono appearance-none [&::-webkit-calendar-picker-indicator]:hidden"
+                                            />
+                                            <Calendar
+                                                size={18}
+                                                className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20 cursor-pointer hover:opacity-100 transition-opacity text-white"
+                                                onClick={() => dateInputRef.current?.showPicker()}
+                                            />
+                                        </div>
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] uppercase font-bold tracking-widest opacity-40 ml-1">Priority</label>
@@ -308,12 +320,12 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
                                         key={stack}
                                         type="button"
                                         onClick={() => toggleStack(stack)}
-                                        className={`px-4 py-2 rounded-full text-[9px] uppercase font-black tracking-widest border transition-all flex items-center gap-2 active:scale-95 cursor-pointer ${currentProject.stacks?.includes(stack)
-                                            ? 'bg-primary border-primary text-black font-black'
+                                        className={`px-4 py-2 rounded-full text-[9px] uppercase font-black tracking-widest border transition-all flex items-center gap-2 active:scale-95 cursor-pointer ${currentProject.stacks?.some(s => s.toLowerCase() === stack.toLowerCase())
+                                            ? 'bg-blue-600 border-blue-600 text-white font-black shadow-[0_0_15px_rgba(37,99,235,0.5)]'
                                             : 'bg-transparent border-white/5 text-white/20 hover:border-white/20 hover:text-white/40'
                                             }`}
                                     >
-                                        <IconWrapper name={stack} className={currentProject.stacks?.includes(stack) ? "text-black" : "text-primary opacity-80"} />
+                                        <IconWrapper name={stack} className={currentProject.stacks?.some(s => s.toLowerCase() === stack.toLowerCase()) ? "text-white" : "text-primary opacity-80"} />
                                         {stack}
                                     </button>
                                 ))}
@@ -459,7 +471,7 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
 
                         <button
                             type="submit"
-                            className="w-full py-5 rounded-2xl flex items-center justify-center gap-3 font-black uppercase tracking-[0.4em] text-xs transition-all active:scale-95 shadow-2xl hover:brightness-110 active:brightness-90 bg-primary text-black shadow-primary/20"
+                            className="w-full py-5 rounded-2xl flex items-center justify-center gap-3 font-black uppercase tracking-[0.4em] text-xs transition-all active:scale-95 shadow-2xl hover:brightness-110 active:brightness-90 bg-blue-600 text-white shadow-blue-600/20"
                         >
                             <Save size={18} />
                             Sync Instance to Cloud

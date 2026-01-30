@@ -2,16 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 
-const VISUALIZER_EFFECT = {
-  start: { r: 85, g: 252, b: 255 },
-  mid: { r: 183, g: 183, b: 183 },
-  end: { r: 34, g: 197, b: 94 } // True Green
-}
-const VISUALIZER_EFFECT_WOBBLE = {
-  start: { r: 16, g: 68, b: 255 },
-  mid: { r: 255, g: 255, b: 0 },
-  end: { r: 232, g: 255, b: 0 }, // Electric Lime
-}
+
 
 const BODYLINEAR_1 = {
   start: { r: 49, g: 49, b: 59 },
@@ -54,23 +45,14 @@ const updateThemeVariable = (percentage) => {
 
   let br, bg, bb;
   let bbr, bbg, bbb;
-  let vr, vg, vb;
-  let vvr, vvg, vvb;
+
 
   let cr, cg, cb; // Contrast Color
   let r, g, b;       // linearColor1
   let lr, lg, lb;   //liniarColor2
   if (percentage <= 50) {
     const t = percentage / 50;
-    // VisualizerEffect Wobble
-    vvr = lerp(VISUALIZER_EFFECT_WOBBLE.start.r, VISUALIZER_EFFECT_WOBBLE.mid.r, t);
-    vvg = lerp(VISUALIZER_EFFECT_WOBBLE.start.g, VISUALIZER_EFFECT_WOBBLE.mid.g, t);
-    vvb = lerp(VISUALIZER_EFFECT_WOBBLE.start.b, VISUALIZER_EFFECT_WOBBLE.mid.b, t);
 
-    // VisualizerEffect
-    vr = lerp(VISUALIZER_EFFECT.start.r, VISUALIZER_EFFECT.mid.r, t);
-    vg = lerp(VISUALIZER_EFFECT.start.g, VISUALIZER_EFFECT.mid.g, t);
-    vb = lerp(VISUALIZER_EFFECT.start.b, VISUALIZER_EFFECT.mid.b, t);
 
     // BodyLiniar1
     br = lerp(BODYLINEAR_1.start.r, BODYLINEAR_1.mid.r, t);
@@ -102,15 +84,7 @@ const updateThemeVariable = (percentage) => {
     const t = (percentage - 50) / 50;
 
 
-    // VisualizerEffect
-    vvr = lerp(VISUALIZER_EFFECT_WOBBLE.mid.r, VISUALIZER_EFFECT_WOBBLE.end.r, t);
-    vvg = lerp(VISUALIZER_EFFECT_WOBBLE.mid.g, VISUALIZER_EFFECT_WOBBLE.end.g, t);
-    vvb = lerp(VISUALIZER_EFFECT_WOBBLE.mid.b, VISUALIZER_EFFECT_WOBBLE.end.b, t);
 
-    // VisualizerEffect
-    vr = lerp(VISUALIZER_EFFECT.mid.r, VISUALIZER_EFFECT.end.r, t);
-    vg = lerp(VISUALIZER_EFFECT.mid.g, VISUALIZER_EFFECT.end.g, t);
-    vb = lerp(VISUALIZER_EFFECT.mid.b, VISUALIZER_EFFECT.end.b, t);
 
     // Contrast
     cr = lerp(CONTRAST.mid.r, CONTRAST.end.r, t);
@@ -141,8 +115,7 @@ const updateThemeVariable = (percentage) => {
   }
 
   // Format strings
-  const visualizerEffectWobble = `${Math.round(vvr)} ${Math.round(vvg)} ${Math.round(vvb)}`;
-  const visualizerEffect = `${Math.round(vr)} ${Math.round(vg)} ${Math.round(vb)}`;
+
   const bodyLinearColorOne = `${Math.round(br)} ${Math.round(bg)} ${Math.round(bb)}`;
   const bodyLinearColorTwo = `${Math.round(bbr)} ${Math.round(bbg)} ${Math.round(bbb)}`;
   const linearColorOne = `${Math.round(r)} ${Math.round(g)} ${Math.round(b)}`;
@@ -151,8 +124,7 @@ const updateThemeVariable = (percentage) => {
 
 
   // Set BOTH variables
-  document.documentElement.style.setProperty('--visualizer-effect-wobble-rgb', visualizerEffectWobble);
-  document.documentElement.style.setProperty('--visualizer-effect-rgb', visualizerEffect);
+
   document.documentElement.style.setProperty('--body-Linear-1-rgb', bodyLinearColorOne);
   document.documentElement.style.setProperty('--body-Linear-2-rgb', bodyLinearColorTwo);
   document.documentElement.style.setProperty('--box-Linear-1-rgb', linearColorOne);
