@@ -23,15 +23,16 @@ const AboutMeTechStack = ({ mdIconStack, techStack }) => {
         <div ref={mdIconStack}
             className="hidden
                 md:block md:col-span-4 md:h-52 md:w-full
-                lg:block lg:col-span-4 lg:h-52 lg:w-full
-                scroll-reveal space-y-2
-                rounded-2xl p-6 border border-white/5 overflow-hidden"
+                 lg:col-span-4 lg:aspect-square 
+                lg:h-full lg:w-full
+                scroll-reveal 
+                rounded-2xl p-6 border border-white/5 overflow-hidden flex flex-col"
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
             }}
         >
             <h3
-                className="font-semibold "
+                className="font-semibold shrink-0"
                 style={{
                     color: 'rgb(var(--contrast-rgb))',
                     fontSize: 'clamp(14px, 2.5vw, 16px)'
@@ -39,8 +40,8 @@ const AboutMeTechStack = ({ mdIconStack, techStack }) => {
             >
                 Tech Stack
             </h3>
-            <div className="flex flex-wrap gap-2 text-center">
-                {techStack.slice(0, 10).map((tech, index) => {
+            <div className="flex flex-wrap gap-2 text-center flex-1 overflow-y-auto p-2 -mx-2 custom-scrollbar content-start">
+                {techStack.map((tech, index) => {
                     return (
                         <AnimatedStack key={index}>
                             <div className="rounded-full text-xs font-medium border px-3 py-2 w-fit cursor-pointer select-none touch-manipulation"

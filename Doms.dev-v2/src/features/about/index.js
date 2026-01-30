@@ -5,4 +5,5 @@ export { default as AboutMeEducation } from './components/AboutMeEducation';
 export { default as AboutMeResume } from './components/AboutMeResume';
 export { default as AboutMeFooter } from './components/AboutMeFooter';
 export { default as AboutMeTechStack } from './components/AboutMeTechStack';
-
+export { default as AboutMeStatusCard } from './components/AboutMeStatusCard';
+export { default as BackButton } from './components/BackButton';

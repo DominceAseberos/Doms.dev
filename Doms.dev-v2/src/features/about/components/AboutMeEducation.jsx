@@ -12,7 +12,7 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
             className="
                 h-85 flex flex-col justify-between
                 md:col-span-6 md:h-45 md:w-full md:flex md:flex-row md:justify-between md:gap-5
-                lg:col-span-6 lg:h-45 lg:w-full lg:flex lg:flex-row lg:justify-between lg:gap-5
+                lg:col-span-6 lg:aspect-[2/1] lg:h-auto lg:w-full lg:flex lg:flex-row lg:justify-between lg:gap-5
                 rounded-2xl p-6 border border-white/5 space-y-4"
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`

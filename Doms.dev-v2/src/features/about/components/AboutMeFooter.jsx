@@ -24,32 +24,10 @@ const AboutMeFooter = ({ footerRef, contacts, profile }) => {
         <div
             ref={footerRef}
             className="
-                items-center
-                md:col-span-12 md:h-fit md:flex md:flex-row md:justify-between  
-                md:items-center
-                rounded-2xl p-6 border border-white/5 flex flex-col gap-4"
-            style={{
-                background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
-            }}
+                 flex flex-col gap-4"
+
         >
-            <AnimatedFooter>
-                <Link to="/">
-                    <button
-                        className="
-                            px-6
-                            md:py-3 md:w-full md:px-3    
-                            scroll-reveal w-full py-3 rounded-xl font-semibold flex flex-row justify-between gap-2 hover:cursor-pointer border"
-                        style={{
-                            color: 'rgb(var(--contrast-rgb))',
-                            borderColor: 'rgba(var(--contrast-rgb), 0.3)',
-                            fontSize: 'clamp(12px, 2.2vw, 14px)'
-                        }}
-                    >
-                        <ArrowLeft size={18} />
-                        Back to Dashboard
-                    </button>
-                </Link>
-            </AnimatedFooter>
+
 
             <div className="scroll-reveal flex justify-center gap-4">
                 <AnimatedFooter className="md:h-fit p-3 rounded-full border" style={{

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     LayoutGrid, User, FolderKanban, HardDrive,
-    Shield, Activity, Database, CheckCircle2, UserCircle
+    Shield, Activity, Database, CheckCircle2, UserCircle, Rss
 } from 'lucide-react';
 import { authService } from '../../services/authService';
 import { profileService } from '../../services/profileService';
@@ -138,6 +138,14 @@ const AdminDashboard = () => {
                         title={strings.hub.cards.storage.title}
                         subtitle={`${stats.media} Assets in Cloud Vault`}
                         count={stats.media}
+                    />
+
+                    <AdminCard
+                        onClick={() => navigate('/admin/feed')}
+                        icon={Rss}
+                        title="Feed Channel"
+                        subtitle="Broadcast Updates"
+                        status="Live"
                     />
                 </section>
             </div>

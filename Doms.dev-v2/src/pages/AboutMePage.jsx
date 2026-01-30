@@ -13,7 +13,9 @@ import {
     AboutMeEducation,
     AboutMeResume,
     AboutMeTechStack,
-    AboutMeFooter
+    AboutMeFooter,
+    AboutMeStatusCard,
+    BackButton
 } from '../features/about';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -117,11 +119,17 @@ const AboutMePage = () => {
                 background: `linear-gradient(to bottom, rgb(var(--body-Linear-1-rgb)), rgb(var(--body-Linear-2-rgb)))`
             }}
         >
-            <div className="md:grid md:grid-cols-12 md:gap-2 md:max-w-5xl lg:grid lg:grid-cols-12 page-content max-w-2xl mx-auto space-y-6 items-center">
+
+            <div className="md:hidden lg:hidden 
+            flex flex-col gap-8 page-content max-w-2xl mx-auto items-center">
 
                 <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
 
+
+
                 <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} techStack={techStack} />
+
+                <AboutMeStatusCard heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
 
                 <AboutMeTechStack mdIconStack={mdIconStack} techStack={techStack} />
 
@@ -129,9 +137,22 @@ const AboutMePage = () => {
 
                 <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
 
-                <AboutMeFooter footerRef={footerRef} contacts={contacts} profile={profile} />
+
+                <div className="w-full flex flex-col items-center items-center gap-4
+                rounded-2xl p-6 border border-white/5"
+                    style={{
+                        background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
+                    }}
+                >
+
+                    <BackButton />
+                    <AboutMeFooter footerRef={footerRef} contacts={contacts} profile={profile} />
+                </div>
 
             </div>
+
+
+
 
             {/* Expanded Image Modal */}
             {expandedImage && (

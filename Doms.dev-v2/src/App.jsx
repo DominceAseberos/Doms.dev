@@ -38,6 +38,7 @@ const MainLayout = lazy(() => import('./layout/MainLayout.jsx'));
 const Dashboard = lazy(() => import('./pages/dashboard.jsx'));
 const AboutMePage = lazy(() => import('./pages/AboutMePage.jsx'));
 const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'));
+const FeedPage = lazy(() => import('./pages/FeedPage.jsx'));
 
 // Lazy Load Admin Pages
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
@@ -46,9 +47,12 @@ const ProjectsManager = lazy(() => import('./pages/admin/ProjectsManager'));
 const ProfileManager = lazy(() => import('./pages/admin/ProfileManager'));
 const MediaCenter = lazy(() => import('./pages/admin/MediaCenter'));
 const DashboardManager = lazy(() => import('./pages/admin/DashboardManager'));
+const FeedManager = lazy(() => import('./pages/admin/FeedManager'));
 const AdminLayout = lazy(() => import('./pages/admin/components/AdminLayout'));
 
 function App() {
+  // ...
+
   const [isLoading, setIsLoading] = useState(true);
 
   return (
@@ -82,6 +86,12 @@ function App() {
             <Route
               path="/project/:id"
               element={<ProjectDetails />}
+            />
+
+            {/* Feed Page Route */}
+            <Route
+              path="/feed"
+              element={<FeedPage />}
             />
 
             {/* Admin Routes */}
@@ -132,6 +142,16 @@ function App() {
                 <ProtectedRoute>
                   <AdminLayout>
                     <DashboardManager />
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/feed"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout>
+                    <FeedManager />
                   </AdminLayout>
                 </ProtectedRoute>
               }

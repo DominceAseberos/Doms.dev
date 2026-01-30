@@ -5,14 +5,16 @@ import { useImageMotion } from '../../../hooks/useImageMotion';
 const AboutMeHero = ({ heroCardRef, onExpand, profile }) => {
     const { ref, onEnter, onLeave } = useImageMotion();
     return (
+
+
+
         <div
             ref={heroCardRef}
             className="
-                h-66 flex items-center
+                h-66 flex items-center justify-center
                 md:col-span-2 md:h-50
-                lg:col-span-2 lg:h-55
-                rounded-2xl  border 
-                md:p-4
+                lg:col-span-3 lg:aspect-square lg:h-auto
+                rounded-2xl border p-6
                 border-white/5 overflow-hidden"
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
