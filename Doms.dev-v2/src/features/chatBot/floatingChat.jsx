@@ -69,21 +69,33 @@ const FloatingChat = () => {
         const tl = gsap.timeline();
         timelineRef.current = tl;
 
+        const updateChatSize = () => {
+            const isMobile = window.innerWidth <= 768;
+            return {
+                width: isMobile ? "calc(90vw - 50px)" : "400px",
+                height: isMobile ? "calc(100vh - 200px)" : "500px",
+                maxHeight: isMobile ? "65vh" : "500px",
+                right: isMobile ? "5px" : "25px",
+                bottom: isMobile ? "20px" : "20px"
+            };
+        };
+
         if (isOpen) {
             // ============ OPENING SEQUENCE ============
             setShowWelcome(false);
             gsap.set(closeBtnRef.current, { opacity: 0, scale: 0.5 });
             gsap.set(contentRef.current, { display: "flex", opacity: 0 });
 
-            const isMobile = window.innerWidth <= 768;
+            const sizes = updateChatSize();
 
             tl.to(iconRef.current, { opacity: 0, scale: 0, duration: 0.2 })
                 .to(containerRef.current, {
-                    width: isMobile ? "calc(100vw - 34px)" : "400px",
-                    height: isMobile ? "60vh" : "500px",
-                    right: 0,
-                    bottom: 0,
-                    borderRadius: isMobile ? "24px" : "24px",
+                    width: sizes.width,
+                    height: sizes.height,
+                    maxHeight: sizes.maxHeight,
+                    right: sizes.right,
+                    bottom: sizes.bottom,
+                    borderRadius: "24px",
                     duration: 0.5,
                     ease: "power3.inOut",
                 })
@@ -107,21 +119,43 @@ const FloatingChat = () => {
                     width: "56px",
                     height: "56px",
                     borderRadius: "100%",
+                    right: "12px",
+                    bottom: "12px",
                     duration: 0.4,
                     ease: "power3.inOut",
                 })
                 .set(contentRef.current, { display: "none" })
                 .to(iconRef.current, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.7)" });
         }
+
+        // Handle resize while chat is open - moved outside if/else
+        const handleResize = () => {
+            if (isOpen) {
+                const newSizes = updateChatSize();
+                gsap.to(containerRef.current, {
+                    width: newSizes.width,
+                    height: newSizes.height,
+                    maxHeight: newSizes.maxHeight,
+                    right: newSizes.right,
+                    bottom: newSizes.bottom,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, [isOpen]);
 
     return (
-        <div className="fixed bottom-6 right-4 md:bottom-8 md:right-8 z-[100] pointer-events-none flex flex-col items-end gap-3">
+        <>
             {/* Proactive Welcome Bubble */}
             {showWelcome && !isOpen && (
                 <div
                     ref={welcomeRef}
-                    className="pointer-events-auto bg-white text-black px-4 py-2 rounded-2xl rounded-br-none text-xs font-bold shadow-xl border border-white/20 whitespace-nowrap mb-1"
+                    className="pointer-events-auto bg-white text-black px-4 py-2 rounded-2xl rounded-br-none text-xs font-bold shadow-xl border border-white/20 whitespace-nowrap mb-4 fixed z-[100]"
+                    style={{ bottom: '70px', right: '16px' }}
                 >
                     Hi! Ask me anything! 👋
                 </div>
@@ -137,8 +171,11 @@ const FloatingChat = () => {
                 aria-label="Chat interface"
                 className={`pointer-events-auto cursor-pointer border border-white/10 shadow-2xl relative floating-chat-container ${isOpen ? "cursor-default" : "rounded-full"}`}
                 style={{
+                    position: "fixed",
                     width: "56px",
                     height: "56px",
+                    right: "0px",
+                    bottom: "0px",
                     background: `linear-gradient(135deg, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`,
                     backdropFilter: "blur(12px)",
                 }}
@@ -173,7 +210,7 @@ const FloatingChat = () => {
                     <ChatBot />
                 </div>
             </div >
-        </div >
+        </>
     );
 };
 
