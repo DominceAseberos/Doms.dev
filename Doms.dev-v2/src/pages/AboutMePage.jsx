@@ -122,7 +122,9 @@ const AboutMePage = () => {
 
             <div className="md:hidden lg:hidden 
             flex flex-col gap-8 page-content max-w-2xl mx-auto items-center">
-
+                <div className="flex flex-start w-full">
+                    <BackButton />
+                </div>
                 <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
 
 
@@ -138,14 +140,12 @@ const AboutMePage = () => {
                 <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
 
 
-                <div className="w-full flex flex-col items-center items-center gap-4
+                <div className="w-full
                 rounded-2xl p-6 border border-white/5"
                     style={{
                         background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
                     }}
                 >
-
-                    <BackButton />
                     <AboutMeFooter footerRef={footerRef} contacts={contacts} profile={profile} />
                 </div>
 

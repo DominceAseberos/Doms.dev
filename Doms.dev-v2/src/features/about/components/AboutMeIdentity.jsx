@@ -43,7 +43,7 @@ const AboutMeIdentity = ({ identityCardRef, profile, techStack }) => {
                     className="text-gray-400 font-medium mt-1"
                     style={{ fontSize: 'clamp(12px, 2vw, 14px)' }}
                 >
-                    {profile.age} • {profile.location}
+                    {profile.age} • {profile.role} • {profile.location}
                 </p>
             </div>
 

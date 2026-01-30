@@ -17,9 +17,9 @@ const fetchSupabaseData = async () => {
         { data: projects },
         { data: tracks }
     ] = await Promise.all([
-        supabase.from('profiles').select('*').single(),
-        supabase.from('education').select('*').single(),
-        supabase.from('contacts').select('*').single(),
+        supabase.from('profiles').select('*').maybeSingle(),
+        supabase.from('education').select('*').maybeSingle(),
+        supabase.from('contacts').select('*').maybeSingle(),
         supabase.from('tech_stacks').select('*').order('display_order'),
         supabase.from('projects').select('*').order('display_order'),
         supabase.from('tracks').select('*').order('display_order')

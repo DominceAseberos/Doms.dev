@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { ArrowLeft, Send, Image as ImageIcon, Loader, X, Trash2 } from 'lucide-react';
+import { ArrowLeft, Send, Image as ImageIcon, Loader, X, Trash2, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import adminStrings from '../../config/adminStrings.json';
+import { useAdminStore } from '../../store/adminStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 const FeedManager = () => {
     const navigate = useNavigate();
+    const { setAdminLoading, setSuccessMessage, setErrorMessage } = useAdminStore();
+    const queryClient = useQueryClient();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    // Live Status State
+    const [liveStatus, setLiveStatus] = useState('');
+    const [updatingStatus, setUpdatingStatus] = useState(false);
+    const [profileId, setProfileId] = useState(null);
 
     // New Post State
     const [newPostContent, setNewPostContent] = useState('');
@@ -18,7 +27,57 @@ const FeedManager = () => {
 
     useEffect(() => {
         fetchPosts();
+        fetchStatus();
     }, []);
+
+    const fetchStatus = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            setProfileId(user.id);
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('live_feed_status')
+                .eq('id', user.id)
+                .maybeSingle(); // Use maybeSingle to avoid 406 if no profile exists
+
+            if (data) {
+                setLiveStatus(data.live_feed_status || '');
+            }
+        }
+    };
+
+    const updateLiveStatus = async () => {
+        setUpdatingStatus(true);
+
+        try {
+            // Get the first (and only) profile row
+            const { data: existingProfile } = await supabase
+                .from('profiles')
+                .select('id')
+                .limit(1)
+                .single();
+
+            if (!existingProfile) {
+                throw new Error('No profile found');
+            }
+
+            // Update only that profile's live_feed_status
+            const { error } = await supabase
+                .from('profiles')
+                .update({ live_feed_status: liveStatus })
+                .eq('id', existingProfile.id);
+
+            if (error) throw error;
+
+            setSuccessMessage('Live Status Updated');
+            queryClient.invalidateQueries({ queryKey: ['portfolioData'] });
+        } catch (err) {
+            console.error('Status update failed:', err);
+            setErrorMessage('Failed to update status');
+        } finally {
+            setUpdatingStatus(false);
+        }
+    };
 
     const fetchPosts = async () => {
         setLoading(true);
@@ -122,6 +181,31 @@ const FeedManager = () => {
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Feed Manager</h1>
                         <p className="text-white/40 mt-2">Create and manage your feed posts.</p>
+                    </div>
+                </div>
+
+                {/* Live Status Manager */}
+                <div className="bg-white/5 border border-white/5 rounded-2xl p-6 flex flex-col gap-4">
+                    <div className="flex items-center gap-3 text-green-400">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <h2 className="text-sm font-bold uppercase tracking-widest leading-none">Live Status</h2>
+                    </div>
+                    <div className="flex gap-4">
+                        <input
+                            type="text"
+                            value={liveStatus}
+                            onChange={(e) => setLiveStatus(e.target.value)}
+                            placeholder="Set your current status (e.g. 'Coding in React', 'Away', 'Deploying')"
+                            className="flex-1 bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/20 transition-all font-mono text-white/80"
+                        />
+                        <button
+                            onClick={updateLiveStatus}
+                            disabled={updatingStatus}
+                            className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                        >
+                            {updatingStatus ? <Loader size={14} className="animate-spin" /> : <Save size={14} />}
+                            Update
+                        </button>
                     </div>
                 </div>
 

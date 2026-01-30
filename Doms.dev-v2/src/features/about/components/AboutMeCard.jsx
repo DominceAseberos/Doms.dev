@@ -23,7 +23,14 @@ const AboutMeCard = () => {
                 </p>
             </div>
 
-            <div className="w-full flex justify-end">
+            <div className="w-full flex items-end justify-between">
+                <div className="flex items-center gap-2 mb-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                    <span className="text-[9px] md:text-[10px] font-mono text-green-400/80 tracking-tight max-w-[100px] truncate">
+                        {profile.live_feed_status || 'Online'}
+                    </span>
+                </div>
+
                 <Link to="/about">
                     <button
                         ref={ref}

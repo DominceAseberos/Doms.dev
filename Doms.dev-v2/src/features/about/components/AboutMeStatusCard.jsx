@@ -34,7 +34,7 @@ const AboutMeStatusCard = () => {
         <Link
             to="/feed"
             className="
-                group relative
+                group relative w-full
                 h-66 flex flex-col justify-between
                 md:col-span-2 md:h-50
                 lg:col-span-3 lg:aspect-square lg:h-auto
