@@ -65,7 +65,7 @@ const Dashboard = () => {
 
             {isMobile ? (
                 /* Mobile Layout */
-                <div className="flex flex-col h-auto w-full gap-8 z-50 px-4">
+                <div className="flex flex-col h-auto w-full gap-2 z-50 px-4">
                     <div className="h-45">
                         <div className='flex justify w-full h-full gap-4'>
                             <div className='w-48 h-full overflow-hidden'>
@@ -90,7 +90,7 @@ const Dashboard = () => {
                         <ProjectHead />
                     </div>
 
-                    <div className="bento-card border-blue h-75">
+                    <div className="bento-card border-blue h-[400px]">
                         <Projects />
                     </div>
 
