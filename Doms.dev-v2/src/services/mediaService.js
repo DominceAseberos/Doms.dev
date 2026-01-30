@@ -35,13 +35,13 @@ export const mediaService = {
         return allFiles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     },
 
-    async uploadFile(file) {
+    async uploadFile(file, bucketName = 'project-images') {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
         const filePath = fileName; // Upload to root
 
         const { error } = await supabase.storage
-            .from('project-images')
+            .from(bucketName)
             .upload(filePath, file, {
                 cacheControl: '31536000',
                 upsert: false,
@@ -50,10 +50,10 @@ export const mediaService = {
         if (error) throw error;
 
         const { data: { publicUrl } } = supabase.storage
-            .from('project-images')
+            .from(bucketName)
             .getPublicUrl(filePath);
 
-        return { name: fileName, url: publicUrl };
+        return { name: fileName, url: publicUrl, bucket: bucketName };
     },
 
     async deleteFile(fileName, bucketName = 'project-images') {

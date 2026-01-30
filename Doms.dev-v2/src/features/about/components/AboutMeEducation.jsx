@@ -33,8 +33,8 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
                 }}
             >
                 <img
-                    src={umtcLogo}
-                    alt="University of Mindanao"
+                    src={education.logo_url || umtcLogo}
+                    alt={education.school || "Education Logo"}
                     className="w-full h-full object-contain p-4"
                 />
             </div>

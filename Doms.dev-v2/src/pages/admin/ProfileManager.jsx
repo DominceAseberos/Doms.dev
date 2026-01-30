@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, ShieldCheck, Save, RefreshCw, Upload, Image as ImageIcon, FileText, GraduationCap, Trash2, Plus } from 'lucide-react';
+import { ArrowLeft, User, ShieldCheck, Save, RefreshCw, Upload, Image as ImageIcon, FileText, GraduationCap, Trash2, Plus, Image, Code2, Globe } from 'lucide-react';
 import strings from '../../config/adminStrings.json';
 import { useAdminStore } from '../../store/adminStore';
 import { profileService } from '../../services/profileService';
 import { educationService } from '../../services/educationService';
 import { projectService } from '../../services/projectService';
+import { dashboardService } from '../../services/dashboardService';
 
 const ProfileManager = () => {
     const navigate = useNavigate();
-    const { setAdminLoading, setSuccessMessage } = useAdminStore();
+    const { setAdminLoading, setSuccessMessage, setErrorMessage } = useAdminStore();
     const [profile, setProfile] = useState({
         name: '',
         role: '',
         bio: '',
         avatar_url: '',
-        cv_url: '',
-        identity_images: []
+        hero_img_url: '',
+        cv_url: ''
     });
     const [education, setEducation] = useState({
         school: '',
@@ -25,6 +26,7 @@ const ProfileManager = () => {
         year_level: '',
         logo_url: ''
     });
+    const [previewData, setPreviewData] = useState({ tech: [], socials: [] });
 
     useEffect(() => {
         fetchData();
@@ -33,26 +35,32 @@ const ProfileManager = () => {
     const fetchData = async () => {
         setAdminLoading(true, 'FETCHING IDENTITY DATA');
         try {
-            const [profileData, educationData] = await Promise.all([
+            const [profileData, educationData, tech, socials] = await Promise.all([
                 profileService.getProfile(),
-                educationService.getEducation()
+                educationService.getEducation(),
+                dashboardService.getAll('tech_stacks'),
+                dashboardService.getAll('contacts')
             ]);
             setProfile({
                 ...profileData,
-                identity_images: profileData.identity_images || []
+                hero_img_url: profileData.hero_img_url || ''
             });
-            setEducation(educationData);
+            setEducation(educationData || {});
+            setPreviewData({ tech, socials });
         } catch (err) {
             console.error('Failed to fetch data:', err);
+            setErrorMessage('Failed to load identity data.');
         } finally {
             setAdminLoading(false);
         }
     };
 
     const handleSave = async (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         setAdminLoading(true, 'SYNCHRONIZING IDENTITY');
         try {
+            if (!profile.id) throw new Error('Profile ID missing. Database initialization required.');
+
             await Promise.all([
                 profileService.updateProfile(profile.id, {
                     ...profile,
@@ -60,12 +68,12 @@ const ProfileManager = () => {
                     role: profile.role,
                     bio: profile.bio
                 }),
-                educationService.updateEducation(education.id, education)
+                education.id ? educationService.updateEducation(education.id, education) : Promise.resolve()
             ]);
             setSuccessMessage('Identity Node synchronized successfully!');
         } catch (err) {
             console.error('Save failed:', err);
-            alert('Save failed. Check your data and permissions.');
+            setErrorMessage(err.message || 'Save failed. Check your data and permissions.');
         } finally {
             setAdminLoading(false);
         }
@@ -80,6 +88,8 @@ const ProfileManager = () => {
 
             if (type === 'avatar') {
                 setProfile(prev => ({ ...prev, avatar_url: publicUrl }));
+            } else if (type === 'hero') {
+                setProfile(prev => ({ ...prev, hero_img_url: publicUrl }));
             } else if (type === 'cv') {
                 setProfile(prev => ({ ...prev, cv_url: publicUrl }));
             } else if (type === 'identity') {
@@ -127,17 +137,26 @@ const ProfileManager = () => {
                                 Persona Security Interface
                             </p>
                         </div>
-                        <button
-                            onClick={fetchData}
-                            className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all active:scale-95"
-                        >
-                            <RefreshCw size={18} className="opacity-40" />
-                        </button>
+                        <div className="flex flex-row gap-2 item-center">
+                            <button
+                                onClick={fetchData}
+                                className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center hover:bg-white/10 transition-all active:scale-95"
+                            >
+                                <RefreshCw size={18} className="opacity-40" />
+                            </button>
+                            <button
+                                onClick={handleSave}
+                                className="h-12 px-6 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-[10px] hover:bg-gray-200 transition-all active:scale-95 flex items-center gap-2 shadow-lg hover:shadow-white/20"
+                            >
+                                <Save size={16} strokeWidth={3} />
+                                <span className="hidden md:inline">Sync Changes</span>
+                            </button>
+                        </div>
                     </div>
                 </header>
 
-                <form onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    {/* LEFT COLUMN: AVATAR & IDENTITY IMAGES (4 cols) */}
+                <form id="profile-form" onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    {/* LEFT COLUMN: AVATAR, HERO, IDENTITY IMAGES (4 cols) */}
                     <div className="lg:col-span-4 space-y-6">
                         {/* Avatar Card */}
                         <div className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-8 admin-modal-gradient flex flex-col items-center text-center">
@@ -166,43 +185,30 @@ const ProfileManager = () => {
                             </div>
                         </div>
 
-                        {/* Identity Images */}
-                        <div className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient">
+                        {/* Hero Visual */}
+                        <div className="p-8 rounded-[2.5rem] bg-[#-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3 text-primary">
-                                    <ImageIcon size={18} />
-                                    <h3 className="text-xs font-black uppercase tracking-widest">Identity Images</h3>
+                                    <Image size={18} />
+                                    <h3 className="text-xs font-black uppercase tracking-widest">Hero Visual</h3>
                                 </div>
                                 <label className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors">
-                                    <Plus size={14} />
-                                    <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'identity')} accept="image/*" multiple />
+                                    <Upload size={14} />
+                                    <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'hero')} accept="image/*" />
                                 </label>
                             </div>
-
-                            <div className="grid grid-cols-2 gap-2">
-                                {profile.identity_images?.map((img, idx) => (
-                                    <div key={idx} className="relative aspect-square rounded-xl overflow-hidden group border border-white/5">
-                                        <img src={img} alt={`Identity ${idx}`} className="w-full h-full object-cover" />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                            <button
-                                                type="button"
-                                                onClick={() => removeIdentityImage(idx)}
-                                                className="p-2 bg-red-500/20 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
-                                            >
-                                                <Trash2 size={14} />
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                                {(!profile.identity_images || profile.identity_images.length === 0) && (
-                                    <div className="col-span-2 py-8 text-center border border-dashed border-white/10 rounded-xl">
-                                        <p className="text-[10px] opacity-30 uppercase tracking-widest">No extra images</p>
-                                    </div>
+                            <div className="aspect-video rounded-xl bg-black/50 border border-white/5 overflow-hidden relative group">
+                                {profile.hero_img_url ? (
+                                    <img src={profile.hero_img_url} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center opacity-20"><Image size={32} /></div>
                                 )}
                             </div>
                         </div>
 
-                        {/* Save Button (Mobile/Tablet usually sticky, but here inline) */}
+
+
+                        {/* Save Button */}
                         <button
                             type="submit"
                             className="w-full py-5 rounded-[1.5rem] bg-primary text-black font-black uppercase tracking-[0.4em] text-[10px] transition-all active:scale-[0.98] shadow-2xl hover:brightness-110 flex items-center justify-center gap-3"
@@ -212,7 +218,7 @@ const ProfileManager = () => {
                         </button>
                     </div>
 
-                    {/* RIGHT COLUMN: DETAILS & EDUC (8 cols) */}
+                    {/* RIGHT COLUMN: DETAILS, EDUC, TECH, SOCIALS (8 cols) */}
                     <div className="lg:col-span-8 space-y-6">
                         {/* Core Info */}
                         <section className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-8 admin-modal-gradient">
@@ -223,7 +229,7 @@ const ProfileManager = () => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">Full Name</label>
+                                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">Full Name (Copyright)</label>
                                     <input
                                         type="text"
                                         value={profile.name || ''}
@@ -262,7 +268,7 @@ const ProfileManager = () => {
                                     <div className="flex-1 px-6 py-4 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-between">
                                         <div className="flex items-center gap-3 opacity-60">
                                             <FileText size={16} />
-                                            <span className="text-xs truncate font-mono">{profile.cv_url ? 'CV_Document.pdf' : 'No CV Uploaded'}</span>
+                                            <span className="text-xs truncate font-mono">{profile.cv_url ? 'Active CV File' : 'No CV Uploaded'}</span>
                                         </div>
                                         {profile.cv_url && (
                                             <a href={profile.cv_url} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-wider hover:text-primary transition-colors">
@@ -273,7 +279,7 @@ const ProfileManager = () => {
                                     <label className="px-6 py-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2">
                                         <Upload size={16} />
                                         <span className="text-xs font-bold uppercase tracking-wider">Upload</span>
-                                        <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'cv')} accept=".pdf,.doc,.docx" />
+                                        <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'cv')} accept=".pdf,.doc,.docx,.jpg,.png" />
                                     </label>
                                 </div>
                             </div>
@@ -322,9 +328,67 @@ const ProfileManager = () => {
                                 </div>
                             </div>
                         </section>
+
+                        {/* Tech & Socials Preview / Redirects */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Tech Stack Preview */}
+                            <section className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient bg-grid-white/[0.02]">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3 text-primary">
+                                        <Code2 size={18} />
+                                        <h3 className="text-xs font-black uppercase tracking-widest">Tech Stack</h3>
+                                    </div>
+                                    <button onClick={() => navigate('/admin?tab=tech')} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all">Manage</button>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {previewData.tech.slice(0, 6).map(t => (
+                                        <span key={t.id} className="px-2 py-1 bg-white/5 rounded border border-white/5 text-[9px] font-mono uppercase">{t.name}</span>
+                                    ))}
+                                    {previewData.tech.length > 6 && <span className="px-2 py-1 text-[9px] opacity-40">+{previewData.tech.length - 6} more</span>}
+                                    {previewData.tech.length === 0 && <span className="text-[10px] opacity-30">No satellites detected.</span>}
+                                </div>
+                            </section>
+
+                            {/* Socials Preview */}
+                            <section className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient bg-grid-white/[0.02]">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3 text-primary">
+                                        <Globe size={18} />
+                                        <h3 className="text-xs font-black uppercase tracking-widest">Social Matrix</h3>
+                                    </div>
+                                    <button onClick={() => navigate('/admin?tab=socials')} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all">Manage</button>
+                                </div>
+                                <div className="space-y-2">
+                                    {previewData.socials.map(s => (
+                                        <div key={s.id} className="flex items-center justify-between text-[10px] font-mono border-b border-white/5 pb-2 last:border-0">
+                                            <span className="uppercase opacity-60">{s.platform}</span>
+                                            <span className="text-primary truncate max-w-[100px]">{s.url}</span>
+                                        </div>
+                                    ))}
+                                    {previewData.socials.length === 0 && <span className="text-[10px] opacity-30">No comms channels open.</span>}
+                                </div>
+                            </section>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={handleSave}
+                            className="w-full py-5 rounded-[1.5rem] bg-white text-black font-black uppercase tracking-[0.4em] text-[10px] transition-all active:scale-[0.98] shadow-2xl flex items-center justify-center gap-3 lg:hidden hover:bg-gray-200"
+                        >
+                            <Save size={18} strokeWidth={3} />
+                            Sync Identity to Grid
+                        </button>
                     </div>
                 </form>
             </div>
+            {/* FLOATING SYNC BUTTON */}
+            <button
+                onClick={() => document.getElementById('profile-form').requestSubmit()}
+                className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full bg-white text-black shadow-[0_0_50px_rgba(255,255,255,0.2)] flex items-center justify-center hover:scale-110 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer border-4 border-black/50"
+                title="Sync Identity to Grid"
+            >
+                <Save size={24} strokeWidth={3} />
+            </button>
         </div>
     );
 };

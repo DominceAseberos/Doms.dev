@@ -119,7 +119,7 @@ const AboutMePage = () => {
         >
             <div className="md:grid md:grid-cols-12 md:gap-2 md:max-w-5xl lg:grid lg:grid-cols-12 page-content max-w-2xl mx-auto space-y-6 items-center">
 
-                <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} />
+                <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
 
                 <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} techStack={techStack} />
 
@@ -127,7 +127,7 @@ const AboutMePage = () => {
 
                 <AboutMeEducation educationCardRef={educationCardRef} education={education} onExpand={handleImageExpand} />
 
-                <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} />
+                <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
 
                 <AboutMeFooter footerRef={footerRef} contacts={contacts} profile={profile} />
 

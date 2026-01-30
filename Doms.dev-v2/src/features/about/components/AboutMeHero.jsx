@@ -2,7 +2,7 @@ import React from 'react';
 import heroImage from '../../../assets/hero-image.png';
 import { useImageMotion } from '../../../hooks/useImageMotion';
 
-const AboutMeHero = ({ heroCardRef, onExpand }) => {
+const AboutMeHero = ({ heroCardRef, onExpand, profile }) => {
     const { ref, onEnter, onLeave } = useImageMotion();
     return (
         <div
@@ -27,7 +27,7 @@ const AboutMeHero = ({ heroCardRef, onExpand }) => {
                 style={{ background: 'rgba(var(--contrast-rgb), 0.1)' }}
             >
                 <img
-                    src={heroImage}
+                    src={profile?.heroImg || heroImage}
                     alt="Hero"
                     className="w-full h-full object-cover"
                 />

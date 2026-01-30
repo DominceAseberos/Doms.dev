@@ -4,8 +4,10 @@ import { dashboardService } from '../../services/dashboardService';
 import {
     ArrowLeft, LayoutGrid, Contact, GraduationCap, Music,
     Plus, Trash2, Edit3, Save, X, RefreshCw, ExternalLink,
-    Code2, Globe, Github, Linkedin, Twitter, MessageSquare
+    Code2, Globe, Github, Linkedin, Twitter, MessageSquare,
+    User, FileText, Image, Upload, Sync
 } from 'lucide-react';
+import { mediaService } from '../../services/mediaService';
 
 import { useAdminStore } from '../../store/adminStore';
 import strings from '../../config/adminStrings.json';
@@ -75,6 +77,7 @@ const DashboardManager = () => {
     const renderTabContent = () => {
         switch (activeTab) {
             case 'socials': return <SocialsTab items={data.socials} onEdit={openModal} onDelete={(id) => handleDelete('contacts', id)} />;
+            case 'socials': return <SocialsTab items={data.socials} onEdit={openModal} onDelete={(id) => handleDelete('contacts', id)} />;
             case 'tech': return <TechTab items={data.tech} onEdit={openModal} onDelete={(id) => handleDelete('tech_stacks', id)} />;
             case 'education': return <EducationTab items={data.education} onEdit={openModal} onDelete={(id) => handleDelete('education', id)} />;
             case 'tracks': return <TracksTab items={data.tracks} onEdit={openModal} onDelete={(id) => handleDelete('tracks', id)} />;
@@ -113,9 +116,16 @@ const DashboardManager = () => {
                     <div className="flex gap-4">
                         <button
                             onClick={() => fetchAllData(true)}
-                            className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all active:scale-95"
+                            className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all active:scale-95 group relative"
                         >
-                            <RefreshCw size={18} className="opacity-40" />
+                            <RefreshCw size={18} className="opacity-40 group-hover:opacity-100 group-hover:rotate-180 transition-all" />
+                        </button>
+                        <button
+                            onClick={() => fetchAllData(true)} // Sync functionality (same as refresh for now, or could be distinct)
+                            className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-primary/20 hover:border-primary/20 transition-all active:scale-95 group flex items-center gap-2"
+                        >
+                            <RefreshCw size={18} className="opacity-40 group-hover:opacity-100 group-hover:text-primary" />
+                            <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline ml-1 text-primary">Sync</span>
                         </button>
                         <button
                             onClick={() => openModal()}
@@ -171,6 +181,8 @@ const DashboardManager = () => {
 
 /* --- SUB-COMPONENTS --- */
 
+/* --- SUB-COMPONENTS --- */
+
 const SocialsTab = ({ items, onEdit, onDelete }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         {items.map(item => (
@@ -221,10 +233,16 @@ const EducationTab = ({ items, onEdit, onDelete }) => (
         {items.map(item => (
             <div key={item.id} className="p-8 rounded-[2.5rem] border border-white/5 bg-[#0f0f0f] hover:border-primary/20 transition-all group flex items-center justify-between admin-modal-gradient">
                 <div className="flex items-center gap-8">
-                    <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 flex flex-col items-center justify-center border border-white/5 font-mono shadow-inner group-hover:bg-primary/5 transition-all">
-                        <span className="text-[10px] font-bold opacity-20">{item.start_year}</span>
-                        <div className="h-px w-4 bg-white/10 my-1 group-hover:bg-primary/20" />
-                        <span className="text-[10px] font-black group-hover:text-primary">{item.end_year || 'NOW'}</span>
+                    <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 flex flex-col items-center justify-center border border-white/5 font-mono shadow-inner group-hover:bg-primary/5 transition-all overflow-hidden relative">
+                        {item.logo_url ? (
+                            <img src={item.logo_url} className="w-full h-full object-cover p-2" alt={item.institution} />
+                        ) : (
+                            <>
+                                <span className="text-[10px] font-bold opacity-20">{item.start_year}</span>
+                                <div className="h-px w-4 bg-white/10 my-1 group-hover:bg-primary/20" />
+                                <span className="text-[10px] font-black group-hover:text-primary">{item.end_year || 'NOW'}</span>
+                            </>
+                        )}
                     </div>
                     <div className="space-y-1">
                         <h3 className="text-xl font-bold tracking-tight uppercase italic group-hover:text-primary transition-colors">{item.institution}</h3>
@@ -287,13 +305,15 @@ const Modal = ({ tab, item, onClose, onSave, isSaving }) => {
                 { name: 'name', label: 'Node Spec (Name)', type: 'text', placeholder: 'e.g. React, Node.js' },
                 { name: 'type', label: 'Classification (core/tool/learning)', type: 'text', placeholder: 'core' },
                 { name: 'iconName', label: 'Icon Registry Identifier', type: 'text', placeholder: 'ReactLogo' },
-                { name: 'proficiency', label: 'Optimization Level (0-100)', type: 'number' }
+                { name: 'proficiency', label: 'Optimization Level (0-100)', type: 'number' },
+                { name: 'display_order', label: 'Sequence Index', type: 'number' }
             ];
             case 'education': return [
                 { name: 'institution', label: 'Environment (Institution)', type: 'text' },
                 { name: 'degree', label: 'Designation (Degree / Role)', type: 'text' },
                 { name: 'start_year', label: 'Initialization Year (Start)', type: 'text' },
                 { name: 'end_year', label: 'Termination Year (End)', type: 'text', placeholder: 'Empty for Active' },
+                { name: 'logo_url', label: 'Brand Emblem (Logo URL)', type: 'text', placeholder: 'Upload to Project Images first' },
                 { name: 'description', label: 'System Objective (Summary)', type: 'textarea' }
             ];
             case 'tracks': return [
