@@ -22,8 +22,7 @@ const AboutMeIdentity = ({ identityCardRef, profile, techStack }) => {
         <div
             ref={identityCardRef}
             className="
-                md:col-span-6 md:h-full md:w-full
-                lg:col-span-4  lg:aspect-[2/1] lg:h-full lg:w-full
+                w-full h-full
                 rounded-2xl p-6 border border-white/5 "
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`

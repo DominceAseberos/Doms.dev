@@ -18,7 +18,7 @@ const TechStacks = () => {
 
   return (
     <div
-      className="relative h-full w-full overflow-hidden rounded-3xl group/marquee"
+      className="relative h-full w-full overflow-hidden  rounded-3xl group/marquee"
       style={{
         background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`,
         backdropFilter: 'blur(10px)',
@@ -26,8 +26,8 @@ const TechStacks = () => {
       }}>
 
       {/* Container that provides the height and vertical centering */}
-      <div className="relative h-full w-full flex items-center min-h-[80px]">
-        <div className="tech-row-animate gap-2 sm:gap-4">
+      <div className="relative h-full w-full flex justify-between items-center min-h-[80px]">
+        <div className="tech-row-animate  gap-2 sm:gap-4">
           {techStack.map((tech, index) => {
             return (
               <div
@@ -63,9 +63,7 @@ const TechStacks = () => {
                   <tech.Icon size={18} strokeWidth={2} />
                 </span>
 
-                {tech.type === "learning" && (
-                  <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
-                )}
+
               </div>
             );
           })}

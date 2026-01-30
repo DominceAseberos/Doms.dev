@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
 import { MessageSquare, ArrowUpRight } from 'lucide-react';
 
-const AboutMeStatusCard = () => {
+const AboutMeStatusCard = ({ feedCard }) => {
     const [latestPost, setLatestPost] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -34,16 +34,16 @@ const AboutMeStatusCard = () => {
         <Link
             to="/feed"
             className="
-                group relative w-full
-                h-66 flex flex-col justify-between
-                md:col-span-2 md:h-50
-                lg:col-span-3 lg:aspect-square lg:h-auto
+                scroll-reveal
+                group relative w-full h-full
+                flex flex-col justify-between
                 rounded-2xl border p-6
                 border-white/5 overflow-hidden
                 hover:border-white/10 transition-colors cursor-pointer"
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
             }}
+            ref={feedCard}
         >
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-60">

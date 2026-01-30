@@ -7,3 +7,4 @@ export { default as AboutMeFooter } from './components/AboutMeFooter';
 export { default as AboutMeTechStack } from './components/AboutMeTechStack';
 export { default as AboutMeStatusCard } from './components/AboutMeStatusCard';
 export { default as BackButton } from './components/BackButton';
+export { default as DownloadCVButton } from './components/DownloadCVButton';

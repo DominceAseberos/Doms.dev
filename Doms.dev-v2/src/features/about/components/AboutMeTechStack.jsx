@@ -21,10 +21,8 @@ const AnimatedStack = ({ children, className = '', style = {} }) => {
 const AboutMeTechStack = ({ mdIconStack, techStack }) => {
     return (
         <div ref={mdIconStack}
-            className="hidden
-                md:block md:col-span-4 md:h-52 md:w-full
-                 lg:col-span-4 lg:aspect-square 
-                lg:h-full lg:w-full
+            className="
+            h-full w-full 
                 scroll-reveal 
                 rounded-2xl p-6 border border-white/5 overflow-hidden flex flex-col"
             style={{

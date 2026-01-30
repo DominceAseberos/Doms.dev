@@ -15,7 +15,8 @@ import {
     AboutMeTechStack,
     AboutMeFooter,
     AboutMeStatusCard,
-    BackButton
+    BackButton,
+    DownloadCVButton,
 } from '../features/about';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -30,10 +31,11 @@ const AboutMePage = () => {
     const educationCardRef = useRef(null);
     const resumeCardRef = useRef(null);
     const mdIconStack = useRef(null);
+    const feedCard = useRef(null);
     const footerRef = useRef(null);
 
     useEffect(() => {
-        const cards = [heroCardRef, identityCardRef, educationCardRef, resumeCardRef, mdIconStack, footerRef];
+        const cards = [heroCardRef, identityCardRef, educationCardRef, resumeCardRef, mdIconStack, feedCard, footerRef];
         const cardEls = cards.map(ref => ref.current).filter(Boolean);
         gsap.killTweensOf(cardEls);
 
@@ -131,7 +133,7 @@ const AboutMePage = () => {
 
                 <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} techStack={techStack} />
 
-                <AboutMeStatusCard heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
+                <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
 
                 <AboutMeTechStack mdIconStack={mdIconStack} techStack={techStack} />
 
@@ -139,8 +141,84 @@ const AboutMePage = () => {
 
                 <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
 
+                <div className="w-full flex justify-center">
+                    <DownloadCVButton profile={profile} />
+
+                </div>
+
 
                 <div className="w-full
+                rounded-2xl p-6 border border-white/5"
+                    style={{
+                        background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
+                    }}
+                >
+                    <AboutMeFooter footerRef={footerRef} contacts={contacts} profile={profile} />
+                </div>
+
+            </div>
+            {/* ==================BIG SCREEN===================== */}
+
+            <div className="
+            hidden md:grid md:cols-span-12 lg:cols-span-12 p-4 gap-4
+
+            ">
+                {/* ===================== */}
+                <div className="md:col-span-4 lg:col-span-2 md:h-60 md:w-full lg:h-60 " >
+                    <div className="flex flex-col gap-4 w-full h-full">
+                        <BackButton />
+
+                        <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
+
+                    </div>
+
+                </div>
+
+                {/* ============= */}
+                <div className="
+                md:h-40 md:w-full lg:h-60 
+                md:col-span-4 lg:col-span-2 ">
+                    <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} techStack={techStack} />
+
+                </div>
+
+                {/* ================ */}
+                <div className="md:col-span-4 lg:col-span-2  md:h-40 md:w-full lg:h-60">
+                    <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
+
+                </div>
+
+
+                {/* ============== */}
+                <div className="md:col-span-2 lg:col-span-2  md:h-20 md:w-full lg:h-60 aspect-square">
+                    <AboutMeTechStack mdIconStack={mdIconStack} techStack={techStack} />
+
+                </div>
+
+
+                <div className="md:col-span-2 lg:col-span-2  md:h-40 md:w-full  lg:h-60">
+                    <AboutMeEducation educationCardRef={educationCardRef} education={education} onExpand={handleImageExpand} />
+                </div>
+
+
+                <div className="md:col-span-2 lg:col-span-2  md:h-40 md:w-full lg:h-60">
+
+                    <div className="flex flex-col  justify-between gap-2 w-50 h-full " >
+
+                        <div className="h-2/3 w-50">
+                            <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
+                        </div>
+
+
+                        <DownloadCVButton profile={profile} />
+
+                    </div>
+
+
+
+                </div>
+
+                <div className="md:col-span-4 lg:col-span-6 w-full
                 rounded-2xl p-6 border border-white/5"
                     style={{
                         background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
