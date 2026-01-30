@@ -5,7 +5,7 @@ import {
     ArrowLeft, LayoutGrid, Contact, GraduationCap, Music,
     Plus, Trash2, Edit3, Save, X, RefreshCw, ExternalLink,
     Code2, Globe, Github, Linkedin, Twitter, MessageSquare,
-    User, FileText, Image, Upload, Sync
+    User, FileText, Image, Upload
 } from 'lucide-react';
 import { mediaService } from '../../services/mediaService';
 

@@ -45,6 +45,7 @@ const ProfileManager = () => {
     const availableStacks = getAvailableIconNames().filter(name =>
         !['Github', 'Linkedin', 'Mail', 'ExternalLink', 'MessageCircle', 'Facebook', 'Youtube'].includes(name)
     );
+    const availableIcons = getAvailableIconNames().sort();
 
     useEffect(() => {
         fetchData();
@@ -53,7 +54,7 @@ const ProfileManager = () => {
     const fetchData = async () => {
         setAdminLoading(true, 'FETCHING IDENTITY DATA');
         try {
-            const [profileData, educationData, tech, socials] = await Promise.all([
+            const [profileData, educationData, tech, contactsData] = await Promise.all([
                 profileService.getProfile(),
                 educationService.getEducation(),
                 dashboardService.getAll('tech_stacks'),
@@ -65,10 +66,14 @@ const ProfileManager = () => {
                 cv_img_url: profileData.cv_img_url || ''
             });
             setEducation(educationData || {});
-            setEducation(educationData || {});
             setTechStack(tech || []);
-            setSocials(socials || []);
-            setOriginalData({ tech: tech || [], socials: socials || [] });
+
+            // Direct List Mapping
+            setSocials(contactsData || []);
+            setOriginalData({
+                tech: tech || [],
+                socials: contactsData || []
+            });
         } catch (err) {
             console.error('Failed to fetch data:', err);
             setErrorMessage('Failed to load identity data.');
@@ -103,14 +108,27 @@ const ProfileManager = () => {
             const removedTech = originalData.tech.filter(ot => !techStack.find(t => t.name?.toLowerCase().trim() === ot.name?.toLowerCase().trim()));
             removedTech.forEach(t => updates.push(dashboardService.delete('tech_stacks', t.id)));
 
-            // 3. Sync Socials
+            // 3. Sync Socials (List Update)
             // Additions
             const newSocials = socials.filter(s => !s.id);
-            newSocials.forEach(s => updates.push(dashboardService.create('contacts', { platform: s.platform, url: s.url, display_order: s.display_order })));
+            newSocials.forEach(s => updates.push(dashboardService.create('contacts', {
+                platform: s.platform,
+                url: s.url,
+                icon: s.icon,
+                display_order: s.display_order
+            })));
 
             // Updates
-            const updatedSocials = socials.filter(s => s.id && (s.platform !== originalData.socials.find(os => os.id === s.id)?.platform || s.url !== originalData.socials.find(os => os.id === s.id)?.url));
-            updatedSocials.forEach(s => updates.push(dashboardService.update('contacts', s.id, { platform: s.platform, url: s.url })));
+            const updatedSocials = socials.filter(s => s.id && (
+                s.platform !== originalData.socials.find(os => os.id === s.id)?.platform ||
+                s.url !== originalData.socials.find(os => os.id === s.id)?.url ||
+                s.icon !== originalData.socials.find(os => os.id === s.id)?.icon
+            ));
+            updatedSocials.forEach(s => updates.push(dashboardService.update('contacts', s.id, {
+                platform: s.platform,
+                url: s.url,
+                icon: s.icon
+            })));
 
             // Deletions
             const removedSocials = originalData.socials.filter(os => !socials.find(s => s.id === os.id));
@@ -207,7 +225,7 @@ const ProfileManager = () => {
 
     // Socials Logic
     const addSocial = () => {
-        setSocials(prev => [...prev, { platform: '', url: 'https://', display_order: prev.length + 1 }]);
+        setSocials(prev => [...prev, { platform: '', url: 'https://', icon: 'Globe', display_order: prev.length + 1 }]);
     };
 
     const removeSocial = (index) => {
@@ -534,33 +552,45 @@ const ProfileManager = () => {
 
                                 <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                                     {socials.map((social, idx) => (
-                                        <div key={idx} className="flex gap-2 items-center animate-in slide-in-from-right-2 duration-300">
-                                            <div className="w-1/3">
+                                        <div key={idx} className="flex flex-col gap-2 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-all animate-in slide-in-from-right-2 duration-300">
+                                            <div className="flex gap-2 items-center">
                                                 <input
                                                     type="text"
                                                     value={social.platform}
                                                     onChange={(e) => updateSocial(idx, 'platform', e.target.value)}
-                                                    placeholder="PLATFORM"
-                                                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 text-[10px] uppercase font-bold tracking-widest focus:outline-none focus:border-white/30 text-white"
+                                                    placeholder="Platform (e.g. GitHub)"
+                                                    className="w-1/3 bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-[10px] uppercase font-bold tracking-widest focus:outline-none focus:border-white/30 text-white"
                                                 />
+                                                <select
+                                                    value={social.icon || ''}
+                                                    onChange={(e) => updateSocial(idx, 'icon', e.target.value)}
+                                                    className="w-1/3 bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-[10px] uppercase font-bold tracking-widest focus:outline-none focus:border-white/30 text-white/70 [&>option]:bg-black"
+                                                >
+                                                    <option value="" disabled>Icon</option>
+                                                    {availableIcons.map(icon => (
+                                                        <option key={icon} value={icon}>{icon}</option>
+                                                    ))}
+                                                </select>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeSocial(idx)}
+                                                    className="ml-auto w-8 h-8 rounded-lg bg-red-500/5 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 border border-red-500/10 flex items-center justify-center transition-all cursor-pointer"
+                                                >
+                                                    <X size={12} />
+                                                </button>
                                             </div>
-                                            <div className="flex-1 relative">
+                                            <div className="flex gap-2 items-center">
+                                                <div className="w-8 h-8 flex items-center justify-center text-white/40">
+                                                    <IconWrapper name={social.icon || 'HelpCircle'} size={14} />
+                                                </div>
                                                 <input
                                                     type="text"
                                                     value={social.url}
                                                     onChange={(e) => updateSocial(idx, 'url', e.target.value)}
-                                                    placeholder="URL"
-                                                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-3 pr-8 py-3 text-[10px] font-mono focus:outline-none focus:border-white/30 text-primary/80"
+                                                    placeholder="https://..."
+                                                    className="flex-1 bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-[10px] font-mono focus:outline-none focus:border-white/30 text-primary/80"
                                                 />
-                                                <ExternalLink size={10} className="absolute right-3 top-1/2 -translate-y-1/2 opacity-20" />
                                             </div>
-                                            <button
-                                                type="button"
-                                                onClick={() => removeSocial(idx)}
-                                                className="w-8 h-8 rounded-lg bg-red-500/5 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 border border-red-500/10 flex items-center justify-center transition-all cursor-pointer flex-shrink-0"
-                                            >
-                                                <X size={12} />
-                                            </button>
                                         </div>
                                     ))}
 

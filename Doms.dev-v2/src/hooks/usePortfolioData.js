@@ -19,7 +19,7 @@ const fetchSupabaseData = async () => {
     ] = await Promise.all([
         supabase.from('profiles').select('*').maybeSingle(),
         supabase.from('education').select('*').maybeSingle(),
-        supabase.from('contacts').select('*').maybeSingle(),
+        supabase.from('contacts').select('*').order('display_order'),
         supabase.from('tech_stacks').select('*').order('display_order'),
         supabase.from('projects').select('*').order('display_order'),
         supabase.from('tracks').select('*').order('display_order')

@@ -1,13 +1,16 @@
 import React, { useRef, useState } from "react";
-import { SiLinkedin, SiGithub, SiFacebook, SiGmail } from "react-icons/si";
 import { gsap } from "gsap";
 import { usePortfolioData } from "../../hooks/usePortfolioData";
+import { getIconByName } from "../../utils/IconRegistry";
 
 const Contacts = () => {
   const cardRef = useRef(null);
   const [copied, setCopied] = useState(false);
   const { contacts } = usePortfolioData();
-  const email = contacts.email;
+
+  // Find email for clipboard copy
+  const emailContact = Array.isArray(contacts) ? contacts.find(c => c.platform.toLowerCase() === 'email') : null;
+  const email = emailContact ? emailContact.url.replace('mailto:', '') : '';
 
   const handleMouseEnter = () => {
     gsap.to(cardRef.current, {
@@ -28,9 +31,11 @@ const Contacts = () => {
 
   const copyToClipboard = (e) => {
     e.preventDefault();
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (email) {
+      navigator.clipboard.writeText(email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -51,17 +56,16 @@ const Contacts = () => {
         <div className={`h-1.5 w-1.5 rounded-full ${copied ? 'bg-green-500 shadow-[0_0_8px_#22c55e]' : 'bg-white/20'} transition-all duration-500`} />
       </div>
 
-      {/* Social Grid - Standard Links */}
+      {/* Social Grid - Dynamic */}
       <div className="grid grid-cols-2 gap-2 relative z-10">
-        {[
-          { icon: <SiLinkedin size={14} />, href: contacts.linkedin, rotate: 3 },
-          { icon: <SiGithub size={14} />, href: contacts.github, rotate: 3 },
-          { icon: <SiFacebook size={14} />, href: contacts.facebook, rotate: 3 },
-          { icon: <SiGmail size={14} />, action: copyToClipboard, rotate: -3 }
-        ].map((item, idx) => {
+        {Array.isArray(contacts) && contacts.map((contact, idx) => {
+          const Icon = getIconByName(contact.icon || 'Link');
+          const isEmail = contact.platform.toLowerCase() === 'email';
+          const rotate = idx % 2 === 0 ? 3 : -3;
+
           const onEnter = (e) => {
             gsap.to(e.currentTarget, {
-              rotate: item.rotate,
+              rotate: rotate,
               backgroundColor: "rgba(255, 255, 255, 0.2)",
               color: "#ffffff",
               duration: 0.3,
@@ -79,27 +83,32 @@ const Contacts = () => {
             });
           };
 
-          return item.action ? (
-            <button
-              key={idx}
-              onClick={item.action}
-              onMouseEnter={onEnter}
-              onMouseLeave={onLeave}
-              className="flex items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 cursor-pointer"
-            >
-              {item.icon}
-            </button>
-          ) : (
+          if (isEmail) {
+            return (
+              <button
+                key={idx}
+                onClick={copyToClipboard}
+                onMouseEnter={onEnter}
+                onMouseLeave={onLeave}
+                className="flex items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 cursor-pointer"
+                title="Copy Email"
+              >
+                <Icon size={14} />
+              </button>
+            );
+          }
+
+          return (
             <a
               key={idx}
-              href={item.href}
+              href={contact.url}
               target="_blank"
               rel="noreferrer"
               onMouseEnter={onEnter}
               onMouseLeave={onLeave}
               className="flex items-center justify-center p-2 rounded-xl bg-white/5 border border-white/10 text-white/50 cursor-pointer"
             >
-              {item.icon}
+              <Icon size={14} />
             </a>
           );
         })}
