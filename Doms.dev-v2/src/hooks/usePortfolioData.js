@@ -68,6 +68,7 @@ const fetchSupabaseData = async () => {
         githubUsername: profile.github_username,
         avatar: profile.avatar_url,
         cv: profile.cv_url,
+        cvImg: profile.cv_img_url,
         heroImg: profile.hero_img_url
     } : null;
 

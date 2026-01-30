@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, ShieldCheck, Save, RefreshCw, Upload, Image as ImageIcon, FileText, GraduationCap, Trash2, Plus, Image, Code2, Globe } from 'lucide-react';
+import { ArrowLeft, User, ShieldCheck, Save, RefreshCw, Upload, Image as ImageIcon, FileText, GraduationCap, Trash2, Plus, Image, Code2, Globe, Grid } from 'lucide-react';
 import strings from '../../config/adminStrings.json';
 import { useAdminStore } from '../../store/adminStore';
 import { profileService } from '../../services/profileService';
 import { educationService } from '../../services/educationService';
 import { projectService } from '../../services/projectService';
 import { dashboardService } from '../../services/dashboardService';
+import MediaPickerModal from '../../components/MediaPickerModal';
 
 const ProfileManager = () => {
     const navigate = useNavigate();
     const { setAdminLoading, setSuccessMessage, setErrorMessage } = useAdminStore();
+
+    // State
     const [profile, setProfile] = useState({
         name: '',
         role: '',
         bio: '',
         avatar_url: '',
         hero_img_url: '',
-        cv_url: ''
+        cv_url: '',
+        cv_img_url: ''
     });
     const [education, setEducation] = useState({
         school: '',
@@ -27,6 +31,10 @@ const ProfileManager = () => {
         logo_url: ''
     });
     const [previewData, setPreviewData] = useState({ tech: [], socials: [] });
+
+    // Media Picker State
+    const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+    const [mediaPickerTarget, setMediaPickerTarget] = useState(null); // 'avatar' | 'hero' | 'cv' | 'edu_logo'
 
     useEffect(() => {
         fetchData();
@@ -43,7 +51,8 @@ const ProfileManager = () => {
             ]);
             setProfile({
                 ...profileData,
-                hero_img_url: profileData.hero_img_url || ''
+                hero_img_url: profileData.hero_img_url || '',
+                cv_img_url: profileData.cv_img_url || ''
             });
             setEducation(educationData || {});
             setPreviewData({ tech, socials });
@@ -84,7 +93,7 @@ const ProfileManager = () => {
         setAdminLoading(true, `UPLOADING ${type.toUpperCase()}`);
         try {
             const fileName = `${type}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
-            const publicUrl = await projectService.uploadProjectImage(file, fileName); // Reuse bucket logic
+            const publicUrl = await projectService.uploadProjectImage(file, fileName);
 
             if (type === 'avatar') {
                 setProfile(prev => ({ ...prev, avatar_url: publicUrl }));
@@ -92,20 +101,42 @@ const ProfileManager = () => {
                 setProfile(prev => ({ ...prev, hero_img_url: publicUrl }));
             } else if (type === 'cv') {
                 setProfile(prev => ({ ...prev, cv_url: publicUrl }));
-            } else if (type === 'identity') {
-                setProfile(prev => ({
-                    ...prev,
-                    identity_images: [...(prev.identity_images || []), publicUrl]
-                }));
+            } else if (type === 'cv_img') {
+                setProfile(prev => ({ ...prev, cv_img_url: publicUrl }));
             } else if (type === 'edu_logo') {
                 setEducation(prev => ({ ...prev, logo_url: publicUrl }));
             }
         } catch (err) {
             console.error('Upload failed:', err);
-            alert(`${type} upload failed.`);
+            setErrorMessage(`${type} upload failed.`);
         } finally {
             setAdminLoading(false);
         }
+    };
+
+    // Media Picker Handlers
+    const openMediaPicker = (target) => {
+        setMediaPickerTarget(target);
+        setIsMediaPickerOpen(true);
+    };
+
+    const handleMediaSelect = (url) => {
+        const selectedUrl = Array.isArray(url) ? url[0] : url;
+        if (!selectedUrl) return;
+
+        if (mediaPickerTarget === 'avatar') {
+            setProfile(prev => ({ ...prev, avatar_url: selectedUrl }));
+        } else if (mediaPickerTarget === 'hero') {
+            setProfile(prev => ({ ...prev, hero_img_url: selectedUrl }));
+        } else if (mediaPickerTarget === 'cv') {
+            setProfile(prev => ({ ...prev, cv_url: selectedUrl }));
+        } else if (mediaPickerTarget === 'cv_img') {
+            setProfile(prev => ({ ...prev, cv_img_url: selectedUrl }));
+        } else if (mediaPickerTarget === 'edu_logo') {
+            setEducation(prev => ({ ...prev, logo_url: selectedUrl }));
+        }
+
+        setIsMediaPickerOpen(false);
     };
 
     const removeIdentityImage = (index) => {
@@ -122,9 +153,9 @@ const ProfileManager = () => {
                 <header className="space-y-4">
                     <button
                         onClick={() => navigate('/admin')}
-                        className="flex items-center gap-2 text-[10px] uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity cursor-pointer group"
+                        className="px-6 py-2 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 transition-all flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest hover:border-white/10 cursor-pointer group text-white"
                     >
-                        <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
                         {strings.common.backToAdmin}
                     </button>
 
@@ -156,7 +187,7 @@ const ProfileManager = () => {
                 </header>
 
                 <form id="profile-form" onSubmit={handleSave} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    {/* LEFT COLUMN: AVATAR, HERO, IDENTITY IMAGES (4 cols) */}
+                    {/* LEFT COLUMN: AVATAR, HERO (4 cols) */}
                     <div className="lg:col-span-4 space-y-6">
                         {/* Avatar Card */}
                         <div className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-8 admin-modal-gradient flex flex-col items-center text-center">
@@ -168,13 +199,23 @@ const ProfileManager = () => {
                                         <User size={60} className="opacity-10" />
                                     )}
                                 </div>
-                                <label className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-full backdrop-blur-sm">
-                                    <Upload size={24} className="text-primary" />
-                                    <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'avatar')} accept="image/*" />
-                                </label>
+                                <div className="absolute -bottom-4 flex gap-2">
+                                    <label className="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform">
+                                        <Upload size={14} className="text-black" />
+                                        <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'avatar')} accept="image/*" />
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={() => openMediaPicker('avatar')}
+                                        className="w-8 h-8 rounded-full bg-[#1a1a1a] border border-white/20 flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform text-white/70 hover:text-white"
+                                        title="Select from Vault"
+                                    >
+                                        <Grid size={14} />
+                                    </button>
+                                </div>
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-2 mt-4">
                                 <h2 className="text-xl font-bold tracking-tight">{profile.full_name || 'System Owner'}</h2>
                                 <p className="text-[10px] opacity-30 uppercase tracking-widest font-mono">UID: {profile.id?.substring(0, 13)}...</p>
                             </div>
@@ -186,16 +227,26 @@ const ProfileManager = () => {
                         </div>
 
                         {/* Hero Visual */}
-                        <div className="p-8 rounded-[2.5rem] bg-[#-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient">
+                        <div className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3 text-primary">
                                     <Image size={18} />
                                     <h3 className="text-xs font-black uppercase tracking-widest">Hero Visual</h3>
                                 </div>
-                                <label className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors">
-                                    <Upload size={14} />
-                                    <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'hero')} accept="image/*" />
-                                </label>
+                                <div className="flex gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => openMediaPicker('hero')}
+                                        className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors text-white/60 hover:text-white"
+                                        title="Select from Vault"
+                                    >
+                                        <Grid size={14} />
+                                    </button>
+                                    <label className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors">
+                                        <Upload size={14} />
+                                        <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'hero')} accept="image/*" />
+                                    </label>
+                                </div>
                             </div>
                             <div className="aspect-video rounded-xl bg-black/50 border border-white/5 overflow-hidden relative group">
                                 {profile.hero_img_url ? (
@@ -205,7 +256,6 @@ const ProfileManager = () => {
                                 )}
                             </div>
                         </div>
-
 
 
                         {/* Save Button */}
@@ -261,26 +311,58 @@ const ProfileManager = () => {
                                 />
                             </div>
 
-                            {/* CV Upload */}
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">Curriculum Vitae (CV)</label>
-                                <div className="flex items-center gap-4">
-                                    <div className="flex-1 px-6 py-4 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-between">
-                                        <div className="flex items-center gap-3 opacity-60">
-                                            <FileText size={16} />
-                                            <span className="text-xs truncate font-mono">{profile.cv_url ? 'Active CV File' : 'No CV Uploaded'}</span>
+                            {/* CV Upload Section */}
+                            <div className="space-y-6">
+                                {/* CV Document (File) */}
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">Curriculum Vitae (Document)</label>
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex-1 px-6 py-4 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-between">
+                                            <div className="flex items-center gap-3 opacity-60">
+                                                <FileText size={16} />
+                                                <span className="text-xs truncate font-mono">{profile.cv_url ? 'Active CV File' : 'No CV Uploaded'}</span>
+                                            </div>
+                                            {profile.cv_url && (
+                                                <a href={profile.cv_url} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-wider hover:text-primary transition-colors">
+                                                    View
+                                                </a>
+                                            )}
                                         </div>
-                                        {profile.cv_url && (
-                                            <a href={profile.cv_url} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-wider hover:text-primary transition-colors">
-                                                View
-                                            </a>
-                                        )}
+                                        <label className="px-6 py-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2">
+                                            <Upload size={16} />
+                                            <span className="text-xs font-bold uppercase tracking-wider">Upload File</span>
+                                            <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'cv')} accept=".pdf,.doc,.docx,.jpg,.png" />
+                                        </label>
                                     </div>
-                                    <label className="px-6 py-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2">
-                                        <Upload size={16} />
-                                        <span className="text-xs font-bold uppercase tracking-wider">Upload</span>
-                                        <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'cv')} accept=".pdf,.doc,.docx,.jpg,.png" />
-                                    </label>
+                                </div>
+
+                                {/* CV Visual (Image) */}
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">CV Visual Preview (Image)</label>
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-20 h-24 rounded-xl bg-white/5 border border-white/5 p-1 overflow-hidden flex items-center justify-center relative group">
+                                            {profile.cv_img_url ? (
+                                                <img src={profile.cv_img_url} className="w-full h-full object-cover rounded-lg opacity-80 group-hover:opacity-100 transition-opacity" alt="CV Preview" />
+                                            ) : (
+                                                <Image size={24} className="opacity-20" />
+                                            )}
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            <label className="px-6 py-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2">
+                                                <Upload size={14} />
+                                                <span className="text-[10px] font-bold uppercase tracking-wider">Upload Image</span>
+                                                <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'cv_img')} accept="image/*" />
+                                            </label>
+                                            <button
+                                                type="button"
+                                                onClick={() => openMediaPicker('cv_img')}
+                                                className="px-6 py-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2"
+                                            >
+                                                <Grid size={14} />
+                                                <span className="text-[10px] font-bold uppercase tracking-wider">Select from Vault</span>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -320,11 +402,21 @@ const ProfileManager = () => {
                                     <div className="w-20 h-20 rounded-xl bg-white/5 border border-white/5 p-2 flex items-center justify-center">
                                         {education.logo_url ? <img src={education.logo_url} className="w-full h-full object-contain" alt="Logo" /> : <ImageIcon size={24} className="opacity-20" />}
                                     </div>
-                                    <label className="px-6 py-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2">
-                                        <Upload size={14} />
-                                        <span className="text-[10px] font-bold uppercase tracking-wider">Upload Logo</span>
-                                        <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'edu_logo')} accept="image/*" />
-                                    </label>
+                                    <div className="flex flex-col gap-2">
+                                        <label className="px-6 py-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2">
+                                            <Upload size={14} />
+                                            <span className="text-[10px] font-bold uppercase tracking-wider">Upload Logo</span>
+                                            <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'edu_logo')} accept="image/*" />
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={() => openMediaPicker('edu_logo')}
+                                            className="px-6 py-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2"
+                                        >
+                                            <Grid size={14} />
+                                            <span className="text-[10px] font-bold uppercase tracking-wider">Select from Vault</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -381,6 +473,7 @@ const ProfileManager = () => {
                     </div>
                 </form>
             </div>
+
             {/* FLOATING SYNC BUTTON */}
             <button
                 onClick={() => document.getElementById('profile-form').requestSubmit()}
@@ -389,6 +482,13 @@ const ProfileManager = () => {
             >
                 <Save size={24} strokeWidth={3} />
             </button>
+
+            {/* Media Picker Modal */}
+            <MediaPickerModal
+                isOpen={isMediaPickerOpen}
+                onClose={() => setIsMediaPickerOpen(false)}
+                onSelect={handleMediaSelect}
+            />
         </div>
     );
 };

@@ -62,9 +62,9 @@ const ProjectsManager = () => {
                 <div className="flex justify-between items-center">
                     <button
                         onClick={() => navigate('/admin')}
-                        className="px-4 py-2 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest hover:border-white/10 cursor-pointer group"
+                        className="px-6 py-2 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 transition-all flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest hover:border-white/10 cursor-pointer group text-white"
                     >
-                        <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
                         {strings.common.backToAdmin}
                     </button>
                     <button

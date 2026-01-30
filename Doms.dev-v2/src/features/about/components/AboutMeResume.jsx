@@ -38,13 +38,17 @@ const AboutMeResume = ({ resumeCardRef, onExpand, profile }) => {
                     borderColor: 'rgba(var(--contrast-rgb), 0.2)'
                 }}
             >
-                {profile?.cv && (profile.cv.endsWith('.jpg') || profile.cv.endsWith('.png')) ? (
-                    <img src={profile.cv} alt="Resume Preview" className="w-full h-full object-cover rounded-xl opacity-80" />
+                {profile?.cvImg ? (
+                    <img src={profile.cvImg} alt="Resume Preview" className="w-full h-full object-cover rounded-xl opacity-80" />
                 ) : (
-                    <FileText
-                        size={48}
-                        style={{ color: 'rgb(var(--contrast-rgb))', opacity: 0.4 }}
-                    />
+                    profile?.cv && (profile.cv.endsWith('.jpg') || profile.cv.endsWith('.png')) ? (
+                        <img src={profile.cv} alt="Resume Preview" className="w-full h-full object-cover rounded-xl opacity-80" />
+                    ) : (
+                        <FileText
+                            size={48}
+                            style={{ color: 'rgb(var(--contrast-rgb))', opacity: 0.4 }}
+                        />
+                    )
                 )}
             </div>
 
