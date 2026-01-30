@@ -1,5 +1,5 @@
 import React from 'react';
-import { useButtonMotion } from '../hooks/useAboutMotion';
+import { useButtonMotion } from '../../../hooks/useButtonMotion';
 
 const AnimatedStack = ({ children, className = '', style = {} }) => {
     const motion = useButtonMotion();

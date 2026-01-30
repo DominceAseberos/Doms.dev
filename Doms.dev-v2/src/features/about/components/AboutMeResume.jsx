@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileText } from 'lucide-react';
-import { useButtonMotion } from '../hooks/useAboutMotion';
+import { useButtonMotion } from '../../../hooks/useButtonMotion';
 
 const AnimatedResume = ({ children, className = '', style = {} }) => {
     const motion = useButtonMotion();

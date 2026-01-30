@@ -117,7 +117,7 @@ const AboutMePage = () => {
                 background: `linear-gradient(to bottom, rgb(var(--body-Linear-1-rgb)), rgb(var(--body-Linear-2-rgb)))`
             }}
         >
-            <div className="md:grid md:grid-cols-12 md:gap-2 md:max-w-5xl lg:grid lg:grid-cols-12 page-content max-w-2xl mx-auto space-y-6">
+            <div className="md:grid md:grid-cols-12 md:gap-2 md:max-w-5xl lg:grid lg:grid-cols-12 page-content max-w-2xl mx-auto space-y-6 items-center">
 
                 <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} />
 

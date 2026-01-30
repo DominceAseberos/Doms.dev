@@ -1,8 +1,6 @@
-import { useRef } from 'react';
 import { Calendar, Tag, ExternalLink, Github } from 'lucide-react';
 import { getIconByName } from '../../../../utils/IconRegistry';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { useButtonMotion } from '../../../../hooks/useButtonMotion';
 
 /**
  * ProjectMetadata component - displays project title, date, type, tech stack, and Live Preview button
@@ -15,28 +13,8 @@ const ProjectMetadata = ({
     livePreviewLink,
     githubLink
 }) => {
-    const liveBtnRef = useRef(null);
-    const gitBtnRef = useRef(null);
-    useGSAP({ scope: liveBtnRef });
-    useGSAP({ scope: gitBtnRef });
-
-    const handleHover = (ref) => {
-        gsap.to(ref.current, {
-            rotation: -2,
-            scale: 1.05,
-            duration: 0.3,
-            ease: "back.out(1.7)"
-        });
-    };
-
-    const handleLeave = (ref) => {
-        gsap.to(ref.current, {
-            rotation: 0,
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out"
-        });
-    };
+    const liveMotion = useButtonMotion();
+    const gitMotion = useButtonMotion();
 
     return (
         <div className="project-card">
@@ -99,14 +77,13 @@ const ProjectMetadata = ({
                     <div className="flex flex-col gap-3 pt-4">
                         {livePreviewLink && (
                             <a
-                                ref={liveBtnRef}
+                                ref={liveMotion.ref}
                                 href={livePreviewLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onMouseEnter={() => handleHover(liveBtnRef)}
-                                onMouseLeave={() => handleLeave(liveBtnRef)}
-                                onTouchStart={() => handleHover(liveBtnRef)}
-                                onTouchEnd={() => handleLeave(liveBtnRef)}
+                                onMouseEnter={liveMotion.onEnter}
+                                onMouseLeave={liveMotion.onLeave}
+                                onClick={liveMotion.onTap}
                                 className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-inter font-semibold text-sm transition-shadow shadow-md"
                                 style={{
                                     background: 'rgb(var(--contrast-rgb))',
@@ -121,14 +98,13 @@ const ProjectMetadata = ({
 
                         {githubLink && (
                             <a
-                                ref={gitBtnRef}
+                                ref={gitMotion.ref}
                                 href={githubLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onMouseEnter={() => handleHover(gitBtnRef)}
-                                onMouseLeave={() => handleLeave(gitBtnRef)}
-                                onTouchStart={() => handleHover(gitBtnRef)}
-                                onTouchEnd={() => handleLeave(gitBtnRef)}
+                                onMouseEnter={gitMotion.onEnter}
+                                onMouseLeave={gitMotion.onLeave}
+                                onClick={gitMotion.onTap}
                                 className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-inter font-semibold text-sm border transition-all"
                                 style={{
                                     borderColor: 'rgba(var(--contrast-rgb), 0.2)',

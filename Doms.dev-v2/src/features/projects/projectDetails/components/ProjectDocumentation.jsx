@@ -1,44 +1,47 @@
-import { useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Download } from 'lucide-react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { useButtonMotion } from '../../../../hooks/useButtonMotion';
+
+/**
+ * FileDownloadButton component - specific button with motion hook
+ */
+const FileDownloadButton = ({ file }) => {
+    const { ref, onEnter, onLeave, onTap } = useButtonMotion();
+    return (
+        <a
+            ref={ref}
+            href={file.path}
+            download={file.type === 'file'}
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseEnter={onEnter}
+            onMouseLeave={onLeave}
+            onClick={onTap}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-shadow cursor-pointer shadow-sm"
+            style={{
+                background: 'rgb(var(--contrast-rgb))',
+                color: 'rgb(0,0,0)',
+                border: 'none'
+            }}
+        >
+            <Download size={16} />
+            <span>{file.label}</span>
+        </a>
+    );
+};
 
 /**
  * ProjectDocumentation component - displays documentation with markdown support and file downloads
  */
 const ProjectDocumentation = ({ documentation, documentationFiles = [] }) => {
-    const buttonsRef = useRef([]);
-    const containerRef = useRef(null);
-
-    const { contextSafe } = useGSAP({ scope: containerRef });
-
-    const handleHover = contextSafe((target) => {
-        gsap.to(target, {
-            rotation: -2,
-            scale: 1.1,
-            duration: 0.3,
-            ease: "back.out(1.7)"
-        });
-    });
-
-    const handleLeave = contextSafe((target) => {
-        gsap.to(target, {
-            rotation: 0,
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out"
-        });
-    });
-
     // If no documentation and no files, return null or empty
     if (!documentation && (!documentationFiles || documentationFiles.length === 0)) {
         return null;
     }
 
     return (
-        <div ref={containerRef} className="project-card">
+        <div className="project-card">
             <div
                 className="rounded-2xl p-6 md:p-8"
                 style={{
@@ -77,7 +80,6 @@ const ProjectDocumentation = ({ documentation, documentationFiles = [] }) => {
                                             {...props}
                                         />
                                     ),
-                                    // ... other markdown components remain the same
                                 }}
                             >
                                 {documentation}
@@ -93,27 +95,7 @@ const ProjectDocumentation = ({ documentation, documentationFiles = [] }) => {
                             </h3>
                             <div className="flex flex-wrap gap-4">
                                 {documentationFiles.map((file, idx) => (
-                                    <a
-                                        key={idx}
-                                        ref={(el) => (buttonsRef.current[idx] = el)}
-                                        href={file.path}
-                                        download={file.type === 'file'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onMouseEnter={() => handleHover(buttonsRef.current[idx])}
-                                        onMouseLeave={() => handleLeave(buttonsRef.current[idx])}
-                                        onTouchStart={() => handleHover(buttonsRef.current[idx])}
-                                        onTouchEnd={() => handleLeave(buttonsRef.current[idx])}
-                                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-shadow cursor-pointer shadow-sm"
-                                        style={{
-                                            background: 'rgb(var(--contrast-rgb))',
-                                            color: 'rgb(0,0,0)',
-                                            border: 'none'
-                                        }}
-                                    >
-                                        <Download size={16} />
-                                        <span>{file.label}</span>
-                                    </a>
+                                    <FileDownloadButton key={idx} file={file} />
                                 ))}
                             </div>
                         </div>

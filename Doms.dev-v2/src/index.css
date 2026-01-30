@@ -1,14 +1,15 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
+:root {
     --color-primary: #3b82f6;
     /* Neon Blue highlight */
     --color-primary-dark: #1d4ed8;
     --color-contrast: rgb(var(--contrast-rgb));
 
     /* --- CUSTOM ANIMATIONS --- */
-    --animate-spin: spin 1s linear infinite;
-    --animate-tumble: tumble 2s ease-in-out infinite;
+    /* Note: To use these in Tailwind classes, use tailwind.config.js or arbitrary values */
 }
 
 @keyframes spin {

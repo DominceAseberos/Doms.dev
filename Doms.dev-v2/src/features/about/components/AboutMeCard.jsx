@@ -1,36 +1,15 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { usePortfolioData } from "../../../hooks/usePortfolioData";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { useButtonMotion } from "../../../hooks/useButtonMotion";
 
 const AboutMeCard = () => {
     const { profile } = usePortfolioData();
-    const buttonRef = useRef(null);
-
-    const { contextSafe } = useGSAP({ scope: buttonRef });
-
-    const onMouseEnter = contextSafe(() => {
-        gsap.to(buttonRef.current, {
-            scale: 1.1,
-            rotate: -1,
-            duration: 0.3,
-            ease: "power2.out"
-        });
-    });
-
-    const onMouseLeave = contextSafe(() => {
-        gsap.to(buttonRef.current, {
-            scale: 1,
-            rotate: 0,
-            duration: 0.3,
-            ease: "power2.out"
-        });
-    });
+    const { ref, onEnter, onLeave, onTap } = useButtonMotion();
 
     return (
         <div
-            className="flex flex-col justify-between gap-1 rounded-2xl p-4 md:p-3 lg:p-5 h-full w-full overflow-hidden border border-white/5"
+            className="h-full w-full flex flex-col justify-between gap-1 rounded-2xl p-4 md:p-3 lg:p-5  overflow-hidden border border-white/5"
             style={{
                 background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`
             }}
@@ -47,10 +26,11 @@ const AboutMeCard = () => {
             <div className="w-full flex justify-end">
                 <Link to="/about">
                     <button
-                        ref={buttonRef}
-                        onMouseEnter={onMouseEnter}
-                        onMouseLeave={onMouseLeave}
-                        className="w-fit px-4 py-2.5 rounded-full text-black font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50 cursor-pointer"
+                        ref={ref}
+                        onMouseEnter={onEnter}
+                        onMouseLeave={onLeave}
+                        onClick={onTap}
+                        className="w-fit px-4 py-2.5 rounded-full text-black font-bold uppercase tracking-widest text-[8px] md:text-[9px] lg:text-[11px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50 cursor-pointer transition-shadow shadow-md"
                         style={{
                             background: `rgb(var(--contrast-rgb))`,
                         }}

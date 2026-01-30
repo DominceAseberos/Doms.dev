@@ -1,5 +1,5 @@
 import React from 'react';
-import { useButtonMotion } from '../hooks/useAboutMotion';
+import { useButtonMotion } from '../../../hooks/useButtonMotion';
 
 const AnimatedStack = ({ children, className = '', style = {} }) => {
     const motion = useButtonMotion();
@@ -22,9 +22,9 @@ const AboutMeIdentity = ({ identityCardRef, profile, techStack }) => {
         <div
             ref={identityCardRef}
             className="
-                md:col-span-6 md:h-52 md:w-full
-                lg:col-span-6 lg:h-52 lg:w-full
-                rounded-2xl p-6 border border-white/5 space-y-4"
+                md:col-span-6 md:h-full md:w-full
+                lg:col-span-6 lg:h-full lg:w-full
+                rounded-2xl p-6 border border-white/5 "
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
             }}

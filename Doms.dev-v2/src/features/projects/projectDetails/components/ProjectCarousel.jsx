@@ -1,7 +1,28 @@
 import { useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { useButtonMotion } from '../../../../hooks/useButtonMotion';
+
+/**
+ * CarouselButton - Subcomponent for motion buttons
+ */
+const CarouselButton = ({ onClick, children, className, style, positionStyles }) => {
+    const { ref, onEnter, onLeave, onTap } = useButtonMotion();
+    return (
+        <button
+            ref={ref}
+            onClick={(e) => {
+                onTap();
+                onClick(e);
+            }}
+            onMouseEnter={onEnter}
+            onMouseLeave={onLeave}
+            className={`${className} ${positionStyles}`}
+            style={style}
+        >
+            {children}
+        </button>
+    );
+};
 
 /**
  * ProjectCarousel component - displays image carousel with navigation and touch support
@@ -14,27 +35,6 @@ const ProjectCarousel = ({
     prevImage,
 }) => {
     const carouselRef = useRef(null);
-    const buttonsRef = useRef([]);
-
-    const { contextSafe } = useGSAP({ scope: carouselRef });
-
-    const handleHover = contextSafe((target) => {
-        gsap.to(target, {
-            rotation: -2,
-            scale: 1.1,
-            duration: 0.3,
-            ease: "back.out(1.7)"
-        });
-    });
-
-    const handleLeave = contextSafe((target) => {
-        gsap.to(target, {
-            rotation: 0,
-            scale: 1,
-            duration: 0.3,
-            ease: "power2.out"
-        });
-    });
 
     // Handle touch swipe gestures
     useEffect(() => {
@@ -70,7 +70,7 @@ const ProjectCarousel = ({
             carousel?.removeEventListener('touchmove', handleTouchMove);
             carousel?.removeEventListener('touchend', handleTouchEnd);
         };
-    }, [images, nextImage, prevImage]); // Fixed dependencies to avoid infinite loop
+    }, [images, nextImage, prevImage]);
 
     if (!images || images.length === 0) return null;
 
@@ -99,36 +99,29 @@ const ProjectCarousel = ({
 
                         {images.length > 1 && (
                             <>
-                                <button
-                                    ref={(el) => (buttonsRef.current[0] = el)}
+                                <CarouselButton
                                     onClick={prevImage}
-                                    onMouseEnter={() => handleHover(buttonsRef.current[0])}
-                                    onMouseLeave={() => handleLeave(buttonsRef.current[0])}
-                                    onTouchStart={() => handleHover(buttonsRef.current[0])}
-                                    onTouchEnd={() => handleLeave(buttonsRef.current[0])}
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
+                                    positionStyles="absolute left-4 top-1/2 -translate-y-1/2"
+                                    className="w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
                                     style={{
                                         background: 'rgb(var(--contrast-rgb))',
                                         color: 'rgb(0,0,0)'
                                     }}
                                 >
                                     <ChevronLeft size={24} />
-                                </button>
-                                <button
-                                    ref={(el) => (buttonsRef.current[1] = el)}
+                                </CarouselButton>
+
+                                <CarouselButton
                                     onClick={nextImage}
-                                    onMouseEnter={() => handleHover(buttonsRef.current[1])}
-                                    onMouseLeave={() => handleLeave(buttonsRef.current[1])}
-                                    onTouchStart={() => handleHover(buttonsRef.current[1])}
-                                    onTouchEnd={() => handleLeave(buttonsRef.current[1])}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
+                                    positionStyles="absolute right-4 top-1/2 -translate-y-1/2"
+                                    className="w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
                                     style={{
                                         background: 'rgb(var(--contrast-rgb))',
                                         color: 'rgb(0,0,0)'
                                     }}
                                 >
                                     <ChevronRight size={24} />
-                                </button>
+                                </CarouselButton>
 
                                 <div
                                     className="absolute bottom-4 right-4 px-3 py-1 rounded-full text-sm font-medium"

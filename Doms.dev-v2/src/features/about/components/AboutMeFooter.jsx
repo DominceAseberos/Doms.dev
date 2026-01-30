@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail, MessageCircle, ArrowLeft } from 'lucide-react';
-import { useButtonMotion } from '../hooks/useAboutMotion';
+import { useButtonMotion } from '../../../hooks/useButtonMotion';
 
 const AnimatedFooter = ({ children, className = '', style = {} }) => {
     const motion = useButtonMotion();

@@ -1,19 +1,10 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import umtcLogo from '../../../assets/umtc-logo.png';
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import { useImageMotion } from '../../../hooks/useImageMotion';
 
 const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
-    const logoRef = useRef(null);
-    const { contextSafe } = useGSAP({ scope: logoRef });
-
-    const onEnter = contextSafe(() => {
-        gsap.to(logoRef.current, { scale: 1.05, duration: 0.3, ease: "power2.out" });
-    });
-
-    const onLeave = contextSafe(() => {
-        gsap.to(logoRef.current, { scale: 1, duration: 0.3, ease: "power2.out" });
-    });
+    const { ref: logoRef, onEnter, onLeave } = useImageMotion();
+    // Removed local GSAP context and handlers
 
     return (
         <div

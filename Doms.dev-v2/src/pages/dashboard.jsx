@@ -123,21 +123,27 @@ const Dashboard = () => {
                 <div ref={comp} className='grid grid-cols-2 gap-x-5 px-12'>
                     <div className='col-span-1'>
                         <div className='grid grid-cols-6 gap-2'>
-                            <div className='col-span-2 w-full md:h-40 lg:h-50 items-center desktop-anim-item'>
-                                <Profile />
-                            </div>
-                            <div className='col-span-4 md:40 lg:h-50 desktop-anim-item'>
-                                <div className='flex flex-col justify-between gap-2 h-full'>
-                                    <div className="md:h-30 lg:h-40 bento-card">
+
+                            <div className="col-span-6 h-fit">
+                                <div className="flex flex-row gap-2 justify-between">
+                                    <div className='h-[160px] w-[180px] desktop-anim-item'>
+                                        <Profile />
+                                    </div>
+
+                                    <div className="h-[160px] w-full bento-card">
                                         <AboutMeCard />
                                     </div>
-                                    <ThemeToggle />
+
                                 </div>
                             </div>
-                            <div className='col-span-4 bento-card md:h-45 lg:h-40 desktop-anim-item'>
+                            <div className="col-span-6">
+                                <ThemeToggle />
+
+                            </div>
+                            <div className='col-span-4 bento-card md:h-35 lg:h-35 desktop-anim-item'>
                                 <MusicPlayer />
                             </div>
-                            <div className='col-span-2 bento-card md:h-45 lg:h-40 desktop-anim-item'>
+                            <div className='col-span-2 bento-card md:h-35 lg:h-35 desktop-anim-item'>
                                 <Contacts />
                             </div>
                             <div className='col-span-6 bento-card md:h-50 lg:h-50 desktop-anim-item'>

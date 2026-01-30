@@ -2,31 +2,37 @@ import { supabase } from '../lib/supabaseClient';
 
 export const mediaService = {
     async getFiles() {
-        // We primarily use 'project-images' bucket for assets
-        const { data, error } = await supabase.storage
-            .from('project-images')
-            .list('', { // List root instead of 'projects' folder
-                limit: 100,
-                offset: 0,
-                sortBy: { column: 'name', order: 'desc' },
-            });
+        const buckets = ['project-images', 'avatars'];
+        let allFiles = [];
 
-        if (error) throw error;
+        for (const bucket of buckets) {
+            const { data, error } = await supabase.storage
+                .from(bucket)
+                .list('', {
+                    limit: 100,
+                    offset: 0,
+                    sortBy: { column: 'name', order: 'desc' },
+                });
 
-        // Map files to include public URLs
-        const filesWithUrls = data.map(file => {
-            const { data: { publicUrl } } = supabase.storage
-                .from('project-images')
-                .getPublicUrl(file.name); // Remove projects/ prefix
+            if (data) {
+                const filesWithUrls = data.map(file => {
+                    const { data: { publicUrl } } = supabase.storage
+                        .from(bucket)
+                        .getPublicUrl(file.name);
 
-            return {
-                ...file,
-                url: publicUrl,
-                type: file.metadata?.mimetype?.startsWith('image/') ? 'image' : 'file'
-            };
-        });
+                    return {
+                        ...file,
+                        url: publicUrl,
+                        bucket: bucket, // Store bucket name for future operations
+                        type: file.metadata?.mimetype?.startsWith('image/') ? 'image' : 'file'
+                    };
+                });
+                allFiles = [...allFiles, ...filesWithUrls];
+            }
+        }
 
-        return filesWithUrls;
+        // Sort merged list by created_at desc
+        return allFiles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     },
 
     async uploadFile(file) {
@@ -50,9 +56,9 @@ export const mediaService = {
         return { name: fileName, url: publicUrl };
     },
 
-    async deleteFile(fileName) {
+    async deleteFile(fileName, bucketName = 'project-images') {
         const { error } = await supabase.storage
-            .from('project-images')
+            .from(bucketName)
             .remove([fileName]); // Remove from root
 
         if (error) throw error;

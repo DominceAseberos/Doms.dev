@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import { usePortfolioData } from '../hooks/usePortfolioData';
+import { useImageMotion } from '../hooks/useImageMotion';
 
 const Profile = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const { profile } = usePortfolioData();
+  const { ref, onEnter, onLeave } = useImageMotion();
 
   return (
-    <>
+    <div
+      ref={ref}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      className="w-full h-full rounded-2xl overflow-hidden cursor-pointer"
+    >
       {!imageLoaded && (
         <div
           className="w-full h-full rounded-2xl border animate-pulse"
@@ -28,7 +35,7 @@ const Profile = () => {
           background: `linear-gradient(to bottom, #FFCBCB, #A3B894)`
         }}
       />
-    </>
+    </div>
   );
 };
 export default Profile;

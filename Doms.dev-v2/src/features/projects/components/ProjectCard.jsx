@@ -4,14 +4,16 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ArrowLeft, ExternalLink, BookOpen, Code2 } from 'lucide-react';
 import { getIconByName } from '../../../utils/IconRegistry';
+import { useButtonMotion } from '../../../hooks/useButtonMotion';
 
 const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
     const cardRef = useRef(null);
     const contentRef = useRef(null);
     const headerRef = useRef(null);
     const imgRef = useRef(null);
-    const liveBtnRef = useRef(null);
-    const docBtnRef = useRef(null);
+
+    const liveBtnMotion = useButtonMotion();
+    const docBtnMotion = useButtonMotion();
 
     // Collapsed state refs
     const collapsedImgRef = useRef(null);
@@ -42,14 +44,6 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
     });
     const onImageLeave = contextSafe(() => {
         gsap.to(imgRef.current, { scale: 1, duration: 0.7, ease: "power2.out" });
-    });
-
-    // Button Hovers
-    const onBtnEnter = contextSafe((target) => {
-        gsap.to(target, { scale: 1.02, duration: 0.3, ease: "power2.out" });
-    });
-    const onBtnLeave = contextSafe((target) => {
-        gsap.to(target, { scale: 1, duration: 0.3, ease: "power2.out" });
     });
 
     // Collapsed Card Hover
@@ -155,9 +149,10 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                         <div className="flex flex-col sm:flex-row gap-3 mt-4">
                             {project.livePreviewLink && (
                                 <a
-                                    ref={liveBtnRef}
-                                    onMouseEnter={() => onBtnEnter(liveBtnRef.current)}
-                                    onMouseLeave={() => onBtnLeave(liveBtnRef.current)}
+                                    ref={liveBtnMotion.ref}
+                                    onMouseEnter={liveBtnMotion.onEnter}
+                                    onMouseLeave={liveBtnMotion.onLeave}
+                                    onClick={liveBtnMotion.onTap}
                                     href={project.livePreviewLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -169,9 +164,10 @@ const ProjectCard = ({ project, isExpanded, onExpand, onCollapse }) => {
                             )}
 
                             <Link
-                                ref={docBtnRef}
-                                onMouseEnter={() => onBtnEnter(docBtnRef.current)}
-                                onMouseLeave={() => onBtnLeave(docBtnRef.current)}
+                                ref={docBtnMotion.ref}
+                                onMouseEnter={docBtnMotion.onEnter}
+                                onMouseLeave={docBtnMotion.onLeave}
+                                onClick={docBtnMotion.onTap}
                                 to={`/project/${project.id}`}
                                 className="flex-1 py-3 rounded-xl border font-inter font-bold text-[12px] md:text-[14px] flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
                                 style={{

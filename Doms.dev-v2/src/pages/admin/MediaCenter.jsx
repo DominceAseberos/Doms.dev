@@ -56,11 +56,11 @@ const MediaCenter = () => {
         }
     };
 
-    const handleDelete = async (name) => {
+    const handleDelete = async (name, bucket) => {
         if (!window.confirm('Terminate this asset from cloud storage?')) return;
         setAdminLoading(true, 'PURGING ASSET');
         try {
-            await mediaService.deleteFile(name);
+            await mediaService.deleteFile(name, bucket);
             setPreviewFile(null);
             fetchFiles(false);
         } catch (err) {
@@ -188,7 +188,7 @@ const MediaCenter = () => {
                                 <Share2 size={14} /> Copy Link
                             </button>
                             <button
-                                onClick={() => handleDelete(previewFile.name)}
+                                onClick={() => handleDelete(previewFile.name, previewFile.bucket)}
                                 className="py-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/10 text-red-500 flex items-center justify-center gap-2 text-[10px] uppercase font-black tracking-widest transition-all active:scale-95"
                             >
                                 <Trash2 size={14} /> Purge Asset

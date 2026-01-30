@@ -32,7 +32,7 @@ const TechStacks = () => {
             return (
               <div
                 key={index}
-                className="tech-icon-card relative flex flex-col items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-8 lg:w-9 xl:w-10 md:h-8 lg:h-9 xl:h-10 shrink-0 rounded-xl border cursor-pointer bg-white/[0.03] border-white/[0.05] hover:scale-110 hover:-translate-y-1"
+                className="tech-icon-card relative flex flex-col items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-8 lg:w-9 xl:w-10 md:h-8 lg:h-9 xl:h-10 shrink-0 rounded-xl border cursor-pointer bg-white/[0.03] border-white/[0.05] hover:scale-105 transition-all ease-in-out duration-600 hover:-translate-y-0.5"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = `${tech.brandColor}15`;
                   e.currentTarget.style.borderColor = `${tech.brandColor}40`;
@@ -55,7 +55,7 @@ const TechStacks = () => {
                 }}
               >
                 <span
-                  className="icon-wrapper transition-all duration-300"
+                  className="icon-wrapper transition-all ease duration-500"
                   style={{
                     color: 'rgb(var(--contrast-rgb)',
                   }}

@@ -5,4 +5,4 @@ export { default as AboutMeEducation } from './components/AboutMeEducation';
 export { default as AboutMeResume } from './components/AboutMeResume';
 export { default as AboutMeFooter } from './components/AboutMeFooter';
 export { default as AboutMeTechStack } from './components/AboutMeTechStack';
-export * from './hooks/useAboutMotion';
+

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { GitHubCalendar } from 'react-github-calendar';
+import GitHubCalendar from 'react-github-calendar';
 import {
   BarChart,
   Bar,
@@ -120,7 +120,7 @@ const StatsGitHub = () => {
   return (
     <div
       ref={containerRef}
-      className="relative rounded-2xl w-full h-full p-4 flex flex-col overflow-hidden"
+      className="relative rounded-2xl w-full h-full p-2 px-4 flex flex-col overflow-hidden"
       style={{
         background: `linear-gradient(
           to bottom,
@@ -130,9 +130,27 @@ const StatsGitHub = () => {
       }}
     >
       {/* Title */}
-      <h3 className="text-center font-playfair font-black text-xl text-white mb-2">
-        GitHub Stats
-      </h3>
+      <div className="flex flex-row w-full justify-between py-2 text-center items-center">
+        <h3 className="text-center font-playfair w-full font-black text-xl text-white mb-2">
+          GitHub Stats
+        </h3>
+
+        <div className="flex justify-between w-full pt-3  mt-2 md:mt-0 md:pt-2">
+          {[
+            ['Repos', stats.repos],
+            ['Followers', stats.followers],
+            ['Following', stats.following],
+          ].map(([label, value]) => (
+            <div key={label} className="stat-item text-center">
+              <p className="text-[9px] uppercase text-white/40">{label}</p>
+              <p className="text-sm font-bold text-white">
+                {loading ? '…' : value}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
 
       {/* Calendar */}
       <div className="calendar-wrapper w-full overflow-x-auto py-2 no-scrollbar">
@@ -148,20 +166,7 @@ const StatsGitHub = () => {
 
 
       {/* Stats */}
-      <div className="flex justify-around pt-3  mt-2 md:mt-0 md:pt-2">
-        {[
-          ['Repos', stats.repos],
-          ['Followers', stats.followers],
-          ['Following', stats.following],
-        ].map(([label, value]) => (
-          <div key={label} className="stat-item text-center">
-            <p className="text-[9px] uppercase text-white/40">{label}</p>
-            <p className="text-sm font-bold text-white">
-              {loading ? '…' : value}
-            </p>
-          </div>
-        ))}
-      </div>
+
     </div>
   );
 };
