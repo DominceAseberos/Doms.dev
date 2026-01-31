@@ -23,7 +23,9 @@ const ProfileManager = () => {
         avatar_url: '',
         hero_img_url: '',
         cv_url: '',
-        cv_img_url: ''
+        cv_img_url: '',
+        birthday: '',
+        location: ''
     });
     const [education, setEducation] = useState({
         school: '',
@@ -404,7 +406,29 @@ const ProfileManager = () => {
                                         value={profile.role || ''}
                                         onChange={(e) => setProfile({ ...profile, role: e.target.value })}
                                         className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-white/20 transition-all font-mono"
-                                        placeholder="Core Function"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">Birthday / Era</label>
+                                    <input
+                                        type="text"
+                                        value={profile.birthday || ''}
+                                        onChange={(e) => setProfile({ ...profile, birthday: e.target.value })}
+                                        className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-white/20 transition-all font-mono"
+                                        placeholder="e.g. Sept 1999"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">Base Location</label>
+                                    <input
+                                        type="text"
+                                        value={profile.location || ''}
+                                        onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                                        className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-white/20 transition-all font-mono"
+                                        placeholder="e.g. Manila, PH"
                                     />
                                 </div>
                             </div>

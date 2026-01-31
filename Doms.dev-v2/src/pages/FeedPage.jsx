@@ -9,21 +9,37 @@ const FeedPage = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [profile, setProfile] = useState(null);
 
     useEffect(() => {
-        fetchPosts();
+        fetchData();
+        // Subscribe to profile changes for real-time updates
+        const subscription = supabase
+            .channel('public:profiles')
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, payload => {
+                setProfile(prev => ({ ...prev, ...payload.new }));
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(subscription);
+        };
     }, []);
 
-    const fetchPosts = async () => {
+    const fetchData = async () => {
         setLoading(true);
-        const { data, error } = await supabase
+        // data.user check not strictly needed for public page, fetching by single row or known logic
+        // For portfolio, we usually fetch the single 'admin' profile. 
+        // We'll fetch the first profile found.
+        const { data: profileData } = await supabase.from('profiles').select('*').limit(1).single();
+        if (profileData) setProfile(profileData);
+
+        const { data: postsData } = await supabase
             .from('posts')
             .select('*')
             .order('created_at', { ascending: false });
 
-        if (!error && data) {
-            setPosts(data);
-        }
+        if (postsData) setPosts(postsData);
         setLoading(false);
     };
 
@@ -68,10 +84,10 @@ const FeedPage = () => {
                             <div key={post.id} className="bg-white/5 border border-white/5 rounded-2xl p-6 space-y-4">
                                 <div className="flex items-center gap-3 mb-2">
                                     <div className="w-10 h-10 rounded-full bg-gray-700 overflow-hidden">
-                                        <img src="https://github.com/shadcn.png" className="w-full h-full object-cover" />
+                                        <img src={profile?.avatar_url || "https://github.com/shadcn.png"} className="w-full h-full object-cover" />
                                     </div>
                                     <div>
-                                        <div className="font-bold text-white">Domince A. Aseberos</div>
+                                        <div className="font-bold text-white">{profile?.name || 'System Owner'}</div>
                                         <div className="text-xs text-white/40">{formatDate(post.created_at)}</div>
                                     </div>
                                 </div>

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { ArrowLeft, Send, Image as ImageIcon, Loader, X, Trash2, Save } from 'lucide-react';
+import { ArrowLeft, Send, Image as ImageIcon, Loader, X, Trash2, Save, Grid, Upload, Sliders, ShieldCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import adminStrings from '../../config/adminStrings.json';
 import { useAdminStore } from '../../store/adminStore';
+import { projectService } from '../../services/projectService';
+import MediaPickerModal from '../../components/MediaPickerModal';
 import { useQueryClient } from '@tanstack/react-query';
 
 const FeedManager = () => {
@@ -25,24 +27,104 @@ const FeedManager = () => {
     const [posting, setPosting] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
 
+    // Profile & Media Picker State
+    const [profile, setProfile] = useState({});
+    const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+    const [mediaPickerTarget, setMediaPickerTarget] = useState('');
+
+    const [updatingIdentity, setUpdatingIdentity] = useState(false);
+
     useEffect(() => {
         fetchPosts();
-        fetchStatus();
+        fetchProfile();
     }, []);
 
-    const fetchStatus = async () => {
+    const fetchProfile = async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
             setProfileId(user.id);
             const { data, error } = await supabase
                 .from('profiles')
-                .select('live_feed_status')
+                .select('live_feed_status, avatar_url, name')
                 .eq('id', user.id)
-                .maybeSingle(); // Use maybeSingle to avoid 406 if no profile exists
+                .maybeSingle();
 
             if (data) {
                 setLiveStatus(data.live_feed_status || '');
+                setProfile(data);
             }
+        }
+    };
+
+    const handleFileUpload = async (file, type) => {
+        if (!file) return;
+        setAdminLoading(true, `UPLOADING ${type.toUpperCase()}`);
+        try {
+            const fileName = `${type}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+            const publicUrl = await projectService.uploadProjectImage(file, fileName);
+
+            if (type === 'avatar') {
+                // await updateProfileField('avatar_url', publicUrl); // Removed auto-save
+                setProfile(prev => ({ ...prev, avatar_url: publicUrl }));
+            }
+        } catch (err) {
+            console.error('Upload failed:', err);
+            setErrorMessage(`${type} upload failed.`);
+        } finally {
+            setAdminLoading(false);
+        }
+    };
+
+    const openMediaPicker = (target) => {
+        setMediaPickerTarget(target);
+        setIsMediaPickerOpen(true);
+    };
+
+    const handleMediaSelect = async (url) => {
+        const selectedUrl = Array.isArray(url) ? url[0] : url;
+        if (!selectedUrl) return;
+
+        if (mediaPickerTarget === 'avatar') {
+            // await updateProfileField('avatar_url', selectedUrl); // Removed auto-save
+            setProfile(prev => ({ ...prev, avatar_url: selectedUrl }));
+        }
+        setIsMediaPickerOpen(false);
+    };
+
+    const saveIdentity = async () => {
+        setUpdatingIdentity(true);
+        try {
+            console.log("Saving identity...", profile);
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (!user) {
+                throw new Error("No authenticated user found");
+            }
+
+            // Update both name and avatar
+            const { error } = await supabase
+                .from('profiles')
+                .update({
+                    avatar_url: profile.avatar_url,
+                    name: profile.name
+                })
+                .eq('id', user.id);
+
+            if (error) throw error;
+
+            console.log("Identity updated successfully");
+            setSuccessMessage("Identity Updated");
+
+            // Invalidate queries to refresh data
+            await queryClient.invalidateQueries({ queryKey: ['portfolioData'] });
+
+            // Force refresh profile state to ensure sync
+            await fetchProfile();
+        } catch (e) {
+            console.error("Identity update failed:", e);
+            setErrorMessage("Failed to update identity: " + e.message);
+        } finally {
+            setUpdatingIdentity(false);
         }
     };
 
@@ -184,28 +266,83 @@ const FeedManager = () => {
                     </div>
                 </div>
 
-                {/* Live Status Manager */}
-                <div className="bg-white/5 border border-white/5 rounded-2xl p-6 flex flex-col gap-4">
-                    <div className="flex items-center gap-3 text-green-400">
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                        <h2 className="text-sm font-bold uppercase tracking-widest leading-none">Live Status</h2>
-                    </div>
-                    <div className="flex gap-4">
-                        <input
-                            type="text"
-                            value={liveStatus}
-                            onChange={(e) => setLiveStatus(e.target.value)}
-                            placeholder="Set your current status (e.g. 'Coding in React', 'Away', 'Deploying')"
-                            className="flex-1 bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/20 transition-all font-mono text-white/80"
-                        />
+                {/* Feed Identity (Avatar) & Live Status */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Identity Visual */}
+                    <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50" />
+                        <div className="relative z-10 flex items-center justify-between">
+                            <div className="flex items-center gap-3 text-primary">
+                                <ShieldCheck size={18} />
+                                <h3 className="text-xs font-black uppercase tracking-widest">Feed Identity</h3>
+                            </div>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => openMediaPicker('avatar')}
+                                    className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors text-white/60 hover:text-white"
+                                    title="Select from Vault"
+                                >
+                                    <Grid size={14} />
+                                </button>
+                                <label className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors text-white/60 hover:text-white">
+                                    <Upload size={14} />
+                                    <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'avatar')} accept="image/*" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className="relative z-10 flex items-center gap-6">
+                            <div className="relative w-20 h-20 rounded-full border-2 border-white/10 p-1 group-hover:border-primary/50 transition-colors">
+                                <div className="w-full h-full rounded-full overflow-hidden bg-black/50 relative">
+                                    {profile.avatar_url ? (
+                                        <img src={profile.avatar_url} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-white/20">
+                                            <ImageIcon size={24} />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-4 border-[#0f0f0f]" />
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-bold text-white leading-tight">{profile.name || 'System Owner'}</h2>
+                                <p className="text-[10px] text-white/40 uppercase tracking-widest font-mono mt-1">Authorized Author</p>
+                            </div>
+                        </div>
+
                         <button
-                            onClick={updateLiveStatus}
-                            disabled={updatingStatus}
-                            className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                            onClick={saveIdentity}
+                            disabled={updatingIdentity}
+                            className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 group hover:border-white/20 relative z-10 cursor-pointer"
                         >
-                            {updatingStatus ? <Loader size={14} className="animate-spin" /> : <Save size={14} />}
-                            Update
+                            {updatingIdentity ? <Loader size={14} className="animate-spin" /> : <Save size={14} className="group-hover:text-primary transition-colors" />}
+                            Update Identity
                         </button>
+                    </div>
+
+                    {/* Live Status */}
+                    <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl">
+                        <div className="flex items-center gap-3 text-green-400 mb-2">
+                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                            <h3 className="text-xs font-black uppercase tracking-widest">Live Status</h3>
+                        </div>
+                        <div className="flex gap-4">
+                            <input
+                                type="text"
+                                value={liveStatus}
+                                onChange={(e) => setLiveStatus(e.target.value)}
+                                placeholder="What are you working on?"
+                                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/30 transition-all font-mono"
+                            />
+                            <button
+                                onClick={updateLiveStatus}
+                                disabled={updatingStatus}
+                                className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                            >
+                                {updatingStatus ? <Loader size={14} className="animate-spin" /> : <Save size={14} />}
+                                Update
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -297,24 +434,23 @@ const FeedManager = () => {
 
                 {/* Image Modal */}
                 {selectedImage && (
-                    <div
-                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
                         onClick={() => setSelectedImage(null)}
                     >
-                        <button
-                            className="absolute top-6 right-6 p-2 bg-white/10 rounded-full hover:bg-white/20 text-white transition-colors"
-                            onClick={() => setSelectedImage(null)}
-                        >
-                            <X size={24} />
-                        </button>
-                        <img
-                            src={selectedImage}
-                            alt="Full size"
-                            className="max-w-full max-h-[90vh] rounded-lg shadow-2xl object-contain"
-                            onClick={(e) => e.stopPropagation()}
-                        />
+                        <div className="relative max-w-4xl max-h-[90vh] rounded-2xl overflow-hidden bg-black border border-white/10">
+                            <img src={selectedImage} className="w-full h-full object-contain" />
+                            <button className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-white/20 transition-all">
+                                <X size={20} />
+                            </button>
+                        </div>
                     </div>
                 )}
+
+                <MediaPickerModal
+                    isOpen={isMediaPickerOpen}
+                    onClose={() => setIsMediaPickerOpen(false)}
+                    onSelect={handleMediaSelect}
+                />
             </div>
         </div>
     );
