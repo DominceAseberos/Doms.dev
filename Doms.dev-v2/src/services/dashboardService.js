@@ -6,7 +6,7 @@ export const dashboardService = {
         let query = supabase.from(table).select('*');
 
         // Smarter default ordering
-        console.log(`[dashboardService] Fetching ${table}...`);
+        if (import.meta.env.DEV) console.log(`[dashboardService] Fetching ${table}...`);
         if (orderCol) {
             query = query.order(orderCol, { ascending });
         } else {

@@ -7,7 +7,7 @@ import portfolioData from '../data/portfolioData.json';
  * Fetch all data from Supabase in parallel.
  */
 const fetchSupabaseData = async () => {
-    console.log('Fetching portfolio data from Supabase...');
+    if (import.meta.env.DEV) console.log('Fetching portfolio data from Supabase...');
 
     const [
         { data: profile },
