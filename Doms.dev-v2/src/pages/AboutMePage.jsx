@@ -131,7 +131,7 @@ const AboutMePage = () => {
 
 
 
-                <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} techStack={techStack} />
+                <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
 
                 <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
 
@@ -178,7 +178,7 @@ const AboutMePage = () => {
                 <div className="
                 md:h-40 md:w-full lg:h-60 
                 md:col-span-4 lg:col-span-2 ">
-                    <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} techStack={techStack} />
+                    <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
 
                 </div>
 

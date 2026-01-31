@@ -1,23 +1,6 @@
 import React from 'react';
-import { useButtonMotion } from '../../../hooks/useButtonMotion';
 
-const AnimatedStack = ({ children, className = '', style = {} }) => {
-    const motion = useButtonMotion();
-    return (
-        <span
-            ref={motion.ref}
-            onMouseEnter={motion.onEnter}
-            onMouseLeave={motion.onLeave}
-            onMouseDown={motion.onTap}
-            className={`inline-block cursor-pointer select-none ${className}`}
-            style={style}
-        >
-            {children}
-        </span>
-    );
-};
-
-const AboutMeIdentity = ({ identityCardRef, profile, techStack }) => {
+const AboutMeIdentity = ({ identityCardRef, profile }) => {
     return (
         <div
             ref={identityCardRef}
@@ -53,33 +36,6 @@ const AboutMeIdentity = ({ identityCardRef, profile, techStack }) => {
                 >
                     {profile.bio}
                 </p>
-            </div>
-
-            <div className="md:hidden lg:hidden scroll-reveal space-y-2 ">
-                <h3
-                    className="font-semibold"
-                    style={{
-                        color: 'rgb(var(--contrast-rgb))',
-                        fontSize: 'clamp(14px, 2.5vw, 16px)'
-                    }}
-                >
-                    Tech Stack
-                </h3>
-                <div className="flex flex-wrap gap-2 justify-around text-center">
-                    {techStack.map((tech, index) => (
-                        <AnimatedStack key={index}>
-                            <div className="rounded-full text-xs font-medium border px-3 py-2 w-32 cursor-pointer select-none touch-manipulation"
-                                style={{
-                                    color: 'rgb(var(--contrast-rgb))',
-                                    borderColor: 'rgba(var(--contrast-rgb), 0.3)',
-                                    background: 'rgba(var(--contrast-rgb), 0.05)'
-                                }}
-                            >
-                                {tech.name}
-                            </div>
-                        </AnimatedStack>
-                    ))}
-                </div>
             </div>
         </div>
     );
