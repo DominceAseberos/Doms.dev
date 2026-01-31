@@ -167,16 +167,21 @@ const MusicManager = () => {
                     </div>
 
                     {/* Tabs */}
-                    <div className="flex bg-white/5 p-1 rounded-2xl">
+                    <div className="flex gap-2 bg-white/5 p-1 rounded-2xl">
                         <button
                             onClick={() => setActiveTab('registry')}
-                            className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'registry' ? 'bg-primary text-black shadow-lg' : 'hover:bg-white/5 opacity-50'}`}
+                            className={`px-6 py-3 rounded-xl text-[10px] font-white uppercase tracking-widest transition-all
+                                 ${activeTab === 'registry' ?
+                                    'border-blue-500 border text-blue-500 shadow-lg'
+                                    :
+                                    'hover:border-blue-500 border  opacity-50'}`}
                         >
                             Registry
                         </button>
                         <button
                             onClick={() => setActiveTab('discovery')}
-                            className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === 'discovery' ? 'bg-primary text-black shadow-lg' : 'hover:bg-white/5 opacity-50'}`}
+                            className={`px-6 py-3 rounded-xl text-[10px] font-white uppercase tracking-widest transition-all flex items-center gap-2 
+                                ${activeTab === 'discovery' ? 'border-blue-500 border  text-blue-500 shadow-lg' : 'hover:border-blue-500 border opacity-50'}`}
                         >
                             <Sparkles size={14} /> Discovery
                         </button>

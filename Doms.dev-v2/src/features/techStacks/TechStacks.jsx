@@ -26,8 +26,8 @@ const TechStacks = () => {
       }}>
 
       {/* Container that provides the height and vertical centering */}
-      <div className="relative h-full w-full flex justify-between items-center min-h-[80px]">
-        <div className="tech-row-animate  gap-2 sm:gap-4">
+      <div className="relative h-full w-full flex justify-center items-center min-h-[80px] px-4">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 w-full">
           {techStack.map((tech, index) => {
             return (
               <div

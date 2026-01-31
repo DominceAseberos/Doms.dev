@@ -76,7 +76,7 @@ const fetchSupabaseData = async () => {
         profile: formattedProfile || portfolioData.profile,
         education: education || portfolioData.education,
         contacts: contacts || portfolioData.contacts,
-        techStack: formattedTechStack.length > 0 ? formattedTechStack : portfolioData.techStack,
+        techStack: formattedTechStack,
         projects: formattedProjects.length > 0 ? formattedProjects : portfolioData.projects,
         trackList: Object.keys(trackList).length > 0 ? trackList : portfolioData.trackList,
         // Configs

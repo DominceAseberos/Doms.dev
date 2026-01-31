@@ -38,7 +38,7 @@ const AboutMeTechStack = ({ mdIconStack, techStack }) => {
             >
                 Tech Stack
             </h3>
-            <div className="flex flex-wrap gap-2 text-center flex-1 overflow-y-auto p-2 -mx-2 custom-scrollbar content-start">
+            <div className="flex flex-wrap gap-2 justify-center text-center flex-1 overflow-y-auto p-2 -mx-2 custom-scrollbar content-start">
                 {techStack.map((tech, index) => {
                     return (
                         <AnimatedStack key={index}>

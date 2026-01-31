@@ -9,7 +9,7 @@ import { educationService } from '../../services/educationService';
 import { projectService } from '../../services/projectService';
 import { dashboardService } from '../../services/dashboardService';
 import MediaPickerModal from '../../components/MediaPickerModal';
-import { getAvailableIconNames, getIconByName } from '../../utils/IconRegistry';
+import { getAvailableIconNames, getIconByName, BrandColors } from '../../utils/IconRegistry';
 
 const ProfileManager = () => {
     const navigate = useNavigate();
@@ -102,7 +102,13 @@ const ProfileManager = () => {
             // 2. Sync Tech Stack
             // Additions
             const newTech = techStack.filter(t => !originalData.tech.find(ot => ot.name?.toLowerCase().trim() === t.name?.toLowerCase().trim()));
-            newTech.forEach(t => updates.push(dashboardService.create('tech_stacks', { name: t.name, display_order: t.display_order })));
+            newTech.forEach(t => updates.push(dashboardService.create('tech_stacks', {
+                name: t.name,
+                icon_name: t.icon_name,
+                color: t.color,
+                type: t.type,
+                display_order: t.display_order
+            })));
 
             // Deletions
             const removedTech = originalData.tech.filter(ot => !techStack.find(t => t.name?.toLowerCase().trim() === ot.name?.toLowerCase().trim()));
@@ -218,8 +224,17 @@ const ProfileManager = () => {
         if (exists) {
             setTechStack(prev => prev.filter(t => t.name?.toLowerCase().trim() !== stackName.toLowerCase().trim()));
         } else {
-            // Add new stack item (no ID yet)
-            setTechStack(prev => [...prev, { name: stackName, display_order: prev.length + 1 }]);
+            // Add new stack item with full metadata
+            const iconName = stackName; // The stack name IS the icon name key
+            const brandColor = BrandColors[stackName] || '#ffffff';
+
+            setTechStack(prev => [...prev, {
+                name: stackName,
+                icon_name: iconName,
+                color: brandColor,
+                type: 'core', // Default type
+                display_order: prev.length + 1
+            }]);
         }
     };
 
