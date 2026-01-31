@@ -1,82 +1,66 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import './PageLoader.css'; // Shared styles
 
 const PreLoader = ({ onLoadComplete }) => {
     const containerRef = useRef(null);
-    const textRef = useRef(null);
     const [progress, setProgress] = useState(0);
+    const [status, setStatus] = useState("BOOTING SYSTEM");
 
     useEffect(() => {
-        const tl = gsap.timeline();
+        let currentProgress = 0;
 
-        // Simulate loading progress
+        // Simulate initial load (Boot sequence)
         const interval = setInterval(() => {
-            setProgress(prev => {
-                const next = prev + Math.random() * 10;
-                return next > 100 ? 100 : next;
-            });
-        }, 100);
+            currentProgress += Math.random() * 3;
+            if (currentProgress > 100) currentProgress = 100;
 
-        // Animate Text
-        gsap.fromTo(textRef.current,
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-        );
+            // Status Updates
+            if (currentProgress < 30) setStatus("INITIALIZING CORE");
+            else if (currentProgress < 60) setStatus("LOADING MODULES");
+            else if (currentProgress < 90) setStatus("VERIFYING ASSETS");
+            else setStatus("SYSTEM READY");
 
-        // When page fully loads
-        const handleLoad = () => {
-            clearInterval(interval);
-            setProgress(100);
+            setProgress(Math.min(currentProgress, 100));
 
-            // Exit animation
-            tl.to(textRef.current, {
-                opacity: 0,
-                y: -20,
-                duration: 0.5,
-                delay: 0.5
-            })
-                .to(containerRef.current, {
-                    yPercent: -100,
-                    duration: 0.8,
-                    ease: "power4.inOut",
-                    onComplete: onLoadComplete
-                });
-        };
+            if (currentProgress >= 100) {
+                clearInterval(interval);
 
-        // If document is already loaded
-        if (document.readyState === 'complete') {
-            setTimeout(handleLoad, 1500); // Min display time
-        } else {
-            window.addEventListener('load', handleLoad);
-        }
+                // Exit Animation
+                setTimeout(() => {
+                    gsap.to(containerRef.current, {
+                        opacity: 0,
+                        duration: 0.8,
+                        ease: "power2.inOut",
+                        onComplete: onLoadComplete
+                    });
+                }, 500);
+            }
+        }, 50); // Fast ticks
 
-        return () => {
-            window.removeEventListener('load', handleLoad);
-            clearInterval(interval);
-        };
+        return () => clearInterval(interval);
     }, [onLoadComplete]);
 
     return (
         <div
             ref={containerRef}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0a0a] text-white"
-            style={{
-                background: `linear-gradient(to bottom, rgb(10, 10, 10), rgb(20, 20, 20))`
-            }}
+            className="page-loader"
         >
-            <div ref={textRef} className="flex flex-col items-center gap-4">
-                <h1 className="text-4xl md:text-6xl font-black tracking-tighter font-playfair">
-                    DOMINCE
-                </h1>
-                <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div className="page-loader__content">
+                <div className="page-loader__logo-container">
+                    <span className="page-loader__logo">D</span>
+                </div>
+
+                <div className="page-loader__bar-container">
                     <div
-                        className="h-full bg-white transition-all duration-200 ease-out"
+                        className="page-loader__bar-fill"
                         style={{ width: `${progress}%` }}
                     />
                 </div>
-                <p className="text-xs font-mono opacity-50 uppercase tracking-widest">
-                    Loading Portfolio... {Math.round(progress)}%
-                </p>
+
+                <div className="page-loader__status">
+                    {status}
+                </div>
             </div>
         </div>
     );

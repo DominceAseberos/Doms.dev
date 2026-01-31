@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export const useProjectDetails = (projectId) => {
     const containerRef = useRef(null);
-    const { projects: projectData, profile } = usePortfolioData();
+    const { projects: projectData, profile, isLoading } = usePortfolioData();
     const project = projectData.find(p => p.id === projectId);
 
     // Set document title and meta description
@@ -68,6 +68,6 @@ export const useProjectDetails = (projectId) => {
     return {
         project,
         containerRef,
-        isLoading: false
+        isLoading
     };
 };

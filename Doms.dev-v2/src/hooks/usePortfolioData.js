@@ -93,7 +93,7 @@ const fetchSupabaseData = async () => {
  * Fetches from Supabase and falls back to local JSON if error or loading.
  */
 export const usePortfolioData = () => {
-    const { data } = useQuery({
+    const { data, isLoading, isFetching } = useQuery({
         queryKey: ['portfolioData'],
         queryFn: fetchSupabaseData,
         staleTime: 1000 * 60 * 60, // 1 hour cache
@@ -104,7 +104,7 @@ export const usePortfolioData = () => {
     // Actually, useQuery will return undefined 'data' while loading. 
     // We want to show local data *while* loading remote data.
 
-    return data || {
+    const result = data || {
         profile: portfolioData.profile,
         education: portfolioData.education,
         contacts: portfolioData.contacts,
@@ -116,6 +116,11 @@ export const usePortfolioData = () => {
         uiConfig: portfolioData.uiConfig,
         chatbotConfig: portfolioData.chatbotConfig,
         chatSuggestions: portfolioData.chatSuggestions
+    };
+
+    return {
+        ...result,
+        isLoading: isLoading || isFetching
     };
 };
 

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import PageLoader from '../components/PageLoader';
 import { useProjectDetails } from '../features/projects/projectDetails/hooks/useProjectDetails';
 
 // Feature Components
@@ -10,8 +11,13 @@ import ProjectDocumentation from '../features/projects/projectDetails/components
 
 const ProjectDetails = () => {
     const { id } = useParams();
-    const { project, containerRef } = useProjectDetails(id);
+    const { project, containerRef, isLoading } = useProjectDetails(id);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [revealReady, setRevealReady] = useState(false);
+
+    const handleLoadComplete = useCallback(() => {
+        setRevealReady(true);
+    }, []);
 
     // Carousel navigation
     const nextImage = () => {
@@ -28,7 +34,7 @@ const ProjectDetails = () => {
         );
     };
 
-    if (!project) {
+    if (!project && !isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
@@ -44,55 +50,78 @@ const ProjectDetails = () => {
     }
 
     return (
-        <div
-            ref={containerRef}
-            className="min-h-screen w-full py-8 px-4 md:px-12"
-            style={{
-                background: `linear-gradient(
+        <>
+            <PageLoader
+                isLoading={isLoading || !project}
+                onLoadComplete={handleLoadComplete}
+            />
+            <div
+                ref={containerRef}
+                className="min-h-screen w-full py-8 px-4 md:px-12"
+                style={{
+                    background: `linear-gradient(
                     to bottom,
                     rgba(var(--body-Linear-1-rgb)),
                     rgba(var(--body-Linear-2-rgb))
-                )`
-            }}
-        >
-            {/* Header with Back Button */}
-            <ProjectHeader />
+                )`,
+                    opacity: revealReady ? 1 : 0,
+                    transition: 'opacity 0.4s ease-out'
+                }}
+            >
+                {/* Header with Back Button */}
+                <ProjectHeader />
 
-            {/* Bento Grid Container */}
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                {/* Bento Grid Container */}
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
 
-                {/* 1. Image Carousel (Top on mobile, Left on desktop) */}
-                <div className="md:col-span-8">
-                    <ProjectCarousel
-                        images={project.images}
-                        title={project.title}
-                        currentImageIndex={currentImageIndex}
-                        nextImage={nextImage}
-                        prevImage={prevImage}
-                    />
-                </div>
+                    {/* 1. Image Carousel (Top on mobile, Left on desktop) */}
+                    <div className="md:col-span-8">
+                        {project ? (
+                            <ProjectCarousel
+                                images={project.images}
+                                title={project.title}
+                                currentImageIndex={currentImageIndex}
+                                nextImage={nextImage}
+                                prevImage={prevImage}
+                            />
+                        ) : (
+                            <div className="w-full aspect-video bg-white/5 rounded-2xl animate-pulse" />
+                        )}
+                    </div>
 
-                {/* 2. Metadata Card (Middle on mobile, Sticky Right on desktop) */}
-                <div className="md:col-span-4 md:row-span-2 md:sticky md:top-8">
-                    <ProjectMetadata
-                        title={project.title}
-                        dateCreated={project.dateCreated}
-                        projectType={project.projectType}
-                        stacks={project.stacks}
-                        livePreviewLink={project.livePreviewLink}
-                        githubLink={project.githubLink}
-                    />
-                </div>
+                    {/* 2. Metadata Card (Middle on mobile, Sticky Right on desktop) */}
+                    <div className="md:col-span-4 md:row-span-2 md:sticky md:top-8">
+                        {project ? (
+                            <ProjectMetadata
+                                title={project.title}
+                                dateCreated={project.dateCreated}
+                                projectType={project.projectType}
+                                stacks={project.stacks}
+                                livePreviewLink={project.livePreviewLink}
+                                githubLink={project.githubLink}
+                            />
+                        ) : (
+                            <div className="w-full h-96 bg-white/5 rounded-2xl animate-pulse" />
+                        )}
+                    </div>
 
-                {/* 3. Documentation (Bottom on mobile, Left on desktop) */}
-                <div className="md:col-span-8">
-                    <ProjectDocumentation
-                        documentation={project.fullDocumentation}
-                        documentationFiles={project.documentationFiles}
-                    />
+                    {/* 3. Documentation (Bottom on mobile, Left on desktop) */}
+                    <div className="md:col-span-8">
+                        {project ? (
+                            <ProjectDocumentation
+                                documentation={project.fullDocumentation}
+                                documentationFiles={project.documentationFiles}
+                            />
+                        ) : (
+                            <div className="space-y-4">
+                                <div className="w-full h-8 bg-white/5 rounded animate-pulse" />
+                                <div className="w-full h-32 bg-white/5 rounded animate-pulse" />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
