@@ -145,13 +145,14 @@ const Dashboard = () => {
             }
         );
 
-        // 5. Below fold cards: scroll-triggered
-        belowFoldCards.forEach((card) => {
+        // 5. Below fold cards: scroll-triggered with staggered delays
+        belowFoldCards.forEach((card, index) => {
             gsap.fromTo(card,
                 { scale: 0.95, opacity: 0, y: 25 },
                 {
                     scale: 1, opacity: 1, y: 0,
                     duration: 0.5, ease: "power2.out",
+                    delay: index * 0.15, // Stagger delay
                     scrollTrigger: {
                         trigger: card,
                         start: "top 92%",
@@ -225,17 +226,17 @@ const Dashboard = () => {
                             <StatsGitHub />
                         </div>
 
-                        <div className="h-75 mobile-reveal">
+                        <div className="h-75">
                             <div className='flex flex-col justify h-70 gap-4'>
                                 <div className='w-full h-full flex flex-row gap-4'>
-                                    <div className='flex-1 min-w-0'>
+                                    <div className='flex-1 min-w-0 mobile-reveal'>
                                         <Contacts />
                                     </div>
-                                    <div className='flex-1 min-w-0'>
+                                    <div className='flex-1 min-w-0 mobile-reveal'>
                                         <GitHubFocusCard />
                                     </div>
                                 </div>
-                                <div className='bento-card w-full h-25'>
+                                <div className='bento-card w-full h-25 mobile-reveal'>
                                     <TechStacks />
                                 </div>
                             </div>
