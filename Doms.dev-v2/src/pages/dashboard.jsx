@@ -128,6 +128,11 @@ const Dashboard = () => {
                         { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
                         1.7
                     );
+                    tl.fromTo(".desktop-focus-row",
+                        { opacity: 0, y: 30, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
+                        1.7
+                    );
                     tl.fromTo(".desktop-techstacks-row",
                         { opacity: 0, y: 25 },
                         { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
