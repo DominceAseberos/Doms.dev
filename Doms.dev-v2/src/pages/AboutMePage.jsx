@@ -50,84 +50,159 @@ const AboutMePage = () => {
     }, []);
 
     // Reveal animation - only runs after loader completes
-    // AboutMePage: Slide up + subtle rotation per card (unique animation)
+    // Different behavior for mobile (scroll reveal) vs desktop (sequential reveal)
     useEffect(() => {
         if (!revealReady) return;
 
-        const cards = [heroCardRef, identityCardRef, educationCardRef, resumeCardRef, mdIconStack, feedCard, footerRef];
+        const isMobile = window.innerWidth < 768;
+        const cards = [heroCardRef, identityCardRef, feedCard, mdIconStack, educationCardRef, resumeCardRef, footerRef];
         const cardEls = cards.map(ref => ref.current).filter(Boolean);
         gsap.killTweensOf(cardEls);
 
-        // First 3 cards: animate immediately on page load (above the fold)
-        const aboveFoldCards = cardEls.slice(0, 3);
-        const belowFoldCards = cardEls.slice(3);
+        if (isMobile) {
+            // MOBILE: First 3 cards animate on load, rest are scroll-triggered
+            const aboveFoldCards = cardEls.slice(0, 3);
+            const belowFoldCards = cardEls.slice(3);
 
-        // Above fold: staggered fade+slide on load
-        gsap.fromTo(aboveFoldCards,
-            { y: 40, opacity: 0, rotate: 1 },
-            {
-                y: 0,
-                opacity: 1,
-                rotate: 0,
-                duration: 0.6,
-                stagger: 0.12,
-                ease: 'power3.out',
-                onComplete: () => {
-                    aboveFoldCards.forEach(el => el?.classList.add('animation-complete'));
-                }
-            }
-        );
-
-        // Below fold: scroll-triggered per-card animation
-        belowFoldCards.forEach((card, index) => {
-            gsap.fromTo(card,
-                { y: 50, opacity: 0, rotate: 1.5 },
+            // Above fold: staggered fade+slide on load
+            gsap.fromTo(aboveFoldCards,
+                { y: 40, opacity: 0, rotate: 1 },
                 {
                     y: 0,
                     opacity: 1,
                     rotate: 0,
                     duration: 0.6,
+                    stagger: 0.12,
                     ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 90%',
-                        toggleActions: 'play none none none',
-                        once: true
-                    },
                     onComplete: () => {
-                        card?.classList.add('animation-complete');
+                        aboveFoldCards.forEach(el => el?.classList.add('animation-complete'));
                     }
                 }
             );
-        });
 
-        // Inner scroll-reveal elements
-        cards.forEach((cardRef) => {
-            if (!cardRef.current) return;
-            const contentElements = cardRef.current.querySelectorAll('.scroll-reveal');
-
-            gsap.killTweensOf(contentElements);
-            gsap.fromTo(
-                contentElements,
-                { y: 15, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.5,
-                    stagger: 0.08,
-                    ease: 'power2.out',
-                    scrollTrigger: {
-                        trigger: cardRef.current,
-                        start: 'top 88%',
-                        toggleActions: 'play none none none',
-                        once: true
-                    },
-                    onComplete: () => {
-                        contentElements.forEach(el => el?.classList.add('animation-complete'));
+            // Below fold: scroll-triggered per-card animation
+            belowFoldCards.forEach((card) => {
+                gsap.fromTo(card,
+                    { y: 50, opacity: 0, rotate: 1.5 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        rotate: 0,
+                        duration: 0.6,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 90%',
+                            toggleActions: 'play none none none',
+                            once: true
+                        },
+                        onComplete: () => {
+                            card?.classList.add('animation-complete');
+                        }
                     }
-                }
-            );
-        });
+                );
+            });
+
+            // Inner scroll-reveal elements for mobile
+            cards.forEach((cardRef) => {
+                if (!cardRef.current) return;
+                const contentElements = cardRef.current.querySelectorAll('.scroll-reveal');
+                gsap.killTweensOf(contentElements);
+                gsap.fromTo(
+                    contentElements,
+                    { y: 15, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.5,
+                        stagger: 0.08,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: cardRef.current,
+                            start: 'top 88%',
+                            toggleActions: 'play none none none',
+                            once: true
+                        },
+                        onComplete: () => {
+                            contentElements.forEach(el => el?.classList.add('animation-complete'));
+                        }
+                    }
+                );
+            });
+        } else {
+            // DESKTOP: Sequential reveal with specific timing
+            // First, hide all cards immediately so they're not visible before animation
+            gsap.set(cardEls, { opacity: 0, y: 25, scale: 0.95 });
+
+            const tl = gsap.timeline();
+
+            // 1. Hero (0.3s)
+            if (heroCardRef.current) {
+                tl.fromTo(heroCardRef.current,
+                    { opacity: 0, y: 30, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    0.3
+                );
+            }
+
+            // 2. Identity (0.5s)
+            if (identityCardRef.current) {
+                tl.fromTo(identityCardRef.current,
+                    { opacity: 0, y: 25, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    0.5
+                );
+            }
+
+            // 3. StatusCard (0.7s)
+            if (feedCard.current) {
+                tl.fromTo(feedCard.current,
+                    { opacity: 0, y: 25, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    0.7
+                );
+            }
+
+            // 4. TechStack (0.9s)
+            if (mdIconStack.current) {
+                tl.fromTo(mdIconStack.current,
+                    { opacity: 0, y: 25, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    0.9
+                );
+            }
+
+            // 5. Education (1.1s)
+            if (educationCardRef.current) {
+                tl.fromTo(educationCardRef.current,
+                    { opacity: 0, y: 25, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    1.1
+                );
+            }
+
+            // 6. Resume + CV Button (1.3s)
+            if (resumeCardRef.current) {
+                tl.fromTo(resumeCardRef.current,
+                    { opacity: 0, y: 25, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    1.3
+                );
+            }
+
+            // 7. Footer (1.5s)
+            if (footerRef.current) {
+                tl.fromTo(footerRef.current,
+                    { opacity: 0, y: 25, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    1.5
+                );
+            }
+
+            tl.eventCallback('onComplete', () => {
+                cardEls.forEach(el => el?.classList.add('animation-complete'));
+            });
+        }
 
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
