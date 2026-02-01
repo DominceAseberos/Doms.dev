@@ -248,10 +248,10 @@ const FeedManager = () => {
     };
 
     return (
-        <div className="min-h-screen text-white p-8">
-            <div className="max-w-4xl mx-auto space-y-8">
+        <div className="min-h-screen text-white p-4 md:p-8">
+            <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
                 {/* Header */}
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-4 md:gap-6">
                     <button
                         onClick={() => navigate('/admin')}
                         className="px-6 py-2 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 transition-all flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest hover:border-white/10 cursor-pointer group w-fit"
@@ -261,13 +261,13 @@ const FeedManager = () => {
                     </button>
 
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Feed Manager</h1>
-                        <p className="text-white/40 mt-2">Create and manage your feed posts.</p>
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Feed Manager</h1>
+                        <p className="text-white/40 mt-1 md:mt-2 text-sm md:text-base">Create and manage your feed posts.</p>
                     </div>
                 </div>
 
                 {/* Feed Identity (Avatar) & Live Status */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     {/* Identity Visual */}
                     <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl relative overflow-hidden group">
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50" />

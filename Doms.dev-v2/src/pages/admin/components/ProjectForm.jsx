@@ -129,21 +129,21 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                 <div className="absolute inset-0 bg-black/95 backdrop-blur-md" onClick={onClose} />
                 <div
-                    className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 p-8 space-y-10 animate-in fade-in zoom-in duration-300 no-scrollbar admin-modal-gradient"
+                    className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl md:rounded-3xl border border-white/10 p-5 md:p-8 space-y-6 md:space-y-10 animate-in fade-in zoom-in duration-300 no-scrollbar admin-modal-gradient"
                 >
-                    <header className="flex justify-between items-center border-b border-white/5 pb-6">
+                    <header className="flex justify-between items-center border-b border-white/5 pb-4 md:pb-6">
                         <div className="space-y-1">
-                            <h2 className="text-3xl font-black tracking-tighter text-primary">
+                            <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-primary">
                                 {currentProject?.id ? 'EDIT INSTANCE' : 'NEW DEPLOYMENT'}
                             </h2>
                             <p className="text-[9px] uppercase tracking-widest opacity-40">Configuration Node: {currentProject?.id || 'Pending'}</p>
                         </div>
-                        <button onClick={onClose} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+                        <button onClick={onClose} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity cursor-pointer active:scale-95">
                             <X size={20} />
                         </button>
                     </header>
 
-                    <form onSubmit={handleSubmit} className="space-y-8 pb-10">
+                    <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8 pb-6 md:pb-10">
                         {/* BASIC INFO */}
                         <section className="space-y-6">
                             <div className="flex items-center gap-4">
