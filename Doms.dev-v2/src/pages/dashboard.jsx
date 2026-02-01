@@ -350,12 +350,12 @@ const Dashboard = () => {
                                 <div className='col-span-6 desktop-projecthead-row'>
                                     <ProjectHead />
                                 </div>
-                                <div className='col-span-6 md:h-75 lg:h-75 desktop-projects-row'>
+                                <div className='col-span-6 md:h-75 lg:h-75'>
                                     <div className="flex flex-row h-full justify-between gap-2">
-                                        <div className="flex-[2] min-w-0">
+                                        <div className="flex-[2] min-w-0 desktop-projects-row">
                                             <Projects />
                                         </div>
-                                        <div className="flex-1 md:max-w-32 lg:max-w-40">
+                                        <div className="flex-1 md:max-w-32 lg:max-w-40 desktop-focus-row">
                                             <GitHubFocusCard />
                                         </div>
                                     </div>
