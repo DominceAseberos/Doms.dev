@@ -16,8 +16,11 @@ import PageLoader from '../components/PageLoader'
 
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavigationStore } from '../store/navigationStore'
 import { usePortfolioData } from '../hooks/usePortfolioData'
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Dashboard = () => {
     const comp = useRef(null);
@@ -74,6 +77,97 @@ const Dashboard = () => {
         }
     }, [dashboardVisited, setDashboardVisited, isMobile, revealReady]);
 
+    // Mobile: Sequential reveal with increasing delays
+    // Profile/Music → AboutMe → ProjectHead (container+text) → Projects → rest via scroll
+    useEffect(() => {
+        if (!revealReady || !isMobile) return;
+
+        const mobileCards = Array.from(document.querySelectorAll('.mobile-reveal'));
+        if (!mobileCards.length) return;
+
+        // Cards layout: [0]=Profile/Music, [1]=AboutMe, [2]=ProjectHead, [3]=Projects, [4+]=rest
+        const profileRow = mobileCards[0];      // Profile + Music + Theme
+        const aboutMe = mobileCards[1];         // AboutMe card
+        const projectHead = mobileCards[2];     // ProjectHead container
+        const projectsCarousel = mobileCards[3]; // Projects carousel
+        const belowFoldCards = mobileCards.slice(4); // ProjectBottom, GitHub, Contacts, etc.
+
+        // 1. Profile/Music row (delay: 0.5s)
+        gsap.fromTo(profileRow,
+            { scale: 0.92, opacity: 0, y: 30 },
+            {
+                scale: 1, opacity: 1, y: 0,
+                duration: 0.6, delay: 0.5, ease: "power3.out",
+                onComplete: () => profileRow?.classList.add('animation-complete')
+            }
+        );
+
+        // 2. AboutMe card (delay: 1s)
+        gsap.fromTo(aboutMe,
+            { scale: 0.92, opacity: 0, y: 30 },
+            {
+                scale: 1, opacity: 1, y: 0,
+                duration: 0.6, delay: 1, ease: "power3.out",
+                onComplete: () => aboutMe?.classList.add('animation-complete')
+            }
+        );
+
+        // 3. ProjectHead container (delay: 1.6s), then inner text
+        gsap.fromTo(projectHead,
+            { scale: 0.92, opacity: 0, y: 30 },
+            {
+                scale: 1, opacity: 1, y: 0,
+                duration: 0.6, delay: 1.6, ease: "power3.out",
+                onComplete: () => {
+                    projectHead?.classList.add('animation-complete');
+                    // Animate inner text after container reveals
+                    const innerElements = projectHead?.querySelectorAll('.animate-portfolio, .animate-breadcrumb');
+                    if (innerElements?.length) {
+                        gsap.fromTo(innerElements,
+                            { y: 20, opacity: 0 },
+                            {
+                                y: 0, opacity: 1,
+                                duration: 0.6, stagger: 0.08, ease: "power3.out"
+                            }
+                        );
+                    }
+                }
+            }
+        );
+
+        // 4. Projects carousel (delay: 2.4s - bigger delay)
+        gsap.fromTo(projectsCarousel,
+            { scale: 0.95, opacity: 0, y: 40 },
+            {
+                scale: 1, opacity: 1, y: 0,
+                duration: 0.7, delay: 2.4, ease: "power3.out",
+                onComplete: () => projectsCarousel?.classList.add('animation-complete')
+            }
+        );
+
+        // 5. Below fold cards: scroll-triggered
+        belowFoldCards.forEach((card) => {
+            gsap.fromTo(card,
+                { scale: 0.95, opacity: 0, y: 25 },
+                {
+                    scale: 1, opacity: 1, y: 0,
+                    duration: 0.5, ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 92%",
+                        toggleActions: "play none none none",
+                        once: true
+                    },
+                    onComplete: () => card?.classList.add('animation-complete')
+                }
+            );
+        });
+
+        return () => {
+            ScrollTrigger.getAll().forEach(t => t.kill());
+        };
+    }, [revealReady, isMobile]);
+
     return (
         <>
             <PageLoader
@@ -95,7 +189,7 @@ const Dashboard = () => {
                 {isMobile ? (
                     /* Mobile Layout */
                     <div className="flex flex-col h-auto w-full gap-2 z-50 px-4">
-                        <div className="h-45">
+                        <div className="h-45 mobile-reveal">
                             <div className='flex justify w-full h-full gap-4'>
                                 <div className='w-48 h-full overflow-hidden'>
                                     <Profile />
@@ -109,29 +203,29 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        <div className="h-full">
+                        <div className="h-full mobile-reveal">
                             <AboutMeCard />
                         </div>
 
 
 
-                        <div className="h-25">
+                        <div className="h-25 mobile-reveal">
                             <ProjectHead />
                         </div>
 
-                        <div className="bento-card border-blue h-[400px]">
+                        <div className="bento-card border-blue h-[400px] mobile-reveal">
                             <Projects />
                         </div>
 
-                        <div className="bento-card h-25">
+                        <div className="bento-card h-25 mobile-reveal">
                             <ProjectBottom />
                         </div>
 
-                        <div className="bento-card h-75">
+                        <div className="bento-card h-75 mobile-reveal">
                             <StatsGitHub />
                         </div>
 
-                        <div className="h-75">
+                        <div className="h-75 mobile-reveal">
                             <div className='flex flex-col justify h-70 gap-4'>
                                 <div className='w-full h-full flex flex-row gap-4'>
                                     <div className='flex-1 min-w-0'>

@@ -16,32 +16,14 @@ const ProjectHead = () => {
     // Use matchMedia to handle desktop vs mobile differently
     let mm = gsap.matchMedia();
 
-    // Mobile: Use ScrollTrigger
+    // Mobile: Dashboard controls the reveal sequence - just set initial hidden state
+    // Dashboard will animate .animate-portfolio and .animate-breadcrumb after container reveals
     mm.add("(max-width: 767px)", () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container.current,
-          start: "top 95%",
-          toggleActions: "play none none none",
-          once: true,
-        },
-        defaults: { ease: "power4.out", duration: 1.4 },
-      });
-
-      tl.from(".animate-portfolio", {
-        y: 70,
+      // Set text to be hidden initially - Dashboard will reveal them
+      gsap.set(".animate-portfolio, .animate-breadcrumb", {
         opacity: 0,
-        skewY: 5,
-        duration: 1.6,
-        ease: "power4.out",
-      })
-        .from(".animate-breadcrumb", {
-          y: 35,
-          opacity: 0,
-          stagger: 0.1,
-          duration: 1.2,
-          ease: "power3.out",
-        }, "-=1.2");
+        y: 20
+      });
     });
 
     // Desktop: No animation - just show text immediately

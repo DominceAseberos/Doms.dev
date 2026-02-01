@@ -50,6 +50,7 @@ const AboutMePage = () => {
     }, []);
 
     // Reveal animation - only runs after loader completes
+    // AboutMePage: Slide up + subtle rotation per card (unique animation)
     useEffect(() => {
         if (!revealReady) return;
 
@@ -57,25 +58,50 @@ const AboutMePage = () => {
         const cardEls = cards.map(ref => ref.current).filter(Boolean);
         gsap.killTweensOf(cardEls);
 
-        gsap.fromTo(
-            cardEls,
-            { y: 50, opacity: 0 },
+        // First 3 cards: animate immediately on page load (above the fold)
+        const aboveFoldCards = cardEls.slice(0, 3);
+        const belowFoldCards = cardEls.slice(3);
+
+        // Above fold: staggered fade+slide on load
+        gsap.fromTo(aboveFoldCards,
+            { y: 40, opacity: 0, rotate: 1 },
             {
                 y: 0,
                 opacity: 1,
-                duration: 0.8,
-                stagger: 0.15,
+                rotate: 0,
+                duration: 0.6,
+                stagger: 0.12,
                 ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: heroCardRef.current,
-                    start: 'top 90%',
-                },
                 onComplete: () => {
-                    cardEls.forEach(el => el?.classList.add('animation-complete'));
+                    aboveFoldCards.forEach(el => el?.classList.add('animation-complete'));
                 }
             }
         );
 
+        // Below fold: scroll-triggered per-card animation
+        belowFoldCards.forEach((card, index) => {
+            gsap.fromTo(card,
+                { y: 50, opacity: 0, rotate: 1.5 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    rotate: 0,
+                    duration: 0.6,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 90%',
+                        toggleActions: 'play none none none',
+                        once: true
+                    },
+                    onComplete: () => {
+                        card?.classList.add('animation-complete');
+                    }
+                }
+            );
+        });
+
+        // Inner scroll-reveal elements
         cards.forEach((cardRef) => {
             if (!cardRef.current) return;
             const contentElements = cardRef.current.querySelectorAll('.scroll-reveal');
@@ -83,17 +109,18 @@ const AboutMePage = () => {
             gsap.killTweensOf(contentElements);
             gsap.fromTo(
                 contentElements,
-                { y: 20, opacity: 0 },
+                { y: 15, opacity: 0 },
                 {
                     y: 0,
                     opacity: 1,
-                    duration: 0.6,
-                    stagger: 0.1,
+                    duration: 0.5,
+                    stagger: 0.08,
                     ease: 'power2.out',
                     scrollTrigger: {
                         trigger: cardRef.current,
-                        start: 'top 85%',
-                        toggleActions: 'play none none reverse',
+                        start: 'top 88%',
+                        toggleActions: 'play none none none',
+                        once: true
                     },
                     onComplete: () => {
                         contentElements.forEach(el => el?.classList.add('animation-complete'));

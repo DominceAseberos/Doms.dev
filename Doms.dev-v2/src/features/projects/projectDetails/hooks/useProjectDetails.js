@@ -32,7 +32,7 @@ export const useProjectDetails = (projectId) => {
 
     // GSAP animations
     useGSAP(() => {
-        if (!containerRef.current) return;
+        if (!containerRef.current || !project) return;
 
         // SAFE MODE: Only animate text on scroll to avoid "blank page" flickering
         // 100ms delay ensures content is fully rendered before GSAP scans the DOM
@@ -63,7 +63,7 @@ export const useProjectDetails = (projectId) => {
         }, 150);
 
         return () => clearTimeout(timer);
-    }, { scope: containerRef, dependencies: [projectId] });
+    }, { scope: containerRef, dependencies: [projectId, project] });
 
     return {
         project,

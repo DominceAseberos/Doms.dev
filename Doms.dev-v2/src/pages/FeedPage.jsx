@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { ArrowLeft, Loader } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageLoader from '../components/PageLoader';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FeedPage = () => {
     // State
@@ -51,6 +54,50 @@ const FeedPage = () => {
         setRevealReady(true);
     }, []);
 
+    // Refs for animations
+    const headerRef = useRef(null);
+    const feedContainerRef = useRef(null);
+
+    // Slide-left scroll reveal for posts
+    useEffect(() => {
+        if (!revealReady) return;
+
+        // Header slide in
+        if (headerRef.current) {
+            gsap.fromTo(headerRef.current,
+                { x: -30, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
+            );
+        }
+
+        // Posts slide in from left
+        const postCards = feedContainerRef.current?.querySelectorAll('.feed-post');
+        if (postCards?.length) {
+            postCards.forEach((card, index) => {
+                gsap.fromTo(card,
+                    { x: -40, opacity: 0 },
+                    {
+                        x: 0,
+                        opacity: 1,
+                        duration: 0.5,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: card,
+                            start: "top 88%",
+                            toggleActions: "play none none none",
+                            once: true
+                        },
+                        delay: index * 0.08
+                    }
+                );
+            });
+        }
+
+        return () => {
+            ScrollTrigger.getAll().forEach(t => t.kill());
+        };
+    }, [revealReady, posts]);
+
     // Helper to format date
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
@@ -77,7 +124,7 @@ const FeedPage = () => {
 
                 <div className="max-w-2xl mx-auto space-y-8">
                     {/* Header */}
-                    <div className="flex items-center gap-4">
+                    <div ref={headerRef} className="flex items-center gap-4">
                         <Link to="/about">
                             <button className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-white">
                                 <ArrowLeft size={20} />
@@ -87,7 +134,7 @@ const FeedPage = () => {
                     </div>
 
                     {/* Feed List */}
-                    <div className="space-y-6">
+                    <div ref={feedContainerRef} className="space-y-6">
                         {loading ? (
                             <div className="flex justify-center p-8">
                                 <Loader className="animate-spin text-white/20" />
@@ -96,7 +143,7 @@ const FeedPage = () => {
                             <div className="text-center text-white/30 py-12">No posts yet.</div>
                         ) : (
                             posts.map(post => (
-                                <div key={post.id} className="bg-white/5 border border-white/5 rounded-2xl p-6 space-y-4">
+                                <div key={post.id} className="feed-post bg-white/5 border border-white/5 rounded-2xl p-6 space-y-4">
                                     <div className="flex items-center gap-3 mb-2">
                                         <div className="w-10 h-10 rounded-full bg-gray-700 overflow-hidden">
                                             <img src={profile?.avatar_url || "https://github.com/shadcn.png"} className="w-full h-full object-cover" />

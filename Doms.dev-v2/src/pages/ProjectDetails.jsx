@@ -1,6 +1,10 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageLoader from '../components/PageLoader';
+
+gsap.registerPlugin(ScrollTrigger);
 import { useProjectDetails } from '../features/projects/projectDetails/hooks/useProjectDetails';
 
 // Feature Components
@@ -14,6 +18,61 @@ const ProjectDetails = () => {
     const { project, containerRef, isLoading } = useProjectDetails(id);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [revealReady, setRevealReady] = useState(false);
+
+    // Refs for animation
+    const carouselRef = useRef(null);
+    const metadataRef = useRef(null);
+    const docsRef = useRef(null);
+
+    // Coordinated Reveal Animations
+    useEffect(() => {
+        if (!revealReady || !project) return;
+
+        // 1. Animate main sections first
+        const sections = [carouselRef.current, metadataRef.current, docsRef.current].filter(Boolean);
+
+        gsap.fromTo(sections,
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: "power3.out"
+            }
+        );
+
+        // 2. Set up text paragraph animations (after a brief delay to ensure DOM is ready)
+        setTimeout(() => {
+            const docParagraphs = containerRef.current?.querySelectorAll(".doc-paragraph");
+            if (!docParagraphs || docParagraphs.length === 0) return;
+
+            const isMobile = window.innerWidth < 768;
+            const startTrigger = isMobile ? "top 90%" : "top 85%";
+
+            docParagraphs.forEach(p => {
+                gsap.fromTo(p,
+                    { opacity: 0, y: 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.6,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: p,
+                            start: startTrigger,
+                            toggleActions: "play none none reverse",
+                            once: true
+                        }
+                    }
+                );
+            });
+        }, 200);
+
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
+    }, [revealReady, project]);
 
     const handleLoadComplete = useCallback(() => {
         setRevealReady(true);
@@ -63,9 +122,7 @@ const ProjectDetails = () => {
                     to bottom,
                     rgba(var(--body-Linear-1-rgb)),
                     rgba(var(--body-Linear-2-rgb))
-                )`,
-                    opacity: revealReady ? 1 : 0,
-                    transition: 'opacity 0.4s ease-out'
+                )`
                 }}
             >
                 {/* Header with Back Button */}
@@ -75,7 +132,7 @@ const ProjectDetails = () => {
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
 
                     {/* 1. Image Carousel (Top on mobile, Left on desktop) */}
-                    <div className="md:col-span-8">
+                    <div className="md:col-span-8" ref={carouselRef} style={{ opacity: 0 }}>
                         {project ? (
                             <ProjectCarousel
                                 images={project.images}
@@ -90,7 +147,7 @@ const ProjectDetails = () => {
                     </div>
 
                     {/* 2. Metadata Card (Middle on mobile, Sticky Right on desktop) */}
-                    <div className="md:col-span-4 md:row-span-2 md:sticky md:top-8">
+                    <div className="md:col-span-4 md:row-span-2 md:sticky md:top-8" ref={metadataRef} style={{ opacity: 0 }}>
                         {project ? (
                             <ProjectMetadata
                                 title={project.title}
@@ -106,7 +163,7 @@ const ProjectDetails = () => {
                     </div>
 
                     {/* 3. Documentation (Bottom on mobile, Left on desktop) */}
-                    <div className="md:col-span-8">
+                    <div className="md:col-span-8" ref={docsRef} style={{ opacity: 0 }}>
                         {project ? (
                             <ProjectDocumentation
                                 documentation={project.fullDocumentation}
