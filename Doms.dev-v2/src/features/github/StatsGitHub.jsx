@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Users, UserPlus, BookMarked } from 'lucide-react';
 import GitHubCalendar from 'react-github-calendar';
 import {
   BarChart,
@@ -135,15 +136,19 @@ const StatsGitHub = () => {
           GitHub Stats
         </h3>
 
-        <div className="flex justify-between w-full pt-3  mt-2 md:mt-0 md:pt-2">
+        <div className="flex justify-between w-full pt-3 mt-2 md:mt-0 md:pt-2 px-2 md:px-0">
           {[
-            ['Repos', stats.repos],
-            ['Followers', stats.followers],
-            ['Following', stats.following],
-          ].map(([label, value]) => (
-            <div key={label} className="stat-item text-center">
-              <p className="text-[9px] uppercase text-white/40">{label}</p>
-              <p className="text-sm font-bold text-white">
+            { label: 'Repos', value: stats.repos, Icon: BookMarked },
+            { label: 'Followers', value: stats.followers, Icon: Users },
+            { label: 'Following', value: stats.following, Icon: UserPlus },
+          ].map(({ label, value, Icon }) => (
+            <div key={label} className="stat-item text-center flex flex-col items-center">
+              {/* Desktop: Label */}
+              <p className="text-[9px] uppercase text-white/40 hidden md:block">{label}</p>
+              {/* Mobile: Icon */}
+              <Icon size={12} className="text-white/40 md:hidden mb-1" />
+
+              <p className="text-sm font-bold text-white leading-none">
                 {loading ? '…' : value}
               </p>
             </div>
