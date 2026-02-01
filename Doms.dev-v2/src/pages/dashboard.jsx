@@ -55,21 +55,90 @@ const Dashboard = () => {
             let ctx = gsap.context(() => {
                 let mm = gsap.matchMedia();
                 mm.add("(min-width: 768px)", () => {
-                    gsap.fromTo(".desktop-anim-item",
-                        { opacity: 0, y: 30 },
-                        {
-                            opacity: 1,
-                            y: 0,
-                            duration: 0.8,
-                            stagger: 0.1,
-                            ease: "power3.out",
-                            onComplete: () => {
-                                document.querySelectorAll('.desktop-anim-item').forEach(el => {
-                                    el.classList.add('animation-complete');
-                                });
-                            }
-                        }
+                    // Sequential reveal per user spec
+                    const tl = gsap.timeline();
+
+                    // 1. Profile + AboutMe (first)
+                    tl.fromTo(".desktop-profile-row",
+                        { opacity: 0, y: 30, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" },
+                        0.3
                     );
+
+                    // 2. ProjectHead container, then inner text
+                    tl.fromTo(".desktop-projecthead-row",
+                        { opacity: 0, y: 25, scale: 0.95 },
+                        {
+                            opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out",
+                            onComplete: () => {
+                                // Animate inner text of ProjectHead after container
+                                const innerElements = document.querySelectorAll('.desktop-projecthead-row .animate-portfolio, .desktop-projecthead-row .animate-breadcrumb');
+                                if (innerElements.length) {
+                                    gsap.fromTo(innerElements,
+                                        { y: 15, opacity: 0 },
+                                        { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" }
+                                    );
+                                }
+                            }
+                        },
+                        0.6
+                    );
+
+                    // 3. Projects carousel
+                    tl.fromTo(".desktop-projects-row",
+                        { opacity: 0, y: 30, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
+                        0.9
+                    );
+
+                    // 4. MusicPlayer + ThemeToggle + Contacts (slight stagger)
+                    tl.fromTo(".desktop-theme-row",
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+                        1.2
+                    );
+                    tl.fromTo(".desktop-music-row",
+                        { opacity: 0, y: 25, scale: 0.98 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" },
+                        1.3
+                    );
+
+                    // 5. ProjectBottom (container then inner text like ProjectHead)
+                    tl.fromTo(".desktop-projectbottom-row",
+                        { opacity: 0, y: 25, scale: 0.95 },
+                        {
+                            opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out",
+                            onComplete: () => {
+                                // Animate inner elements if ProjectBottom has them
+                                const innerEls = document.querySelectorAll('.desktop-projectbottom-row .scroll-reveal');
+                                if (innerEls.length) {
+                                    gsap.fromTo(innerEls,
+                                        { y: 10, opacity: 0 },
+                                        { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: "power2.out" }
+                                    );
+                                }
+                            }
+                        },
+                        1.5
+                    );
+
+                    // 6. GitHub Stats + GitHubFocusCard + TechStacks
+                    tl.fromTo(".desktop-github-row",
+                        { opacity: 0, y: 30, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
+                        1.7
+                    );
+                    tl.fromTo(".desktop-techstacks-row",
+                        { opacity: 0, y: 25 },
+                        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+                        1.9
+                    );
+
+                    tl.eventCallback("onComplete", () => {
+                        document.querySelectorAll('[class*="desktop-"]').forEach(el => {
+                            el.classList.add('animation-complete');
+                        });
+                    });
                 });
             }, comp);
             setDashboardVisited(true);
@@ -248,9 +317,9 @@ const Dashboard = () => {
                         <div className='col-span-1'>
                             <div className='grid grid-cols-6 gap-2'>
 
-                                <div className="col-span-6 h-fit">
+                                <div className="col-span-6 h-fit desktop-profile-row">
                                     <div className="flex flex-row gap-2 justify-between">
-                                        <div className='h-[160px] w-[180px] desktop-anim-item'>
+                                        <div className='h-[160px] w-[180px]'>
                                             <Profile />
                                         </div>
 
@@ -260,17 +329,17 @@ const Dashboard = () => {
 
                                     </div>
                                 </div>
-                                <div className="col-span-6">
+                                <div className="col-span-6 desktop-theme-row">
                                     <ThemeToggle />
 
                                 </div>
-                                <div className='col-span-4 bento-card md:h-35 lg:h-35 desktop-anim-item'>
+                                <div className='col-span-4 bento-card md:h-35 lg:h-35 desktop-music-row'>
                                     <MusicPlayer />
                                 </div>
-                                <div className='col-span-2 bento-card md:h-35 lg:h-35 desktop-anim-item'>
+                                <div className='col-span-2 bento-card md:h-35 lg:h-35 desktop-music-row'>
                                     <Contacts />
                                 </div>
-                                <div className='col-span-6 bento-card md:h-50 lg:h-50 desktop-anim-item'>
+                                <div className='col-span-6 bento-card md:h-50 lg:h-50 desktop-github-row'>
                                     <StatsGitHub />
                                 </div>
                             </div>
@@ -278,10 +347,10 @@ const Dashboard = () => {
 
                         <div className='col-span-1'>
                             <div className='grid grid-cols-6 gap-5'>
-                                <div className='col-span-6 desktop-anim-item'>
+                                <div className='col-span-6 desktop-projecthead-row'>
                                     <ProjectHead />
                                 </div>
-                                <div className='col-span-6 md:h-75 lg:h-75 desktop-anim-item'>
+                                <div className='col-span-6 md:h-75 lg:h-75 desktop-projects-row'>
                                     <div className="flex flex-row h-full justify-between gap-2">
                                         <div className="flex-[2] min-w-0">
                                             <Projects />
@@ -291,10 +360,10 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-span-6 bento-card desktop-anim-item'>
+                                <div className='col-span-6 bento-card desktop-projectbottom-row'>
                                     <ProjectBottom />
                                 </div>
-                                <div className='col-span-6 bento-card desktop-anim-item'>
+                                <div className='col-span-6 bento-card desktop-techstacks-row'>
                                     <TechStacks />
                                 </div>
                             </div>
