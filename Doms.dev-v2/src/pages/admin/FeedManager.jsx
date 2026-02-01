@@ -326,18 +326,18 @@ const FeedManager = () => {
                             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                             <h3 className="text-xs font-black uppercase tracking-widest">Live Status</h3>
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex flex-col md:flex-row gap-3 md:gap-4">
                             <input
                                 type="text"
                                 value={liveStatus}
                                 onChange={(e) => setLiveStatus(e.target.value)}
                                 placeholder="What are you working on?"
-                                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/30 transition-all font-mono"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/30 transition-all font-mono"
                             />
                             <button
                                 onClick={updateLiveStatus}
                                 disabled={updatingStatus}
-                                className="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                                className="w-full md:w-auto px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2"
                             >
                                 {updatingStatus ? <Loader size={14} className="animate-spin" /> : <Save size={14} />}
                                 Update
