@@ -28,25 +28,35 @@ const FocusCard = () => {
   };
 
   // Use centralized store
-  const { repos = [], events = [], loading: storeLoading, fetchGitHubData } = useGitHubStore();
+  const { repos = [], events = [], loading: storeLoading, lastChecked, fetchGitHubData } = useGitHubStore();
+
+  // Calculate relative time for "synced X ago"
+  const getSyncedAgo = () => {
+    if (!lastChecked) return null;
+    const mins = Math.floor((Date.now() - lastChecked) / 60000);
+    if (mins < 1) return 'just now';
+    if (mins === 1) return '1 min ago';
+    if (mins < 60) return `${mins} min ago`;
+    const hrs = Math.floor(mins / 60);
+    return hrs === 1 ? '1 hr ago' : `${hrs} hrs ago`;
+  };
 
   // Trigger fetch if needed (store handles throttling)
   useEffect(() => {
     if (username) fetchGitHubData(username);
   }, [username, fetchGitHubData]);
 
-  // Derive data from store
+  // Derive data from store and fetch commit message if needed
   useEffect(() => {
-    // If the store is loading, we can keep the local loading state true.
-    // If the store is NOT loading (throttled or finished), we must dismiss the skeleton.
     if (storeLoading) return;
 
     setLoading(false);
 
     if (!repos || !events) return;
 
+    // Find latest PushEvent
     const lastPush = Array.isArray(events)
-      ? events.find(e => e.type === "PushEvent" && e.payload?.commits?.length > 0)
+      ? events.find(e => e.type === "PushEvent")
       : null;
 
     const langMap = Array.isArray(repos) ? repos.reduce((acc, repo) => {
@@ -58,10 +68,35 @@ const FocusCard = () => {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 4);
 
-    const commitMsg = lastPush?.payload?.commits?.[0]?.message || "Architecting solutions.";
     const repoName = lastPush?.repo?.name?.split('/')?.[1] || "Development";
 
-    setData({ repo: repoName, commit: commitMsg, languages: topLangs });
+    // Truncate long commit messages
+    const truncateMsg = (msg, maxLen = 30) =>
+      msg.length > maxLen ? msg.slice(0, maxLen).trim() + '...' : msg;
+
+    // If commits array exists, use it directly
+    if (lastPush?.payload?.commits?.[0]?.message) {
+      setData({ repo: repoName, commit: truncateMsg(lastPush.payload.commits[0].message), languages: topLangs });
+      return;
+    }
+
+    // Otherwise fetch the commit using the SHA
+    if (lastPush?.payload?.head && lastPush?.repo?.name) {
+      const repoFullName = lastPush.repo.name;
+      const commitSha = lastPush.payload.head;
+
+      fetch(`https://api.github.com/repos/${repoFullName}/commits/${commitSha}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(commitData => {
+          const msg = commitData?.commit?.message || `Pushed to ${lastPush.payload?.ref?.replace('refs/heads/', '') || 'main'}`;
+          setData(prev => ({ ...prev, repo: repoName, commit: truncateMsg(msg), languages: topLangs }));
+        })
+        .catch(() => {
+          setData({ repo: repoName, commit: `Pushed to ${lastPush.payload?.ref?.replace('refs/heads/', '') || 'main'}`, languages: topLangs });
+        });
+    } else {
+      setData({ repo: repoName, commit: "Architecting solutions.", languages: topLangs });
+    }
   }, [repos, events, storeLoading]);
 
   // Cleanup GSAP animations on unmount to prevent memory leaks
@@ -170,7 +205,9 @@ const FocusCard = () => {
         </div>
       </div>
 
-      <p className="text-[8px] md:text-[12px] text-{rgb(var(--contrast-rgb))} font-mono uppercase mt-2 italic opacity-50">GitHub Sync</p>
+      <p className="text-[8px] md:text-[12px] font-mono uppercase mt-2 italic opacity-50" style={{ color: 'rgb(var(--contrast-rgb))' }}>
+        Synced {getSyncedAgo() || '...'}
+      </p>
     </div>
   );
 };

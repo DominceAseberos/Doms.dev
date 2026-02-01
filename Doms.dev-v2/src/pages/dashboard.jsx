@@ -283,10 +283,10 @@ const Dashboard = () => {
                                 </div>
                                 <div className='col-span-6 md:h-75 lg:h-75 desktop-anim-item'>
                                     <div className="flex flex-row h-full justify-between gap-2">
-                                        <div className="flex-1">
+                                        <div className="flex-[2] min-w-0">
                                             <Projects />
                                         </div>
-                                        <div className="md:w-35 lg:w-full lg:max-w-40 lg:min-w-25">
+                                        <div className="flex-1 md:max-w-32 lg:max-w-40">
                                             <GitHubFocusCard />
                                         </div>
                                     </div>
