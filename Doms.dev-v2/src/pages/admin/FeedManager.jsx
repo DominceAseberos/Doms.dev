@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
-import { ArrowLeft, Send, Image as ImageIcon, Loader, X, Trash2, Save, Grid, Upload, Sliders, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Send, Image as ImageIcon, Loader, X, Trash2, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import adminStrings from '../../config/adminStrings.json';
 import { useAdminStore } from '../../store/adminStore';
-import { projectService } from '../../services/projectService';
-import MediaPickerModal from '../../components/MediaPickerModal';
 import { useQueryClient } from '@tanstack/react-query';
 
 const FeedManager = () => {
@@ -18,7 +16,6 @@ const FeedManager = () => {
     // Live Status State
     const [liveStatus, setLiveStatus] = useState('');
     const [updatingStatus, setUpdatingStatus] = useState(false);
-    const [profileId, setProfileId] = useState(null);
 
     // New Post State
     const [newPostContent, setNewPostContent] = useState('');
@@ -26,13 +23,6 @@ const FeedManager = () => {
     const [previewUrl, setPreviewUrl] = useState(null);
     const [posting, setPosting] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-
-    // Profile & Media Picker State
-    const [profile, setProfile] = useState({});
-    const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
-    const [mediaPickerTarget, setMediaPickerTarget] = useState('');
-
-    const [updatingIdentity, setUpdatingIdentity] = useState(false);
 
     useEffect(() => {
         fetchPosts();
@@ -42,91 +32,19 @@ const FeedManager = () => {
     const fetchProfile = async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-            setProfileId(user.id);
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from('profiles')
-                .select('live_feed_status, avatar_url, name')
+                .select('live_feed_status')
                 .eq('id', user.id)
                 .maybeSingle();
 
             if (data) {
                 setLiveStatus(data.live_feed_status || '');
-                setProfile(data);
             }
         }
     };
 
-    const handleFileUpload = async (file, type) => {
-        if (!file) return;
-        setAdminLoading(true, `UPLOADING ${type.toUpperCase()}`);
-        try {
-            const fileName = `${type}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
-            const publicUrl = await projectService.uploadProjectImage(file, fileName);
 
-            if (type === 'avatar') {
-                // await updateProfileField('avatar_url', publicUrl); // Removed auto-save
-                setProfile(prev => ({ ...prev, avatar_url: publicUrl }));
-            }
-        } catch (err) {
-            console.error('Upload failed:', err);
-            setErrorMessage(`${type} upload failed.`);
-        } finally {
-            setAdminLoading(false);
-        }
-    };
-
-    const openMediaPicker = (target) => {
-        setMediaPickerTarget(target);
-        setIsMediaPickerOpen(true);
-    };
-
-    const handleMediaSelect = async (url) => {
-        const selectedUrl = Array.isArray(url) ? url[0] : url;
-        if (!selectedUrl) return;
-
-        if (mediaPickerTarget === 'avatar') {
-            // await updateProfileField('avatar_url', selectedUrl); // Removed auto-save
-            setProfile(prev => ({ ...prev, avatar_url: selectedUrl }));
-        }
-        setIsMediaPickerOpen(false);
-    };
-
-    const saveIdentity = async () => {
-        setUpdatingIdentity(true);
-        try {
-            console.log("Saving identity...", profile);
-            const { data: { user } } = await supabase.auth.getUser();
-
-            if (!user) {
-                throw new Error("No authenticated user found");
-            }
-
-            // Update both name and avatar
-            const { error } = await supabase
-                .from('profiles')
-                .update({
-                    avatar_url: profile.avatar_url,
-                    name: profile.name
-                })
-                .eq('id', user.id);
-
-            if (error) throw error;
-
-            console.log("Identity updated successfully");
-            setSuccessMessage("Identity Updated");
-
-            // Invalidate queries to refresh data
-            await queryClient.invalidateQueries({ queryKey: ['portfolioData'] });
-
-            // Force refresh profile state to ensure sync
-            await fetchProfile();
-        } catch (e) {
-            console.error("Identity update failed:", e);
-            setErrorMessage("Failed to update identity: " + e.message);
-        } finally {
-            setUpdatingIdentity(false);
-        }
-    };
 
     const updateLiveStatus = async () => {
         setUpdatingStatus(true);
@@ -266,83 +184,28 @@ const FeedManager = () => {
                     </div>
                 </div>
 
-                {/* Feed Identity (Avatar) & Live Status */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                    {/* Identity Visual */}
-                    <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50" />
-                        <div className="relative z-10 flex items-center justify-between">
-                            <div className="flex items-center gap-3 text-primary">
-                                <ShieldCheck size={18} />
-                                <h3 className="text-xs font-black uppercase tracking-widest">Feed Identity</h3>
-                            </div>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => openMediaPicker('avatar')}
-                                    className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors text-white/60 hover:text-white"
-                                    title="Select from Vault"
-                                >
-                                    <Grid size={14} />
-                                </button>
-                                <label className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors text-white/60 hover:text-white">
-                                    <Upload size={14} />
-                                    <input type="file" className="hidden" onChange={(e) => handleFileUpload(e.target.files[0], 'avatar')} accept="image/*" />
-                                </label>
-                            </div>
-                        </div>
-
-                        <div className="relative z-10 flex items-center gap-6">
-                            <div className="relative w-20 h-20 rounded-full border-2 border-white/10 p-1 group-hover:border-primary/50 transition-colors">
-                                <div className="w-full h-full rounded-full overflow-hidden bg-black/50 relative">
-                                    {profile.avatar_url ? (
-                                        <img src={profile.avatar_url} className="w-full h-full object-cover" />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-white/20">
-                                            <ImageIcon size={24} />
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-4 border-[#0f0f0f]" />
-                            </div>
-                            <div>
-                                <h2 className="text-lg font-bold text-white leading-tight">{profile.name || 'System Owner'}</h2>
-                                <p className="text-[10px] text-white/40 uppercase tracking-widest font-mono mt-1">Authorized Author</p>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={saveIdentity}
-                            disabled={updatingIdentity}
-                            className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 group hover:border-white/20 relative z-10 cursor-pointer"
-                        >
-                            {updatingIdentity ? <Loader size={14} className="animate-spin" /> : <Save size={14} className="group-hover:text-primary transition-colors" />}
-                            Update Identity
-                        </button>
+                {/* Live Status - Independent Section */}
+                <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl">
+                    <div className="flex items-center gap-3 text-green-400 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <h3 className="text-xs font-black uppercase tracking-widest">Live Status</h3>
                     </div>
-
-                    {/* Live Status */}
-                    <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-6 space-y-4 shadow-xl">
-                        <div className="flex items-center gap-3 text-green-400 mb-2">
-                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                            <h3 className="text-xs font-black uppercase tracking-widest">Live Status</h3>
-                        </div>
-                        <div className="flex flex-col md:flex-row gap-3 md:gap-4">
-                            <input
-                                type="text"
-                                value={liveStatus}
-                                onChange={(e) => setLiveStatus(e.target.value)}
-                                placeholder="What are you working on?"
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/30 transition-all font-mono"
-                            />
-                            <button
-                                onClick={updateLiveStatus}
-                                disabled={updatingStatus}
-                                className="w-full md:w-auto px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2"
-                            >
-                                {updatingStatus ? <Loader size={14} className="animate-spin" /> : <Save size={14} />}
-                                Update
-                            </button>
-                        </div>
+                    <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+                        <input
+                            type="text"
+                            value={liveStatus}
+                            onChange={(e) => setLiveStatus(e.target.value)}
+                            placeholder="What are you working on?"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-white/30 transition-all font-mono"
+                        />
+                        <button
+                            onClick={updateLiveStatus}
+                            disabled={updatingStatus}
+                            className="w-full md:w-auto px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl transition-all font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2"
+                        >
+                            {updatingStatus ? <Loader size={14} className="animate-spin" /> : <Save size={14} />}
+                            Update
+                        </button>
                     </div>
                 </div>
 
@@ -446,11 +309,7 @@ const FeedManager = () => {
                     </div>
                 )}
 
-                <MediaPickerModal
-                    isOpen={isMediaPickerOpen}
-                    onClose={() => setIsMediaPickerOpen(false)}
-                    onSelect={handleMediaSelect}
-                />
+
             </div>
         </div>
     );
