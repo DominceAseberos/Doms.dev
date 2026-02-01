@@ -51,7 +51,9 @@ const Dashboard = () => {
 
     useLayoutEffect(() => {
         if (!revealReady) return; // Wait for loader to complete
-        if (!dashboardVisited && !isMobile) {
+
+        // Always animate on desktop (for testing - remove dashboardVisited check)
+        if (!isMobile) {
             let ctx = gsap.context(() => {
                 let mm = gsap.matchMedia();
                 mm.add("(min-width: 768px)", () => {

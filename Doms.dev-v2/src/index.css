@@ -268,3 +268,33 @@ input[type="date"] {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: bottom right;
 }
+
+/* --- DESKTOP REVEAL ANIMATION INITIAL STATE --- */
+/* Hide desktop reveal elements until GSAP animates them */
+@media (min-width: 768px) {
+
+    .desktop-profile-row,
+    .desktop-theme-row,
+    .desktop-music-row,
+    .desktop-github-row,
+    .desktop-projecthead-row,
+    .desktop-projects-row,
+    .desktop-focus-row,
+    .desktop-projectbottom-row,
+    .desktop-techstacks-row {
+        opacity: 0;
+    }
+
+    /* Show elements after animation completes */
+    .desktop-profile-row.animation-complete,
+    .desktop-theme-row.animation-complete,
+    .desktop-music-row.animation-complete,
+    .desktop-github-row.animation-complete,
+    .desktop-projecthead-row.animation-complete,
+    .desktop-projects-row.animation-complete,
+    .desktop-focus-row.animation-complete,
+    .desktop-projectbottom-row.animation-complete,
+    .desktop-techstacks-row.animation-complete {
+        opacity: 1;
+    }
+}
