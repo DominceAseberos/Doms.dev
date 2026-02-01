@@ -23,7 +23,7 @@ const AboutMeHero = ({ heroCardRef, onExpand, profile }) => {
                 ref={ref}
                 onMouseEnter={onEnter}
                 onMouseLeave={onLeave}
-                className="scroll-reveal w-full  rounded-xl overflow-hidden cursor-pointer "
+                className="w-full  rounded-xl overflow-hidden cursor-pointer "
                 onClick={() => onExpand('hero')}
                 style={{ background: 'rgba(var(--contrast-rgb), 0.1)' }}
             >

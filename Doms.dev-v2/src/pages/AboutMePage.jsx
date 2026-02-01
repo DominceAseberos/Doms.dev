@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { X, FileText } from 'lucide-react';
@@ -51,7 +51,7 @@ const AboutMePage = () => {
 
     // Reveal animation - only runs after loader completes
     // Different behavior for mobile (scroll reveal) vs desktop (sequential reveal)
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!revealReady) return;
 
         const isMobile = window.innerWidth < 768;
@@ -60,72 +60,75 @@ const AboutMePage = () => {
         gsap.killTweensOf(cardEls);
 
         if (isMobile) {
-            // MOBILE: First 3 cards animate on load, rest are scroll-triggered
-            const aboveFoldCards = cardEls.slice(0, 3);
-            const belowFoldCards = cardEls.slice(3);
+            // MOBILE: Sequential delays for above-fold, scroll-triggered for below-fold
+            // MOBILE: Reveal sequences for wrappers
+            const mobileCards = gsap.utils.toArray('.mobile-reveal-card');
+            const [heroWrapper, identityWrapper, statusWrapper, ...belowFoldWrappers] = mobileCards;
 
-            // Above fold: staggered fade+slide on load
-            gsap.fromTo(aboveFoldCards,
-                { y: 40, opacity: 0, rotate: 1 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    rotate: 0,
-                    duration: 0.6,
-                    stagger: 0.12,
-                    ease: 'power3.out',
-                    onComplete: () => {
-                        aboveFoldCards.forEach(el => el?.classList.add('animation-complete'));
-                    }
+            // Hide all inner .scroll-reveal elements initially (for "Container then Text" effect)
+            mobileCards.forEach(card => {
+                const inner = card.querySelectorAll('.scroll-reveal');
+                if (inner.length) gsap.set(inner, { opacity: 0, y: 15 });
+            });
+
+            const animateInner = (card) => {
+                const inner = card.querySelectorAll('.scroll-reveal');
+                if (inner.length) {
+                    gsap.fromTo(inner,
+                        { y: 15, opacity: 0 },
+                        { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' }
+                    );
                 }
-            );
+            };
 
-            // Below fold: scroll-triggered per-card animation
-            belowFoldCards.forEach((card) => {
-                gsap.fromTo(card,
-                    { y: 50, opacity: 0, rotate: 1.5 },
+            // 1. Hero (2.0s delay) - Reveals as single unit (no inner animation)
+            if (heroWrapper) {
+                gsap.fromTo(heroWrapper,
+                    { opacity: 0, y: 30, scale: 0.92 },
                     {
-                        y: 0,
-                        opacity: 1,
-                        rotate: 0,
-                        duration: 0.6,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: card,
-                            start: 'top 90%',
-                            toggleActions: 'play none none none',
-                            once: true
-                        },
+                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 2.0, ease: 'power3.out',
                         onComplete: () => {
-                            card?.classList.add('animation-complete');
+                            // No animateInner(heroWrapper) as per request (single unit reveal)
                         }
                     }
                 );
-            });
+            }
 
-            // Inner scroll-reveal elements for mobile
-            cards.forEach((cardRef) => {
-                if (!cardRef.current) return;
-                const contentElements = cardRef.current.querySelectorAll('.scroll-reveal');
-                gsap.killTweensOf(contentElements);
-                gsap.fromTo(
-                    contentElements,
-                    { y: 15, opacity: 0 },
+            // 2. Identity (2.5s delay) - Container then Text
+            if (identityWrapper) {
+                gsap.fromTo(identityWrapper,
+                    { opacity: 0, y: 30, scale: 0.92 },
                     {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.5,
-                        stagger: 0.08,
-                        ease: 'power2.out',
+                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 2.5, ease: 'power3.out',
+                        onComplete: () => animateInner(identityWrapper)
+                    }
+                );
+            }
+
+            // 3. Status (3.0s delay) - Container then Text (if any)
+            if (statusWrapper) {
+                gsap.fromTo(statusWrapper,
+                    { opacity: 0, y: 30, scale: 0.92 },
+                    {
+                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 3.0, ease: 'power3.out',
+                        onComplete: () => animateInner(statusWrapper)
+                    }
+                );
+            }
+
+            // 4. Below Fold - ScrollTrigger
+            belowFoldWrappers.forEach((wrapper, index) => {
+                gsap.fromTo(wrapper,
+                    { opacity: 0, y: 30, scale: 0.95 },
+                    {
+                        opacity: 1, y: 0, scale: 1, duration: 0.5, delay: index * 0.1, ease: 'power2.out',
                         scrollTrigger: {
-                            trigger: cardRef.current,
-                            start: 'top 88%',
-                            toggleActions: 'play none none none',
+                            trigger: wrapper,
+                            start: "top 90%",
+                            toggleActions: "play none none none",
                             once: true
                         },
-                        onComplete: () => {
-                            contentElements.forEach(el => el?.classList.add('animation-complete'));
-                        }
+                        onComplete: () => animateInner(wrapper)
                     }
                 );
             });
@@ -255,33 +258,46 @@ const AboutMePage = () => {
                     <div className="flex flex-start w-full">
                         <BackButton />
                     </div>
-                    <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
+                    </div>
 
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
+                    </div>
 
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
+                    </div>
 
-                    <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <AboutMeTechStack mdIconStack={mdIconStack} techStack={techStack} />
+                    </div>
 
-                    <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <AboutMeEducation educationCardRef={educationCardRef} education={education} onExpand={handleImageExpand} />
+                    </div>
 
-                    <AboutMeTechStack mdIconStack={mdIconStack} techStack={techStack} />
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
+                    </div>
 
-                    <AboutMeEducation educationCardRef={educationCardRef} education={education} onExpand={handleImageExpand} />
-
-                    <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
-
-                    <div className="w-full flex justify-center">
-                        <DownloadCVButton profile={profile} />
-
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <div className="w-full flex justify-center">
+                            <DownloadCVButton profile={profile} />
+                        </div>
                     </div>
 
 
-                    <div className="w-full
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <div className="w-full
                 rounded-2xl p-6 border border-white/5"
-                        style={{
-                            background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
-                        }}
-                    >
-                        <AboutMeFooter footerRef={footerRef} contacts={contacts} profile={profile} />
+                            style={{
+                                background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
+                            }}
+                        >
+                            <AboutMeFooter footerRef={footerRef} contacts={contacts} profile={profile} />
+                        </div>
                     </div>
 
                 </div>
