@@ -27,9 +27,17 @@ import {
     Lock,
     Box,
     Binary,
-    Bot
+    Bot,
+    Hash,
+    Command,
+    Workflow,
+    Webhook,
+    AppWindow,
+    Braces,
+    Bug,
+    TerminalSquare
 } from 'lucide-react';
-import { ReactIcon, NextJsIcon, TailwindIcon, GSAPIcon, FigmaIcon, SupabaseIcon } from './BrandIcons';
+import { ReactIcon, NextJsIcon, TailwindIcon, GSAPIcon, FigmaIcon, SupabaseIcon, FlutterIcon, RustIcon, DockerIcon, NodeIcon } from './BrandIcons';
 
 /**
  * Universal Icon Registry
@@ -79,6 +87,11 @@ export const IconRegistry = {
     'Figma': FigmaIcon,
     'Supabase': SupabaseIcon,
 
+    'Flutter': FlutterIcon,
+    'Rust': RustIcon,
+    'Docker': DockerIcon,
+    'Node.js': NodeIcon,
+
     // Fallbacks or others still using Lucide
     'Python': Binary,
     'Flask': Server,
@@ -87,7 +100,15 @@ export const IconRegistry = {
     'Lucide': Layers,
     'Vite': Zap,
     'NLP': Bot,
-    'API': Terminal
+    'API': Terminal,
+    'Shell': TerminalSquare,
+    'Command': Command,
+    'Hash': Hash,
+    'Workflow': Workflow,
+    'Webhook': Webhook,
+    'App': AppWindow,
+    'JSON': Braces,
+    'Debug': Bug
 };
 
 /**
@@ -114,7 +135,11 @@ export const BrandColors = {
     'Database': '#3B82F6',
     'Terminal': '#10B981',
     'Smartphone': '#F472B6',
-    'Server': '#6366F1'
+    'Server': '#6366F1',
+    'Flutter': '#02569B',
+    'Rust': '#000000',
+    'Docker': '#2496ED',
+    'Node.js': '#339933'
 };
 
 /**
@@ -148,7 +173,11 @@ export const TechSoundMapping = {
     // Sparkle / Feedback (Highs)
     'Vite': 'sparkle',
     'Zap': 'sparkle',
-    'Globe': 'sparkle'
+    'Globe': 'sparkle',
+    'Flutter': 'creativity',
+    'Rust': 'foundation',
+    'Docker': 'foundation',
+    'Node.js': 'activity'
 };
 
 /**

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     X, Upload, Image as ImageIcon, ExternalLink, BookOpen,
-    Eye, EyeOff, Link as LinkIcon, FileText, Plus, Save, Trash2, Calendar
+    Eye, EyeOff, Link as LinkIcon, FileText, Plus, Save, Trash2, Calendar, Search
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -16,6 +16,7 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
     const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
     const [mediaPickerMode, setMediaPickerMode] = useState('single');
     const { setAdminLoading } = useAdminStore();
+    const [customStackInput, setCustomStackInput] = useState('');
     const dateInputRef = React.useRef(null);
 
     // Tech Stack
@@ -83,6 +84,19 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
         } else {
             setCurrentProject({ ...currentProject, stacks: [...stacks, stack] });
         }
+    };
+
+    const handleAddCustomStack = () => {
+        if (!customStackInput.trim()) return;
+        const stacks = currentProject.stacks || [];
+        const newStack = customStackInput.trim();
+
+        // Prevent duplicates (case-insensitive check)
+        if (!stacks.some(s => s.toLowerCase() === newStack.toLowerCase())) {
+            setCurrentProject({ ...currentProject, stacks: [...stacks, newStack] });
+        }
+
+        setCustomStackInput('');
     };
 
     const addDocFile = () => {
@@ -314,21 +328,95 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
                                 <span className="text-[9px] font-black uppercase tracking-[0.3em] opacity-30">Stack Configuration</span>
                                 <div className="h-px flex-1 bg-white/5"></div>
                             </div>
-                            <div className="flex flex-wrap gap-2 p-5 bg-white/[0.02] border border-white/5 rounded-2xl max-h-48 overflow-y-auto no-scrollbar">
-                                {availableStacks.map(stack => (
+
+                            {/* ACTIVE STACKS DISPLAY */}
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-bold tracking-widest opacity-40 ml-1">Active Stacks</label>
+                                <div className="flex flex-wrap gap-2 min-h-[40px]">
+                                    {(currentProject.stacks || []).map(stack => (
+                                        <button
+                                            key={stack}
+                                            type="button"
+                                            onClick={() => toggleStack(stack)}
+                                            className="px-3 py-1.5 rounded-lg text-[10px] uppercase font-bold tracking-wider border bg-blue-600 border-blue-600 text-white shadow-[0_0_10px_rgba(37,99,235,0.3)] flex items-center gap-2 hover:bg-blue-700 transition-colors"
+                                        >
+                                            <IconWrapper name={stack} className="text-white" />
+                                            {stack}
+                                            <X size={12} className="opacity-50 hover:opacity-100" />
+                                        </button>
+                                    ))}
+                                    {(currentProject.stacks || []).length === 0 && (
+                                        <span className="text-xs text-white/20 italic self-center px-2">No stacks selected</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="space-y-2 pt-4">
+                                <label className="text-[10px] uppercase font-bold tracking-widest opacity-40 ml-1">Manage Stacks (Search or Add)</label>
+
+                                {/* Search and Add Input */}
+                                <div className="flex gap-2">
+                                    <div className="relative flex-1">
+                                        <input
+                                            type="text"
+                                            value={customStackInput}
+                                            onChange={(e) => setCustomStackInput(e.target.value)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    // If exact match in library, toggle it. If not, add as custom.
+                                                    const match = availableStacks.find(s => s.toLowerCase() === customStackInput.toLowerCase());
+                                                    if (match) {
+                                                        toggleStack(match);
+                                                        setCustomStackInput('');
+                                                    } else {
+                                                        handleAddCustomStack();
+                                                    }
+                                                }
+                                            }}
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-xs focus:outline-none focus:border-primary/50 transition-colors"
+                                            placeholder="Search library or type custom name..."
+                                        />
+                                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 opacity-30" />
+                                    </div>
                                     <button
-                                        key={stack}
                                         type="button"
-                                        onClick={() => toggleStack(stack)}
-                                        className={`px-4 py-2 rounded-full text-[9px] uppercase font-black tracking-widest border transition-all flex items-center gap-2 active:scale-95 cursor-pointer ${currentProject.stacks?.some(s => s.toLowerCase() === stack.toLowerCase())
-                                            ? 'bg-blue-600 border-blue-600 text-white font-black shadow-[0_0_15px_rgba(37,99,235,0.5)]'
-                                            : 'bg-transparent border-white/5 text-white/20 hover:border-white/20 hover:text-white/40'
-                                            }`}
+                                        onClick={handleAddCustomStack}
+                                        disabled={!customStackInput.trim()}
+                                        className="px-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center text-[10px] uppercase font-bold tracking-wider"
                                     >
-                                        <IconWrapper name={stack} className={currentProject.stacks?.some(s => s.toLowerCase() === stack.toLowerCase()) ? "text-white" : "text-primary opacity-80"} />
-                                        {stack}
+                                        <Plus size={14} className="mr-1" /> Add
                                     </button>
-                                ))}
+                                </div>
+
+                                {/* Filtered Library Grid */}
+                                <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl max-h-48 overflow-y-auto no-scrollbar">
+                                    <div className="flex flex-wrap gap-2">
+                                        {availableStacks
+                                            .filter(stack =>
+                                                stack.toLowerCase().includes(customStackInput.toLowerCase())
+                                            )
+                                            .map(stack => (
+                                                <button
+                                                    key={stack}
+                                                    type="button"
+                                                    onClick={() => toggleStack(stack)}
+                                                    className={`px-3 py-1.5 rounded-lg text-[9px] uppercase font-bold tracking-wider border transition-all flex items-center gap-2 active:scale-95 cursor-pointer ${currentProject.stacks?.some(s => s.toLowerCase() === stack.toLowerCase())
+                                                        ? 'bg-primary text-black border-primary font-black shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)]'
+                                                        : 'bg-white/5 border-white/5 text-white/40 hover:bg-white/10 hover:border-white/10 hover:text-white'
+                                                        }`}
+                                                >
+                                                    <IconWrapper name={stack} className={currentProject.stacks?.some(s => s.toLowerCase() === stack.toLowerCase()) ? "text-black" : "text-white opacity-50"} />
+                                                    {stack}
+                                                </button>
+                                            ))}
+                                        {availableStacks.filter(s => s.toLowerCase().includes(customStackInput.toLowerCase())).length === 0 && (
+                                            <span className="text-[10px] text-white/20 italic p-2">
+                                                "{customStackInput}" not in library. Use 'Add' to create custom tag.
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </section>
 
