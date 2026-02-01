@@ -26,21 +26,13 @@ const ProjectHead = () => {
       });
     });
 
-    // Desktop: No animation - just show text immediately
+    // Desktop: Dashboard controls the reveal sequence - set initial hidden state
     mm.add("(min-width: 768px)", () => {
-      // Set text to be fully visible immediately, no animations
+      // Set text to be hidden initially - Dashboard will reveal them after container
       gsap.set(".animate-portfolio, .animate-breadcrumb", {
-        autoAlpha: 1,
-        y: 0,
-        skewY: 0
+        opacity: 0,
+        y: 15
       });
-
-      // Clean up will-change immediately
-      setTimeout(() => {
-        document.querySelectorAll('.animate-portfolio, .animate-breadcrumb').forEach(el => {
-          el.classList.add('animation-complete');
-        });
-      }, 100);
     });
 
     // Glow animations (same for all screens)

@@ -111,12 +111,21 @@ const Dashboard = () => {
                         {
                             opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power2.out",
                             onComplete: () => {
-                                // Animate inner elements if ProjectBottom has them
-                                const innerEls = document.querySelectorAll('.desktop-projectbottom-row .scroll-reveal');
-                                if (innerEls.length) {
-                                    gsap.fromTo(innerEls,
+                                // Animate inner text elements after container
+                                const bottomLines = document.querySelectorAll('.desktop-projectbottom-row .animate-bottom-line');
+                                const scrollLabel = document.querySelector('.desktop-projectbottom-row .opacity-30');
+
+                                if (bottomLines.length) {
+                                    gsap.fromTo(bottomLines,
+                                        { y: 15, opacity: 0 },
+                                        { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" }
+                                    );
+                                }
+                                // Animate the "Commit by Commit" subtext
+                                if (scrollLabel) {
+                                    gsap.fromTo(scrollLabel,
                                         { y: 10, opacity: 0 },
-                                        { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: "power2.out" }
+                                        { y: 0, opacity: 0.3, duration: 0.5, delay: 0.2, ease: "power2.out" }
                                     );
                                 }
                             }

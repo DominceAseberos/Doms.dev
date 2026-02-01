@@ -43,31 +43,20 @@ const ProjectBottom = () => {
         }, "+=0.2");
     });
 
-    // Desktop: No animation - just show text immediately
+    // Desktop: Dashboard controls the reveal sequence - set initial hidden state
     mm.add("(min-width: 768px)", () => {
-      // Set text to be fully visible immediately, no animations
+      // Set text to be hidden initially - Dashboard will reveal them after container
       gsap.set(".animate-bottom-line", {
-        autoAlpha: 1,
-        y: 0,
-        skewY: 0
+        opacity: 0,
+        y: 15
       });
 
       if (scrollLabel.current) {
         gsap.set(scrollLabel.current, {
-          autoAlpha: 1,
-          y: 0
+          opacity: 0,
+          y: 10
         });
       }
-
-      // Clean up will-change immediately
-      setTimeout(() => {
-        document.querySelectorAll('.animate-bottom-line').forEach(el => {
-          el.classList.add('animation-complete');
-        });
-        if (scrollLabel.current) {
-          scrollLabel.current.classList.add('animation-complete');
-        }
-      }, 100);
     });
 
     // Animate glows (same for all screens)
