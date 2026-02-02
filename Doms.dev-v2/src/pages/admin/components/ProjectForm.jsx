@@ -92,6 +92,12 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
     const handleDragLeave = (e) => {
         e.preventDefault();
         e.stopPropagation();
+
+        // Prevent flickering: Only clear if leaving the container entirely (not entering a child)
+        if (e.relatedTarget && e.currentTarget.contains(e.relatedTarget)) {
+            return;
+        }
+
         setIsDragging(false);
     };
 
