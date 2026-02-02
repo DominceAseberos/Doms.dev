@@ -10,6 +10,7 @@ import { projectService } from '../../services/projectService';
 import { dashboardService } from '../../services/dashboardService';
 import MediaPickerModal from '../../components/MediaPickerModal';
 import { getAvailableIconNames, getIconByName, BrandColors } from '../../utils/IconRegistry';
+import { compressImage } from '../../utils/imageUtils';
 
 const ProfileManager = () => {
     const navigate = useNavigate();
@@ -159,8 +160,19 @@ const ProfileManager = () => {
         if (!file) return;
         setAdminLoading(true, `UPLOADING ${type.toUpperCase()}`);
         try {
-            const fileName = `${type}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
-            const publicUrl = await projectService.uploadProjectImage(file, fileName);
+            let uploadFile = file;
+
+            // Apply compression only for images, skip for documents (CV)
+            if (type !== 'cv') {
+                try {
+                    uploadFile = await compressImage(file);
+                } catch (compErr) {
+                    console.warn('Compression failed, falling back to original', compErr);
+                }
+            }
+
+            const fileName = `${type}_${Date.now()}_${uploadFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+            const publicUrl = await projectService.uploadProjectImage(uploadFile, fileName);
 
             if (type === 'avatar') {
                 setProfile(prev => ({ ...prev, avatar_url: publicUrl }));

@@ -7,6 +7,7 @@ import {
 import strings from '../../config/adminStrings.json';
 import { useAdminStore } from '../../store/adminStore';
 import mediaService from '../../services/mediaService';
+import { compressImage } from '../../utils/imageUtils';
 
 const MediaCenter = () => {
     const navigate = useNavigate();
@@ -45,8 +46,18 @@ const MediaCenter = () => {
         if (!file) return;
 
         setAdminLoading(true, 'UPLOADING ASSET');
+        setAdminLoading(true, 'UPLOADING ASSET');
         try {
-            await mediaService.uploadFile(file);
+            let uploadFile = file;
+            // Only compress images
+            if (file.type.startsWith('image/')) {
+                try {
+                    uploadFile = await compressImage(file);
+                } catch (compErr) {
+                    console.warn('Compression failed, using original', compErr);
+                }
+            }
+            await mediaService.uploadFile(uploadFile);
             await fetchFiles(false);
         } catch (err) {
             console.error('Upload failed:', err);

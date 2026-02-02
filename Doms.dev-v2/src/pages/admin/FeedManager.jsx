@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import adminStrings from '../../config/adminStrings.json';
 import { useAdminStore } from '../../store/adminStore';
 import { useQueryClient } from '@tanstack/react-query';
+import { compressImage } from '../../utils/imageUtils';
 
 const FeedManager = () => {
     const navigate = useNavigate();
@@ -92,11 +93,21 @@ const FeedManager = () => {
         setLoading(false);
     };
 
-    const handleImageSelect = (e) => {
+    const handleImageSelect = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        setNewPostImage(file);
-        setPreviewUrl(URL.createObjectURL(file));
+
+        try {
+            // Compress the image before setting it
+            const compressedFile = await compressImage(file);
+            setNewPostImage(compressedFile);
+            setPreviewUrl(URL.createObjectURL(compressedFile));
+        } catch (error) {
+            console.error('Image compression failed, using original:', error);
+            // Fallback to original file
+            setNewPostImage(file);
+            setPreviewUrl(URL.createObjectURL(file));
+        }
     };
 
     const handleRemoveImage = () => {

@@ -9,6 +9,7 @@ import MediaPickerModal from '../../../components/MediaPickerModal';
 import { projectService } from '../../../services/projectService';
 import { getAvailableIconNames, getIconByName } from '../../../utils/IconRegistry';
 import { useAdminStore } from '../../../store/adminStore';
+import { compressImage } from '../../../utils/imageUtils';
 
 const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
     const [currentProject, setCurrentProject] = useState(null);
@@ -43,8 +44,15 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
 
         setAdminLoading(true, 'UPLOADING ASSET');
         try {
+            let uploadFile = file;
+            try {
+                uploadFile = await compressImage(file);
+            } catch (compErr) {
+                console.warn('Compression failed, using original', compErr);
+            }
+
             const fileName = `proj_${Date.now()}`;
-            const publicUrl = await projectService.uploadProjectImage(file, fileName);
+            const publicUrl = await projectService.uploadProjectImage(uploadFile, fileName);
             setCurrentProject(prev => ({ ...prev, image_url: publicUrl }));
         } catch (err) {
             console.error('Upload failed:', err);

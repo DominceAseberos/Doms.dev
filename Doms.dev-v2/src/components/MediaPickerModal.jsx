@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Image as ImageIcon, FileText, Check, ImagePlus } from 'lucide-react';
 import mediaService from '../services/mediaService';
+import { compressImage } from '../utils/imageUtils';
 
 const MediaPickerModal = ({ isOpen, onClose, onSelect, multiple = false }) => {
     const [files, setFiles] = useState([]);
@@ -32,8 +33,16 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect, multiple = false }) => {
         if (!file) return;
 
         setUploading(true);
+        setUploading(true);
         try {
-            const uploadedFile = await mediaService.uploadFile(file);
+            let uploadFile = file;
+            try {
+                uploadFile = await compressImage(file);
+            } catch (compErr) {
+                console.warn('Compression failed, using original', compErr);
+            }
+
+            const uploadedFile = await mediaService.uploadFile(uploadFile);
             await fetchFiles(); // Refresh list
             // Optionally auto-select the uploaded file? 
             // For now just refreshing is enough, user can see it first in list (we sort desc).
