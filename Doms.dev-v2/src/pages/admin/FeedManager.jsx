@@ -24,6 +24,7 @@ const FeedManager = () => {
     const [previewUrl, setPreviewUrl] = useState(null);
     const [posting, setPosting] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [isDragging, setIsDragging] = useState(false);
 
     useEffect(() => {
         fetchPosts();
@@ -93,9 +94,14 @@ const FeedManager = () => {
         setLoading(false);
     };
 
-    const handleImageSelect = async (e) => {
-        const file = e.target.files[0];
+    const processFile = async (file) => {
         if (!file) return;
+
+        // Basic validation
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file');
+            return;
+        }
 
         try {
             // Compress the image before setting it
@@ -107,6 +113,47 @@ const FeedManager = () => {
             // Fallback to original file
             setNewPostImage(file);
             setPreviewUrl(URL.createObjectURL(file));
+        }
+    };
+
+    const handleImageSelect = async (e) => {
+        const file = e.target.files[0];
+        await processFile(file);
+    };
+
+
+
+    const handlePaste = async (e) => {
+        if (e.clipboardData && e.clipboardData.items) {
+            const items = e.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const file = items[i].getAsFile();
+                    await processFile(file);
+                    e.preventDefault(); // Prevent pasting the image binary as text if possible
+                    break;
+                }
+            }
+        }
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+    };
+
+    const handleDrop = async (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            const file = e.dataTransfer.files[0];
+            await processFile(file);
         }
     };
 
@@ -221,11 +268,18 @@ const FeedManager = () => {
                 </div>
 
                 {/* Create Post */}
-                <div className="bg-white/5 border border-white/5 rounded-2xl p-6 space-y-4">
+                <div
+                    className={`bg-white/5 border rounded-2xl p-6 space-y-4 transition-colors ${isDragging ? 'border-blue-500 bg-blue-500/10' : 'border-white/5'
+                        }`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                >
                     <textarea
                         value={newPostContent}
                         onChange={(e) => setNewPostContent(e.target.value)}
-                        placeholder="What's currently happening?"
+                        onPaste={handlePaste}
+                        placeholder="What's currently happening? (Paste images or Drag & Drop)"
                         className="w-full bg-transparent border-none focus:ring-0 text-white placeholder-white/30 resize-none h-24 text-lg"
                     />
 

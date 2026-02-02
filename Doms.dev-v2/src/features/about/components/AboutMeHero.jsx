@@ -11,9 +11,9 @@ const AboutMeHero = ({ heroCardRef, onExpand, profile }) => {
         <div
             ref={heroCardRef}
             className="
-                flex-1 min-h-0 w-full
+                min-h-0 w-full h-full
                 flex items-center justify-center
-                rounded-2xl border p-2 aspect-square
+                rounded-2xl border p-2 
                 border-white/5 overflow-hidden"
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`

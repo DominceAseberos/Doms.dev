@@ -81,6 +81,8 @@ export const useAboutMeAnimation = ({
                 );
             });
         } else {
+
+
             // DESKTOP: Sequential reveal with specific timing
             // First, hide all cards immediately so they're not visible before animation
             gsap.set(cardEls, { opacity: 0, y: 25, scale: 0.95 });
@@ -93,7 +95,7 @@ export const useAboutMeAnimation = ({
                 tl.fromTo(heroCardRef.current,
                     { opacity: 0, y: 30, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    0.1
+                    1.2
                 );
             }
 
@@ -112,7 +114,7 @@ export const useAboutMeAnimation = ({
                 tl.fromTo(textAboutMeRef.current,
                     { opacity: 0 },
                     { opacity: 1, duration: 0.4, ease: 'power2.out' },
-                    0.4
+                    0.6
                 );
 
                 const textElements = textAboutMeRef.current.querySelectorAll('.text-reveal');

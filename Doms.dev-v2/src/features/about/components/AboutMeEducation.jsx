@@ -12,7 +12,7 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
             className="
             h-full w-full
                  flex flex-row justify-between
-                gap-5
+                gap-2
                 rounded-2xl p-6 border border-white/5 space-y-4"
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
@@ -23,7 +23,7 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
                 onMouseEnter={onEnter}
                 onMouseLeave={onLeave}
                 className="scroll-reveal w-full h-full rounded-xl flex items-center aspect-square justify-center
-                bg-white border cursor-pointer"
+                bg-white border cursor-pointer opacity-50 hover:opacity-100 transition-all duration-300 ease-in-out"
                 onClick={() => onExpand('education')}
                 style={{
                     background: '#fff',
@@ -33,7 +33,7 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
                 <img
                     src={education.logo_url || umtcLogo}
                     alt={education.school || "Education Logo"}
-                    className="w-full h-full object-contain p-4"
+                    className="w-full h-full object-contain p-4 opacity"
                 />
             </div>
 
