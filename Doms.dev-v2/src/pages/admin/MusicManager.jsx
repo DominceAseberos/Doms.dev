@@ -11,7 +11,8 @@ import {
 import { useAdminStore } from '../../store/adminStore';
 import strings from '../../config/adminStrings.json';
 
-const MOODS = ['chill', 'drift', 'moody', 'fierce', 'upbeat'];
+const DISCOVERY_MOODS = ['Melancholy', 'Upbeat', 'Aggressive', 'Defiant', 'Easygoing', 'Energize'];
+const PORTFOLIO_CATEGORIES = ['chill', 'drift', 'moody', 'fierce', 'upbeat'];
 
 const MusicManager = () => {
     const [activeTab, setActiveTab] = useState('registry'); // 'registry' | 'discovery'
@@ -138,7 +139,7 @@ const MusicManager = () => {
             duration: audiusTrack.duration,
             genre: audiusTrack.genre,
             isNewIngest: true, // Flag to identify new ingest vs edit
-            category: 'Chill' // Default mood
+            category: 'chill' // Default portfolio category
         };
         openModal(payload);
     };
@@ -213,12 +214,41 @@ const MusicManager = () => {
 
 /* --- SUB-COMPONENTS --- */
 
+/* --- SUB-COMPONENTS --- */
+
+const CategoryFilter = ({ selected, onSelect, categories }) => (
+    <div className="flex gap-2 overflow-x-auto p-4 custom-scrollbar">
+        <button
+            onClick={() => onSelect('ALL')}
+            className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${selected === 'ALL'
+                ? 'border-blue-500 text-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.4)] scale-105'
+                : 'bg-white/5 text-white/50 border-white/5 hover:bg-white/10 hover:border-white/20'
+                }`}
+        >
+            ALL
+        </button>
+        {categories.map(cat => (
+            <button
+                key={cat}
+                onClick={() => onSelect(cat)}
+                className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${selected === cat
+                    ? 'border-blue-500 text-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.4)] scale-105'
+                    : 'bg-white/5 text-white/50 border-white/5 hover:bg-white/10 hover:border-white/20'
+                    }`}
+            >
+                {cat}
+            </button>
+        ))}
+    </div>
+);
+
 const DiscoveryTab = ({ onIngest }) => {
     const { setAdminLoading } = useAdminStore();
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [playingPreview, setPlayingPreview] = useState(null);
     const [isBuffering, setIsBuffering] = useState(false);
+    const [activeMood, setActiveMood] = useState('ALL');
     const audioRef = useRef(new Audio());
 
     useEffect(() => {
@@ -290,8 +320,24 @@ const DiscoveryTab = ({ onIngest }) => {
         }
     };
 
+    const handleMoodSelect = async (mood) => {
+        setActiveMood(mood);
+        if (mood === 'ALL') {
+            loadTrending();
+        } else {
+            setAdminLoading(true, `EXPLORING ${mood.toUpperCase()} VIBES`);
+            // Search Audius for the mood keyword
+            const data = await audiusService.searchTracks(mood);
+            setResults(data);
+            setAdminLoading(false);
+        }
+    };
+
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* Mood Filters */}
+            <CategoryFilter selected={activeMood} onSelect={handleMoodSelect} categories={DISCOVERY_MOODS} />
+
             {/* Search Bar */}
             <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
                 <input
@@ -352,32 +398,45 @@ const DiscoveryTab = ({ onIngest }) => {
     );
 };
 
-const TracksTab = ({ items, onEdit, onDelete }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        {items.map(item => (
-            <div key={item.id} className="p-6 rounded-[2rem] border border-white/5 bg-[#0f0f0f] flex gap-6 hover:border-primary/20 transition-all group admin-modal-gradient">
-                <div className="w-24 h-24 rounded-2xl bg-black/40 overflow-hidden shrink-0 border border-white/5 shadow-2xl relative">
-                    {item.img_src ? <img src={item.img_src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={item.title} /> : <Music size={32} className="m-auto mt-8 opacity-10" />}
-                    <div className="absolute top-2 right-2 px-2 py-1 bg-black/60 backdrop-blur-md rounded-lg text-[8px] font-black uppercase tracking-widest border border-white/10">
-                        {item.category || 'Uncategorized'}
+const TracksTab = ({ items, onEdit, onDelete }) => {
+    const [filterCategory, setFilterCategory] = useState('ALL');
+
+    const filteredItems = filterCategory === 'ALL'
+        ? items
+        : items.filter(item => item.category === filterCategory);
+
+    return (
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* Registry Filter */}
+            <CategoryFilter selected={filterCategory} onSelect={setFilterCategory} categories={PORTFOLIO_CATEGORIES} />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {filteredItems.map(item => (
+                    <div key={item.id} className="p-6 rounded-[2rem] border border-white/5 bg-[#0f0f0f] flex gap-6 hover:border-primary/20 transition-all group admin-modal-gradient">
+                        <div className="w-24 h-24 rounded-2xl bg-black/40 overflow-hidden shrink-0 border border-white/5 shadow-2xl relative">
+                            {item.img_src ? <img src={item.img_src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={item.title} /> : <Music size={32} className="m-auto mt-8 opacity-10" />}
+                            <div className="absolute top-2 right-2 px-2 py-1 bg-black/60 backdrop-blur-md rounded-lg text-[8px] font-black uppercase tracking-widest border border-white/10">
+                                {item.category || 'Uncategorized'}
+                            </div>
+                        </div>
+                        <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+                            <h3 className="font-bold text-lg truncate uppercase italic group-hover:text-primary transition-colors">{item.title}</h3>
+                            <p className="text-[10px] opacity-40 uppercase tracking-[0.3em] font-mono truncate">{item.artist}</p>
+                            <div className="flex items-center gap-2 mt-2">
+                                <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 bg-white/5 rounded border border-white/5 opacity-40">{item.duration || '0:00'}</span>
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <button onClick={() => onEdit(item)} className="p-2.5 hover:bg-white/5 rounded-xl cursor-pointer opacity-30 group-hover:opacity-100 transition-all"><Edit3 size={16} /></button>
+                            <button onClick={() => onDelete(item.id)} className="p-2.5 hover:bg-red-500/10 text-red-500/50 rounded-xl cursor-pointer opacity-20 group-hover:opacity-60 transition-all"><Trash2 size={16} /></button>
+                        </div>
                     </div>
-                </div>
-                <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
-                    <h3 className="font-bold text-lg truncate uppercase italic group-hover:text-primary transition-colors">{item.title}</h3>
-                    <p className="text-[10px] opacity-40 uppercase tracking-[0.3em] font-mono truncate">{item.artist}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                        <span className="text-[8px] font-black uppercase tracking-widest px-2 py-1 bg-white/5 rounded border border-white/5 opacity-40">{item.duration || '0:00'}</span>
-                    </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                    <button onClick={() => onEdit(item)} className="p-2.5 hover:bg-white/5 rounded-xl cursor-pointer opacity-30 group-hover:opacity-100 transition-all"><Edit3 size={16} /></button>
-                    <button onClick={() => onDelete(item.id)} className="p-2.5 hover:bg-red-500/10 text-red-500/50 rounded-xl cursor-pointer opacity-20 group-hover:opacity-60 transition-all"><Trash2 size={16} /></button>
-                </div>
+                ))}
             </div>
-        ))}
-        {items.length === 0 && <EmptyState label="Audio Registry Depleted" />}
-    </div>
-);
+            {filteredItems.length === 0 && <EmptyState label="No Tracks Found in Cluster" />}
+        </div>
+    );
+};
 
 const EmptyState = ({ label }) => (
     <div className="w-full py-20 flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-[2.5rem] space-y-4 opacity-20 grayscale">
@@ -431,7 +490,7 @@ const Modal = ({ item, onClose, onSave, isSaving }) => {
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black tracking-[0.2em] opacity-30 px-2 text-primary">Target Mood Cluster</label>
                             <div className="grid grid-cols-3 gap-2">
-                                {MOODS.map(mood => (
+                                {PORTFOLIO_CATEGORIES.map(mood => (
                                     <button
                                         key={mood}
                                         type="button"
