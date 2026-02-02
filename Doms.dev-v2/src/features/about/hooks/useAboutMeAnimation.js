@@ -32,44 +32,58 @@ export const useAboutMeAnimation = ({
         if (isMobile) {
             // MOBILE: Reveal sequences for wrappers
             const mobileCards = gsap.utils.toArray('.mobile-reveal-card');
-            const [heroWrapper, ...scrollWrappers] = mobileCards;
+            const [effectsCard, textAboutMe, ...scrollWrappers] = mobileCards;
 
-            // Hide all inner .scroll-reveal elements initially (for "Container then Text" effect)
+            // Hide all inner .scroll-reveal AND .text-reveal elements initially
             mobileCards.forEach(card => {
-                const inner = card.querySelectorAll('.scroll-reveal');
+                const inner = card.querySelectorAll('.scroll-reveal, .text-reveal');
                 if (inner.length) gsap.set(inner, { opacity: 0, y: 12 });
             });
 
             const animateInner = (card) => {
-                const inner = card.querySelectorAll('.scroll-reveal');
+                const inner = card.querySelectorAll('.scroll-reveal, .text-reveal');
                 if (inner.length) {
                     gsap.fromTo(inner,
                         { y: 15, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' }
+                        { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out', delay: 0.1 }
                     );
                 }
             };
 
-            // 1. Hero (0.5s delay) - Reveals as single unit
-            if (heroWrapper) {
-                gsap.fromTo(heroWrapper,
+            // 1. Effects Card - Immediate Reveal
+            if (effectsCard) {
+                gsap.fromTo(effectsCard,
                     { opacity: 0, y: 30, scale: 0.92 },
                     {
-                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.5, ease: 'power3.out',
-                        onComplete: () => {
-                            // No animateInner(heroWrapper) as per request (single unit reveal)
-                        }
+                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.1, ease: 'power3.out',
+                        onComplete: () => animateInner(effectsCard)
                     }
                 );
             }
 
-            // 2. All other cards - ScrollTrigger
-            // Reveal when top of card hits 85% of viewport height (slightly before bottom)
-            scrollWrappers.forEach((wrapper) => {
+            // 2. Text About Me - Sequential Reveal (After Effects Card)
+            if (textAboutMe) {
+                gsap.fromTo(textAboutMe,
+                    { opacity: 0, y: 30, scale: 0.95 },
+                    {
+                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.8, ease: 'power2.out',
+                        onComplete: () => animateInner(textAboutMe)
+                    }
+                );
+            }
+
+            // 3. All other cards - ScrollTrigger
+            scrollWrappers.forEach((wrapper, index) => {
+                // If the first scroll card (Hero) is ALREADY in view, wait for the intro sequence (1.4s).
+                // Otherwise, reveal quickly when scrolled to (0.2s).
+                const isHero = index === 0;
+                const isVisible = ScrollTrigger.isInViewport(wrapper);
+                const revealDelay = (isHero && isVisible) ? 1.4 : 0.2;
+
                 gsap.fromTo(wrapper,
                     { opacity: 0, y: 30, scale: 0.95 },
                     {
-                        opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power2.out',
+                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: revealDelay, ease: 'power2.out',
                         scrollTrigger: {
                             trigger: wrapper,
                             start: "top 85%",
