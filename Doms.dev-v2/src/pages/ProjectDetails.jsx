@@ -12,6 +12,7 @@ import ProjectHeader from '../features/projects/projectDetails/components/Projec
 import ProjectCarousel from '../features/projects/projectDetails/components/ProjectCarousel';
 import ProjectMetadata from '../features/projects/projectDetails/components/ProjectMetadata';
 import ProjectDocumentation from '../features/projects/projectDetails/components/ProjectDocumentation';
+import MoreProjects from '../features/projects/projectDetails/components/MoreProjects';
 
 const ProjectDetails = () => {
     const { id } = useParams();
@@ -177,6 +178,9 @@ const ProjectDetails = () => {
                         )}
                     </div>
                 </div>
+
+                {/* 4. More Projects Section (Full Width) */}
+                <MoreProjects currentProjectId={project?.id} />
             </div>
         </>
     );
