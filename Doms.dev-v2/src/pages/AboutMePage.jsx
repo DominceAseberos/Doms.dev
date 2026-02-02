@@ -15,6 +15,8 @@ import {
     AboutMeStatusCard,
     BackButton,
     DownloadCVButton,
+    TextAboutMe,
+    TextFeed
 } from '../features/about';
 
 // Custom Hooks
@@ -22,6 +24,7 @@ import { useAboutMe } from '../features/about/hooks/useAboutMe';
 import { useAboutMeAnimation } from '../features/about/hooks/useAboutMeAnimation';
 
 const AboutMePage = () => {
+
     // 1. Logic & State Hook
     const {
         expandedImage,
@@ -38,6 +41,10 @@ const AboutMePage = () => {
         mdIconStack,
         feedCard,
         footerRef,
+        textAboutMeRef,
+        textFeedRef,
+        backButtonRef,
+        cvButtonRef,
         handleLoadComplete,
         handleImageExpand,
         handleImageClose
@@ -52,7 +59,11 @@ const AboutMePage = () => {
         mdIconStack,
         educationCardRef,
         resumeCardRef,
-        footerRef
+        footerRef,
+        textAboutMeRef,
+        textFeedRef,
+        backButtonRef,
+        cvButtonRef
     });
 
     return (
@@ -63,7 +74,7 @@ const AboutMePage = () => {
                 minDisplayTime={600}
             />
             <div
-                className="min-h-screen w-full py-8 px-4 md:px-2"
+                className="min-h-screen w-full py-2 px-4 md:px-2"
                 style={{
                     background: `linear-gradient(to bottom, rgb(var(--body-Linear-1-rgb)), rgb(var(--body-Linear-2-rgb)))`,
                     opacity: revealReady ? 1 : 0,
@@ -130,7 +141,9 @@ const AboutMePage = () => {
                     {/* ===================== */}
                     <div className="md:col-span-4 lg:col-span-2 md:h-60 md:w-full lg:h-60 " >
                         <div className="flex flex-col gap-4 w-full h-full">
-                            <BackButton />
+                            <div ref={backButtonRef} className="w-full">
+                                <BackButton />
+                            </div>
 
                             <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
 
@@ -138,18 +151,28 @@ const AboutMePage = () => {
 
                     </div>
 
-                    {/* ============= */}
-                    <div className="
-                md:h-40 md:w-full lg:h-60 
-                md:col-span-4 lg:col-span-2 ">
-                        <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
 
+                    <div className="md:col-span-4 lg:col-span-2 md:h-60 md:w-full lg:h-60 " >
+                        <div className="flex flex-col gap-2 w-full h-full">
+                            <TextAboutMe textAboutMeRef={textAboutMeRef} />
+
+                            <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
+
+                        </div>
                     </div>
 
-                    {/* ================ */}
-                    <div className="md:col-span-4 lg:col-span-2  md:h-40 md:w-full lg:h-60">
-                        <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
 
+                    {/* ================ */}
+                    <div className="md:col-span-4 lg:col-span-2 md:h-40 md:w-full lg:h-60">
+                        <div className="grid grid-cols-5 gap-4 h-full">
+                            <div className="col-span-1 h-full">
+                                <TextFeed textFeedRef={textFeedRef} />
+                            </div>
+                            <div className="col-span-4 h-full">
+                                <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
+                            </div>
+
+                        </div>
                     </div>
 
 
@@ -167,14 +190,16 @@ const AboutMePage = () => {
 
                     <div className="md:col-span-2 lg:col-span-2  md:h-40 md:w-full lg:h-60">
 
-                        <div className="flex flex-col  justify-between gap-2 w-50 h-full " >
+                        <div className="flex flex-col  justify-between gap-2 w-full h-full " >
 
-                            <div className="h-2/3 w-50">
+                            <div className="flex-1 min-h-0 w-full">
                                 <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
                             </div>
 
 
-                            <DownloadCVButton profile={profile} />
+                            <div ref={cvButtonRef} className="w-full">
+                                <DownloadCVButton profile={profile} />
+                            </div>
 
                         </div>
 
@@ -182,58 +207,61 @@ const AboutMePage = () => {
 
                     </div>
 
-                    <div className="md:col-span-4 lg:col-span-6 w-full
-                rounded-2xl p-6 border border-white/5"
+                    <div
+                        ref={footerRef}
+                        className="md:col-span-4 lg:col-span-6 w-full rounded-2xl p-6 border border-white/5"
                         style={{
                             background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
                         }}
                     >
-                        <AboutMeFooter footerRef={footerRef} contacts={contacts} profile={profile} />
+                        <AboutMeFooter contacts={contacts} profile={profile} />
                     </div>
 
-                </div>
+                </div >
 
 
 
 
                 {/* Expanded Image Modal */}
-                {expandedImage && (
-                    <div
-                        className="fixed top-0 inset-0 z-50 flex items-center justify-center p-4"
-                        style={{ background: 'rgba(0, 0, 0, 0.8)' }}
-                    >
-                        <div className="expanded-image-container relative max-w-2xl w-full md:max-w-xl ">
-                            <div
-                                className="aspect-square rounded-2xl overflow-hidden"
-                                style={{ background: 'rgba(var(--contrast-rgb), 0.1)' }}
-                            >
-                                <div className="w-full h-full flex items-center justify-center">
-                                    {expandedImage === 'hero' && (
-                                        <img src={heroImage} alt="Hero" className="w-full h-full object-cover" />
-                                    )}
-                                    {expandedImage === 'education' && (
-                                        <img src={umtcLogo} alt="University of Mindanao" className="w-full h-full object-contain p-8 bg-white" />
-                                    )}
-                                    {expandedImage === 'resume' && (
-                                        <FileText size={120} style={{ color: 'rgb(var(--contrast-rgb))', opacity: 0.4 }} />
-                                    )}
+                {
+                    expandedImage && (
+                        <div
+                            className="fixed top-0 inset-0 z-50 flex items-center justify-center p-4"
+                            style={{ background: 'rgba(0, 0, 0, 0.8)' }}
+                        >
+                            <div className="expanded-image-container relative max-w-2xl w-full md:max-w-xl ">
+                                <div
+                                    className="aspect-square rounded-2xl overflow-hidden"
+                                    style={{ background: 'rgba(var(--contrast-rgb), 0.1)' }}
+                                >
+                                    <div className="w-full h-full flex items-center justify-center">
+                                        {expandedImage === 'hero' && (
+                                            <img src={heroImage} alt="Hero" className="w-full h-full object-cover" />
+                                        )}
+                                        {expandedImage === 'education' && (
+                                            <img src={umtcLogo} alt="University of Mindanao" className="w-full h-full object-contain p-8 bg-white" />
+                                        )}
+                                        {expandedImage === 'resume' && (
+                                            <FileText size={120} style={{ color: 'rgb(var(--contrast-rgb))', opacity: 0.4 }} />
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <button
-                                onClick={handleImageClose}
-                                className="absolute -top-12 right-0 p-2 md:top-0 rounded-full transition-all duration-200 hover:scale-110 active:scale-95"
-                                style={{
-                                    background: 'rgb(var(--contrast-rgb))',
-                                    color: '#000'
-                                }}
-                            >
-                                <X size={24} />
-                            </button>
+                                <button
+                                    onClick={handleImageClose}
+                                    className="absolute -top-12 right-0 p-2 md:top-0 rounded-full transition-all duration-200 hover:scale-110 active:scale-95"
+                                    style={{
+                                        background: 'rgb(var(--contrast-rgb))',
+                                        color: '#000'
+                                    }}
+                                >
+                                    <X size={24} />
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )
+                }
+            </div >
         </>
     );
 };

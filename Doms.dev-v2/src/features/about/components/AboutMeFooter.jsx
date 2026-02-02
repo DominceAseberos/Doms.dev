@@ -30,7 +30,7 @@ const AboutMeFooter = ({ footerRef, contacts, profile }) => {
         >
 
 
-            <div className="scroll-reveal flex justify-center gap-4">
+            <div className="scroll-reveal flex justify-center gap-4" style={{ opacity: 0 }}>
                 {Array.isArray(contacts) && contacts.map((contact, idx) => {
                     const Icon = getIconByName(contact.icon || 'Link');
                     return (
@@ -46,7 +46,7 @@ const AboutMeFooter = ({ footerRef, contacts, profile }) => {
                 })}
             </div>
 
-            <p className="scroll-reveal text-center text-gray-400" style={{ fontSize: 'clamp(10px, 1.5vw, 11px)' }}>
+            <p className="scroll-reveal text-center text-gray-400" style={{ fontSize: 'clamp(10px, 1.5vw, 11px)', opacity: 0 }}>
                 © 2026 {profile.name}
             </p>
         </div>

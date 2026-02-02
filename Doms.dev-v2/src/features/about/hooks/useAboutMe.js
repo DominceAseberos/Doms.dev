@@ -16,6 +16,10 @@ export const useAboutMe = () => {
     const mdIconStack = useRef(null);
     const feedCard = useRef(null);
     const footerRef = useRef(null);
+    const textAboutMeRef = useRef(null);
+    const textFeedRef = useRef(null);
+    const backButtonRef = useRef(null);
+    const cvButtonRef = useRef(null);
 
     // Track when data is ready
     useEffect(() => {
@@ -73,7 +77,12 @@ export const useAboutMe = () => {
         resumeCardRef,
         mdIconStack,
         feedCard,
+        feedCard,
         footerRef,
+        textAboutMeRef,
+        textFeedRef,
+        backButtonRef,
+        cvButtonRef,
 
         // Handlers
         handleLoadComplete,

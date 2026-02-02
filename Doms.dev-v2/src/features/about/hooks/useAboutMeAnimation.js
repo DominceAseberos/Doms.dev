@@ -12,15 +12,22 @@ export const useAboutMeAnimation = ({
     mdIconStack,
     educationCardRef,
     resumeCardRef,
-    footerRef
+    footerRef,
+    textAboutMeRef,
+    textFeedRef,
+    backButtonRef,
+    cvButtonRef
 }) => {
     useLayoutEffect(() => {
         if (!revealReady) return;
 
         const isMobile = window.innerWidth < 768;
-        const cards = [heroCardRef, identityCardRef, feedCard, mdIconStack, educationCardRef, resumeCardRef, footerRef];
-        const cardEls = cards.map(ref => ref.current).filter(Boolean);
-        gsap.killTweensOf(cardEls);
+        const popCards = [heroCardRef, identityCardRef, feedCard, mdIconStack, educationCardRef, resumeCardRef, footerRef];
+        const textContainers = [textAboutMeRef, textFeedRef, backButtonRef, cvButtonRef];
+
+        const cardEls = popCards.map(ref => ref.current).filter(Boolean);
+        const textEls = textContainers.map(ref => ref.current).filter(Boolean);
+        gsap.killTweensOf([...cardEls, ...textEls]);
 
         if (isMobile) {
             // MOBILE: Reveal sequences for wrappers
@@ -30,7 +37,7 @@ export const useAboutMeAnimation = ({
             // Hide all inner .scroll-reveal elements initially (for "Container then Text" effect)
             mobileCards.forEach(card => {
                 const inner = card.querySelectorAll('.scroll-reveal');
-                if (inner.length) gsap.set(inner, { opacity: 0, y: 15 });
+                if (inner.length) gsap.set(inner, { opacity: 0, y: 12 });
             });
 
             const animateInner = (card) => {
@@ -77,79 +84,150 @@ export const useAboutMeAnimation = ({
             // DESKTOP: Sequential reveal with specific timing
             // First, hide all cards immediately so they're not visible before animation
             gsap.set(cardEls, { opacity: 0, y: 25, scale: 0.95 });
+            gsap.set(textEls, { opacity: 0 });
 
             const tl = gsap.timeline();
 
-            // 1. Hero (0.3s)
+            // 1. Hero / Profile (0.1s) - Slow
             if (heroCardRef.current) {
                 tl.fromTo(heroCardRef.current,
                     { opacity: 0, y: 30, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    0.3
+                    { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
+                    0.1
                 );
             }
 
-            // 2. Identity (0.5s)
+            if (backButtonRef.current) {
+                tl.fromTo(backButtonRef.current,
+                    { opacity: 0, x: -20 },
+                    { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
+                    0.2
+                );
+            }
+
+            // 2. TextAboutMe - Text Reveal (0.5s)
+            // 2. TextAboutMe (0.4s Container, 0.5s Text)
+            if (textAboutMeRef.current) {
+                // Gentle container reveal (fade only)
+                tl.fromTo(textAboutMeRef.current,
+                    { opacity: 0 },
+                    { opacity: 1, duration: 0.4, ease: 'power2.out' },
+                    0.4
+                );
+
+                const textElements = textAboutMeRef.current.querySelectorAll('.text-reveal');
+                if (textElements.length > 0) {
+                    tl.fromTo(textElements,
+                        { opacity: 0, y: 15 },
+                        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'back.out(1.2)' },
+                        0.5
+                    );
+                }
+            }
+
+            // 3. Identity (0.9s)
             if (identityCardRef.current) {
                 tl.fromTo(identityCardRef.current,
-                    { opacity: 0, y: 25, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    0.5
-                );
-            }
-
-            // 3. StatusCard (0.7s)
-            if (feedCard.current) {
-                tl.fromTo(feedCard.current,
-                    { opacity: 0, y: 25, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    0.7
-                );
-            }
-
-            // 4. TechStack (0.9s)
-            if (mdIconStack.current) {
-                tl.fromTo(mdIconStack.current,
-                    { opacity: 0, y: 25, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    { opacity: 0, y: 30, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
                     0.9
                 );
             }
 
-            // 5. Education (1.1s)
+            // 4. TextFeed - Text Reveal (1.3s)
+            // 4. TextFeed (1.2s Container, 1.3s Text)
+            if (textFeedRef.current) {
+                // Gentle container reveal (fade only)
+                tl.fromTo(textFeedRef.current,
+                    { opacity: 0 },
+                    { opacity: 1, duration: 0.4, ease: 'power2.out' },
+                    1.2
+                );
+
+                const textFeedElements = textFeedRef.current.querySelectorAll('.text-reveal');
+                if (textFeedElements.length > 0) {
+                    tl.fromTo(textFeedElements,
+                        { opacity: 0, y: 15 },
+                        { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'back.out(1.2)' },
+                        1.3
+                    );
+                }
+            }
+
+            // 5. Feed Card (1.6s)
+            if (feedCard.current) {
+                tl.fromTo(feedCard.current,
+                    { opacity: 0, y: 30, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
+                    1.6
+                );
+            }
+
+            // --- FASTER SEQUENCE ---
+
+            // 6. Tech Stack (2.0s)
+            if (mdIconStack.current) {
+                tl.fromTo(mdIconStack.current,
+                    { opacity: 0, y: 25, scale: 0.95 },
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                    2.0
+                );
+            }
+
+            // 7. Education (2.2s)
             if (educationCardRef.current) {
                 tl.fromTo(educationCardRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    1.1
+                    2.2
                 );
             }
 
-            // 6. Resume + CV Button (1.3s)
+            // 8. Resume (2.4s)
             if (resumeCardRef.current) {
                 tl.fromTo(resumeCardRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    1.3
+                    2.4
                 );
             }
 
-            // 7. Footer (1.5s)
+            if (cvButtonRef.current) {
+                tl.fromTo(cvButtonRef.current,
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+                    2.5
+                );
+            }
+
+            // 9. Footer (2.6s)
+            // 9. Footer (2.6s)
             if (footerRef.current) {
+                // Reveal Container
                 tl.fromTo(footerRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    1.5
+                    2.6
                 );
+
+                // Reveal Icons/Text inside
+                const footerElements = footerRef.current.querySelectorAll('.scroll-reveal');
+                if (footerElements.length) {
+                    tl.fromTo(footerElements,
+                        { opacity: 0, y: 10 },
+                        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' },
+                        2.8 // Start after container reveals
+                    );
+                }
             }
 
             tl.eventCallback('onComplete', () => {
-                cardEls.forEach(el => el?.classList.add('animation-complete'));
+                [...cardEls, ...textEls].forEach(el => el?.classList.add('animation-complete'));
             });
         }
 
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
-    }, [revealReady, heroCardRef, identityCardRef, feedCard, mdIconStack, educationCardRef, resumeCardRef, footerRef]);
+    }, [revealReady, heroCardRef, textAboutMeRef, identityCardRef, feedCard, textFeedRef, mdIconStack, educationCardRef, resumeCardRef, footerRef, backButtonRef, cvButtonRef]);
 };

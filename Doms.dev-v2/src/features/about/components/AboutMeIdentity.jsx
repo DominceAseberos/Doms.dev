@@ -5,7 +5,7 @@ const AboutMeIdentity = ({ identityCardRef, profile }) => {
         <div
             ref={identityCardRef}
             className="
-                w-full h-full
+                w-full flex-1 min-h-0
                 rounded-2xl p-6 border border-white/5 "
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
@@ -16,7 +16,7 @@ const AboutMeIdentity = ({ identityCardRef, profile }) => {
                     className="font-bold tracking-tight leading-none"
                     style={{
                         color: 'rgb(var(--contrast-rgb))',
-                        fontSize: 'clamp(24px, 4vw, 32px)'
+                        fontSize: 'clamp(15px, 2vw, 24px)'
                     }}
                 >
                     {profile.name}

@@ -11,7 +11,7 @@ const AboutMeHero = ({ heroCardRef, onExpand, profile }) => {
         <div
             ref={heroCardRef}
             className="
-                h-full w-full
+                flex-1 min-h-0 w-full
                 flex items-center justify-center
                 rounded-2xl border p-2 aspect-square
                 border-white/5 overflow-hidden"

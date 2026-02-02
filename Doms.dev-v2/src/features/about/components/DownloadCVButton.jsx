@@ -21,7 +21,7 @@ const DownloadCvButton = ({ profile }) => {
     return (
 
 
-        <AnimatedResume>
+        <AnimatedResume className="w-full">
             {profile?.cv ? (
                 <a
                     href={profile.cv}

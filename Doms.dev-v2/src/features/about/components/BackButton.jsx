@@ -24,8 +24,8 @@ const BackButton = () => {
     return (
 
 
-        <AnimatedFooter>
-            <Link to="/">
+        <AnimatedFooter className="w-full">
+            <Link to="/" className="w-full block">
                 <button
                     className="
                             px-6
