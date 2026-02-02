@@ -1,3 +1,5 @@
+import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Calendar, Tag, ExternalLink, Github } from 'lucide-react';
 import { getIconByName } from '../../../../utils/IconRegistry';
 import { useButtonMotion } from '../../../../hooks/useButtonMotion';
@@ -15,9 +17,88 @@ const ProjectMetadata = ({
 }) => {
     const liveMotion = useButtonMotion();
     const gitMotion = useButtonMotion();
+    const [isSticky, setIsSticky] = useState(false);
+    const buttonsRef = useRef(null);
+
+    // Scroll Observer for Sticky Effect
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!buttonsRef.current) return;
+            const rect = buttonsRef.current.getBoundingClientRect();
+            // If the buttons are above the viewport (scrolled past), show sticky
+            // We use -60 to give it a bit of trigger space before it completely leaves
+            setIsSticky(rect.top < 0);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const ActionButtons = ({ isStickyMode = false }) => (
+        <div className={`flex flex-col gap-3 ${isStickyMode ? 'flex-row' : 'pt-4'}`}>
+            {livePreviewLink && (
+                <a
+                    ref={isStickyMode ? null : liveMotion.ref} // Only attach ref to original to avoid conflict? Or attach to both? Motion hook single ref. 
+                    href={livePreviewLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={isStickyMode ? null : liveMotion.onEnter} // Disable hover physics on sticky for simplicity or duplicate hook
+                    onMouseLeave={isStickyMode ? null : liveMotion.onLeave}
+                    onClick={isStickyMode ? null : liveMotion.onTap}
+                    className={`flex items-center justify-center gap-2 rounded-lg font-inter font-semibold text-sm transition-all shadow-md ${isStickyMode ? 'flex-1 py-3 text-xs' : 'px-6 py-3'
+                        }`}
+                    style={{
+                        background: 'rgb(var(--contrast-rgb))',
+                        color: 'rgb(0,0,0)',
+                        boxShadow: '0 4px 12px rgba(var(--contrast-rgb), 0.3)'
+                    }}
+                >
+                    <ExternalLink size={isStickyMode ? 14 : 18} />
+                    <span>{isStickyMode ? 'Preview' : 'Live Preview'}</span>
+                </a>
+            )}
+
+            {githubLink && (
+                <a
+                    ref={isStickyMode ? null : gitMotion.ref}
+                    href={githubLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={isStickyMode ? null : gitMotion.onEnter}
+                    onMouseLeave={isStickyMode ? null : gitMotion.onLeave}
+                    onClick={isStickyMode ? null : gitMotion.onTap}
+                    className={`flex items-center justify-center gap-2 rounded-lg font-inter font-semibold text-sm border transition-all ${isStickyMode ? 'flex-1 py-3 text-xs' : 'px-6 py-3'
+                        }`}
+                    style={{
+                        borderColor: 'rgba(var(--contrast-rgb), 0.2)',
+                        color: 'rgb(var(--contrast-rgb))',
+                        background: 'rgba(var(--contrast-rgb), 0.05)'
+                    }}
+                >
+                    <Github size={isStickyMode ? 14 : 18} />
+                    <span>{isStickyMode ? 'Source' : 'Source Code'}</span>
+                </a>
+            )}
+        </div>
+    );
 
     return (
-        <div className="project-card">
+        <div className="project-card relative">
+            {/* Sticky Mobile Header (Portal to break out of GSAP transform context) */}
+            {createPortal(
+                <div
+                    className={`fixed top-0 left-0 right-0 z-[100] p-3 bg-black/80 backdrop-blur-xl border-b border-white/10 transition-all duration-300 md:hidden ${isSticky
+                        ? 'translate-y-0 opacity-100 visible'
+                        : '-translate-y-full opacity-0 invisible pointer-events-none'
+                        }`}
+                >
+                    <div className="max-w-7xl mx-auto">
+                        <ActionButtons isStickyMode={true} />
+                    </div>
+                </div>,
+                document.body
+            )}
+
             <div
                 className="rounded-2xl p-6 h-full"
                 style={{
@@ -73,49 +154,9 @@ const ProjectMetadata = ({
                         </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-col gap-3 pt-4">
-                        {livePreviewLink && (
-                            <a
-                                ref={liveMotion.ref}
-                                href={livePreviewLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onMouseEnter={liveMotion.onEnter}
-                                onMouseLeave={liveMotion.onLeave}
-                                onClick={liveMotion.onTap}
-                                className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-inter font-semibold text-sm transition-shadow shadow-md"
-                                style={{
-                                    background: 'rgb(var(--contrast-rgb))',
-                                    color: 'rgb(0,0,0)',
-                                    boxShadow: '0 4px 12px rgba(var(--contrast-rgb), 0.3)'
-                                }}
-                            >
-                                <ExternalLink size={18} />
-                                <span>Live Preview</span>
-                            </a>
-                        )}
-
-                        {githubLink && (
-                            <a
-                                ref={gitMotion.ref}
-                                href={githubLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onMouseEnter={gitMotion.onEnter}
-                                onMouseLeave={gitMotion.onLeave}
-                                onClick={gitMotion.onTap}
-                                className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-inter font-semibold text-sm border transition-all"
-                                style={{
-                                    borderColor: 'rgba(var(--contrast-rgb), 0.2)',
-                                    color: 'rgb(var(--contrast-rgb))',
-                                    background: 'rgba(var(--contrast-rgb), 0.05)'
-                                }}
-                            >
-                                <Github size={18} />
-                                <span>View Source Code</span>
-                            </a>
-                        )}
+                    {/* Original Action Buttons (Ref Target) */}
+                    <div ref={buttonsRef} className={`transition-opacity duration-300 ${isSticky ? 'md:opacity-100 opacity-0' : 'opacity-100'}`}>
+                        <ActionButtons />
                     </div>
                 </div>
             </div>
