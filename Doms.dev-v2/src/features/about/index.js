@@ -10,4 +10,5 @@ export { default as BackButton } from './components/BackButton';
 export { default as DownloadCVButton } from './components/DownloadCVButton';
 export { default as TextAboutMe } from './components/textAboutMe';
 export { default as TextFeed } from './components/TextFeed';
+export { default as EffectsCard } from './components/effectCard';
 

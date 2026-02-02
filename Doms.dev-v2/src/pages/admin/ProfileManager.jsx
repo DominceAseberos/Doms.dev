@@ -43,6 +43,7 @@ const ProfileManager = () => {
     // Media Picker State
     const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
     const [mediaPickerTarget, setMediaPickerTarget] = useState(null); // 'avatar' | 'hero' | 'cv' | 'edu_logo'
+    const [dragTarget, setDragTarget] = useState(null); // 'avatar' | 'hero' | 'cv' | 'cv_img' | 'edu_logo'
 
     // Icon Registry
     const availableStacks = getAvailableIconNames().filter(name =>
@@ -193,6 +194,29 @@ const ProfileManager = () => {
         }
     };
 
+    // Drag and Drop Handlers
+    const handleDragOver = (e, type) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragTarget(type);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragTarget(null);
+    };
+
+    const handleDrop = (e, type) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragTarget(null);
+
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            handleFileUpload(e.dataTransfer.files[0], type);
+        }
+    };
+
     // Media Picker Handlers
     const openMediaPicker = (target) => {
         setMediaPickerTarget(target);
@@ -313,13 +337,24 @@ const ProfileManager = () => {
                     {/* LEFT COLUMN: AVATAR, HERO (4 cols) */}
                     <div className="lg:col-span-4 space-y-6">
                         {/* Avatar Card */}
-                        <div className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-8 admin-modal-gradient flex flex-col items-center text-center">
+                        <div
+                            className={`p-8 rounded-[2.5rem] bg-[#0f0f0f] border space-y-8 admin-modal-gradient flex flex-col items-center text-center transition-colors ${dragTarget === 'avatar' ? 'border-primary bg-primary/5' : 'border-white/5'
+                                }`}
+                            onDragOver={(e) => handleDragOver(e, 'avatar')}
+                            onDragLeave={handleDragLeave}
+                            onDrop={(e) => handleDrop(e, 'avatar')}
+                        >
                             <div className="relative group">
-                                <div className="w-40 h-40 rounded-full bg-white/5 border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden">
+                                <div className="w-40 h-40 rounded-full bg-white/5 border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden pointer-events-none">
                                     {profile.avatar_url ? (
                                         <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     ) : (
                                         <User size={60} className="opacity-10" />
+                                    )}
+                                    {dragTarget === 'avatar' && (
+                                        <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 backdrop-blur-sm">
+                                            <span className="text-primary font-black text-[10px] uppercase tracking-widest">Drop to Upload</span>
+                                        </div>
                                     )}
                                 </div>
                                 <div className="absolute -bottom-4 flex gap-2">
@@ -338,25 +373,31 @@ const ProfileManager = () => {
                                 </div>
                             </div>
 
-                            <div className="space-y-2 mt-4">
+                            <div className="space-y-2 mt-4 pointer-events-none">
                                 <h2 className="text-xl font-bold tracking-tight">{profile.full_name || 'System Owner'}</h2>
                                 <p className="text-[10px] opacity-30 uppercase tracking-widest font-mono">UID: {profile.id?.substring(0, 13)}...</p>
                             </div>
 
-                            <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 text-primary">
+                            <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 text-primary pointer-events-none">
                                 <ShieldCheck size={14} />
                                 <span className="text-[9px] font-black uppercase tracking-widest leading-none">Verified Identity</span>
                             </div>
                         </div>
 
                         {/* Hero Visual */}
-                        <div className="p-8 rounded-[2.5rem] bg-[#0f0f0f] border border-white/5 space-y-6 admin-modal-gradient">
-                            <div className="flex items-center justify-between">
+                        <div
+                            className={`p-8 rounded-[2.5rem] bg-[#0f0f0f] border space-y-6 admin-modal-gradient transition-colors ${dragTarget === 'hero' ? 'border-primary bg-primary/5' : 'border-white/5'
+                                }`}
+                            onDragOver={(e) => handleDragOver(e, 'hero')}
+                            onDragLeave={handleDragLeave}
+                            onDrop={(e) => handleDrop(e, 'hero')}
+                        >
+                            <div className="flex items-center justify-between pointer-events-none">
                                 <div className="flex items-center gap-3 text-primary">
                                     <Image size={18} />
                                     <h3 className="text-xs font-black uppercase tracking-widest">Hero Visual</h3>
                                 </div>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 pointer-events-auto">
                                     <button
                                         type="button"
                                         onClick={() => openMediaPicker('hero')}
@@ -371,11 +412,16 @@ const ProfileManager = () => {
                                     </label>
                                 </div>
                             </div>
-                            <div className="aspect-video rounded-xl bg-black/50 border border-white/5 overflow-hidden relative group">
+                            <div className="aspect-video rounded-xl bg-black/50 border border-white/5 overflow-hidden relative group pointer-events-none">
                                 {profile.hero_img_url ? (
                                     <img src={profile.hero_img_url} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center opacity-20"><Image size={32} /></div>
+                                )}
+                                {dragTarget === 'hero' && (
+                                    <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 backdrop-blur-sm">
+                                        <span className="text-primary font-black text-xs uppercase tracking-widest">Drop Visual to Upload</span>
+                                    </div>
                                 )}
                             </div>
                         </div>
@@ -461,14 +507,25 @@ const ProfileManager = () => {
                                 {/* CV Document (File) */}
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">Curriculum Vitae (Document)</label>
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex-1 px-6 py-4 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-between">
+                                    <div
+                                        className={`flex items-center gap-4 border rounded-2xl p-2 transition-colors relative overflow-hidden ${dragTarget === 'cv' ? 'border-primary bg-primary/5' : 'border-transparent'
+                                            }`}
+                                        onDragOver={(e) => handleDragOver(e, 'cv')}
+                                        onDragLeave={handleDragLeave}
+                                        onDrop={(e) => handleDrop(e, 'cv')}
+                                    >
+                                        {dragTarget === 'cv' && (
+                                            <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 backdrop-blur-sm">
+                                                <span className="text-primary font-black text-xs uppercase tracking-widest">Drop Document to Upload</span>
+                                            </div>
+                                        )}
+                                        <div className="flex-1 px-6 py-4 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-between pointer-events-none">
                                             <div className="flex items-center gap-3 opacity-60">
                                                 <FileText size={16} />
                                                 <span className="text-xs truncate font-mono">{profile.cv_url ? 'Active CV File' : 'No CV Uploaded'}</span>
                                             </div>
                                             {profile.cv_url && (
-                                                <a href={profile.cv_url} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-wider hover:text-primary transition-colors">
+                                                <a href={profile.cv_url} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-wider hover:text-primary transition-colors pointer-events-auto">
                                                     View
                                                 </a>
                                             )}
@@ -484,12 +541,23 @@ const ProfileManager = () => {
                                 {/* CV Visual (Image) */}
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">CV Visual Preview (Image)</label>
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-20 h-24 rounded-xl bg-white/5 border border-white/5 p-1 overflow-hidden flex items-center justify-center relative group">
+                                    <div
+                                        className={`flex items-center gap-4 border rounded-2xl p-2 transition-colors ${dragTarget === 'cv_img' ? 'border-primary bg-primary/5' : 'border-transparent'
+                                            }`}
+                                        onDragOver={(e) => handleDragOver(e, 'cv_img')}
+                                        onDragLeave={handleDragLeave}
+                                        onDrop={(e) => handleDrop(e, 'cv_img')}
+                                    >
+                                        <div className="w-20 h-24 rounded-xl bg-white/5 border border-white/5 p-1 overflow-hidden flex items-center justify-center relative group pointer-events-none">
                                             {profile.cv_img_url ? (
                                                 <img src={profile.cv_img_url} className="w-full h-full object-cover rounded-lg opacity-80 group-hover:opacity-100 transition-opacity" alt="CV Preview" />
                                             ) : (
                                                 <Image size={24} className="opacity-20" />
+                                            )}
+                                            {dragTarget === 'cv_img' && (
+                                                <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 backdrop-blur-sm font-black text-primary text-[8px] uppercase text-center p-1">
+                                                    Drop Image
+                                                </div>
                                             )}
                                         </div>
                                         <div className="flex flex-col gap-2">
@@ -543,9 +611,20 @@ const ProfileManager = () => {
                             </div>
                             <div className="space-y-2 md:col-span-2">
                                 <label className="text-[10px] uppercase font-bold tracking-[0.2em] opacity-30 px-1">School Logo</label>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-20 h-20 rounded-xl bg-white/5 border border-white/5 p-2 flex items-center justify-center">
+                                <div
+                                    className={`flex items-center gap-4 border rounded-2xl p-2 transition-colors ${dragTarget === 'edu_logo' ? 'border-primary bg-primary/5' : 'border-transparent'
+                                        }`}
+                                    onDragOver={(e) => handleDragOver(e, 'edu_logo')}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={(e) => handleDrop(e, 'edu_logo')}
+                                >
+                                    <div className="w-20 h-20 rounded-xl bg-white/5 border border-white/5 p-2 flex items-center justify-center pointer-events-none relative overflow-hidden">
                                         {education.logo_url ? <img src={education.logo_url} className="w-full h-full object-contain" alt="Logo" /> : <ImageIcon size={24} className="opacity-20" />}
+                                        {dragTarget === 'edu_logo' && (
+                                            <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-10 backdrop-blur-sm font-black text-primary text-[8px] uppercase text-center p-1">
+                                                Drop Logo
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label className="px-6 py-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 cursor-pointer transition-all flex items-center gap-2">

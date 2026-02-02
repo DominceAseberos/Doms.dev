@@ -14,6 +14,7 @@ import { compressImage } from '../../../utils/imageUtils';
 const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
     const [currentProject, setCurrentProject] = useState(null);
     const [isPreviewMode, setIsPreviewMode] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
     const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
     const [mediaPickerMode, setMediaPickerMode] = useState('single');
     const { setAdminLoading } = useAdminStore();
@@ -38,20 +39,21 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
         await onSave(currentProject);
     };
 
-    const handleImageUpload = async (e) => {
-        const file = e.target.files[0];
+    const processAndUpload = async (file) => {
         if (!file) return;
 
         setAdminLoading(true, 'UPLOADING ASSET');
         try {
             let uploadFile = file;
-            try {
-                uploadFile = await compressImage(file);
-            } catch (compErr) {
-                console.warn('Compression failed, using original', compErr);
+            if (file.type.startsWith('image/')) {
+                try {
+                    uploadFile = await compressImage(file);
+                } catch (compErr) {
+                    console.warn('Compression failed, using original', compErr);
+                }
             }
 
-            const fileName = `proj_${Date.now()}`;
+            const fileName = `proj_${Date.now()}_${uploadFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
             const publicUrl = await projectService.uploadProjectImage(uploadFile, fileName);
             setCurrentProject(prev => ({ ...prev, image_url: publicUrl }));
         } catch (err) {
@@ -59,6 +61,48 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
             alert('Upload failed. Please check your storage bucket permissions.');
         } finally {
             setAdminLoading(false);
+        }
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        await processAndUpload(file);
+    };
+
+    const handlePaste = async (e) => {
+        if (e.clipboardData && e.clipboardData.items) {
+            const items = e.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const file = items[i].getAsFile();
+                    await processAndUpload(file);
+                    e.preventDefault();
+                    break;
+                }
+            }
+        }
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+    };
+
+    const handleDrop = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            const file = e.dataTransfer.files[0];
+            await processAndUpload(file);
         }
     };
 
@@ -223,7 +267,13 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
+                                <div
+                                    className={`space-y-2 border rounded-xl p-2 transition-colors ${isDragging ? 'border-primary bg-primary/5' : 'border-transparent'
+                                        }`}
+                                    onDragOver={handleDragOver}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={handleDrop}
+                                >
                                     <label className="text-[10px] uppercase font-bold tracking-widest opacity-40 ml-1">Primary Image (Thumbnail)</label>
 
                                     {currentProject.image_url && (
@@ -236,6 +286,16 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
                                         </div>
                                     )}
+                                    {isDragging && !currentProject.image_url && (
+                                        <div className="w-full h-32 rounded-xl border-2 border-dashed border-primary bg-primary/10 flex items-center justify-center mb-2">
+                                            <span className="text-primary font-black text-xs uppercase tracking-widest">Drop Image Here</span>
+                                        </div>
+                                    )}
+                                    {isDragging && currentProject.image_url && (
+                                        <div className="absolute inset-0 z-50 rounded-xl border-2 border-dashed border-primary bg-black/80 flex items-center justify-center mb-2 pointer-events-none">
+                                            <span className="text-primary font-black text-xs uppercase tracking-widest">Drop to Replace</span>
+                                        </div>
+                                    )}
 
                                     <div className="flex gap-2">
                                         <div className="flex-1 relative">
@@ -243,8 +303,9 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
                                                 type="text"
                                                 value={currentProject.image_url}
                                                 onChange={(e) => setCurrentProject({ ...currentProject, image_url: e.target.value })}
+                                                onPaste={handlePaste}
                                                 className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:border-primary/50 transition-colors"
-                                                placeholder="Asset URL"
+                                                placeholder="Asset URL (Paste or Drag Image)"
                                             />
                                             <ImageIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-20" />
                                         </div>

@@ -16,7 +16,8 @@ import {
     BackButton,
     DownloadCVButton,
     TextAboutMe,
-    TextFeed
+    TextFeed,
+    EffectsCard
 } from '../features/about';
 
 // Custom Hooks
@@ -45,6 +46,7 @@ const AboutMePage = () => {
         textFeedRef,
         backButtonRef,
         cvButtonRef,
+        effectsCardRef,
         handleLoadComplete,
         handleImageExpand,
         handleImageClose
@@ -63,7 +65,8 @@ const AboutMePage = () => {
         textAboutMeRef,
         textFeedRef,
         backButtonRef,
-        cvButtonRef
+        cvButtonRef,
+        effectsCardRef
     });
 
     return (
@@ -88,6 +91,13 @@ const AboutMePage = () => {
                     <div className="flex flex-start w-full">
                         <BackButton />
                     </div>
+                    <div className="mobile-reveal-card w-full">
+                        <EffectsCard effectsCardRef={effectsCardRef} />
+
+                    </div>
+                    <div className="mobile-reveal-card w-full">
+                        <TextAboutMe textAboutMeRef={textAboutMeRef} />
+                    </div>
                     {/* Strictly hidden wrappers for manual mobile sequence */}
                     <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
                         <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
@@ -95,6 +105,11 @@ const AboutMePage = () => {
 
                     <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
                         <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
+                    </div>
+
+                    <div className="mobile-reveal-card w-full">
+                        <TextFeed textFeedRef={textFeedRef} />
+
                     </div>
 
                     <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
@@ -135,7 +150,7 @@ const AboutMePage = () => {
 
                 {/* ================== BIG SCREEN LAYOUT ===================== */}
 
-                <div className="flex flex-row gap-4 w-full h-full p-4">
+                <div className="hidden md:flex md:flex-row md:gap-4 md:w-full md:h-full md:p-4">
 
                     {/* LEFT SIDE */}
                     <div className="grid grid-cols-6 gap-2 h-full w-full">
@@ -145,11 +160,8 @@ const AboutMePage = () => {
                                 <div ref={backButtonRef} className="w-1/2 h-full">
                                     <BackButton />
                                 </div>
+                                <EffectsCard effectsCardRef={effectsCardRef} />
 
-                                <span className='
-                                rounded-2xl w-full h-full  w-full items-center justify-center border border-white/5
-                                '>
-                                </span>
                             </div>
 
                         </div>
