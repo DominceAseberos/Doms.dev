@@ -13,7 +13,7 @@ const MediaCenter = () => {
     const navigate = useNavigate();
     const { setAdminLoading } = useAdminStore();
     const [files, setFiles] = useState([]);
-    const [stats, setStats] = useState({ count: 0, size: '0 MB' });
+    const [stats, setStats] = useState({ count: 0, size: '0 MB', optimized: '0%', cdn: 'Checking...' });
     const [previewFile, setPreviewFile] = useState(null);
 
     useEffect(() => {
@@ -25,7 +25,9 @@ const MediaCenter = () => {
         try {
             const data = await mediaService.getFiles();
             setFiles(data);
+            setFiles(data);
             calculateStats(data);
+            checkCdnStatus(data[0]);
         } catch (err) {
             console.error('Fetch failed:', err);
         } finally {
@@ -35,10 +37,35 @@ const MediaCenter = () => {
 
     const calculateStats = (fileList) => {
         const totalSize = fileList.reduce((acc, file) => acc + (file.metadata?.size || 0), 0);
-        setStats({
+
+        // Calculate Optimized Score (Images < 350KB)
+        const totalImages = fileList.filter(f => f.type === 'image').length;
+        const optimizedImages = fileList.filter(f => f.type === 'image' && (f.metadata?.size || 0) < 350 * 1024).length; // 350KB threshold
+        const optimizedPercent = totalImages > 0 ? Math.round((optimizedImages / totalImages) * 100) : 100;
+
+        setStats(prev => ({
+            ...prev,
             count: fileList.length,
-            size: (totalSize / (1024 * 1024)).toFixed(2) + ' MB'
-        });
+            size: (totalSize / (1024 * 1024)).toFixed(2) + ' MB',
+            optimized: `${optimizedPercent}%`
+        }));
+    };
+
+    const checkCdnStatus = async (latestFile) => {
+        if (!latestFile) {
+            setStats(prev => ({ ...prev, cdn: 'Idle' }));
+            return;
+        }
+
+        try {
+            const response = await fetch(latestFile.url, { method: 'HEAD' });
+            setStats(prev => ({
+                ...prev,
+                cdn: response.ok ? 'Online' : 'Unreachable'
+            }));
+        } catch (error) {
+            setStats(prev => ({ ...prev, cdn: 'Error' }));
+        }
     };
 
     const handleFileUpload = async (e) => {
@@ -128,8 +155,8 @@ const MediaCenter = () => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <StatCard label="Total Nodes" value={stats.count} icon={Database} />
                     <StatCard label="Memory Usage" value={stats.size} icon={HardDrive} />
-                    <StatCard label="Optimized" value="100%" icon={ImageIcon} />
-                    <StatCard label="CDN Status" value="Online" icon={Share2} />
+                    <StatCard label="Optimized" value={stats.optimized} icon={ImageIcon} />
+                    <StatCard label="CDN Status" value={stats.cdn} icon={Share2} />
                 </div>
 
                 {/* File Grid */}
