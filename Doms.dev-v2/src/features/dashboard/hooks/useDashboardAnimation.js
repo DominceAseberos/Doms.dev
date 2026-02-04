@@ -32,19 +32,19 @@ export const useDashboardAnimation = ({
                                 attr: { r: "120%" },
                                 opacity: 0,
                                 strokeWidth: 0,
-                                duration: 2.5,
+                                duration: 4.0, // Slower wave
                                 ease: "power2.out",
-                                stagger: 0.2
+                                stagger: 0.4 // Slower stagger
                             },
                             0
                         );
                     }
 
-                    // 1. Profile + AboutMe (Overlap at 0.7s)
+                    // 1. Profile + AboutMe (Overlap at 1.2s - adjusted for slower wave)
                     tl.fromTo(".desktop-profile-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" },
-                        0.7
+                        1.2
                     );
 
                     // 2. ProjectHead container, then inner text
@@ -63,31 +63,31 @@ export const useDashboardAnimation = ({
                                 }
                             }
                         },
-                        1.0
+                        1.5
                     );
 
                     // 3. Projects carousel
                     tl.fromTo(".desktop-projects-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
-                        1.3
+                        1.8
                     );
 
                     // 4. MusicPlayer + ThemeToggle + Contacts (slight stagger)
                     tl.fromTo(".desktop-theme-row",
                         { opacity: 0, y: 20 },
                         { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-                        1.6
+                        2.1
                     );
                     tl.fromTo(".desktop-music-row",
                         { opacity: 0, y: 25, scale: 0.98 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" },
-                        1.7
+                        2.2
                     );
                     tl.fromTo(".desktop-contacts-row",
                         { opacity: 0, y: 25 },
                         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-                        1.8
+                        2.3
                     );
 
                     // 5. ProjectBottom (container then inner text like ProjectHead)
@@ -115,24 +115,24 @@ export const useDashboardAnimation = ({
                                 }
                             }
                         },
-                        1.9
+                        2.4
                     );
 
                     // 6. GitHub Stats + GitHubFocusCard + TechStacks
                     tl.fromTo(".desktop-github-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
-                        2.1
+                        2.6
                     );
                     tl.fromTo(".desktop-focus-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
-                        2.1
+                        2.6
                     );
                     tl.fromTo(".desktop-techstacks-row",
                         { opacity: 0, y: 25 },
                         { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-                        2.3
+                        2.8
                     );
 
                     tl.eventCallback("onComplete", () => {
@@ -154,81 +154,74 @@ export const useDashboardAnimation = ({
         const mobileCards = Array.from(document.querySelectorAll('.mobile-reveal'));
         if (!mobileCards.length) return;
 
-        // Cards layout: [0]=Profile/Music, [1]=AboutMe, [2]=ProjectHead, [3]=Projects, [4+]=rest
-        const profileRow = mobileCards[0];      // Profile + Music + Theme
-        const aboutMe = mobileCards[1];         // AboutMe card
-        const projectHead = mobileCards[2];     // ProjectHead container
-        const projectsCarousel = mobileCards[3]; // Projects carousel
-        const belowFoldCards = mobileCards.slice(4); // ProjectBottom, GitHub, Contacts, etc.
+        // SPLIT CARDS: Visible vs. Below Fold
+        const visibleCards = [];
+        const hiddenCards = [];
 
-        // 1. Profile/Music row (delay: 0.5s)
-        gsap.fromTo(profileRow,
-            { scale: 0.92, opacity: 0, y: 30 },
-            {
-                scale: 1, opacity: 1, y: 0,
-                duration: 0.6, delay: 0.5, ease: "power3.out",
-                onComplete: () => profileRow?.classList.add('animation-complete')
+        mobileCards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            // Check if card is roughly in viewport (top < windowHeight - small buffer)
+            if (rect.top < window.innerHeight - 50) {
+                visibleCards.push(card);
+            } else {
+                hiddenCards.push(card);
             }
-        );
+        });
 
-        // 2. AboutMe card (delay: 1s)
-        gsap.fromTo(aboutMe,
-            { scale: 0.92, opacity: 0, y: 30 },
-            {
-                scale: 1, opacity: 1, y: 0,
-                duration: 0.6, delay: 1, ease: "power3.out",
-                onComplete: () => aboutMe?.classList.add('animation-complete')
-            }
-        );
+        // 1. ANIMATE VISIBLE CARDS (Sequential Top-to-Bottom)
+        // Start after ripple overlap (approx 1.2s)
+        const startDelay = 1.2;
 
-        // 3. ProjectHead container (delay: 1.6s), then inner text
-        gsap.fromTo(projectHead,
-            { scale: 0.92, opacity: 0, y: 30 },
-            {
-                scale: 1, opacity: 1, y: 0,
-                duration: 0.6, delay: 1.6, ease: "power3.out",
-                onComplete: () => {
-                    projectHead?.classList.add('animation-complete');
-                    // Animate inner text after container reveals
-                    const innerElements = projectHead?.querySelectorAll('.animate-portfolio, .animate-breadcrumb');
-                    if (innerElements?.length) {
-                        gsap.fromTo(innerElements,
-                            { y: 20, opacity: 0 },
-                            {
-                                y: 0, opacity: 1,
-                                duration: 0.6, stagger: 0.08, ease: "power3.out"
-                            }
-                        );
-                    }
-                }
-            }
-        );
-
-        // 4. Projects carousel (delay: 2.4s - bigger delay)
-        gsap.fromTo(projectsCarousel,
-            { scale: 0.95, opacity: 0, y: 40 },
-            {
-                scale: 1, opacity: 1, y: 0,
-                duration: 0.7, delay: 2.4, ease: "power3.out",
-                onComplete: () => projectsCarousel?.classList.add('animation-complete')
-            }
-        );
-
-        // 5. Below fold cards: scroll-triggered with staggered delays
-        belowFoldCards.forEach((card, index) => {
+        visibleCards.forEach((card, index) => {
             gsap.fromTo(card,
-                { scale: 0.95, opacity: 0, y: 25 },
+                { scale: 0.95, opacity: 0, y: 30 },
                 {
                     scale: 1, opacity: 1, y: 0,
-                    duration: 0.5, ease: "power2.out",
-                    delay: index * 0.15, // Stagger delay
+                    duration: 0.6,
+                    delay: startDelay + (index * 0.15), // Sequential stagger
+                    ease: "power3.out",
+                    onComplete: () => {
+                        card.classList.add('animation-complete');
+                        // Inner text animations (if any)
+                        const innerElements = card.querySelectorAll('.animate-portfolio, .animate-breadcrumb');
+                        if (innerElements.length) {
+                            gsap.fromTo(innerElements,
+                                { y: 20, opacity: 0 },
+                                {
+                                    y: 0, opacity: 1,
+                                    duration: 0.6, stagger: 0.08, ease: "power3.out"
+                                }
+                            );
+                        }
+                    }
+                }
+            );
+        });
+
+        // 2. ANIMATE HIDDEN CARDS (ScrollTrigger)
+        hiddenCards.forEach((card) => {
+            gsap.fromTo(card,
+                { scale: 0.95, opacity: 0, y: 30 },
+                {
+                    scale: 1, opacity: 1, y: 0,
+                    duration: 0.6,
+                    ease: "power2.out",
                     scrollTrigger: {
                         trigger: card,
-                        start: "top 92%",
+                        start: "top 90%", // Trigger slightly earlier than bottom
                         toggleActions: "play none none none",
                         once: true
                     },
-                    onComplete: () => card?.classList.add('animation-complete')
+                    onComplete: () => {
+                        card.classList.add('animation-complete');
+                        const innerElements = card.querySelectorAll('.animate-portfolio, .animate-breadcrumb');
+                        if (innerElements.length) {
+                            gsap.fromTo(innerElements,
+                                { y: 20, opacity: 0 },
+                                { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" }
+                            );
+                        }
+                    }
                 }
             );
         });
