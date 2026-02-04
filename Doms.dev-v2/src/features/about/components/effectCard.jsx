@@ -10,8 +10,10 @@ const EffectsCard = ({ effectsCardRef }) => {
             <div
                 ref={effectsCardRef}
                 className='
-                                rounded-2xl w-full h-full flex items-center justify-center border border-white/10
+                                rounded-2xl w-full h-full border border-white/10
+                                bg-gradient-to-br from-white/5 to-transparent
                                 '>
+
             </div>
         </>
     )

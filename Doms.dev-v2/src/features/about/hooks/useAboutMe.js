@@ -20,6 +20,7 @@ export const useAboutMe = () => {
     const textFeedRef = useRef(null);
     const backButtonRef = useRef(null);
     const cvButtonRef = useRef(null);
+    const effectsCardRef = useRef(null);
 
     // Track when data is ready
     useEffect(() => {
@@ -83,6 +84,7 @@ export const useAboutMe = () => {
         textFeedRef,
         backButtonRef,
         cvButtonRef,
+        effectsCardRef,
 
         // Handlers
         handleLoadComplete,

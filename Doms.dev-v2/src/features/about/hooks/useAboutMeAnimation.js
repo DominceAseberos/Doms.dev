@@ -17,17 +17,19 @@ export const useAboutMeAnimation = ({
     textFeedRef,
     backButtonRef,
     cvButtonRef,
+    effectsCardRef,
     dropletRef
 }) => {
     useLayoutEffect(() => {
         if (!revealReady) return;
 
         const isMobile = window.innerWidth < 768;
-        const popCards = [heroCardRef, identityCardRef, feedCard, mdIconStack, educationCardRef, resumeCardRef, footerRef];
+        // Collect refs for cleanup
+        const popCards = [heroCardRef, identityCardRef, feedCard, mdIconStack, educationCardRef, resumeCardRef, footerRef, effectsCardRef];
         const textContainers = [textAboutMeRef, textFeedRef, backButtonRef, cvButtonRef];
 
-        const cardEls = popCards.map(ref => ref.current).filter(Boolean);
-        const textEls = textContainers.map(ref => ref.current).filter(Boolean);
+        const cardEls = popCards.map(ref => ref?.current).filter(Boolean);
+        const textEls = textContainers.map(ref => ref?.current).filter(Boolean);
         gsap.killTweensOf([...cardEls, ...textEls]);
 
         // Ripple Animation (Shared)
@@ -38,7 +40,7 @@ export const useAboutMeAnimation = ({
                     attr: { r: "120%" },
                     opacity: 0,
                     strokeWidth: 0,
-                    duration: 4.0, // Slower wave
+                    duration: 4.0,
                     ease: "power2.out",
                     stagger: 0.4
                 }
@@ -118,152 +120,154 @@ export const useAboutMeAnimation = ({
                 );
             });
         } else {
-
-
-            // DESKTOP: Sequential reveal with specific timing
-            // First, hide all cards immediately so they're not visible before animation
+            // DESKTOP: Strict Sequential Reveal
+            // Hide all initially
             gsap.set(cardEls, { opacity: 0, y: 25, scale: 0.95 });
             gsap.set(textEls, { opacity: 0 });
 
-            const tl = gsap.timeline();
+            // Create Context for cleanup
+            let ctx = gsap.context(() => {
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        [...cardEls, ...textEls].forEach(el => el?.classList.add('animation-complete'));
+                    }
+                });
 
-            // 1. Hero / Profile (1.2s)
-            if (heroCardRef.current) {
-                tl.fromTo(heroCardRef.current,
-                    { opacity: 0, y: 30, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    1.2
-                );
-            }
-
-            if (backButtonRef.current) {
-                tl.fromTo(backButtonRef.current,
-                    { opacity: 0, x: -20 },
-                    { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
-                    1.2
-                );
-            }
-
-            // 2. TextAboutMe (1.6s)
-            if (textAboutMeRef.current) {
-                // Gentle container reveal (fade only)
-                tl.fromTo(textAboutMeRef.current,
-                    { opacity: 0 },
-                    { opacity: 1, duration: 0.4, ease: 'power2.out' },
-                    1.6
-                );
-
-                const textElements = textAboutMeRef.current.querySelectorAll('.text-reveal');
-                if (textElements.length > 0) {
-                    tl.fromTo(textElements,
-                        { opacity: 0, y: 15 },
-                        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'back.out(1.2)' },
-                        1.0
+                // --- STEP 1: HEADER (Back Button + Effects Card) ---
+                // Start slightly after ripple (0.5s)
+                if (backButtonRef.current) {
+                    tl.fromTo(backButtonRef.current,
+                        { opacity: 0, x: -20 },
+                        { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
+                        0.5
                     );
                 }
-            }
-
-            // 3. Identity (2.4s) - Wait for TextAboutMe (approx 0.8s)
-            if (identityCardRef.current) {
-                tl.fromTo(identityCardRef.current,
-                    { opacity: 0, y: 30, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    2.4
-                );
-            }
-
-            // 4. TextFeed (2.7s)
-            if (textFeedRef.current) {
-                // Gentle container reveal (fade only)
-                tl.fromTo(textFeedRef.current,
-                    { opacity: 0 },
-                    { opacity: 1, duration: 0.4, ease: 'power2.out' },
-                    2.7
-                );
-
-                const textFeedElements = textFeedRef.current.querySelectorAll('.text-reveal');
-                if (textFeedElements.length > 0) {
-                    tl.fromTo(textFeedElements,
-                        { opacity: 0, y: 15 },
-                        { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'back.out(1.2)' },
-                        2.8
+                if (effectsCardRef.current) {
+                    tl.fromTo(effectsCardRef.current,
+                        { opacity: 0, scale: 0.8, y: 0 },
+                        { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: 'back.out(1.2)' },
+                        "<0.1" // Simultaneous with back button
                     );
                 }
-            }
 
-            // 5. Feed Card (3.5s) - Wait for TextFeed (approx 0.8s)
-            if (feedCard.current) {
-                tl.fromTo(feedCard.current,
-                    { opacity: 0, y: 30, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    3.5
-                );
-            }
+                // --- STEP 2: ABOUT ME TEXT (Upper Right) ---
+                if (textAboutMeRef.current) {
+                    // Container
+                    tl.fromTo(textAboutMeRef.current,
+                        { opacity: 0 },
+                        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+                        ">0.1"
+                    );
+                    // Inner Text
+                    const textElements = textAboutMeRef.current.querySelectorAll('.text-reveal');
+                    if (textElements.length > 0) {
+                        tl.fromTo(textElements,
+                            { opacity: 0, y: 15 },
+                            { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'back.out(1.2)' },
+                            ">"
+                        );
+                    }
+                }
 
-            // --- FASTER SEQUENCE ---
-
-            // 6. Tech Stack (3.9s)
-            if (mdIconStack.current) {
-                tl.fromTo(mdIconStack.current,
-                    { opacity: 0, y: 25, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    3.9
-                );
-            }
-
-            // 7. Education (4.1s)
-            if (educationCardRef.current) {
-                tl.fromTo(educationCardRef.current,
-                    { opacity: 0, y: 25, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    4.1
-                );
-            }
-
-            // 8. Resume (4.3s)
-            if (resumeCardRef.current) {
-                tl.fromTo(resumeCardRef.current,
-                    { opacity: 0, y: 25, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    4.3
-                );
-            }
-
-            if (cvButtonRef.current) {
-                tl.fromTo(cvButtonRef.current,
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-                    4.4
-                );
-            }
-
-            // 9. Footer (4.5s)
-            if (footerRef.current) {
-                // Reveal Container
-                tl.fromTo(footerRef.current,
-                    { opacity: 0, y: 25, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    4.5
-                );
-
-                // Reveal Icons/Text inside
-                const footerElements = footerRef.current.querySelectorAll('.scroll-reveal');
-                if (footerElements.length) {
-                    tl.fromTo(footerElements,
-                        { opacity: 0, y: 10 },
-                        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' },
-                        4.7 // Start after container reveals
+                // --- STEP 3: IDENTITY ROW (Hero + Identity Cards) ---
+                if (heroCardRef.current) {
+                    tl.fromTo(heroCardRef.current,
+                        { opacity: 0, y: 30, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
+                        ">" // Wait for text
                     );
                 }
-            }
+                if (identityCardRef.current) {
+                    tl.fromTo(identityCardRef.current,
+                        { opacity: 0, y: 30, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
+                        "<0.2" // Slight overlap with Hero
+                    );
+                }
 
-            tl.eventCallback('onComplete', () => {
-                [...cardEls, ...textEls].forEach(el => el?.classList.add('animation-complete'));
+                // --- STEP 4: FEED TEXT (Left Middle) ---
+                if (textFeedRef.current) {
+                    tl.fromTo(textFeedRef.current,
+                        { opacity: 0 },
+                        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+                        ">0.1"
+                    );
+                    const textFeedElements = textFeedRef.current.querySelectorAll('.text-reveal');
+                    if (textFeedElements.length > 0) {
+                        tl.fromTo(textFeedElements,
+                            { opacity: 0, y: 15 },
+                            { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'back.out(1.2)' },
+                            ">"
+                        );
+                    }
+                }
+
+                // --- STEP 5: FEED CARD (Status) ---
+                if (feedCard.current) {
+                    tl.fromTo(feedCard.current,
+                        { opacity: 0, y: 30, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
+                        ">" // Wait for Feed Text
+                    );
+                }
+
+                // --- STEP 6: EDUCATION & RESUME ---
+                if (educationCardRef.current) {
+                    tl.fromTo(educationCardRef.current,
+                        { opacity: 0, y: 25, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                        ">0.1"
+                    );
+                }
+                if (resumeCardRef.current) {
+                    tl.fromTo(resumeCardRef.current,
+                        { opacity: 0, y: 25, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                        "<0.2"
+                    );
+                }
+
+                // --- STEP 7: TECH STACK ---
+                if (mdIconStack.current) {
+                    tl.fromTo(mdIconStack.current,
+                        { opacity: 0, y: 25, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                        ">0.1"
+                    );
+                }
+
+                // --- STEP 8: FOOTER SECTION (CV + Footer) ---
+                if (cvButtonRef.current) {
+                    tl.fromTo(cvButtonRef.current,
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+                        ">0.1"
+                    );
+                }
+
+                if (footerRef.current) {
+                    tl.fromTo(footerRef.current,
+                        { opacity: 0, y: 25, scale: 0.95 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+                        ">0.1"
+                    );
+
+                    const footerElements = footerRef.current.querySelectorAll('.scroll-reveal');
+                    if (footerElements.length) {
+                        tl.fromTo(footerElements,
+                            { opacity: 0, y: 10 },
+                            { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' },
+                            ">"
+                        );
+                    }
+                }
             });
+
+            return () => ctx.revert();
         }
 
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
-    }, [revealReady, heroCardRef, textAboutMeRef, identityCardRef, feedCard, textFeedRef, mdIconStack, educationCardRef, resumeCardRef, footerRef, backButtonRef, cvButtonRef]);
+    }, [revealReady, heroCardRef, textAboutMeRef, identityCardRef, feedCard, textFeedRef, mdIconStack, educationCardRef, resumeCardRef, footerRef, backButtonRef, cvButtonRef, effectsCardRef]);
 };
