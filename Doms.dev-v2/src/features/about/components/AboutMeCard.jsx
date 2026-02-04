@@ -23,10 +23,10 @@ const AboutMeCard = () => {
                 </p>
             </div>
 
-            <div className="w-full flex items-end justify-between">
+            <div className="w-full flex md:flex-col md:items-start lg:flex-row  lg:items-end justify-between ">
                 <div className="flex items-center gap-2 mb-1">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-100 animate-pulse shadow-[0_0_8px_rgba(50,197,94,1)" />
-                    <span className="text-[9px] md:text-[12px] font-mono  tracking-tight max-w-[100px] truncate"
+                    <span className="text-[9px] md:text-[12px] font-mono  tracking-tight max-w-[150px] truncate"
                         style={{
 
                             color: `rgb(var(--contrast-rgb))`

@@ -77,7 +77,7 @@ const AboutMePage = () => {
                 minDisplayTime={600}
             />
             <div
-                className="min-h-screen w-full py-2 px-4 md:px-2"
+                className="w-full py-2 px-4 md:px-2 md:h-screen md:py-8 md:pb-8"
                 style={{
                     background: `linear-gradient(to bottom, rgb(var(--body-Linear-1-rgb)), rgb(var(--body-Linear-2-rgb)))`,
                     opacity: revealReady ? 1 : 0,
@@ -107,14 +107,7 @@ const AboutMePage = () => {
                         <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
                     </div>
 
-                    <div className="mobile-reveal-card w-full">
-                        <TextFeed textFeedRef={textFeedRef} />
 
-                    </div>
-
-                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
-                        <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
-                    </div>
 
                     <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
                         <AboutMeTechStack mdIconStack={mdIconStack} techStack={techStack} />
@@ -134,6 +127,14 @@ const AboutMePage = () => {
                         </div>
                     </div>
 
+                    <div className="mobile-reveal-card w-full">
+                        <TextFeed textFeedRef={textFeedRef} />
+
+                    </div>
+
+                    <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
+                        <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
+                    </div>
 
                     <div className="mobile-reveal-card w-full" style={{ opacity: 0 }}>
                         <div className="w-full
@@ -150,94 +151,97 @@ const AboutMePage = () => {
 
                 {/* ================== BIG SCREEN LAYOUT ===================== */}
 
-                <div className="hidden md:flex md:flex-row md:gap-4 md:w-full md:h-full md:p-4">
+                <div className="hidden md:flex items-center justify-center min-h-screen w-full p-4 lg:p-8">
+                    <div className="w-full max-w-7xl h-[80vh] max-h-[1100px] flex flex-row gap-6">
 
-                    {/* LEFT SIDE */}
-                    <div className="grid grid-cols-6 gap-2 h-full w-full">
+                        {/* LEFT SIDE */}
+                        <div className="grid grid-cols-6 gap-4 h-full w-full">
 
-                        <div className="col-span-6">
-                            <div className="flex flex-row gap-2 justify-between items-center h-full">
-                                <div ref={backButtonRef} className="w-1/2 h-full">
-                                    <BackButton />
-                                </div>
-                                <EffectsCard effectsCardRef={effectsCardRef} />
+                            <div className="col-span-6">
+                                <div className="flex flex-row gap-2 justify-between items-center h-full">
+                                    <div ref={backButtonRef} className="w-1/2 h-full">
+                                        <BackButton />
+                                    </div>
+                                    <EffectsCard effectsCardRef={effectsCardRef} />
 
-                            </div>
-
-                        </div>
-
-                        <div className="col-span-6 w-full h-50">
-                            <TextAboutMe textAboutMeRef={textAboutMeRef} />
-                        </div>
-
-
-                        <div className="col-span-6  w-full flex flex-row justify-between gap-2">
-                            <div className="w-full h-full ">
-                                <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
-
-                            </div>
-                            <div className="w-full h-full">
-                                <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
-
-
-                            </div>
-
-                        </div>
-
-                        <div className="col-span-6 w-full h-full ">
-
-                            <div className="w-full h-full">
-                                <div className="w-full h-1/2">
-                                    <AboutMeEducation educationCardRef={educationCardRef} education={education} onExpand={handleImageExpand} />
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-
-                    </div>
-                    <div className="flex flex-col gap-2 h-full w-full">
-                        <div className="w-full">
-                            <AboutMeTechStack mdIconStack={mdIconStack} techStack={techStack} />
-
-
-
-                        </div>
-                        <div className="w-full">
-                            <TextFeed textFeedRef={textFeedRef} />
-
-                        </div>
-                        <div className="w-full">
-                            <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
-                        </div>
-
-                        <div className="flex flex-row w-full h-full gap-4 items-center">
-                            <div className="w-40 h-full">
-                                <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
-
-                            </div>
-
-                            <div className="flex flex-col gap-2 w-full justify-between">
-                                <div ref={cvButtonRef} className="w-full">
-                                    <DownloadCVButton profile={profile} />
-                                </div>
-
-
-                                <div
-                                    ref={footerRef}
-                                    className=" w-full rounded-2xl p-6 border border-white/5"
-                                    style={{
-                                        background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
-                                    }}
-                                >
-                                    <AboutMeFooter contacts={contacts} profile={profile} />
                                 </div>
 
                             </div>
-                        </div>
 
+                            <div className="col-span-6 w-full h-50">
+                                <TextAboutMe textAboutMeRef={textAboutMeRef} />
+                            </div>
+
+
+                            <div className="col-span-6  w-full flex flex-row justify-between gap-2">
+                                <div className="w-full h-full ">
+                                    <AboutMeHero heroCardRef={heroCardRef} onExpand={handleImageExpand} profile={profile} />
+
+                                </div>
+                                <div className="w-full h-full">
+                                    <AboutMeIdentity identityCardRef={identityCardRef} profile={profile} />
+
+
+                                </div>
+
+                            </div>
+
+                            <div className="col-span-6 w-full h-full ">
+
+                                <div className="w-full h-full flex flex-row gap-2 justify-between">
+                                    <div className="w-full ">
+                                        <AboutMeEducation educationCardRef={educationCardRef} education={education} onExpand={handleImageExpand} />
+                                    </div>
+                                    <div className="w-1/2 h-full">
+                                        <AboutMeResume resumeCardRef={resumeCardRef} onExpand={handleImageExpand} profile={profile} />
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+                        <div className="flex flex-col gap-4 h-full w-full">
+                            <div className="w-full">
+                                <AboutMeTechStack mdIconStack={mdIconStack} techStack={techStack} />
+
+
+
+                            </div>
+                            <div className="w-full">
+                                <TextFeed textFeedRef={textFeedRef} />
+
+                            </div>
+                            <div className="w-full">
+                                <AboutMeStatusCard feedCard={feedCard} onExpand={handleImageExpand} profile={profile} />
+                            </div>
+
+                            <div className="flex flex-row w-full h-full gap-4 items-stretch">
+
+
+                                <div className="flex flex-col gap-4 w-full justify-between h-full">
+                                    <div ref={cvButtonRef} className="w-full">
+                                        <DownloadCVButton profile={profile} />
+                                    </div>
+
+
+                                    <div
+                                        ref={footerRef}
+                                        className=" w-full rounded-2xl p-6 border border-white/5"
+                                        style={{
+                                            background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
+                                        }}
+                                    >
+                                        <AboutMeFooter contacts={contacts} profile={profile} />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 

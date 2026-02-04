@@ -39,17 +39,15 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
 
             <div className="scroll-reveal space-y-2">
                 <h3
-                    className="font-bold"
+                    className="font-bold text-base md:text-lg"
                     style={{
-                        color: 'rgb(var(--contrast-rgb))',
-                        fontSize: 'clamp(16px, 3vw, 18px)'
+                        color: 'rgb(var(--contrast-rgb))'
                     }}
                 >
                     {education.school}
                 </h3>
                 <p
-                    className="text-gray-300 font-medium"
-                    style={{ fontSize: 'clamp(13px, 2vw, 14px)' }}
+                    className="text-gray-300 font-medium text-xs md:text-sm"
                 >
                     {education.degree}
                 </p>

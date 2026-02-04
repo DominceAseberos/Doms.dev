@@ -45,7 +45,7 @@ const Dashboard = () => {
             />
             <main
                 role="main"
-                className="relative"
+                className="relative min-h-screen"
                 aria-label="Portfolio Dashboard"
                 style={{
                     opacity: revealReady ? 1 : 0,
@@ -109,57 +109,68 @@ const Dashboard = () => {
                     </div>
                 ) : (
                     /* Desktop Layout */
-                    <div ref={compRef} className='grid grid-cols-2 gap-x-5 px-12'>
-                        <div className='col-span-1'>
-                            <div className='grid grid-cols-6 gap-2'>
-
-                                <div className="col-span-6 h-fit desktop-profile-row">
-                                    <div className="flex flex-row gap-2 justify-between">
-                                        <div className='h-[160px] w-[180px]'>
+                    <div className="hidden md:flex items-center justify-center min-h-screen w-full p-4 lg:p-8">
+                        <div
+                            ref={compRef}
+                            className="w-full max-w-7xl h-fit grid grid-cols-2 gap-4 lg:gap-6"
+                        >
+                            {/* LEFT COLUMN */}
+                            <div className='col-span-1 flex flex-col gap-2 lg:gap-4 h-full'>
+                                {/* Profile & About Row */}
+                                <div className="flex flex-col gap-2 lg:gap-4 flex-shrink-0">
+                                    <div className="flex flex-row gap-2 lg:gap-4 h-full w-full">
+                                        <div className="w-[130px] h-[130px] flex-shrink-0">
                                             <Profile />
                                         </div>
-
-                                        <div className="h-[160px] w-full bento-card">
+                                        <div className="flex-1">
                                             <AboutMeCard />
                                         </div>
-
+                                    </div>
+                                    <div className="desktop-theme-row flex-shrink-0">
+                                        <ThemeToggle />
                                     </div>
                                 </div>
-                                <div className="col-span-6 desktop-theme-row">
-                                    <ThemeToggle />
 
+                                {/* Music & Contacts Row */}
+                                <div className="flex flex-row gap-2 lg:gap-4 w-full h-[180px] lg:h-[200px] justify-between flex-shrink-0">
+                                    <div className='w-full desktop-music-row'>
+                                        <MusicPlayer />
+                                    </div>
+                                    <div className='w-1/2 desktop-contacts-row'>
+                                        <Contacts />
+                                    </div>
                                 </div>
-                                <div className='col-span-4 bento-card md:h-35 lg:h-35 desktop-music-row'>
-                                    <MusicPlayer />
-                                </div>
-                                <div className='col-span-2 bento-card md:h-35 lg:h-35 desktop-music-row'>
-                                    <Contacts />
-                                </div>
-                                <div className='col-span-6 bento-card md:h-50 lg:h-50 desktop-github-row'>
+
+                                {/* Github Stats - Fills remaining vertical space */}
+                                <div className='bento-card flex-1 min-h-[300px] desktop-github-row'>
                                     <StatsGitHub />
                                 </div>
                             </div>
-                        </div>
 
-                        <div className='col-span-1'>
-                            <div className='grid grid-cols-6 gap-5'>
-                                <div className='col-span-6 desktop-projecthead-row'>
+                            {/* RIGHT COLUMN */}
+                            <div className='col-span-1 flex flex-col gap-2 lg:gap-4 h-full'>
+                                {/* Top Section */}
+                                <div className="desktop-github-row flex-shrink-0">
                                     <ProjectHead />
                                 </div>
-                                <div className='col-span-6 md:h-75 lg:h-75'>
-                                    <div className="flex flex-row h-full justify-between gap-2">
-                                        <div className="flex-[2] min-w-0 desktop-projects-row">
+
+                                {/* MIDDLE SECTION: Flexible Space Filler */}
+                                <div className="flex-1 min-h-[300px]">
+                                    <div className="flex flex-row gap-2 lg:gap-4 h-full">
+                                        <div className="flex-1 desktop-projects-row h-full">
                                             <Projects />
                                         </div>
-                                        <div className="flex-1 md:max-w-32 lg:max-w-40 desktop-focus-row">
+                                        <div className="w-1/3 desktop-github-row h-full">
                                             <GitHubFocusCard />
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-span-6 bento-card desktop-projectbottom-row'>
+
+                                {/* Bottom Sections */}
+                                <div className="desktop-github-row flex-shrink-0">
                                     <ProjectBottom />
                                 </div>
-                                <div className='col-span-6 bento-card desktop-techstacks-row'>
+                                <div className="desktop-github-row flex-shrink-0">
                                     <TechStacks />
                                 </div>
                             </div>
@@ -168,7 +179,7 @@ const Dashboard = () => {
                 )}
                 <FloatingChat />
 
-            </main>
+            </main >
         </>
     )
 }

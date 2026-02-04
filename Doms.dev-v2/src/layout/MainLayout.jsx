@@ -10,7 +10,7 @@ const MainLayout = ({ children }) => {
            rgba(var(--body-Linear-2-rgb))
         )`,
       }}
-      className="h-auto md:h-screen w-full md:overflow-hidden p-4 md:p-4"
+      className="min-h-screen w-full p-4 md:p-4"
     >
       <div>
         {children}

@@ -13,17 +13,15 @@ const AboutMeIdentity = ({ identityCardRef, profile }) => {
         >
             <div className="scroll-reveal">
                 <h1
-                    className="font-bold tracking-tight leading-none"
+                    className="font-bold tracking-tight leading-none text-base md:text-xl lg:text-2xl"
                     style={{
-                        color: 'rgb(var(--contrast-rgb))',
-                        fontSize: 'clamp(15px, 2vw, 24px)'
+                        color: 'rgb(var(--contrast-rgb))'
                     }}
                 >
                     {profile.name}
                 </h1>
                 <p
-                    className="text-gray-400 font-medium mt-1"
-                    style={{ fontSize: 'clamp(12px, 2vw, 14px)' }}
+                    className="text-gray-400 font-medium mt-1 text-xs md:text-sm"
                 >
                     {profile.birthday} • {profile.role} • {profile.location}
                 </p>
@@ -31,8 +29,7 @@ const AboutMeIdentity = ({ identityCardRef, profile }) => {
 
             <div className="scroll-reveal">
                 <p
-                    className="text-gray-300 leading-relaxed"
-                    style={{ fontSize: 'clamp(13px, 2.2vw, 15px)' }}
+                    className="text-gray-300 leading-relaxed text-sm md:text-base"
                 >
                     {profile.bio}
                 </p>
