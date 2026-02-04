@@ -16,7 +16,8 @@ export const useAboutMeAnimation = ({
     textAboutMeRef,
     textFeedRef,
     backButtonRef,
-    cvButtonRef
+    cvButtonRef,
+    dropletRef
 }) => {
     useLayoutEffect(() => {
         if (!revealReady) return;
@@ -28,6 +29,21 @@ export const useAboutMeAnimation = ({
         const cardEls = popCards.map(ref => ref.current).filter(Boolean);
         const textEls = textContainers.map(ref => ref.current).filter(Boolean);
         gsap.killTweensOf([...cardEls, ...textEls]);
+
+        // Ripple Animation (Shared)
+        if (dropletRef?.current?.length) {
+            gsap.fromTo(dropletRef.current,
+                { attr: { r: 0 }, opacity: 1, strokeWidth: 2 },
+                {
+                    attr: { r: "120%" },
+                    opacity: 0,
+                    strokeWidth: 0,
+                    duration: 2.5,
+                    ease: "power2.out",
+                    stagger: 0.2
+                }
+            );
+        }
 
         if (isMobile) {
             // MOBILE: Reveal sequences for wrappers
@@ -50,23 +66,23 @@ export const useAboutMeAnimation = ({
                 }
             };
 
-            // 1. Effects Card - Immediate Reveal
+            // 1. Effects Card - Immediate Reveal (Delayed by 0.6s)
             if (effectsCard) {
                 gsap.fromTo(effectsCard,
                     { opacity: 0, y: 30, scale: 0.92 },
                     {
-                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.1, ease: 'power3.out',
+                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.6, ease: 'power3.out',
                         onComplete: () => animateInner(effectsCard)
                     }
                 );
             }
 
-            // 2. Text About Me - Sequential Reveal (After Effects Card)
+            // 2. Text About Me - Sequential Reveal (Delayed by 1.3s)
             if (textAboutMe) {
                 gsap.fromTo(textAboutMe,
                     { opacity: 0, y: 30, scale: 0.95 },
                     {
-                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.8, ease: 'power2.out',
+                        opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 1.3, ease: 'power2.out',
                         onComplete: () => animateInner(textAboutMe)
                     }
                 );
@@ -74,11 +90,10 @@ export const useAboutMeAnimation = ({
 
             // 3. All other cards - ScrollTrigger
             scrollWrappers.forEach((wrapper, index) => {
-                // If the first scroll card (Hero) is ALREADY in view, wait for the intro sequence (1.4s).
-                // Otherwise, reveal quickly when scrolled to (0.2s).
+                // If the first scroll card (Hero) is ALREADY in view, wait for the intro sequence.
                 const isHero = index === 0;
                 const isVisible = ScrollTrigger.isInViewport(wrapper);
-                const revealDelay = (isHero && isVisible) ? 1.4 : 0.2;
+                const revealDelay = (isHero && isVisible) ? 1.9 : 0.2; // Shift 1.4 -> 1.9
 
                 gsap.fromTo(wrapper,
                     { opacity: 0, y: 30, scale: 0.95 },
@@ -104,12 +119,12 @@ export const useAboutMeAnimation = ({
 
             const tl = gsap.timeline();
 
-            // 1. Hero / Profile (0.1s) - Slow
+            // 1. Hero / Profile (0.1s) - Slow (Shifted to 1.7s)
             if (heroCardRef.current) {
                 tl.fromTo(heroCardRef.current,
                     { opacity: 0, y: 30, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    1.2
+                    1.7
                 );
             }
 
@@ -117,18 +132,17 @@ export const useAboutMeAnimation = ({
                 tl.fromTo(backButtonRef.current,
                     { opacity: 0, x: -20 },
                     { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
-                    0.2
+                    0.7
                 );
             }
 
-            // 2. TextAboutMe - Text Reveal (0.5s)
-            // 2. TextAboutMe (0.4s Container, 0.5s Text)
+            // 2. TextAboutMe - Text Reveal (1.1s)
             if (textAboutMeRef.current) {
                 // Gentle container reveal (fade only)
                 tl.fromTo(textAboutMeRef.current,
                     { opacity: 0 },
                     { opacity: 1, duration: 0.4, ease: 'power2.out' },
-                    0.6
+                    1.1
                 );
 
                 const textElements = textAboutMeRef.current.querySelectorAll('.text-reveal');
@@ -136,28 +150,27 @@ export const useAboutMeAnimation = ({
                     tl.fromTo(textElements,
                         { opacity: 0, y: 15 },
                         { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'back.out(1.2)' },
-                        0.5
+                        1.0
                     );
                 }
             }
 
-            // 3. Identity (0.9s)
+            // 3. Identity (1.4s)
             if (identityCardRef.current) {
                 tl.fromTo(identityCardRef.current,
                     { opacity: 0, y: 30, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    0.9
+                    1.4
                 );
             }
 
-            // 4. TextFeed - Text Reveal (1.3s)
-            // 4. TextFeed (1.2s Container, 1.3s Text)
+            // 4. TextFeed - Text Reveal (1.7s)
             if (textFeedRef.current) {
                 // Gentle container reveal (fade only)
                 tl.fromTo(textFeedRef.current,
                     { opacity: 0 },
                     { opacity: 1, duration: 0.4, ease: 'power2.out' },
-                    1.2
+                    1.7
                 );
 
                 const textFeedElements = textFeedRef.current.querySelectorAll('.text-reveal');
@@ -165,46 +178,46 @@ export const useAboutMeAnimation = ({
                     tl.fromTo(textFeedElements,
                         { opacity: 0, y: 15 },
                         { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'back.out(1.2)' },
-                        1.3
+                        1.8
                     );
                 }
             }
 
-            // 5. Feed Card (1.6s)
+            // 5. Feed Card (2.1s)
             if (feedCard.current) {
                 tl.fromTo(feedCard.current,
                     { opacity: 0, y: 30, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    1.6
+                    2.1
                 );
             }
 
             // --- FASTER SEQUENCE ---
 
-            // 6. Tech Stack (2.0s)
+            // 6. Tech Stack (2.5s)
             if (mdIconStack.current) {
                 tl.fromTo(mdIconStack.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    2.0
+                    2.5
                 );
             }
 
-            // 7. Education (2.2s)
+            // 7. Education (2.7s)
             if (educationCardRef.current) {
                 tl.fromTo(educationCardRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    2.2
+                    2.7
                 );
             }
 
-            // 8. Resume (2.4s)
+            // 8. Resume (2.9s)
             if (resumeCardRef.current) {
                 tl.fromTo(resumeCardRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    2.4
+                    2.9
                 );
             }
 
@@ -212,18 +225,17 @@ export const useAboutMeAnimation = ({
                 tl.fromTo(cvButtonRef.current,
                     { opacity: 0, y: 20 },
                     { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-                    2.5
+                    3.0
                 );
             }
 
-            // 9. Footer (2.6s)
-            // 9. Footer (2.6s)
+            // 9. Footer (3.1s)
             if (footerRef.current) {
                 // Reveal Container
                 tl.fromTo(footerRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    2.6
+                    3.1
                 );
 
                 // Reveal Icons/Text inside
@@ -232,7 +244,7 @@ export const useAboutMeAnimation = ({
                     tl.fromTo(footerElements,
                         { opacity: 0, y: 10 },
                         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' },
-                        2.8 // Start after container reveals
+                        3.3 // Start after container reveals
                     );
                 }
             }

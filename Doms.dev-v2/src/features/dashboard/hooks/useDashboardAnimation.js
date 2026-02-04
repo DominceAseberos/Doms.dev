@@ -9,7 +9,8 @@ export const useDashboardAnimation = ({
     revealReady,
     compRef,
     dashboardVisited,
-    setDashboardVisited
+    setDashboardVisited,
+    dropletRef
 }) => {
     // DESKTOP ANIMATION
     useLayoutEffect(() => {
@@ -23,11 +24,27 @@ export const useDashboardAnimation = ({
                     // Sequential reveal per user spec
                     const tl = gsap.timeline();
 
-                    // 1. Profile + AboutMe (first)
+                    // 0. Water Droplet Ripple (First)
+                    if (dropletRef?.current?.length) {
+                        tl.fromTo(dropletRef.current,
+                            { attr: { r: 0 }, opacity: 1, strokeWidth: 2 },
+                            {
+                                attr: { r: "120%" },
+                                opacity: 0,
+                                strokeWidth: 0,
+                                duration: 2.5,
+                                ease: "power2.out",
+                                stagger: 0.2
+                            },
+                            0
+                        );
+                    }
+
+                    // 1. Profile + AboutMe (Overlap at 0.7s)
                     tl.fromTo(".desktop-profile-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" },
-                        0.3
+                        0.7
                     );
 
                     // 2. ProjectHead container, then inner text
@@ -46,31 +63,31 @@ export const useDashboardAnimation = ({
                                 }
                             }
                         },
-                        0.6
+                        1.0
                     );
 
                     // 3. Projects carousel
                     tl.fromTo(".desktop-projects-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
-                        0.9
+                        1.3
                     );
 
                     // 4. MusicPlayer + ThemeToggle + Contacts (slight stagger)
                     tl.fromTo(".desktop-theme-row",
                         { opacity: 0, y: 20 },
                         { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-                        1.2
+                        1.6
                     );
                     tl.fromTo(".desktop-music-row",
                         { opacity: 0, y: 25, scale: 0.98 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" },
-                        1.3
+                        1.7
                     );
                     tl.fromTo(".desktop-contacts-row",
                         { opacity: 0, y: 25 },
                         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-                        1.4
+                        1.8
                     );
 
                     // 5. ProjectBottom (container then inner text like ProjectHead)
@@ -98,24 +115,24 @@ export const useDashboardAnimation = ({
                                 }
                             }
                         },
-                        1.5
+                        1.9
                     );
 
                     // 6. GitHub Stats + GitHubFocusCard + TechStacks
                     tl.fromTo(".desktop-github-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
-                        1.7
+                        2.1
                     );
                     tl.fromTo(".desktop-focus-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
-                        1.7
+                        2.1
                     );
                     tl.fromTo(".desktop-techstacks-row",
                         { opacity: 0, y: 25 },
                         { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-                        1.9
+                        2.3
                     );
 
                     tl.eventCallback("onComplete", () => {

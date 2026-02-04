@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { X, FileText } from 'lucide-react';
 import PageLoader from '../components/PageLoader';
 import umtcLogo from '../assets/umtc-logo.png';
 import heroImage from '../assets/hero-image.png';
+import WaterDroplet from '../components/WaterDroplet';
 
 // About Feature Components
 import {
@@ -25,6 +26,7 @@ import { useAboutMe } from '../features/about/hooks/useAboutMe';
 import { useAboutMeAnimation } from '../features/about/hooks/useAboutMeAnimation';
 
 const AboutMePage = () => {
+    const dropletRef = useRef([]);
 
     // 1. Logic & State Hook
     const {
@@ -66,11 +68,13 @@ const AboutMePage = () => {
         textFeedRef,
         backButtonRef,
         cvButtonRef,
-        effectsCardRef
+        effectsCardRef,
+        dropletRef // Pass ref
     });
 
     return (
-        <>
+        <div className="relative min-h-screen bg-dashboard-main overflow-x-hidden selection:bg-blue-500/30">
+            <WaterDroplet ref={dropletRef} />
             <PageLoader
                 isLoading={!isDataReady}
                 onLoadComplete={handleLoadComplete}
@@ -272,7 +276,7 @@ const AboutMePage = () => {
                     )
                 }
             </div >
-        </>
+        </div>
     );
 };
 

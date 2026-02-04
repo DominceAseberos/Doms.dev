@@ -11,12 +11,15 @@ import ProjectHead from '../features/projects/components/ProjectHead'
 import Projects from '../features/projects/components/Projects'
 import ProjectBottom from '../features/projects/components/ProjectBottom'
 import FloatingChat from '../features/chatBot/floatingChat'
+import WaterDroplet from '../components/WaterDroplet'
 import PageLoader from '../components/PageLoader'
 
 import { useDashboard } from '../features/dashboard/hooks/useDashboard'
 import { useDashboardAnimation } from '../features/dashboard/hooks/useDashboardAnimation'
+import { useRef } from 'react'
 
 const Dashboard = () => {
+    const dropletRef = useRef([]);
     const {
         compRef,
         isMobile,
@@ -33,11 +36,13 @@ const Dashboard = () => {
         revealReady,
         compRef,
         dashboardVisited,
-        setDashboardVisited
+        setDashboardVisited,
+        dropletRef // Pass ref to hook
     });
 
     return (
         <>
+            <WaterDroplet ref={dropletRef} />
             <PageLoader
                 isLoading={!isDataReady}
                 onLoadComplete={handleLoadComplete}
