@@ -80,7 +80,7 @@ export const useAboutMeAnimation = ({
 
             // 1. ANIMATE VISIBLE CARDS (Sequential Top-to-Bottom)
             // Start after ripple overlap (approx 1.2s)
-            const startDelay = 1.2;
+            const startDelay = 1.5;
 
             visibleCards.forEach((card, index) => {
                 gsap.fromTo(card,
@@ -88,7 +88,7 @@ export const useAboutMeAnimation = ({
                     {
                         opacity: 1, y: 0, scale: 1,
                         duration: 0.6,
-                        delay: startDelay + (index * 0.15),
+                        delay: startDelay + (index * 0.8), // Wait for text reveals
                         ease: 'power3.out',
                         onComplete: () => {
                             animateInner(card, 0.1); // slight delay for inner
@@ -127,12 +127,12 @@ export const useAboutMeAnimation = ({
 
             const tl = gsap.timeline();
 
-            // 1. Hero / Profile (0.1s) - Slow (Shifted to 2.2s)
+            // 1. Hero / Profile (1.2s)
             if (heroCardRef.current) {
                 tl.fromTo(heroCardRef.current,
                     { opacity: 0, y: 30, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    2.2
+                    1.2
                 );
             }
 
@@ -144,7 +144,7 @@ export const useAboutMeAnimation = ({
                 );
             }
 
-            // 2. TextAboutMe - Text Reveal (1.6s)
+            // 2. TextAboutMe (1.6s)
             if (textAboutMeRef.current) {
                 // Gentle container reveal (fade only)
                 tl.fromTo(textAboutMeRef.current,
@@ -163,22 +163,22 @@ export const useAboutMeAnimation = ({
                 }
             }
 
-            // 3. Identity (1.9s)
+            // 3. Identity (2.4s) - Wait for TextAboutMe (approx 0.8s)
             if (identityCardRef.current) {
                 tl.fromTo(identityCardRef.current,
                     { opacity: 0, y: 30, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    1.9
+                    2.4
                 );
             }
 
-            // 4. TextFeed - Text Reveal (2.2s)
+            // 4. TextFeed (2.7s)
             if (textFeedRef.current) {
                 // Gentle container reveal (fade only)
                 tl.fromTo(textFeedRef.current,
                     { opacity: 0 },
                     { opacity: 1, duration: 0.4, ease: 'power2.out' },
-                    2.2
+                    2.7
                 );
 
                 const textFeedElements = textFeedRef.current.querySelectorAll('.text-reveal');
@@ -186,46 +186,46 @@ export const useAboutMeAnimation = ({
                     tl.fromTo(textFeedElements,
                         { opacity: 0, y: 15 },
                         { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: 'back.out(1.2)' },
-                        2.3
+                        2.8
                     );
                 }
             }
 
-            // 5. Feed Card (2.6s)
+            // 5. Feed Card (3.5s) - Wait for TextFeed (approx 0.8s)
             if (feedCard.current) {
                 tl.fromTo(feedCard.current,
                     { opacity: 0, y: 30, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    2.6
+                    3.5
                 );
             }
 
             // --- FASTER SEQUENCE ---
 
-            // 6. Tech Stack (3.0s)
+            // 6. Tech Stack (3.9s)
             if (mdIconStack.current) {
                 tl.fromTo(mdIconStack.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    3.0
+                    3.9
                 );
             }
 
-            // 7. Education (3.2s)
+            // 7. Education (4.1s)
             if (educationCardRef.current) {
                 tl.fromTo(educationCardRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    3.2
+                    4.1
                 );
             }
 
-            // 8. Resume (3.4s)
+            // 8. Resume (4.3s)
             if (resumeCardRef.current) {
                 tl.fromTo(resumeCardRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    3.4
+                    4.3
                 );
             }
 
@@ -233,17 +233,17 @@ export const useAboutMeAnimation = ({
                 tl.fromTo(cvButtonRef.current,
                     { opacity: 0, y: 20 },
                     { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-                    3.5
+                    4.4
                 );
             }
 
-            // 9. Footer (3.6s)
+            // 9. Footer (4.5s)
             if (footerRef.current) {
                 // Reveal Container
                 tl.fromTo(footerRef.current,
                     { opacity: 0, y: 25, scale: 0.95 },
                     { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-                    3.6
+                    4.5
                 );
 
                 // Reveal Icons/Text inside
@@ -252,7 +252,7 @@ export const useAboutMeAnimation = ({
                     tl.fromTo(footerElements,
                         { opacity: 0, y: 10 },
                         { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' },
-                        3.3 // Start after container reveals
+                        4.7 // Start after container reveals
                     );
                 }
             }
