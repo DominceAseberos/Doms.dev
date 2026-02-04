@@ -281,6 +281,7 @@ input[type="date"] {
     .desktop-projects-row,
     .desktop-focus-row,
     .desktop-projectbottom-row,
+    .desktop-contacts-row,
     .desktop-techstacks-row {
         opacity: 0;
     }
@@ -294,6 +295,7 @@ input[type="date"] {
     .desktop-projects-row.animation-complete,
     .desktop-focus-row.animation-complete,
     .desktop-projectbottom-row.animation-complete,
+    .desktop-contacts-row.animation-complete,
     .desktop-techstacks-row.animation-complete {
         opacity: 1;
     }

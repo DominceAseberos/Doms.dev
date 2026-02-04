@@ -210,7 +210,7 @@ const AboutMePage = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-row gap-2 lg:gap-4 justify-between min-h-[10rem] flex-shrink-0">
+                                <div className="flex flex-row gap-2 lg:gap-4 justify-between h-40 flex-shrink-0">
                                     <div className="w-[65%] h-full">
                                         <AboutMeEducation educationCardRef={educationCardRef} education={education} onExpand={handleImageExpand} />
                                     </div>

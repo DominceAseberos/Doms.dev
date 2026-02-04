@@ -23,7 +23,7 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
                 ref={logoRef}
                 onMouseEnter={onEnter}
                 onMouseLeave={onLeave}
-                className="scroll-reveal w-full h-full rounded-xl flex items-center aspect-square justify-center
+                className="scroll-reveal w-full  max-w-[120px] h-full rounded-xl flex items-center aspect-square justify-center
                 bg-white border cursor-pointer opacity-50 hover:opacity-100 transition-all duration-300 ease-in-out"
                 onClick={() => onExpand('education')}
                 style={{
@@ -38,7 +38,7 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
                 />
             </div>
 
-            <div className="scroll-reveal space-y-2">
+            <div className="scroll-reveal space-y-2 flex-1 h-full overflow-y-auto custom-scrollbar pr-2">
                 <h3
                     className="font-bold text-base md:text-lg"
                     style={{

@@ -67,6 +67,11 @@ export const useDashboardAnimation = ({
                         { opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.08, ease: "power3.out" },
                         1.3
                     );
+                    tl.fromTo(".desktop-contacts-row",
+                        { opacity: 0, y: 25 },
+                        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                        1.4
+                    );
 
                     // 5. ProjectBottom (container then inner text like ProjectHead)
                     tl.fromTo(".desktop-projectbottom-row",

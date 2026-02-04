@@ -136,24 +136,7 @@ const StatsGitHub = () => {
           GitHub Stats
         </h3>
 
-        <div className="flex justify-between w-full pt-3 mt-2 md:mt-0 md:pt-2 px-2 md:px-0">
-          {[
-            { label: 'Repos', value: stats.repos, Icon: BookMarked },
-            { label: 'Followers', value: stats.followers, Icon: Users },
-            { label: 'Following', value: stats.following, Icon: UserPlus },
-          ].map(({ label, value, Icon }) => (
-            <div key={label} className="stat-item text-center flex flex-col items-center">
-              {/* Desktop: Label */}
-              <p className="text-[9px] uppercase text-white/40 hidden md:block">{label}</p>
-              {/* Mobile: Icon */}
-              <Icon size={12} className="text-white/40 md:hidden mb-1" />
 
-              <p className="text-sm font-bold text-white leading-none">
-                {loading ? '…' : value}
-              </p>
-            </div>
-          ))}
-        </div>
       </div>
 
 
@@ -161,7 +144,7 @@ const StatsGitHub = () => {
       <div className="calendar-wrapper w-full overflow-x-auto py-2 no-scrollbar">
         <GitHubCalendar
           username={username}
-          blockSize={6}
+          blockSize={8}
           blockMargin={5}
           fontSize={12}
           theme={theme}
@@ -169,8 +152,25 @@ const StatsGitHub = () => {
         />
       </div>
 
+      <div className="flex justify-between w-full pt-3 mt-2 md:mt-0 md:pt-2 px-2 md:px-0">
+        {[
+          { label: 'Repos', value: stats.repos, Icon: BookMarked },
+          { label: 'Followers', value: stats.followers, Icon: Users },
+          { label: 'Following', value: stats.following, Icon: UserPlus },
+        ].map(({ label, value, Icon }) => (
+          <div key={label} className="stat-item text-center flex flex-col items-center">
 
-      {/* Stats */}
+            {/* Desktop: Label */}
+            <p className="text-1xl uppercase text-white/40 hidden md:block">{label}</p>
+            {/* Mobile: Icon */}
+            <Icon size={12} className="text-white/40 md:hidden mb-1" />
+
+            <p className="text-xl font-bold text-white leading-none">
+              {loading ? '…' : value}
+            </p>
+          </div>
+        ))}
+      </div>
 
     </div>
   );

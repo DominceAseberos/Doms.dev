@@ -118,7 +118,7 @@ const Dashboard = () => {
                             <div className='col-span-1 flex flex-col gap-2 lg:gap-4 h-full'>
                                 {/* Profile & About Row */}
                                 <div className="flex flex-col gap-2 lg:gap-4 flex-shrink-0">
-                                    <div className="flex flex-row gap-2 lg:gap-4 h-full w-full">
+                                    <div className="desktop-profile-row flex flex-row gap-2 lg:gap-4 h-full w-full">
                                         <div className="w-[130px] h-[130px] flex-shrink-0">
                                             <Profile />
                                         </div>
@@ -150,7 +150,7 @@ const Dashboard = () => {
                             {/* RIGHT COLUMN */}
                             <div className='col-span-1 flex flex-col gap-2 lg:gap-4 h-full'>
                                 {/* Top Section */}
-                                <div className="desktop-github-row flex-shrink-0">
+                                <div className="desktop-projecthead-row flex-shrink-0">
                                     <ProjectHead />
                                 </div>
 
@@ -160,14 +160,14 @@ const Dashboard = () => {
                                         <div className="flex-1 desktop-projects-row h-full">
                                             <Projects />
                                         </div>
-                                        <div className="w-1/3 desktop-github-row h-full">
+                                        <div className="w-1/3 desktop-focus-row h-full">
                                             <GitHubFocusCard />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Bottom Sections */}
-                                <div className="desktop-github-row flex-shrink-0">
+                                <div className="desktop-projectbottom-row flex-shrink-0">
                                     <ProjectBottom />
                                 </div>
                                 <div className="desktop-github-row flex-shrink-0">
