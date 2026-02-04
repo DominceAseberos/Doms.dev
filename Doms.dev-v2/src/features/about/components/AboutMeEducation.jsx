@@ -13,7 +13,8 @@ const AboutMeEducation = ({ educationCardRef, education, onExpand }) => {
             h-full w-full
                  flex flex-row justify-between
                 gap-2
-                rounded-2xl p-6 border border-white/5 space-y-4"
+                items-center
+                rounded-2xl p-6 border border-white/5"
             style={{
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
             }}

@@ -7,12 +7,12 @@ const EffectsCard = ({ effectsCardRef }) => {
         <>
 
 
-            <span
+            <div
                 ref={effectsCardRef}
                 className='
-                                rounded-2xl w-full h-full  w-full items-center justify-center border border-white/5
+                                rounded-2xl w-full h-full flex items-center justify-center border border-white/10
                                 '>
-            </span>
+            </div>
         </>
     )
 }

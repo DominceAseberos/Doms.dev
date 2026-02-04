@@ -78,7 +78,7 @@ const ProjectHead = () => {
 
       <div className="relative z-10 flex flex-col items-center gap-1 md:gap-2">
         {/* Main Aesthetic Headline */}
-        <h1 className="animate-portfolio text-2xl font-black tracking-tighter font-playfair text-white/95 leading-none">
+        <h1 className="animate-portfolio text-xl font-black tracking-tighter font-playfair text-white/95 leading-none">
           Projects
         </h1>
 

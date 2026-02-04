@@ -161,7 +161,7 @@ const StatsGitHub = () => {
       <div className="calendar-wrapper w-full overflow-x-auto py-2 no-scrollbar">
         <GitHubCalendar
           username={username}
-          blockSize={14}
+          blockSize={6}
           blockMargin={5}
           fontSize={12}
           theme={theme}
