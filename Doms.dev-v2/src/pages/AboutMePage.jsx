@@ -95,7 +95,7 @@ const AboutMePage = () => {
                     <div className="flex flex-start w-full">
                         <BackButton />
                     </div>
-                    <div className="mobile-reveal-card w-full">
+                    <div className="mobile-reveal-card w-full h-24">
                         <EffectsCard effectsCardRef={effectsCardRef} />
 
                     </div>

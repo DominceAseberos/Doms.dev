@@ -175,7 +175,7 @@ const Dashboard = () => {
                                 <div className="desktop-projectbottom-row flex-shrink-0">
                                     <ProjectBottom />
                                 </div>
-                                <div className="desktop-github-row flex-shrink-0">
+                                <div className="desktop-techstacks-row flex-shrink-0">
                                     <TechStacks />
                                 </div>
                             </div>
