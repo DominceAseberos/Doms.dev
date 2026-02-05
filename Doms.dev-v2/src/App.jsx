@@ -28,27 +28,27 @@ ScrollTrigger.config({
 
 import { lazy, Suspense } from 'react'
 
-import PreLoader from './components/PreLoader'
-import ProtectedRoute from './components/ProtectedRoute'
-import ErrorBoundary from './components/ErrorBoundary'
-import ScrollToTop from "./components/ScrollToTop.jsx"
+import PreLoader from '@app/components/PreLoader'
+import ProtectedRoute from '@shared/components/ProtectedRoute'
+import ErrorBoundary from '@app/components/ErrorBoundary'
+import ScrollToTop from "@app/components/ScrollToTop.jsx"
 
 // Lazy Load Portfolio Pages
 const MainLayout = lazy(() => import('./layout/MainLayout.jsx'));
-const Dashboard = lazy(() => import('./pages/dashboard.jsx'));
-const AboutMePage = lazy(() => import('./pages/AboutMePage.jsx'));
-const ProjectDetails = lazy(() => import('./pages/ProjectDetails.jsx'));
-const FeedPage = lazy(() => import('./pages/FeedPage.jsx'));
+const Dashboard = lazy(() => import('@app/pages/dashboard.jsx'));
+const AboutMePage = lazy(() => import('@app/pages/AboutMePage.jsx'));
+const ProjectDetails = lazy(() => import('@app/pages/ProjectDetails.jsx'));
+const FeedPage = lazy(() => import('@app/pages/FeedPage.jsx'));
 
 // Lazy Load Admin Pages
-const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
-const LoginPage = lazy(() => import('./pages/admin/LoginPage'));
-const ProjectsManager = lazy(() => import('./pages/admin/ProjectsManager'));
-const ProfileManager = lazy(() => import('./pages/admin/ProfileManager'));
-const MediaCenter = lazy(() => import('./pages/admin/MediaCenter'));
-const MusicManager = lazy(() => import('./pages/admin/MusicManager'));
-const FeedManager = lazy(() => import('./pages/admin/FeedManager'));
-const AdminLayout = lazy(() => import('./pages/admin/components/AdminLayout'));
+const AdminDashboard = lazy(() => import('@admin/pages/AdminDashboard'));
+const LoginPage = lazy(() => import('@admin/pages/LoginPage'));
+const ProjectsManager = lazy(() => import('@admin/pages/ProjectsManager'));
+const ProfileManager = lazy(() => import('@admin/pages/ProfileManager'));
+const MediaCenter = lazy(() => import('@admin/pages/MediaCenter'));
+const MusicManager = lazy(() => import('@admin/pages/MusicManager'));
+const FeedManager = lazy(() => import('@admin/pages/FeedManager'));
+const AdminLayout = lazy(() => import('@admin/components/AdminLayout'));
 
 function App() {
   // ...
