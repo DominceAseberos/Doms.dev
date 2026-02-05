@@ -9,6 +9,7 @@ import { profileService } from '@shared/services/profileService';
 import { projectService } from '@shared/services/projectService';
 import { dashboardService } from '@shared/services/dashboardService';
 import mediaService from '@shared/services/mediaService';
+import { diagnosticService } from '@shared/services/diagnosticService';
 import { useAdminStore } from '@admin/store/adminStore';
 import strings from '@shared/config/adminStrings.json';
 
@@ -18,7 +19,9 @@ const AdminDashboard = () => {
     const [stats, setStats] = useState({
         projects: 0,
         tracks: 0,
-        media: 0
+        media: 0,
+        errors: 0,
+        visits: 0
     });
     const [profile, setProfile] = useState(null);
 
@@ -26,18 +29,22 @@ const AdminDashboard = () => {
         const fetchSummary = async () => {
             setAdminLoading(true, 'INITIALIZING SYSTEM HUB');
             try {
-                const [prof, projects, tracks, media] = await Promise.all([
+                const [prof, projects, tracks, media, errors, visits] = await Promise.all([
                     profileService.getProfile(),
                     projectService.getProjects(),
                     dashboardService.getAll('tracks'),
-                    mediaService.getFiles()
+                    mediaService.getFiles(),
+                    diagnosticService.getUnresolvedCount(),
+                    diagnosticService.getVisitCount()
                 ]);
 
                 setProfile(prof);
                 setStats({
                     projects: projects.length,
                     tracks: tracks.length,
-                    media: media.length
+                    media: media.length,
+                    errors: errors,
+                    visits: visits
                 });
             } catch (err) {
                 console.error('Core sync failed:', err);
@@ -141,19 +148,29 @@ const AdminDashboard = () => {
                         subtitle="Broadcast Updates"
                         status="Live"
                     />
+
+                    <AdminCard
+                        onClick={() => navigate('/admin/diagnostics')}
+                        icon={Activity}
+                        title="Diagnostics"
+                        subtitle={`${stats.errors} System Exceptions`}
+                        count={stats.errors}
+                        status={stats.errors > 0 ? 'Critical' : 'Healthy'}
+                        pulse={stats.errors > 0}
+                    />
                 </section>
             </div>
         </div>
     );
 };
 
-const AdminCard = ({ onClick, icon: Icon, title, subtitle, count, status }) => (
+const AdminCard = ({ onClick, icon: Icon, title, subtitle, count, status, pulse }) => (
     <div
         onClick={onClick}
         className="group p-8 rounded-[2rem] border border-white/10 bg-[#0f0f0f] hover:border-primary/40 transition-all cursor-pointer space-y-6 admin-modal-gradient shadow-2xl relative overflow-hidden"
     >
         <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-500 border border-white/10 group-hover:border-primary/30">
-            <Icon size={28} className="text-primary opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+            <Icon size={28} className={`text-primary opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 ${pulse ? 'animate-pulse' : ''}`} />
         </div>
         <div className="space-y-1 relative z-10">
             <h2 className="text-xl font-bold tracking-tight text-white group-hover:text-primary transition-colors uppercase italic">{title}</h2>

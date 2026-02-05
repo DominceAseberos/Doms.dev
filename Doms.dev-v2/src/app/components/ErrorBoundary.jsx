@@ -1,4 +1,5 @@
 import React from 'react';
+import { diagnosticService } from '@shared/services/diagnosticService';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -12,6 +13,8 @@ class ErrorBoundary extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         console.error('ErrorBoundary caught an error:', error, errorInfo);
+        // Log to diagnostic system with breadcrumb context
+        diagnosticService.logError(error, errorInfo);
     }
 
     render() {

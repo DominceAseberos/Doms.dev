@@ -27,6 +27,8 @@ ScrollTrigger.config({
 });
 
 import { lazy, Suspense } from 'react'
+import { useLocation } from 'react-router-dom'
+import { diagnosticService } from '@shared/services/diagnosticService'
 
 import PreLoader from '@app/components/PreLoader'
 import ProtectedRoute from '@shared/components/ProtectedRoute'
@@ -49,17 +51,34 @@ const ProfileManager = lazy(() => import('@admin/pages/ProfileManager'));
 const MediaCenter = lazy(() => import('@admin/pages/MediaCenter'));
 const MusicManager = lazy(() => import('@admin/pages/MusicManager'));
 const FeedManager = lazy(() => import('@admin/pages/FeedManager'));
+const DiagnosticLogs = lazy(() => import('@admin/pages/DiagnosticLogs'));
 const AdminLayout = lazy(() => import('@admin/components/AdminLayout'));
 
-function App() {
-  // ...
+// Route tracker component (must be inside Router)
+const RouteTracker = () => {
+  const location = useLocation();
 
+  // Log visit once per session
+  useEffect(() => {
+    diagnosticService.logVisit();
+  }, []);
+
+  // Track breadcrumbs on route change
+  useEffect(() => {
+    diagnosticService.trackPageVisit(location.pathname);
+  }, [location]);
+
+  return null;
+};
+
+function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
     <ErrorBoundary>
       {isLoading && <PreLoader onLoadComplete={() => setIsLoading(false)} />}
       <Router>
+        <RouteTracker />
         <ScrollToTop />
         <Suspense fallback={
           <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
@@ -153,6 +172,16 @@ function App() {
                 <ProtectedRoute>
                   <AdminLayout>
                     <FeedManager />
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/diagnostics"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout>
+                    <DiagnosticLogs />
                   </AdminLayout>
                 </ProtectedRoute>
               }
