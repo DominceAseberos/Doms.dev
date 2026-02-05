@@ -26,7 +26,7 @@ class ErrorBoundary extends React.Component {
                             Something went wrong
                         </h1>
                         <p className="text-xs uppercase tracking-widest opacity-50 font-mono max-w-xs mx-auto">
-                            Our dynamic system encountered a structural anomaly.
+                            Something went wrong on my end. I'm likely already looking into it—try refreshing!
                         </p>
                     </div>
                     <button
@@ -37,7 +37,7 @@ class ErrorBoundary extends React.Component {
                             color: '#000'
                         }}
                     >
-                        Re-Initialize System
+                        Try Refreshing
                     </button>
 
                     {process.env.NODE_ENV === 'development' && (

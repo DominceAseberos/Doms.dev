@@ -39,6 +39,7 @@ const Dashboard = lazy(() => import('@app/pages/dashboard.jsx'));
 const AboutMePage = lazy(() => import('@app/pages/AboutMePage.jsx'));
 const ProjectDetails = lazy(() => import('@app/pages/ProjectDetails.jsx'));
 const FeedPage = lazy(() => import('@app/pages/FeedPage.jsx'));
+const NotFound = lazy(() => import('@app/pages/NotFound.jsx'));
 
 // Lazy Load Admin Pages
 const AdminDashboard = lazy(() => import('@admin/pages/AdminDashboard'));
@@ -156,6 +157,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            {/* 404 Catch-All Route */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </Router>
