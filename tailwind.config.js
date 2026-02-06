@@ -11,10 +11,15 @@ export default {
                     '0%': { transform: 'rotate(0deg) scale(1)' },
                     '50%': { transform: 'rotate(180deg) scale(1.2)' },
                     '100%': { transform: 'rotate(360deg) scale(1)' },
+                },
+                marquee: {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-50%)' },
                 }
             },
             animation: {
                 tumble: 'tumble 2s ease-in-out infinite',
+                marquee: 'marquee 25s linear infinite',
             }
         },
     },
