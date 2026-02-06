@@ -60,6 +60,8 @@
     --theme-rgb: 21 18 38;
     --contrast-rgb: 230 230 255;
     --neon-blue: #3b82f6;
+    --body-Linear-1-rgb: 49, 49, 59;
+    --body-Linear-2-rgb: 27, 23, 35;
     --box-Linear-1-rgb: 30, 30, 50;
     --box-Linear-2-rgb: 15, 15, 30;
 }

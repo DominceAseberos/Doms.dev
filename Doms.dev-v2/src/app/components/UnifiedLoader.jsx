@@ -3,9 +3,11 @@ import { CheckCircle2 } from 'lucide-react';
 import { gsap } from 'gsap';
 import { usePortfolioData } from '@shared/hooks/usePortfolioData';
 import { preloadAssets } from '@shared/utils/assetPreloader';
+import { useLoader } from '@app/contexts/LoaderContext';
 import './PageLoader.css';
 
 const UnifiedLoader = ({ onComplete }) => {
+    const { markInitialLoadComplete } = useLoader();
     const [phase, setPhase] = useState(1);
     const [progress, setProgress] = useState(0);
     const [status, setStatus] = useState('INITIALIZING');
@@ -154,6 +156,7 @@ const UnifiedLoader = ({ onComplete }) => {
                         ease: 'power2.inOut',
                         onComplete: () => {
                             if (import.meta.env.DEV) console.log('[UnifiedLoader] Fade complete, calling onComplete');
+                            markInitialLoadComplete(); // Mark that initial load is done
                             onComplete?.();
                         }
                     });

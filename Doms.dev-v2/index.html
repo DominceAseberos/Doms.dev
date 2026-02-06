@@ -35,6 +35,97 @@
         rel="stylesheet">
 
     <title>Domince Aseberos - Portfolio</title>
+
+    <!-- Apply theme immediately from localStorage before React renders -->
+    <script>
+        (function() {
+            try {
+                // Read theme from localStorage (zustand persist key)
+                const stored = localStorage.getItem('theme-storage');
+                if (stored) {
+                    const { state } = JSON.parse(stored);
+                    const sliderValue = state?.sliderValue ?? 0;
+                    
+                    // Theme color definitions (must match useThemeStore.jsx)
+                    const BODYLINEAR_1 = {
+                        start: { r: 49, g: 49, b: 59 },
+                        mid: { r: 94, g: 133, b: 133 },
+                        end: { r: 150, g: 150, b: 150 }
+                    };
+                    const BODYLINEAR_2 = {
+                        start: { r: 27, g: 23, b: 35 },
+                        mid: { r: 145, g: 145, b: 200 },
+                        end: { r: 150, g: 150, b: 150 }
+                    };
+                    const CONTRAST = {
+                        start: { r: 209, g: 217, b: 255 },
+                        mid: { r: 193, g: 193, b: 100 },
+                        end: { r: 255, g: 255, b: 255 }
+                    };
+                    const BOXCOLORLINEAR_1 = {
+                        start: { r: 21, g: 18, b: 38 },
+                        mid: { r: 35, g: 0, b: 255 },
+                        end: { r: 199, g: 120, b: 150 }
+                    };
+                    const BOXCOLORLINEAR_2 = {
+                        start: { r: 38, g: 42, b: 61 },
+                        mid: { r: 87, g: 97, b: 134 },
+                        end: { r: 178, g: 178, b: 150 }
+                    };
+
+                    const lerp = (start, end, t) => start + (end - start) * t;
+                    
+                    let br, bg, bb, bbr, bbg, bbb, cr, cg, cb, r, g, b, lr, lg, lb;
+                    
+                    if (sliderValue <= 50) {
+                        const t = sliderValue / 50;
+                        br = lerp(BODYLINEAR_1.start.r, BODYLINEAR_1.mid.r, t);
+                        bg = lerp(BODYLINEAR_1.start.g, BODYLINEAR_1.mid.g, t);
+                        bb = lerp(BODYLINEAR_1.start.b, BODYLINEAR_1.mid.b, t);
+                        bbr = lerp(BODYLINEAR_2.start.r, BODYLINEAR_2.mid.r, t);
+                        bbg = lerp(BODYLINEAR_2.start.g, BODYLINEAR_2.mid.g, t);
+                        bbb = lerp(BODYLINEAR_2.start.b, BODYLINEAR_2.mid.b, t);
+                        cr = lerp(CONTRAST.start.r, CONTRAST.mid.r, t);
+                        cg = lerp(CONTRAST.start.g, CONTRAST.mid.g, t);
+                        cb = lerp(CONTRAST.start.b, CONTRAST.mid.b, t);
+                        r = lerp(BOXCOLORLINEAR_1.start.r, BOXCOLORLINEAR_1.mid.r, t);
+                        g = lerp(BOXCOLORLINEAR_1.start.g, BOXCOLORLINEAR_1.mid.g, t);
+                        b = lerp(BOXCOLORLINEAR_1.start.b, BOXCOLORLINEAR_1.mid.b, t);
+                        lr = lerp(BOXCOLORLINEAR_2.start.r, BOXCOLORLINEAR_2.mid.r, t);
+                        lg = lerp(BOXCOLORLINEAR_2.start.g, BOXCOLORLINEAR_2.mid.g, t);
+                        lb = lerp(BOXCOLORLINEAR_2.start.b, BOXCOLORLINEAR_2.mid.b, t);
+                    } else {
+                        const t = (sliderValue - 50) / 50;
+                        br = lerp(BODYLINEAR_1.mid.r, BODYLINEAR_1.end.r, t);
+                        bg = lerp(BODYLINEAR_1.mid.g, BODYLINEAR_1.end.g, t);
+                        bb = lerp(BODYLINEAR_1.mid.b, BODYLINEAR_1.end.b, t);
+                        bbr = lerp(BODYLINEAR_2.mid.r, BODYLINEAR_2.end.r, t);
+                        bbg = lerp(BODYLINEAR_2.mid.g, BODYLINEAR_2.end.g, t);
+                        bbb = lerp(BODYLINEAR_2.mid.b, BODYLINEAR_2.end.b, t);
+                        cr = lerp(CONTRAST.mid.r, CONTRAST.end.r, t);
+                        cg = lerp(CONTRAST.mid.g, CONTRAST.end.g, t);
+                        cb = lerp(CONTRAST.mid.b, CONTRAST.end.b, t);
+                        r = lerp(BOXCOLORLINEAR_1.mid.r, BOXCOLORLINEAR_1.end.r, t);
+                        g = lerp(BOXCOLORLINEAR_1.mid.g, BOXCOLORLINEAR_1.end.g, t);
+                        b = lerp(BOXCOLORLINEAR_1.mid.b, BOXCOLORLINEAR_1.end.b, t);
+                        lr = lerp(BOXCOLORLINEAR_2.mid.r, BOXCOLORLINEAR_2.end.r, t);
+                        lg = lerp(BOXCOLORLINEAR_2.mid.g, BOXCOLORLINEAR_2.end.g, t);
+                        lb = lerp(BOXCOLORLINEAR_2.mid.b, BOXCOLORLINEAR_2.end.b, t);
+                    }
+
+                    // Apply CSS variables
+                    const root = document.documentElement;
+                    root.style.setProperty('--body-Linear-1-rgb', `${Math.round(br)} ${Math.round(bg)} ${Math.round(bb)}`);
+                    root.style.setProperty('--body-Linear-2-rgb', `${Math.round(bbr)} ${Math.round(bbg)} ${Math.round(bbb)}`);
+                    root.style.setProperty('--contrast-rgb', `${Math.round(cr)} ${Math.round(cg)} ${Math.round(cb)}`);
+                    root.style.setProperty('--box-Linear-1-rgb', `${Math.round(r)} ${Math.round(g)} ${Math.round(b)}`);
+                    root.style.setProperty('--box-Linear-2-rgb', `${Math.round(lr)} ${Math.round(lg)} ${Math.round(lb)}`);
+                }
+            } catch (e) {
+                console.error('Failed to load theme from localStorage:', e);
+            }
+        })();
+    </script>
 </head>
 
 <body>

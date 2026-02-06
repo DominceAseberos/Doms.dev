@@ -18,9 +18,12 @@ import PageLoader from '@app/components/PageLoader'
 import { useDashboard } from '../features/dashboard/hooks/useDashboard'
 import { useDashboardAnimation } from '../features/dashboard/hooks/useDashboardAnimation'
 import { useRef, useState, useEffect } from 'react'
+import { useLoader } from '@app/contexts/LoaderContext'
 
 const Dashboard = () => {
     const dropletRef = useRef([]);
+    const { initialLoadComplete, resetInitialLoad } = useLoader();
+
     const {
         compRef,
         isMobile,
@@ -31,27 +34,12 @@ const Dashboard = () => {
         setDashboardVisited
     } = useDashboard();
 
-    // Check if we just completed the initial app load
-    const initialLoadComplete = sessionStorage.getItem('initialLoadComplete') === 'true';
-
-    if (import.meta.env.DEV) {
-        console.log('[Dashboard] CHECK - initialLoadComplete:', initialLoadComplete, 'isDataReady:', isDataReady);
-    }
-
-    // If initial load just completed, skip the page loader entirely and show content immediately
-    const [revealReady, setRevealReady] = useState(() => {
-        const shouldReveal = initialLoadComplete || isDataReady;
-        if (import.meta.env.DEV) {
-            console.log('[Dashboard] Initial revealReady:', shouldReveal);
-        }
-        return shouldReveal;
-    });
+    const [revealReady, setRevealReady] = useState(initialLoadComplete || isDataReady);
 
     // Clear the flag after first Dashboard render so subsequent navigations show the loader
     useEffect(() => {
         if (initialLoadComplete) {
-            if (import.meta.env.DEV) console.log('[Dashboard] Clearing flag');
-            sessionStorage.removeItem('initialLoadComplete');
+            resetInitialLoad();
         }
     }, []);
 

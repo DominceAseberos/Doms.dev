@@ -14,12 +14,21 @@ import ProjectCarousel from '../features/projects/projectDetails/components/Proj
 import ProjectMetadata from '../features/projects/projectDetails/components/ProjectMetadata';
 import ProjectDocumentation from '../features/projects/projectDetails/components/ProjectDocumentation';
 import MoreProjects from '../features/projects/projectDetails/components/MoreProjects';
+import { useLoader } from '@app/contexts/LoaderContext';
 
 const ProjectDetails = () => {
     const { id } = useParams();
     const { project, containerRef, isLoading } = useProjectDetails(id);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [revealReady, setRevealReady] = useState(false);
+    const { initialLoadComplete, resetInitialLoad } = useLoader();
+    const [revealReady, setRevealReady] = useState(initialLoadComplete);
+
+    // Clear the flag after first render so subsequent navigations show the loader
+    useEffect(() => {
+        if (initialLoadComplete) {
+            resetInitialLoad();
+        }
+    }, []);
 
     // Refs for animation
     const carouselRef = useRef(null);

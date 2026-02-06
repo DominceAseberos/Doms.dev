@@ -25,12 +25,14 @@ import {
 // Custom Hooks
 import { useAboutMe } from '../features/about/hooks/useAboutMe';
 import { useAboutMeAnimation } from '../features/about/hooks/useAboutMeAnimation';
+import { useLoader } from '@app/contexts/LoaderContext';
 
 const AboutMePage = () => {
     const dropletRef = useRef([]);
+    const { initialLoadComplete, resetInitialLoad } = useLoader();
 
     // 1. Logic & State Hook
-    const [revealReady, setRevealReady] = useState(false); // Show loader on navigation
+    const [revealReady, setRevealReady] = useState(initialLoadComplete);
     const {
         expandedImage,
         isDataReady,
@@ -54,6 +56,13 @@ const AboutMePage = () => {
         handleImageExpand,
         handleImageClose
     } = useAboutMe();
+
+    // Clear the flag after first render so subsequent navigations show the loader
+    React.useEffect(() => {
+        if (initialLoadComplete) {
+            resetInitialLoad();
+        }
+    }, []);
 
     // 2. Animation Hook
     useAboutMeAnimation({

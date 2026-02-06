@@ -34,6 +34,7 @@ import UnifiedLoader from '@app/components/UnifiedLoader';
 import ProtectedRoute from '@shared/components/ProtectedRoute'
 import ErrorBoundary from '@app/components/ErrorBoundary'
 import ScrollToTop from "@app/components/ScrollToTop.jsx"
+import { LoaderProvider } from '@app/contexts/LoaderContext'
 
 // Lazy Load Portfolio Pages
 const MainLayout = lazy(() => import('./layout/MainLayout.jsx'));
@@ -72,20 +73,19 @@ const RouteTracker = () => {
 };
 
 function App() {
-  const [appReady, setAppReady] = useState(false);
+  return (
+    <LoaderProvider>
+      <AppContent />
+    </LoaderProvider>
+  );
+}
 
-  const handleUnifiedLoaderComplete = () => {
-    // Mark that the initial app load has completed
-    sessionStorage.setItem('initialLoadComplete', 'true');
-    if (import.meta.env.DEV) {
-      console.log('[App] Set initialLoadComplete flag, value:', sessionStorage.getItem('initialLoadComplete'));
-    }
-    setAppReady(true);
-  };
+function AppContent() {
+  const [appReady, setAppReady] = useState(false);
 
   return (
     <ErrorBoundary>
-      {!appReady && <UnifiedLoader onComplete={handleUnifiedLoaderComplete} />}
+      {!appReady && <UnifiedLoader onComplete={() => setAppReady(true)} />}
       {appReady && (
         <Router>
           <RouteTracker />

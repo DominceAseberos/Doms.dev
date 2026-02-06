@@ -88,14 +88,8 @@ const PageLoader = ({
             setCurrentFont((prev) => (prev + 1) % fonts.length);
         }, 200); // Slightly faster font cycle
 
-        // Animate progress from 50% to 100%
         let currentProgress = 50;
 
-        // Faster interval if cached, normal if not
-        // User wants ~1.5s load time even if cached.
-        // 50% -> 100% = 50 units.
-        // If increment is 0.8, steps = 50 / 0.8 = 62.5 steps.
-        // 62.5 steps * 20ms = 1250ms (plus Phase 1 time). Perfect.
         const intervalTime = (isCached && !isLoading) ? 20 : 50;
         const increment = (isCached && !isLoading) ? 0.8 : 0.5;
 
@@ -177,8 +171,9 @@ const PageLoader = ({
 
     return (
         <div ref={containerRef} className="page-loader">
-            <div className="page-loader__content">
-                <div className="page-loader__logo-container">
+            <div className="page-loader__content "
+            >
+                <div className="page-loader__logo-container ">
                     {isComplete ? (
                         <CheckCircle2
                             size={80}

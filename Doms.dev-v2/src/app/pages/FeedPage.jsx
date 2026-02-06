@@ -6,18 +6,28 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageLoader from '@app/components/PageLoader';
+import { useLoader } from '@app/contexts/LoaderContext';
 
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FeedPage = () => {
+    const { initialLoadComplete, resetInitialLoad } = useLoader();
+
     // State
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState(null);
     const [profile, setProfile] = useState(null);
     const [isDataReady, setIsDataReady] = useState(false);
-    const [revealReady, setRevealReady] = useState(false); // Show loader on navigation
+    const [revealReady, setRevealReady] = useState(initialLoadComplete);
+
+    // Clear the flag after first render so subsequent navigations show the loader
+    useEffect(() => {
+        if (initialLoadComplete) {
+            resetInitialLoad();
+        }
+    }, []);
 
     useEffect(() => {
         fetchData();
@@ -114,7 +124,6 @@ const FeedPage = () => {
             <PageLoader
                 isLoading={!isDataReady}
                 onLoadComplete={() => setRevealReady(true)}
-                minDisplayTime={600}
             />
             <div className="min-h-screen w-full py-8 px-4"
                 style={{
