@@ -1,16 +1,14 @@
 import React from "react";
+import LiquidBackground from "../../shared/components/LiquidBackground";
 
 const TextFeed = ({ textFeedRef }) => {
     const text = "FEED";
     const sub = ["POST", "SHARE", "KNOWLEDGE"]
 
     return (
-        <div
-            ref={textFeedRef}
+        <LiquidBackground
+            innerRef={textFeedRef}
             className="flex flex-col h-full w-full rounded-2xl items-center justify-center py-2"
-            style={{
-                background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
-            }}
         >
             <h1
                 className="font-bold text-2xl font-playfair text-reveal"
@@ -26,7 +24,7 @@ const TextFeed = ({ textFeedRef }) => {
                 {sub.map((item, index) => (
                     <p
                         key={index}
-                        className="text-gray-400  w-full font-medium mt-1 text-reveal"
+                        className="text-gray-400 w-full font-medium mt-1 text-reveal"
                         style={{ fontSize: 'clamp(12px, 2vw, 14px)', opacity: 0 }}
                     >
                         {item}
@@ -34,7 +32,7 @@ const TextFeed = ({ textFeedRef }) => {
                 ))}
             </div>
 
-        </div>
+        </LiquidBackground>
     );
 };
 
