@@ -436,7 +436,7 @@ const ProfileManager = () => {
                         {/* Save Button */}
                         <button
                             type="submit"
-                            className="w-full py-5 rounded-[1.5rem] bg-primary text-black font-black uppercase tracking-[0.4em] text-[10px] transition-all active:scale-[0.98] shadow-2xl hover:brightness-110 flex items-center justify-center gap-3"
+                            className="w-full py-5 rounded-[1.5rem] bg-white text-black font-black uppercase tracking-[0.4em] text-[10px] transition-all active:scale-[0.98] shadow-2xl hover:brightness-110 flex items-center justify-center gap-3"
                         >
                             <Save size={18} strokeWidth={3} />
                             Sync Identity to Grid
