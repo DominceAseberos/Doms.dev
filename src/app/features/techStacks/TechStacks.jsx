@@ -27,23 +27,16 @@ const TechStacks = () => {
       {/* Container that provides the height and vertical centering */}
       <div className="relative h-full w-full flex items-center min-h-[80px] px-4 overflow-hidden">
 
-        {/* Mobile/Tablet View: Grid Layout (Existing) */}
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 w-full md:hidden">
-          {techStack.slice(0, 12).map((tech, index) => (
-            <TechCard key={`mobile-${index}`} tech={tech} />
-          ))}
-        </div>
-
-        {/* Desktop View: Marquee/Slider (New) */}
-        <div className="hidden md:flex flex-nowrap w-full group/track">
+        {/* Universal View: Marquee/Slider */}
+        <div className="flex flex-nowrap w-full group/track">
           <div className="flex flex-nowrap gap-4 animate-marquee hover:[animation-play-state:paused]">
             {/* First set of items */}
             {techStack.map((tech, index) => (
-              <TechCard key={`desktop-1-${index}`} tech={tech} />
+              <TechCard key={`track-1-${index}`} tech={tech} />
             ))}
             {/* Duplicate set for seamless loop */}
             {techStack.map((tech, index) => (
-              <TechCard key={`desktop-2-${index}`} tech={tech} />
+              <TechCard key={`track-2-${index}`} tech={tech} />
             ))}
           </div>
         </div>
