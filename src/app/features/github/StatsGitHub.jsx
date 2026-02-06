@@ -15,13 +15,15 @@ import { useGSAP } from '@gsap/react';
 import { usePortfolioData } from "@shared/hooks/usePortfolioData";
 
 import { useGitHubStore } from './store/useGitHubStore';
+import { useThemeStore } from '@app/features/util/useThemeStore';
 
 const StatsGitHub = () => {
   const { profile } = usePortfolioData();
   const username = profile.githubUsername;
 
-  // Use the persistent store
+  // Use the persistent store for both GitHub data and Theme colors
   const { profile: githubProfile, loading, fetchGitHubData } = useGitHubStore();
+  const { githubColors } = useThemeStore();
 
   const containerRef = useRef(null);
   const calendarDataRef = useRef([]);
@@ -86,8 +88,9 @@ const StatsGitHub = () => {
     });
   }, { scope: containerRef });
 
+  // Use the reactive colors from the store
   const theme = {
-    dark: ['#c0ff04ff', '#5757578e', '#f3ef77ff', '#ffbd43c8', '#86ff15aa']
+    dark: githubColors || ['#0e27666c', '#2123986a', '#cddbbdff', '#b5db6eff', '#f2ff01ff']
   };
 
   if (loading) return (
@@ -147,6 +150,7 @@ const StatsGitHub = () => {
           blockSize={8}
           blockMargin={5}
           fontSize={12}
+          colorScheme="dark"
           theme={theme}
           transformData={handleTransformData}
         />
