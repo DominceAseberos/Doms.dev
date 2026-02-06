@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Calendar, Tag, ExternalLink, Github } from 'lucide-react';
 import { getIconByName } from "@shared/utils/IconRegistry";
 import { useButtonMotion } from '@shared/hooks/useButtonMotion';
+import LiquidBackground from '@app/features/shared/components/LiquidBackground';
 
 /**
  * ProjectMetadata component - displays project title, date, type, tech stack, and Live Preview button
@@ -82,6 +83,9 @@ const ProjectMetadata = ({
         </div>
     );
 
+
+    // ... existing imports ...
+
     return (
         <div className="project-card relative">
             {/* Sticky Mobile Header (Portal to break out of GSAP transform context) */}
@@ -99,10 +103,9 @@ const ProjectMetadata = ({
                 document.body
             )}
 
-            <div
+            <LiquidBackground
                 className="rounded-2xl p-6 h-full"
                 style={{
-                    background: `linear-gradient(to bottom, rgba(var(--box-Linear-1-rgb)), rgba(var(--box-Linear-2-rgb)))`,
                     border: '1px solid rgba(var(--contrast-rgb), 0.1)'
                 }}
             >
@@ -159,7 +162,7 @@ const ProjectMetadata = ({
                         <ActionButtons />
                     </div>
                 </div>
-            </div>
+            </LiquidBackground>
         </div>
     );
 };

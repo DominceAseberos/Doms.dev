@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
-const LiquidBackground = ({ children, className = "", innerRef }) => {
+const LiquidBackground = ({ children, className = "", innerRef, style = {} }) => {
     const glows = useRef([]);
     const container = useRef(null);
 
@@ -39,6 +39,7 @@ const LiquidBackground = ({ children, className = "", innerRef }) => {
             }}
             className={`relative overflow-hidden ${className}`}
             style={{
+                ...style,
                 background: `linear-gradient(to bottom, rgb(var(--box-Linear-1-rgb)), rgb(var(--box-Linear-2-rgb)))`
             }}
         >
