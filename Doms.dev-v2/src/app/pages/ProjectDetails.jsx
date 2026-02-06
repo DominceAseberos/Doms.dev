@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageLoader from '@app/components/PageLoader';
 
+
 gsap.registerPlugin(ScrollTrigger);
 import { useProjectDetails } from '../features/projects/projectDetails/hooks/useProjectDetails';
 
@@ -113,6 +114,7 @@ const ProjectDetails = () => {
         <>
             <PageLoader
                 isLoading={isLoading || !project}
+                loadingText="Loading Project Details"
                 onLoadComplete={handleLoadComplete}
             />
             <div

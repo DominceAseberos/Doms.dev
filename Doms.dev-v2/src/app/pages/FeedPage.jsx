@@ -7,6 +7,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PageLoader from '@app/components/PageLoader';
 
+
 gsap.registerPlugin(ScrollTrigger);
 
 const FeedPage = () => {
@@ -16,7 +17,7 @@ const FeedPage = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [profile, setProfile] = useState(null);
     const [isDataReady, setIsDataReady] = useState(false);
-    const [revealReady, setRevealReady] = useState(false);
+    const [revealReady, setRevealReady] = useState(false); // Show loader on navigation
 
     useEffect(() => {
         fetchData();
@@ -112,7 +113,8 @@ const FeedPage = () => {
         <>
             <PageLoader
                 isLoading={!isDataReady}
-                onLoadComplete={handleLoadComplete}
+                onLoadComplete={() => setRevealReady(true)}
+                minDisplayTime={600}
             />
             <div className="min-h-screen w-full py-8 px-4"
                 style={{

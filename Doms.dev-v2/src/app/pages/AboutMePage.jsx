@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { X, FileText } from 'lucide-react';
 import PageLoader from '@app/components/PageLoader';
+
 import umtcLogo from '@/assets/umtc-logo.png';
 import heroImage from '@/assets/hero-image.png';
 import WaterDroplet from '@app/components/WaterDroplet';
@@ -29,10 +30,10 @@ const AboutMePage = () => {
     const dropletRef = useRef([]);
 
     // 1. Logic & State Hook
+    const [revealReady, setRevealReady] = useState(false); // Show loader on navigation
     const {
         expandedImage,
         isDataReady,
-        revealReady,
         profile,
         education,
         contacts,
@@ -77,7 +78,7 @@ const AboutMePage = () => {
             <WaterDroplet ref={dropletRef} />
             <PageLoader
                 isLoading={!isDataReady}
-                onLoadComplete={handleLoadComplete}
+                onLoadComplete={() => setRevealReady(true)}
                 minDisplayTime={600}
             />
             <div

@@ -14,17 +14,18 @@ import FloatingChat from '../features/chatBot/floatingChat'
 import WaterDroplet from '@app/components/WaterDroplet'
 import PageLoader from '@app/components/PageLoader'
 
+
 import { useDashboard } from '../features/dashboard/hooks/useDashboard'
 import { useDashboardAnimation } from '../features/dashboard/hooks/useDashboardAnimation'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 const Dashboard = () => {
     const dropletRef = useRef([]);
+    const [revealReady, setRevealReady] = useState(false); // Show loader on navigation
     const {
         compRef,
         isMobile,
         isDataReady,
-        revealReady,
         handleLoadComplete,
         uiConfig,
         dashboardVisited,
@@ -45,7 +46,7 @@ const Dashboard = () => {
             <WaterDroplet ref={dropletRef} />
             <PageLoader
                 isLoading={!isDataReady}
-                onLoadComplete={handleLoadComplete}
+                onLoadComplete={() => setRevealReady(true)}
                 minDisplayTime={600}
             />
             <main

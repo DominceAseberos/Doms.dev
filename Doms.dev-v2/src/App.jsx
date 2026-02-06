@@ -30,7 +30,7 @@ import { lazy, Suspense } from 'react'
 import { useLocation } from 'react-router-dom'
 import { diagnosticService } from '@shared/services/diagnosticService'
 
-import PreLoader from '@app/components/PreLoader'
+import UnifiedLoader from '@app/components/UnifiedLoader';
 import ProtectedRoute from '@shared/components/ProtectedRoute'
 import ErrorBoundary from '@app/components/ErrorBoundary'
 import ScrollToTop from "@app/components/ScrollToTop.jsx"
@@ -72,124 +72,127 @@ const RouteTracker = () => {
 };
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [appReady, setAppReady] = useState(false);
 
   return (
     <ErrorBoundary>
-      {isLoading && <PreLoader onLoadComplete={() => setIsLoading(false)} />}
-      <Router>
-        <RouteTracker />
-        <ScrollToTop />
-        <Suspense fallback={
-          <div className="min-h-screen bg-[#0a0a0a]" />
-        }>
-          <Routes>
-            {/* Main Dashboard Route */}
-            <Route
-              path="/"
-              element={
-                <MainLayout>
-                  <Dashboard />
-                </MainLayout>
-              }
-            />
+      {!appReady && <UnifiedLoader onComplete={() => setAppReady(true)} />}
+      {appReady && (
+        <Router>
+          <RouteTracker />
+          <ScrollToTop />
+          <Suspense fallback={
+            <div className="min-h-screen bg-[#0a0a0a]" />
+          }>
+            <Routes>
+              {/* Main Dashboard Route */}
+              <Route
+                path="/"
+                element={
+                  <MainLayout>
+                    <Dashboard />
+                  </MainLayout>
+                }
+              />
 
-            {/* Dedicated About Me Page Route */}
-            <Route
-              path="/about"
-              element={<AboutMePage />}
-            />
+              {/* Dedicated About Me Page Route */}
+              <Route
+                path="/about"
+                element={<AboutMePage />}
+              />
 
-            {/* Project Details Page Route */}
-            <Route
-              path="/project/:id"
-              element={<ProjectDetails />}
-            />
+              {/* Project Details Page Route */}
+              <Route
+                path="/project/:id"
+                element={<ProjectDetails />}
+              />
 
-            {/* Feed Page Route */}
-            <Route
-              path="/feed"
-              element={<FeedPage />}
-            />
+              {/* Feed Page Route */}
+              <Route
+                path="/feed"
+                element={<FeedPage />}
+              />
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<LoginPage />} />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout>
-                    <AdminDashboard />
-                  </AdminLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/projects"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout>
-                    <ProjectsManager />
-                  </AdminLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/profile"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout>
-                    <ProfileManager />
-                  </AdminLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/media"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout>
-                    <MediaCenter />
-                  </AdminLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/music"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout>
-                    <MusicManager />
-                  </AdminLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/feed"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout>
-                    <FeedManager />
-                  </AdminLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/diagnostics"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout>
-                    <DiagnosticLogs />
-                  </AdminLayout>
-                </ProtectedRoute>
-              }
-            />
-            {/* 404 Catch-All Route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </Router>
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<LoginPage />} />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <AdminDashboard />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/projects"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <ProjectsManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/profile"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <ProfileManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/media"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <MediaCenter />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/music"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <MusicManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/feed"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <FeedManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/diagnostics"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <DiagnosticLogs />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                }
+              />
+              {/* 404 Catch-All Route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </Router>
+      )}
     </ErrorBoundary>
-  )
+  );
 }
 export default App
+
