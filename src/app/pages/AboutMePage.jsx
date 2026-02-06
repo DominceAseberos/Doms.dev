@@ -83,7 +83,10 @@ const AboutMePage = () => {
     });
 
     return (
-        <div className="relative min-h-screen bg-dashboard-main overflow-x-hidden selection:bg-blue-500/30">
+        <div className="relative min-h-screen bg-dashboard-main overflow-x-hidden selection:bg-blue-500/30"
+            style={{
+                background: `linear-gradient(to bottom, rgb(var(--body-Linear-1-rgb)), rgb(var(--body-Linear-2-rgb)))`
+            }}>
             <WaterDroplet ref={dropletRef} />
             <PageLoader
                 isLoading={!isDataReady}
