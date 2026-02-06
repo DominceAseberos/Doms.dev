@@ -17,11 +17,10 @@ import PageLoader from '@app/components/PageLoader'
 
 import { useDashboard } from '../features/dashboard/hooks/useDashboard'
 import { useDashboardAnimation } from '../features/dashboard/hooks/useDashboardAnimation'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 const Dashboard = () => {
     const dropletRef = useRef([]);
-    const [revealReady, setRevealReady] = useState(false); // Show loader on navigation
     const {
         compRef,
         isMobile,
@@ -31,6 +30,30 @@ const Dashboard = () => {
         dashboardVisited,
         setDashboardVisited
     } = useDashboard();
+
+    // Check if we just completed the initial app load
+    const initialLoadComplete = sessionStorage.getItem('initialLoadComplete') === 'true';
+
+    if (import.meta.env.DEV) {
+        console.log('[Dashboard] CHECK - initialLoadComplete:', initialLoadComplete, 'isDataReady:', isDataReady);
+    }
+
+    // If initial load just completed, skip the page loader entirely and show content immediately
+    const [revealReady, setRevealReady] = useState(() => {
+        const shouldReveal = initialLoadComplete || isDataReady;
+        if (import.meta.env.DEV) {
+            console.log('[Dashboard] Initial revealReady:', shouldReveal);
+        }
+        return shouldReveal;
+    });
+
+    // Clear the flag after first Dashboard render so subsequent navigations show the loader
+    useEffect(() => {
+        if (initialLoadComplete) {
+            if (import.meta.env.DEV) console.log('[Dashboard] Clearing flag');
+            sessionStorage.removeItem('initialLoadComplete');
+        }
+    }, []);
 
     useDashboardAnimation({
         isMobile,
@@ -44,11 +67,12 @@ const Dashboard = () => {
     return (
         <>
             <WaterDroplet ref={dropletRef} />
-            <PageLoader
-                isLoading={!isDataReady}
-                onLoadComplete={() => setRevealReady(true)}
-                minDisplayTime={600}
-            />
+            {!revealReady && (
+                <PageLoader
+                    isLoading={!isDataReady}
+                    onLoadComplete={() => setRevealReady(true)}
+                />
+            )}
             <main
                 role="main"
                 className="relative min-h-screen"
@@ -139,10 +163,10 @@ const Dashboard = () => {
 
                                 {/* Music & Contacts Row */}
                                 <div className="flex flex-row gap-2 lg:gap-4 w-full h-[180px] lg:h-[200px] justify-between flex-shrink-0">
-                                    <div className='w-full desktop-music-row'>
+                                    <div className='flex-1 min-w-0 desktop-music-row'>
                                         <MusicPlayer />
                                     </div>
-                                    <div className='w-1/2 desktop-contacts-row'>
+                                    <div className='h-full aspect-square desktop-contacts-row'>
                                         <Contacts />
                                     </div>
                                 </div>

@@ -79,7 +79,6 @@ const AboutMePage = () => {
             <PageLoader
                 isLoading={!isDataReady}
                 onLoadComplete={() => setRevealReady(true)}
-                minDisplayTime={600}
             />
             <div
                 className="w-full py-2 px-4 md:px-2 md:h-screen md:py-8 md:pb-8"

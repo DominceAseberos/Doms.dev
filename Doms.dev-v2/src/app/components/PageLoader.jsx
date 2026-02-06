@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { CheckCircle2 } from 'lucide-react';
+import { gsap } from 'gsap';
+import { preloadAssets } from '@shared/utils/assetPreloader';
 import './PageLoader.css';
 
 const PageLoader = ({
@@ -6,130 +9,194 @@ const PageLoader = ({
     loadingText = "LOADING",
     onLoadComplete
 }) => {
-    const [visible, setVisible] = useState(true);
+    const [phase, setPhase] = useState(1);
     const [progress, setProgress] = useState(0);
-    const [fadeOut, setFadeOut] = useState(false);
-    const [status, setStatus] = useState("INITIALIZING");
+    const [status, setStatus] = useState('INITIALIZING');
+    const [subStatus, setSubStatus] = useState('');
+    const [currentFont, setCurrentFont] = useState(0);
+    const [isComplete, setIsComplete] = useState(false);
 
-    // Timing Constants
-    const DURATION_MAX = 8000; // 8 seconds hard limit
-    const ACCEL_DURATION = 500; // 0.5s to finish when loaded
-    const TARGET_IDLE = 90; // Stall at 90% if still loading
+    const containerRef = useRef(null);
+    const intervalsRef = useRef({ font: null, progress: null });
+    const phaseRef = useRef(1);
 
-    // Refs for animation state
-    const stateRef = useRef({
-        startTime: 0,
-        animationId: null,
-        isAccelerating: false,
-        accelStartTime: 0,
-        startProgress: 0,
-        completed: false
-    });
+    const fonts = ['Orbitron', 'Audiowide', 'Bebas Neue', 'Rajdhani'];
 
+    // Phase 1: Load assets (0-50%)
     useEffect(() => {
-        // Reset state on mount
-        stateRef.current.startTime = performance.now();
-        stateRef.current.completed = false;
-        stateRef.current.isAccelerating = false;
+        let mounted = true;
+        const startTime = performance.now();
 
-        const animate = (timestamp) => {
-            const state = stateRef.current;
-            if (state.completed) return;
+        const loadPhase1 = async () => {
+            setStatus('LOADING ASSETS');
 
-            if (!state.startTime) state.startTime = timestamp;
-            const elapsed = timestamp - state.startTime;
+            await preloadAssets((loaded, total, asset) => {
+                if (!mounted) return;
 
-            // 1. TIMEOUT CHECK
-            if (elapsed > DURATION_MAX && !state.isAccelerating) {
-                // Force finish if we hit 8s limit
-                finishLoading();
-                return;
-            }
+                const phaseProgress = (loaded / total) * 50;
+                setProgress(phaseProgress);
+                setSubStatus(`${asset.type}: ${asset.name}`);
 
-            let currentProgress = 0;
-
-            // 2. ACCELERATION MODE (Data Loaded)
-            if (state.isAccelerating) {
-                if (!state.accelStartTime) state.accelStartTime = timestamp;
-                const accelElapsed = timestamp - state.accelStartTime;
-                const progressDelta = 100 - state.startProgress;
-
-                // Linear interpolation from startProgress to 100%
-                const accelRatio = Math.min(accelElapsed / ACCEL_DURATION, 1);
-                currentProgress = state.startProgress + (progressDelta * accelRatio);
-
-                if (accelRatio >= 1) {
-                    finishLoading();
-                    return;
+                // Status updates
+                if (loaded < total * 0.3) {
+                    setStatus('LOADING FONTS');
+                } else if (loaded < total * 0.7) {
+                    setStatus('LOADING ASSETS');
+                } else {
+                    setStatus('VERIFYING RESOURCES');
                 }
-            }
-            // 3. NORMAL MODE (Still Loading)
-            else {
-                // Logarithmic-ish ease out to 90%
-                // We map 0 -> DURATION_MAX to 0 -> 90
-                // Use a simple ease-out curve: 1 - (1-x)^2
-                const t = Math.min(elapsed / DURATION_MAX, 1);
-                const easeOut = 1 - Math.pow(1 - t, 1.5); // Smoother ease
-                currentProgress = easeOut * TARGET_IDLE;
+            });
 
-                // Update status text based on progress thresholds
-                if (currentProgress < 20) setStatus("CONNECTING");
-                else if (currentProgress < 50) setStatus(loadingText || "FETCHING DATA");
-                else if (currentProgress < 80) setStatus("PROCESSING ASSETS");
-                else setStatus("FINALIZING");
-            }
+            // Assets loaded, move to Phase 2
+            if (mounted) {
+                // Check if assets loaded instantly (cached)
+                const loadDuration = performance.now() - startTime;
+                const isCached = loadDuration < 200; // Threshold for cached assets
 
-            setProgress(currentProgress);
-            state.animationId = requestAnimationFrame(animate);
+                // If cached, give it a tiny delay just to show 50% briefly, else normal delay
+                setTimeout(() => {
+                    phaseRef.current = 2;
+                    setPhase(2);
+                    setProgress(50);
+                    // Pass cached state via ref or state if needed, checking in Phase 2
+                    if (isCached && containerRef.current) {
+                        containerRef.current.dataset.cached = "true";
+                    }
+                }, isCached ? 50 : 200);
+            }
         };
 
-        // Start animation loop
-        stateRef.current.animationId = requestAnimationFrame(animate);
+        loadPhase1();
 
         return () => {
-            if (stateRef.current.animationId) {
-                cancelAnimationFrame(stateRef.current.animationId);
-            }
+            mounted = false;
         };
-    }, []); // Run once on mount (setup loop)
+    }, []);
 
-    // Watch isLoading prop to trigger acceleration
+    // Phase 2: Wait for isLoading prop (50-100%)
     useEffect(() => {
-        if (!isLoading && !stateRef.current.isAccelerating && !stateRef.current.completed) {
-            // Trigger smooth acceleration to 100%
-            stateRef.current.isAccelerating = true;
-            stateRef.current.startProgress = progress; // Start from current visual progress
-            setStatus("READY");
-        }
-    }, [isLoading, progress]);
+        if (phase !== 2) return;
 
-    const finishLoading = () => {
-        stateRef.current.completed = true;
-        setProgress(100);
-        setStatus("READY");
+        setStatus(loadingText || 'LOADING DATA');
+        setSubStatus('preparing content...');
 
-        // Stop animation loop
-        if (stateRef.current.animationId) {
-            cancelAnimationFrame(stateRef.current.animationId);
-        }
+        // Check if we are in "fast mode" (cached assets)
+        const isCached = containerRef.current?.dataset.cached === "true";
 
-        // Exit sequence
-        setTimeout(() => {
-            setFadeOut(true);
+        // Start font cycling for "D" logo
+        intervalsRef.current.font = setInterval(() => {
+            setCurrentFont((prev) => (prev + 1) % fonts.length);
+        }, 200); // Slightly faster font cycle
+
+        // Animate progress from 50% to 100%
+        let currentProgress = 50;
+
+        // Faster interval if cached, normal if not
+        // User wants ~1.5s load time even if cached.
+        // 50% -> 100% = 50 units.
+        // If increment is 0.8, steps = 50 / 0.8 = 62.5 steps.
+        // 62.5 steps * 20ms = 1250ms (plus Phase 1 time). Perfect.
+        const intervalTime = (isCached && !isLoading) ? 20 : 50;
+        const increment = (isCached && !isLoading) ? 0.8 : 0.5;
+
+        intervalsRef.current.progress = setInterval(() => {
+            // STOP at 90% if still loading
+            const limit = (!isLoading) ? 100 : 90;
+
+            if (currentProgress < limit) {
+                currentProgress += increment;
+                // Cap at limit
+                if (currentProgress > limit) currentProgress = limit;
+
+                setProgress(currentProgress);
+
+                // Status updates based on progress
+                if (currentProgress < 60) {
+                    setStatus('CONNECTING');
+                } else if (currentProgress < 75) {
+                    setStatus('FETCHING DATA');
+                } else if (currentProgress < 85) {
+                    setStatus('PROCESSING');
+                } else {
+                    setStatus('FINALIZING');
+                }
+            }
+        }, intervalTime);
+
+        return () => {
+            if (intervalsRef.current.font) clearInterval(intervalsRef.current.font);
+            if (intervalsRef.current.progress) clearInterval(intervalsRef.current.progress);
+        };
+    }, [phase, isLoading, loadingText]);
+
+    // Complete when loading is done
+    useEffect(() => {
+        if (phase === 2 && !isLoading && !isComplete) {
+            // Clear intervals
+            if (intervalsRef.current.font) clearInterval(intervalsRef.current.font);
+            if (intervalsRef.current.progress) clearInterval(intervalsRef.current.progress);
+
+            // Accelerate to 100%
+            setProgress(100);
+            setStatus('SYSTEM READY');
+            setIsComplete(true);
+
+            // Show success state briefly, then fade out
             setTimeout(() => {
-                setVisible(false);
-                onLoadComplete?.();
-            }, 500); // CSS transition delay
-        }, 200); // Brief pause at 100%
-    };
+                if (containerRef.current) {
+                    gsap.to(containerRef.current, {
+                        opacity: 0,
+                        duration: 0.8,
+                        ease: 'power2.inOut',
+                        onComplete: () => {
+                            onLoadComplete?.();
+                        }
+                    });
+                } else {
+                    onLoadComplete?.();
+                }
+            }, 500);
+        }
+    }, [phase, isLoading, isComplete, onLoadComplete]);
 
-    if (!visible) return null;
+    // Don't render if not visible
+    const [isVisible, setIsVisible] = useState(true);
+
+    // Track when fade animation completes to remove from DOM
+    useEffect(() => {
+        if (isComplete) {
+            // Hide from DOM after fade completes
+            const timer = setTimeout(() => {
+                setIsVisible(false);
+            }, 1300); // 500ms delay + 800ms fade duration
+            return () => clearTimeout(timer);
+        }
+    }, [isComplete]);
+
+    if (!isVisible) return null;
 
     return (
-        <div className={`page-loader ${fadeOut ? 'fade-out' : ''}`}>
+        <div ref={containerRef} className="page-loader">
             <div className="page-loader__content">
                 <div className="page-loader__logo-container">
-                    <span className="page-loader__logo">D</span>
+                    {isComplete ? (
+                        <CheckCircle2
+                            size={80}
+                            className="page-loader__checkmark"
+                            strokeWidth={2.5}
+                        />
+                    ) : (
+                        <span
+                            className="page-loader__logo"
+                            style={{
+                                fontFamily: phase === 1
+                                    ? `'Orbitron', sans-serif`
+                                    : `'${fonts[currentFont]}', sans-serif`
+                            }}
+                        >
+                            D
+                        </span>
+                    )}
                 </div>
 
                 <div className="page-loader__bar-container">
@@ -139,9 +206,20 @@ const PageLoader = ({
                     />
                 </div>
 
-                <div className="page-loader__status">
-                    {status}
-                </div>
+                <div className="page-loader__status">{status}</div>
+                {subStatus && (
+                    <div
+                        className="page-loader__sub-status"
+                        style={{
+                            fontSize: 'clamp(10px, 1.5vw, 12px)',
+                            color: 'rgba(255, 255, 255, 0.4)',
+                            marginTop: '8px',
+                            fontFamily: 'monospace'
+                        }}
+                    >
+                        {subStatus}
+                    </div>
+                )}
             </div>
         </div>
     );

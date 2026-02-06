@@ -10,7 +10,7 @@
     background: radial-gradient(circle at center, rgb(20, 20, 25) 0%, rgb(5, 5, 10) 100%);
     opacity: 1;
     transition: opacity 0.5s ease-out;
-    pointer-events: all;
+    pointer-events: none; /* Allow clicks to pass through */
 }
 
 .page-loader.fade-out {

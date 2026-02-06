@@ -25,6 +25,7 @@ const UnifiedLoader = ({ onComplete }) => {
     // Phase 1: Load assets (0-50%)
     useEffect(() => {
         let mounted = true;
+        const startTime = performance.now();
 
         const loadPhase1 = async () => {
             setStatus('LOADING ASSETS');
@@ -48,11 +49,18 @@ const UnifiedLoader = ({ onComplete }) => {
 
             // Assets loaded, move to Phase 2
             if (mounted) {
+                // Check if assets loaded instantly (cached)
+                const loadDuration = performance.now() - startTime;
+                const isCached = loadDuration < 200; // Threshold for cached assets
+
+                // If cached, give it a tiny delay just to show 50% briefly, else normal delay
                 setTimeout(() => {
                     phaseRef.current = 2;
                     setPhase(2);
                     setProgress(50);
-                }, 200);
+                    // Pass cached state via ref or state if needed, checking in Phase 2
+                    if (isCached) containerRef.current.dataset.cached = "true";
+                }, isCached ? 50 : 200);
             }
         };
 
@@ -70,16 +78,36 @@ const UnifiedLoader = ({ onComplete }) => {
         setStatus('LOADING DATA');
         setSubStatus('projects, profile, skills...');
 
+        // Check if we are in "fast mode" (cached assets)
+        const isCached = containerRef.current?.dataset.cached === "true";
+
         // Start font cycling for "D" logo
         intervalsRef.current.font = setInterval(() => {
             setCurrentFont((prev) => (prev + 1) % fonts.length);
-        }, 300);
+        }, 200); // Slightly faster font cycle
 
-        // Animate progress from 50% to 90% while loading
+        // Animate progress from 50% to 100%
         let currentProgress = 50;
+
+        // Faster interval if cached, normal if not
+        // User wants ~1.5s load time even if cached.
+        // 50% -> 100% = 50 units.
+        // If increment is 0.8, steps = 50 / 0.8 = 62.5 steps.
+        // 62.5 steps * 20ms = 1250ms (plus Phase 1 time). Perfect.
+        const intervalTime = (isCached && !dataLoading) ? 20 : 50;
+        const increment = (isCached && !dataLoading) ? 0.8 : 0.5;
+
         intervalsRef.current.progress = setInterval(() => {
-            if (dataLoading && currentProgress < 90) {
-                currentProgress += 0.5;
+            // STOP at 90% if data is still loading
+            // GO to 100% if data is loaded OR we are in fast mode (assuming fast mode implies data readiness check or we skip wait)
+            // Actually, if data is NOT ready, we must wait regardless of cache.
+            const limit = (!dataLoading) ? 100 : 90;
+
+            if (currentProgress < limit) {
+                currentProgress += increment;
+                // Cap at limit
+                if (currentProgress > limit) currentProgress = limit;
+
                 setProgress(currentProgress);
 
                 // Status updates based on progress
@@ -93,7 +121,7 @@ const UnifiedLoader = ({ onComplete }) => {
                     setStatus('FINALIZING');
                 }
             }
-        }, 50);
+        }, intervalTime);
 
         return () => {
             if (intervalsRef.current.font) clearInterval(intervalsRef.current.font);

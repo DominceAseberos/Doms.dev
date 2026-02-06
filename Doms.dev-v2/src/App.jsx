@@ -74,9 +74,18 @@ const RouteTracker = () => {
 function App() {
   const [appReady, setAppReady] = useState(false);
 
+  const handleUnifiedLoaderComplete = () => {
+    // Mark that the initial app load has completed
+    sessionStorage.setItem('initialLoadComplete', 'true');
+    if (import.meta.env.DEV) {
+      console.log('[App] Set initialLoadComplete flag, value:', sessionStorage.getItem('initialLoadComplete'));
+    }
+    setAppReady(true);
+  };
+
   return (
     <ErrorBoundary>
-      {!appReady && <UnifiedLoader onComplete={() => setAppReady(true)} />}
+      {!appReady && <UnifiedLoader onComplete={handleUnifiedLoaderComplete} />}
       {appReady && (
         <Router>
           <RouteTracker />

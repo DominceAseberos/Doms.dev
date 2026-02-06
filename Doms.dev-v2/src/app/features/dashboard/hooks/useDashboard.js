@@ -7,7 +7,7 @@ export const useDashboard = () => {
     const { dashboardVisited, setDashboardVisited } = useNavigationStore();
     const { uiConfig, profile, isLoading } = usePortfolioData();
     const [isMobile, setIsMobile] = useState(false);
-    const [isDataReady, setIsDataReady] = useState(false);
+    const [isDataReady, setIsDataReady] = useState(() => !isLoading && !!profile && !!uiConfig);
     const [revealReady, setRevealReady] = useState(false);
 
     // Responsive check

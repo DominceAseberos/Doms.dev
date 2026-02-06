@@ -17,7 +17,7 @@ export const AlbumInfo = memo(({
 
   return (
     <div className="flex flex-row w-full  justify-center gap-3 p-2">
-      <div className="rounded w-12 h-12 overflow-hidden flex items-center justify-center">
+      <div className="rounded w-12 h-12 md:w-24 md:h-24 overflow-hidden flex items-center justify-center">
         {isMetadataLoading || isImageLoading ? (
           <div className="w-3 h-3 border-2 border-gray-300 border-t-blue-400 rounded-full animate-spin" />
         ) : (
@@ -31,7 +31,7 @@ export const AlbumInfo = memo(({
 
       <div
         ref={containerRef}
-        className="flex flex-col w-32 overflow-hidden justify-center"
+        className="flex flex-col w-32 md:flex-1 md:min-w-0 overflow-hidden justify-center"
       >
         <div
           className="flex w-fit"

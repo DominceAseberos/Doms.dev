@@ -40,7 +40,7 @@ export const useAboutMeAnimation = ({
                     attr: { r: "120%" },
                     opacity: 0,
                     strokeWidth: 0,
-                    duration: 4.0,
+                    duration: 2.5,
                     ease: "power2.out",
                     stagger: 0.4
                 }
@@ -82,7 +82,7 @@ export const useAboutMeAnimation = ({
 
             // 1. ANIMATE VISIBLE CARDS (Sequential Top-to-Bottom)
             // Start after ripple overlap (approx 1.2s)
-            const startDelay = 1.5;
+            const startDelay = 2.0;
 
             visibleCards.forEach((card, index) => {
                 gsap.fromTo(card,
@@ -139,7 +139,7 @@ export const useAboutMeAnimation = ({
                     tl.fromTo(backButtonRef.current,
                         { opacity: 0, x: -20 },
                         { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
-                        0.5
+                        2.0
                     );
                 }
                 if (effectsCardRef.current) {

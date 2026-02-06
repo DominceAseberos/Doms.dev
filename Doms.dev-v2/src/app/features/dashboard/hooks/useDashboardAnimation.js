@@ -24,7 +24,7 @@ export const useDashboardAnimation = ({
                     attr: { r: "120%" },
                     opacity: 0,
                     strokeWidth: 0,
-                    duration: 4.0,
+                    duration: 2.5,
                     ease: "power2.out",
                     stagger: 0.4
                 }
@@ -47,7 +47,7 @@ export const useDashboardAnimation = ({
                     tl.fromTo(".desktop-profile-row",
                         { opacity: 0, y: 30, scale: 0.95 },
                         { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" },
-                        0.5
+                        2.0
                     );
 
                     // --- STEP 2: PROJECT SECTION (Head + Carousel) ---
@@ -184,7 +184,7 @@ export const useDashboardAnimation = ({
 
             // Animate Visible Cards Sequentially
             // Start delay
-            tl.to({}, { duration: 1.2 }); // Initial wait
+            tl.to({}, { duration: 2.0 }); // Initial wait
 
             visibleCards.forEach(card => {
                 // Card Reveal
