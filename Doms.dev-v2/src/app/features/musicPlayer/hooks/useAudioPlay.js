@@ -68,7 +68,9 @@ export const useAudioPlayback = (onEnded) => {
     if (!audioRef.current.src) return;
     audioRef.current.play()
       .then(() => setPlaying(true))
-      .catch(e => console.log('Playback prevented (User interaction needed):', e));
+      .catch(e => {
+        if (import.meta.env.DEV) console.log('Playback prevented (User interaction needed):', e);
+      });
   }, []);
 
   const pause = useCallback(() => {

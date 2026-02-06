@@ -72,7 +72,7 @@ const FloatingChat = () => {
         const updateChatSize = () => {
             const isMobile = window.innerWidth <= 768;
             return {
-                width: isMobile ? "calc(100vw - 15px)" : "400px",
+                width: isMobile ? "calc(90vw - 10px)" : "400px",
                 height: isMobile ? "calc(100vh - 200px)" : "500px",
                 maxHeight: isMobile ? "65vh" : "500px",
                 right: isMobile ? "15px" : "25px",

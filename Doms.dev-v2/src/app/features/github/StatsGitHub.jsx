@@ -132,7 +132,7 @@ const StatsGitHub = () => {
     >
       {/* Title */}
       <div className="flex flex-row w-full justify-between py-2 text-center items-center">
-        <h3 className="text-center font-playfair w-full font-black text-xl text-white mb-2">
+        <h3 className="text-center font-playfair w-full font-black text-xl md:text-2xl text-white mb-2">
           GitHub Stats
         </h3>
 

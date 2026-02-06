@@ -32,7 +32,7 @@ const TechStacks = () => {
             return (
               <div
                 key={index}
-                className="tech-icon-card relative flex flex-col items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-8 lg:w-14 lg:h-14 xl:w-16 md:h-8  xl:h-16 shrink-0 rounded-xl border cursor-pointer bg-white/[0.03] border-white/[0.05] hover:scale-105 transition-all ease-in-out duration-600 hover:-translate-y-0.5"
+                className="tech-icon-card relative flex flex-col items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-8 lg:w-12 lg:h-12 xl:w-12 md:h-8  xl:h-12 shrink-0 rounded-xl border cursor-pointer bg-white/[0.03] border-white/[0.05] hover:scale-105 transition-all ease-in-out duration-600 hover:-translate-y-0.5"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = `${tech.brandColor}15`;
                   e.currentTarget.style.borderColor = `${tech.brandColor}40`;

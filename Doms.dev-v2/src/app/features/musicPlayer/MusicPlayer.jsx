@@ -35,7 +35,7 @@ const MusicPlayer = () => {
     let nextPlaylist = currentPlaylist;
 
     if (nextSongIndex >= currentPlaylist.length || currentIndex === -1) {
-      console.log(`✅ Finished ${currentMood}. Switching Mood...`);
+      if (import.meta.env.DEV) console.log(`✅ Finished ${currentMood}. Switching Mood...`);
 
       const moods = Object.keys(TRACKLIST);
       const currentMoodIndex = moods.indexOf(currentMood);
@@ -54,8 +54,7 @@ const MusicPlayer = () => {
 
     const nextTrackId = nextPlaylist[nextSongIndex].id;
 
-    console.log(`⏭️ New Mood: ${nextMood} | Song: ${nextSongIndex} | ID: ${nextTrackId}`);
-    console.groupEnd();
+    if (import.meta.env.DEV) console.log(`⏭️ New Mood: ${nextMood} | Song: ${nextSongIndex} | ID: ${nextTrackId}`);
 
     setCurrentMood(nextMood);
     setTrackID(nextTrackId);

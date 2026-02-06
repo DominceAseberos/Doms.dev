@@ -38,7 +38,7 @@ const MusicManager = () => {
 
             if (tracksWithMissingData.length === 0) return;
 
-            console.log(`[MusicManager] Auto-fetching metadata for ${tracksWithMissingData.length} tracks...`);
+            if (import.meta.env.DEV) console.log(`[MusicManager] Auto-fetching metadata for ${tracksWithMissingData.length} tracks...`);
 
             for (const track of tracksWithMissingData) {
                 try {
@@ -53,7 +53,7 @@ const MusicManager = () => {
                             img_src: metadata.cover_url || track.img_src,
                             external_id: metadata.external_id
                         });
-                        console.log(`[MusicManager] ✓ Updated track ${track.id}: ${metadata.title}`);
+                        if (import.meta.env.DEV) console.log(`[MusicManager] ✓ Updated track ${track.id}: ${metadata.title}`);
                     }
                 } catch (error) {
                     console.error(`[MusicManager] Failed to fetch metadata for track ${track.id}:`, error);

@@ -25,14 +25,14 @@ export const useGitHubStore = create(
 
                 // 1. Throttle Check: Don't even ask GitHub if checked < 5 mins ago
                 if (now - lastChecked < THROTTLE_PERIOD) {
-                    console.log('GitHub Sync: Throttled (Recently checked). Skipping.');
+                    if (import.meta.env.DEV) console.log('GitHub Sync: Throttled (Recently checked). Skipping.');
                     return;
                 }
 
                 set({ loading: true, error: null });
 
                 try {
-                    console.log('GitHub Sync: Checking for updates...');
+                    if (import.meta.env.DEV) console.log('GitHub Sync: Checking for updates...');
 
                     const [profileRes, reposRes, eventsRes] = await Promise.all([
                         axios.get(`${GITHUB_API_BASE}/${username}`, {
@@ -58,9 +58,9 @@ export const useGitHubStore = create(
                     const newEventsETag = eventsRes.headers['etag'] || eventsETag;
 
                     if (profileRes.status === 304 && reposRes.status === 304 && eventsRes.status === 304) {
-                        console.log('GitHub Sync: 304 Not Modified. Data is up to date.');
+                        if (import.meta.env.DEV) console.log('GitHub Sync: 304 Not Modified. Data is up to date.');
                     } else {
-                        console.log('GitHub Sync: Data updated from GitHub.');
+                        if (import.meta.env.DEV) console.log('GitHub Sync: Data updated from GitHub.');
                     }
 
                     set({
