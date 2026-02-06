@@ -83,6 +83,28 @@ function App() {
 function AppContent() {
   const [appReady, setAppReady] = useState(false);
 
+  // Strict Redirect Logic: Force redirect to dashboard on refresh ONLY for valid public sub-pages
+  useEffect(() => {
+    const path = window.location.pathname;
+    const segments = path.split('/').filter(Boolean); // e.g. "/about/hj" -> ["about", "hj"]
+
+    let shouldRedirect = false;
+
+    // 1. Exact match for static public pages
+    if (path === '/about' || path === '/feed') {
+      shouldRedirect = true;
+    }
+    // 2. Pattern match for project details: /project/:id only
+    // Must be exactly 2 segments: ["project", "some-id"]
+    else if (segments.length === 2 && segments[0] === 'project') {
+      shouldRedirect = true;
+    }
+
+    if (shouldRedirect) {
+      window.history.replaceState(null, '', '/');
+    }
+  }, []);
+
   return (
     <ErrorBoundary>
       {!appReady && <UnifiedLoader onComplete={() => setAppReady(true)} />}

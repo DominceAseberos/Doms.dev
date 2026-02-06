@@ -8,6 +8,7 @@ const DiagnosticLogs = () => {
     const navigate = useNavigate();
     const { setAdminLoading } = useAdminStore();
     const [logs, setLogs] = useState([]);
+    const [selectedLogIds, setSelectedLogIds] = useState([]);
     const [selectedLog, setSelectedLog] = useState(null);
     const [showResolved, setShowResolved] = useState(false);
     const [visitCount, setVisitCount] = useState(0);
@@ -21,6 +22,7 @@ const DiagnosticLogs = () => {
             ]);
             setLogs(logsData);
             setVisitCount(visits);
+            setSelectedLogIds([]); // Reset selection on fetch
         } catch (err) {
             console.error('Failed to fetch logs:', err);
         } finally {
@@ -39,6 +41,42 @@ const DiagnosticLogs = () => {
         } catch (err) {
             console.error('Failed to resolve log:', err);
         }
+    };
+
+    const handleBatchAction = async () => {
+        if (selectedLogIds.length === 0) return;
+
+        setAdminLoading(true, showResolved ? 'DELETING LOGS...' : 'RESOLVING LOGS...');
+        try {
+            if (showResolved) {
+                // Batch Delete
+                await diagnosticService.deleteLogs(selectedLogIds);
+            } else {
+                // Batch Resolve
+                await diagnosticService.resolveLogs(selectedLogIds);
+            }
+            await fetchLogs();
+        } catch (err) {
+            console.error('Batch action failed:', err);
+        } finally {
+            setAdminLoading(false);
+        }
+    };
+
+    const toggleSelectAll = () => {
+        if (selectedLogIds.length === logs.length) {
+            setSelectedLogIds([]);
+        } else {
+            setSelectedLogIds(logs.map(log => log.id));
+        }
+    };
+
+    const toggleSelectLog = (id) => {
+        setSelectedLogIds(prev =>
+            prev.includes(id)
+                ? prev.filter(logId => logId !== id)
+                : [...prev, id]
+        );
     };
 
     return (
@@ -63,15 +101,30 @@ const DiagnosticLogs = () => {
                             </p>
                         </div>
                     </div>
-                    <button
-                        onClick={() => setShowResolved(!showResolved)}
-                        className={`px-6 py-3 rounded-xl border text-[10px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 ${showResolved
-                            ? 'border-green-500/40 text-green-500/80 bg-green-500/10'
-                            : 'border-white/10 text-white/60 hover:border-white/20'
-                            }`}
-                    >
-                        {showResolved ? 'Showing Resolved' : 'Showing Unresolved'}
-                    </button>
+                    <div className="flex items-center gap-4">
+                        {/* Batch Action Button */}
+                        {selectedLogIds.length > 0 && (
+                            <button
+                                onClick={handleBatchAction}
+                                className={`px-6 py-3 rounded-xl border text-[10px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 ${showResolved
+                                    ? 'border-red-500/40 text-red-500 bg-red-500/10 hover:bg-red-500/20'
+                                    : 'border-green-500/40 text-green-500 bg-green-500/10 hover:bg-green-500/20'
+                                    }`}
+                            >
+                                {showResolved ? `Delete Selected (${selectedLogIds.length})` : `Resolve Selected (${selectedLogIds.length})`}
+                            </button>
+                        )}
+
+                        <button
+                            onClick={() => setShowResolved(!showResolved)}
+                            className={`px-6 py-3 rounded-xl border text-[10px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 ${showResolved
+                                ? 'border-green-500/40 text-green-500/80 bg-green-500/10'
+                                : 'border-white/10 text-white/60 hover:border-white/20'
+                                }`}
+                        >
+                            {showResolved ? 'Showing Resolved' : 'Showing Unresolved'}
+                        </button>
+                    </div>
                 </header>
 
                 {/* Stats */}
@@ -80,6 +133,21 @@ const DiagnosticLogs = () => {
                     <StatCard label="Site Visits" value={visitCount} />
                     <StatCard label="Status" value={showResolved ? 'Resolved' : 'Active'} />
                 </div>
+
+                {/* Main Content Area */}
+                {logs.length > 0 && (
+                    <div className="flex items-center gap-4 pb-4 border-b border-white/5">
+                        <input
+                            type="checkbox"
+                            checked={logs.length > 0 && selectedLogIds.length === logs.length}
+                            onChange={toggleSelectAll}
+                            className="w-4 h-4 rounded border-white/20 bg-transparent text-primary focus:ring-primary/50"
+                        />
+                        <span className="text-xs uppercase tracking-widest opacity-50 font-mono">
+                            Select All {showResolved ? 'Resolved' : 'Unresolved'} Logs
+                        </span>
+                    </div>
+                )}
 
                 {/* Logs Table */}
                 {logs.length === 0 ? (
@@ -95,6 +163,8 @@ const DiagnosticLogs = () => {
                             <LogRow
                                 key={log.id}
                                 log={log}
+                                selected={selectedLogIds.includes(log.id)}
+                                onToggleSelect={() => toggleSelectLog(log.id)}
                                 onViewTrace={() => setSelectedLog(log)}
                                 onResolve={() => handleResolve(log.id)}
                                 showResolveButton={!showResolved}
@@ -119,13 +189,26 @@ const StatCard = ({ label, value }) => (
     </div>
 );
 
-const LogRow = ({ log, onViewTrace, onResolve, showResolveButton }) => {
+const LogRow = ({ log, selected, onToggleSelect, onViewTrace, onResolve, showResolveButton }) => {
     const timestamp = new Date(log.created_at).toLocaleString();
     const journey = Array.isArray(log.journey) ? log.journey : [];
 
     return (
-        <div className="p-6 rounded-[2rem] border border-white/10 bg-[#0f0f0f] hover:border-primary/20 transition-all space-y-4">
+        <div
+            className={`p-6 rounded-[2rem] border transition-all space-y-4 ${selected
+                    ? 'border-primary/40 bg-primary/5'
+                    : 'border-white/10 bg-[#0f0f0f] hover:border-primary/20'
+                }`}
+        >
             <div className="flex justify-between items-start gap-4">
+                <div className="pt-1">
+                    <input
+                        type="checkbox"
+                        checked={selected}
+                        onChange={onToggleSelect}
+                        className="w-5 h-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary/50 cursor-pointer"
+                    />
+                </div>
                 <div className="flex-1  space-y-2">
                     <div className="flex items-center gap-3">
                         <AlertCircle size={20} className="text-red-500" />
@@ -158,7 +241,7 @@ const LogRow = ({ log, onViewTrace, onResolve, showResolveButton }) => {
 
             {/* Breadcrumbs */}
             {journey.length > 0 && (
-                <div className="pt-4 border-t border-white/5">
+                <div className="pt-4 border-t border-white/5 ml-9">
                     <div className="flex items-center gap-2 mb-2">
                         <MapPin size={14} className="text-primary opacity-50" />
                         <span className="text-[9px] uppercase tracking-widest opacity-50 font-mono">User Journey</span>

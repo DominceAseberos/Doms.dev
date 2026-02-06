@@ -199,5 +199,21 @@ export const diagnosticService = {
     getLogs,
     getUnresolvedCount,
     getVisitCount,
-    resolveLog
+    resolveLog,
+    resolveLogs: async (ids) => {
+        const { error } = await supabase
+            .from('error_logs')
+            .update({ resolved: true })
+            .in('id', ids);
+        if (error) throw error;
+        return true;
+    },
+    deleteLogs: async (ids) => {
+        const { error } = await supabase
+            .from('error_logs')
+            .delete()
+            .in('id', ids);
+        if (error) throw error;
+        return true;
+    }
 };
