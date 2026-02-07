@@ -358,7 +358,40 @@ const ProjectForm = ({ isOpen, onClose, onSave, project }) => {
                                         <button
                                             type="button"
                                             onClick={() => openMediaPicker('multiple')}
-                                            className="w-20 h-20 flex-shrink-0 rounded-lg border border-dashed border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors text-white/20 hover:text-white/50"
+                                            onPaste={async (e) => {
+                                                if (e.clipboardData && e.clipboardData.items) {
+                                                    const items = e.clipboardData.items;
+                                                    for (let i = 0; i < items.length; i++) {
+                                                        if (items[i].type.indexOf('image') !== -1) {
+                                                            const file = items[i].getAsFile();
+                                                            // We need to upload this file and then add the URL to the carousel
+                                                            setAdminLoading(true, 'UPLOADING PASTED ASSET');
+                                                            try {
+                                                                let uploadFile = file;
+                                                                try {
+                                                                    uploadFile = await compressImage(file);
+                                                                } catch (e) { }
+
+                                                                const fileName = `carousel_${Date.now()}_${uploadFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+                                                                const publicUrl = await projectService.uploadProjectImage(uploadFile, fileName);
+
+                                                                const currentImages = currentProject.images || [];
+                                                                const newImages = [...currentImages, publicUrl];
+                                                                setCurrentProject(prev => ({ ...prev, images: newImages }));
+                                                            } catch (err) {
+                                                                console.error(err);
+                                                                alert('Failed to upload pasted image');
+                                                            } finally {
+                                                                setAdminLoading(false);
+                                                            }
+                                                            e.preventDefault();
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }}
+                                            className="w-20 h-20 flex-shrink-0 rounded-lg border border-dashed border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors text-white/20 hover:text-white/50 focus:outline-none focus:border-primary focus:text-primary outline-none"
+                                            title="Add images (Click to select, Paste to upload)"
                                         >
                                             <Plus size={20} />
                                         </button>

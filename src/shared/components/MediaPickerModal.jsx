@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Image as ImageIcon, FileText, Check, ImagePlus } from 'lucide-react';
+import { X, Image as ImageIcon, FileText, Check, ImagePlus, Clipboard } from 'lucide-react';
 import mediaService from '../services/mediaService';
 import { compressImage } from '../utils/imageUtils';
 
@@ -32,7 +32,10 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect, multiple = false }) => {
         const file = e.target.files[0];
         if (!file) return;
 
-        setUploading(true);
+        await processUpload(file);
+    };
+
+    const processUpload = async (file) => {
         setUploading(true);
         try {
             let uploadFile = file;
@@ -44,13 +47,28 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect, multiple = false }) => {
 
             const uploadedFile = await mediaService.uploadFile(uploadFile);
             await fetchFiles(); // Refresh list
-            // Optionally auto-select the uploaded file? 
-            // For now just refreshing is enough, user can see it first in list (we sort desc).
         } catch (err) {
             console.error('Upload failed', err);
             alert('Upload failed inside picker.');
         } finally {
             setUploading(false);
+        }
+    };
+
+    const handlePaste = async () => {
+        try {
+            const items = await navigator.clipboard.read();
+            for (const item of items) {
+                if (item.types.some(type => type.startsWith('image/'))) {
+                    const blob = await item.getType(item.types.find(type => type.startsWith('image/')));
+                    const file = new File([blob], `pasted_${Date.now()}.png`, { type: blob.type });
+                    await processUpload(file);
+                }
+            }
+        } catch (err) {
+            console.error('Paste failed:', err);
+            // Fallback for text/url paste if needed, or simple alert
+            alert('Could not paste image. Please try uploading manually.');
         }
     };
 
@@ -77,15 +95,28 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect, multiple = false }) => {
     return (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/95 backdrop-blur-md" onClick={onClose} />
-            <div className="relative w-full max-w-4xl h-[80vh] bg-[#0a0a0a] rounded-3xl border border-white/10 flex flex-col admin-modal-gradient">
-                <header className="flex justify-between items-center p-6 border-b border-white/5">
+            <div className="relative w-full max-w-4xl h-[80vh] bg-[#0a0a0a] rounded-3xl border border-white/10 flex flex-col admin-modal-gradient shadow-2xl">
+                <header className="flex justify-between items-center p-6 border-b border-white/5 shrink-0">
                     <div className="flex items-center gap-4">
                         <h2 className="text-xl font-black tracking-tighter text-white">SELECT ASSETS</h2>
-                        <label className={`flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
-                            <input type="file" className="hidden" onChange={handleUpload} accept="image/*" />
-                            <ImagePlus size={16} />
-                            <span className="text-[10px] font-bold uppercase tracking-wider">{uploading ? 'Uploading...' : 'Upload New'}</span>
-                        </label>
+
+                        <div className="flex items-center gap-2">
+                            <label className={`flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                                <input type="file" className="hidden" onChange={handleUpload} accept="image/*" />
+                                <ImagePlus size={16} />
+                                <span className="text-[10px] font-bold uppercase tracking-wider">{uploading ? 'Uploading...' : 'Upload New'}</span>
+                            </label>
+
+                            {/* Desktop only Paste Button */}
+                            <button
+                                onClick={handlePaste}
+                                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+                                title="Paste image from clipboard"
+                            >
+                                <Clipboard size={16} />
+                                <span className="text-[10px] font-bold uppercase tracking-wider">Paste</span>
+                            </button>
+                        </div>
                     </div>
                     <button onClick={onClose} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10">
                         <X size={20} />
@@ -127,10 +158,10 @@ const MediaPickerModal = ({ isOpen, onClose, onSelect, multiple = false }) => {
                 </div>
 
                 {multiple && (
-                    <footer className="p-6 border-t border-white/5 flex justify-end">
+                    <footer className="p-6 border-t border-white/5 flex justify-end shrink-0 bg-[#0a0a0a]">
                         <button
                             onClick={handleConfirm}
-                            className="px-8 py-3 rounded-xl bg-primary text-black font-black uppercase tracking-widest text-xs hover:brightness-110 active:scale-95"
+                            className="px-8 py-3 rounded-xl bg-blue-600 text-white font-black uppercase tracking-widest text-xs hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-blue-600/20"
                         >
                             Confirm Selection ({selectedFiles.length})
                         </button>
