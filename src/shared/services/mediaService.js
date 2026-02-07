@@ -35,9 +35,11 @@ export const mediaService = {
         return allFiles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     },
 
-    async uploadFile(file, bucketName = 'project-images') {
+    async uploadFile(file, bucketName = 'project-images', customFileName = null) {
         const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+        const fileName = customFileName
+            ? `${customFileName}.${fileExt}`
+            : `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
         const filePath = fileName; // Upload to root
 
         const { error } = await supabase.storage
@@ -54,6 +56,11 @@ export const mediaService = {
             .getPublicUrl(filePath);
 
         return { name: fileName, url: publicUrl, bucket: bucketName };
+    },
+
+    async uploadImage(file, bucketName = 'project-images', customFileName = null) {
+        const { url } = await this.uploadFile(file, bucketName, customFileName);
+        return url;
     },
 
     async deleteFile(fileName, bucketName = 'project-images') {
