@@ -59,14 +59,10 @@ const AdminLayout = lazy(() => import('@admin/components/AdminLayout'));
 const RouteTracker = () => {
   const location = useLocation();
 
-  // Log visit once per session
-  useEffect(() => {
-    diagnosticService.logVisit();
-  }, []);
-
-  // Track breadcrumbs on route change
+  // Track breadcrumbs and log visit on route change
   useEffect(() => {
     diagnosticService.trackPageVisit(location.pathname);
+    diagnosticService.logVisit();
   }, [location]);
 
   return null;

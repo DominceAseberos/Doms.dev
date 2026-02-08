@@ -79,29 +79,32 @@ export const logVisit = async () => {
     if (typeof window === 'undefined') return;
 
     try {
-        // Check if already logged this session
-        if (sessionStorage.getItem(STORAGE_KEYS.VISIT_LOGGED)) {
-            return;
-        }
-
         const sessionId = getOrCreateSessionId();
         const pagePath = window.location.pathname;
 
+        // 1. Get current breadcrumbs from session storage (this is the most up-to-date local state)
+        // We use the existing trackPageVisit logic which already maintains the breadcrumbs
+        let breadcrumbs = getBreadcrumbs();
+
+        // If the current page isn't in breadcrumbs yet (first load edge case), add it
+        if (breadcrumbs[breadcrumbs.length - 1] !== pagePath) {
+            trackPageVisit(pagePath);
+            breadcrumbs = getBreadcrumbs();
+        }
+
+        // 2. Upsert the session row
+        // We use upsert so it creates row if new, or updates journey if existing
         const { error } = await supabase
             .from('site_analytics')
-            .insert([{
-                page_path: pagePath,
-                session_id: sessionId
-            }]);
+            .upsert({
+                session_id: sessionId,
+                page_path: pagePath, // Current page
+                journey: breadcrumbs, // Full history
+                // We don't update created_at, so we know when session started
+            }, { onConflict: 'session_id' });
 
         if (error) {
-            // Unique constraint violation is expected if same session visits same page
-            if (error.code !== '23505') {
-                console.error('[diagnosticService] logVisit error:', error);
-            }
-        } else {
-            // Mark as logged
-            sessionStorage.setItem(STORAGE_KEYS.VISIT_LOGGED, '1');
+            console.error('[diagnosticService] logVisit error:', error);
         }
     } catch (err) {
         console.error('[diagnosticService] logVisit exception:', err);
