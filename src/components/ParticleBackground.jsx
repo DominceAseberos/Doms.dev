@@ -55,15 +55,15 @@ const ParticleBackground = () => {
 
         const stars = [];
         function spawnStar() {
-            const fromTop = Math.random() < 0.5;
-            const sx = fromTop ? Math.random() * W * 0.8 : 0;
-            const sy = fromTop ? 0 : Math.random() * H * 0.4;
-            const angle = (Math.PI / 4) + (Math.random() - 0.5) * 0.4;
+            const sx = Math.random() * W;
+            const sy = Math.random() * (H * 0.5); // Spawn mostly in the upper half so they can fall
+            // Angle between 0 and PI means it will go downwards in canvas (y increases downwards)
+            const angle = Math.random() * Math.PI;
             const spd = 6 + Math.random() * 6;
             stars.push({ x: sx, y: sy, vx: Math.cos(angle) * spd, vy: Math.sin(angle) * spd, trail: [], alpha: 0, fadeIn: true, life: 1 });
         }
-        const maxStars = () => W < 768 ? 2 : 4;
-        const starInterval = setInterval(() => { if (stars.length < maxStars()) spawnStar(); }, 2400);
+        const maxStars = () => W < 768 ? 1 : 2;
+        const starInterval = setInterval(() => { if (stars.length < maxStars()) spawnStar(); }, 5000);
         spawnStar();
 
         const dist = (ax, ay, bx, by) => { const dx = ax - bx, dy = ay - by; return Math.sqrt(dx * dx + dy * dy); };
@@ -97,7 +97,7 @@ const ParticleBackground = () => {
                 if (s.trail.length > TAIL_LENGTH) s.trail.shift();
                 s.x += s.vx; s.y += s.vy;
                 if (s.fadeIn) { s.alpha = Math.min(1, s.alpha + 0.06); if (s.alpha >= 1) s.fadeIn = false; }
-                if (s.x > W + 100 || s.y > H + 100) s.life -= 0.05;
+                if (s.x < -100 || s.x > W + 100 || s.y < -100 || s.y > H + 100) s.life -= 0.05;
                 if (s.life <= 0) { stars.splice(i, 1); continue; }
                 const ba = s.alpha * s.life;
                 for (let t = 1; t < s.trail.length; t++) {
