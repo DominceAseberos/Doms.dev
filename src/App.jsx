@@ -1,225 +1,39 @@
-import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import './App.css'
-
-// GSAP Performance Optimization
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-// Configure GSAP for optimal performance
-gsap.registerPlugin(ScrollTrigger);
-
-// Global GSAP optimizations (runs once)
-gsap.config({
-  force3D: true,           // Force GPU acceleration
-  nullTargetWarn: false,   // Reduce console spam
-});
-
-// Set frame rate to 30fps (2x performance boost)
-// Animations will be slightly less smooth but much more performant
-gsap.ticker.fps(30);
-
-// ScrollTrigger optimizations
-ScrollTrigger.config({
-  limitCallbacks: true,    // Reduce callback frequency
-  syncInterval: 150,       // Check every 150ms instead of 100ms
-  autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" // Only refresh on these events
-});
-
-import { lazy, Suspense } from 'react'
-import { useLocation } from 'react-router-dom'
-import { diagnosticService } from '@shared/services/diagnosticService'
-
-import UnifiedLoader from '@app/components/UnifiedLoader';
-import ProtectedRoute from '@shared/components/ProtectedRoute'
-import ErrorBoundary from '@app/components/ErrorBoundary'
-import ScrollToTop from "@app/components/ScrollToTop.jsx"
-import { LoaderProvider } from '@app/contexts/LoaderContext'
-
-// Lazy Load Portfolio Pages
-const MainLayout = lazy(() => import('./layout/MainLayout.jsx'));
-const Dashboard = lazy(() => import('@app/pages/dashboard.jsx'));
-const AboutMePage = lazy(() => import('@app/pages/AboutMePage.jsx'));
-const ProjectDetails = lazy(() => import('@app/pages/ProjectDetails.jsx'));
-const FeedPage = lazy(() => import('@app/pages/FeedPage.jsx'));
-const NotFound = lazy(() => import('@app/pages/NotFound.jsx'));
-
-// Lazy Load Admin Pages
-const AdminDashboard = lazy(() => import('@admin/pages/AdminDashboard'));
-const LoginPage = lazy(() => import('@admin/pages/LoginPage'));
-const ProjectsManager = lazy(() => import('@admin/pages/ProjectsManager'));
-const ProfileManager = lazy(() => import('@admin/pages/ProfileManager'));
-const MediaCenter = lazy(() => import('@admin/pages/MediaCenter'));
-const MusicManager = lazy(() => import('@admin/pages/MusicManager'));
-const FeedManager = lazy(() => import('@admin/pages/FeedManager'));
-const DiagnosticLogs = lazy(() => import('@admin/pages/DiagnosticLogs'));
-const AdminLayout = lazy(() => import('@admin/components/AdminLayout'));
-
-// Route tracker component (must be inside Router)
-const RouteTracker = () => {
-  const location = useLocation();
-
-  // Track breadcrumbs and log visit on route change
-  useEffect(() => {
-    diagnosticService.trackPageVisit(location.pathname);
-    diagnosticService.logVisit();
-  }, [location.pathname]);
-
-  return null;
-};
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import AnimatedLogo from './components/AnimatedLogo';
 
 function App() {
-  return (
-    <LoaderProvider>
-      <AppContent />
-    </LoaderProvider>
-  );
-}
+    const [loading, setLoading] = useState(true);
+    const [fadeLoading, setFadeLoading] = useState(false);
 
-function AppContent() {
-  const [appReady, setAppReady] = useState(false);
+    useEffect(() => {
+        // Show loading screen for enough time to complete 1 loop
+        const timer = setTimeout(() => {
+            setFadeLoading(true);
+            setTimeout(() => setLoading(false), 500); // fade out effect
+        }, 3200);
 
-  // Strict Redirect Logic: Force redirect to dashboard on refresh ONLY for valid public sub-pages
-  useEffect(() => {
-    const path = window.location.pathname;
-    const segments = path.split('/').filter(Boolean); // e.g. "/about/hj" -> ["about", "hj"]
+        return () => clearTimeout(timer);
+    }, []);
 
-    let shouldRedirect = false;
-
-    // 1. Exact match for static public pages
-    if (path === '/about' || path === '/feed') {
-      shouldRedirect = true;
-    }
-    // 2. Pattern match for project details: /project/:id only
-    // Must be exactly 2 segments: ["project", "some-id"]
-    else if (segments.length === 2 && segments[0] === 'project') {
-      shouldRedirect = true;
+    if (loading) {
+        return (
+            <div className={`flex items-center justify-center min-h-screen bg-[#0a0f1a] transition-opacity duration-500 z-50 fixed inset-0 ${fadeLoading ? 'opacity-0' : 'opacity-100'}`}>
+                <AnimatedLogo />
+            </div>
+        );
     }
 
-    if (shouldRedirect) {
-      window.history.replaceState(null, '', '/');
-    }
-  }, []);
-
-  return (
-    <ErrorBoundary>
-      {!appReady && <UnifiedLoader onComplete={() => setAppReady(true)} />}
-      {appReady && (
+    return (
         <Router>
-          <RouteTracker />
-          <ScrollToTop />
-          <Suspense fallback={
-            <div className="min-h-screen bg-[#0a0a0a]" />
-          }>
-            <Routes>
-              {/* Main Dashboard Route */}
-              <Route
-                path="/"
-                element={
-                  <MainLayout>
-                    <Dashboard />
-                  </MainLayout>
-                }
-              />
-
-              {/* Dedicated About Me Page Route */}
-              <Route
-                path="/about"
-                element={<AboutMePage />}
-              />
-
-              {/* Project Details Page Route */}
-              <Route
-                path="/project/:id"
-                element={<ProjectDetails />}
-              />
-
-              {/* Feed Page Route */}
-              <Route
-                path="/feed"
-                element={<FeedPage />}
-              />
-
-              {/* Admin Routes */}
-              <Route path="/admin/login" element={<LoginPage />} />
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout>
-                      <AdminDashboard />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/projects"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout>
-                      <ProjectsManager />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/profile"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout>
-                      <ProfileManager />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/media"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout>
-                      <MediaCenter />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/music"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout>
-                      <MusicManager />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/feed"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout>
-                      <FeedManager />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/diagnostics"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout>
-                      <DiagnosticLogs />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                }
-              />
-              {/* 404 Catch-All Route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+            <div className="min-h-screen bg-[#151226] text-[#e6e6ff] selection:bg-blue-500/30">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                </Routes>
+            </div>
         </Router>
-      )}
-    </ErrorBoundary>
-  );
+    );
 }
-export default App
 
+export default App;
