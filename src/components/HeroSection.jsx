@@ -17,9 +17,8 @@ const HeroSection = () => {
             <div className="hero-left">
                 <div className="v-label">Developer × Motion Designer</div>
 
-                <div className="eyebrow">Portfolio — Selected Work</div>
-
                 <h1 className="hero-name">
+                    <div className="eyebrow">Portfolio — Selected Work</div>
                     Domince<br />
                     <span className="line2">Aseberos</span>
                 </h1>
@@ -36,14 +35,16 @@ const HeroSection = () => {
             </div>
 
             <div className="hero-right">
-                <div className="tags">
-                    <div className="tag active">GSAP</div>
-                    <div className="tag">WebGL</div>
-                    <div className="tag">Three.js</div>
-                    <div className="tag">React</div>
-                    <div className="tag">GLSL</div>
-                    <div className="tag">Motion</div>
-                    <div className="tag">Next.js</div>
+                <div className="tags-grid">
+                    <div className="tag-grid-item active">GSAP</div>
+                    <div className="tag-grid-item">THREE.JS</div>
+                    <div className="tag-grid-item">GLSL</div>
+                    <div className="tag-grid-item">FRAMER</div>
+                    <div className="tag-grid-item">WEBGL</div>
+                    <div className="tag-grid-item">REACT</div>
+                    <div className="tag-grid-item">MOTION</div>
+                    <div className="tag-grid-item">NEXT.JS</div>
+                    <div className="tag-grid-item">LOTTINS</div>
                 </div>
 
                 <div className="metrics">
@@ -51,12 +52,12 @@ const HeroSection = () => {
                         <div className="metric-val">60<sup>fps</sup></div>
                         <div className="metric-lbl">Render</div>
                     </div>
-                    <div className="metric" style={{ paddingLeft: '24px' }}>
+                    <div className="metric">
                         <div className="metric-val">48<sup>+</sup></div>
                         <div className="metric-lbl">Projects</div>
                     </div>
-                    <div className="metric" style={{ paddingLeft: '24px' }}>
-                        <div className="metric-val">5<sup>yr</sup></div>
+                    <div className="metric">
+                        <div className="metric-val">1<sup>yr</sup></div>
                         <div className="metric-lbl">Experience</div>
                     </div>
                 </div>
