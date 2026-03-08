@@ -25,10 +25,18 @@ export const useChat = () => {
     // History for OpenRouter models
     const historyRef = useRef([{ role: "system", content: PORTFOLIO_CONTEXT }]);
 
+    const isSubmittingRef = useRef(false);
+
     const sendMessage = async (textOverride = null) => {
-        if (isTyping) return;
+        // Prevent double submission via Ref (synchronous)
+        if (isSubmittingRef.current || isTyping) return;
+
         const messageText = (typeof textOverride === "string" ? textOverride : input).trim();
         if (!messageText) return;
+
+        // Lock immediately
+        isSubmittingRef.current = true;
+        setIsTyping(true);
 
         // Suggestion logic replacement
         if (displayedSuggestions.includes(messageText)) {
@@ -43,10 +51,8 @@ export const useChat = () => {
             });
         }
 
-
         setMessages((prev) => [...prev, { id: Date.now().toString(), text: messageText, sender: "user" }]);
         setInput("");
-        setIsTyping(true);
         historyRef.current.push({ role: "user", content: messageText });
 
         // --- 3-LEVEL WATERFALL FALLBACK ---
@@ -56,6 +62,7 @@ export const useChat = () => {
             addBotMessage(botResponse);
         }
         catch (_geminiError) {
+            console.warn("⚠️ Gemini failed, attempting fallback:", _geminiError);
             if (import.meta.env.DEV) console.warn("⚠️ Gemini failed. Switching to Level 2: Mistral...");
             try {
                 const mistralResponse = await tryOpenRouter("mistralai/devstral-2512:free");
@@ -74,6 +81,7 @@ export const useChat = () => {
             }
         } finally {
             setIsTyping(false);
+            isSubmittingRef.current = false;
         }
     };
 
