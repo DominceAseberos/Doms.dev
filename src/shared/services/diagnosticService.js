@@ -75,12 +75,30 @@ const getBreadcrumbs = () => {
 /**
  * Logs a site visit (once per session)
  */
+// In-memory cache to prevent duplicate logs for the same path/session overlap
+let lastLoggedPath = null;
+let lastLoggedTime = 0;
+
+/**
+ * Logs a site visit (once per session)
+ */
 export const logVisit = async () => {
     if (typeof window === 'undefined') return;
 
     try {
         const sessionId = getOrCreateSessionId();
         const pagePath = window.location.pathname;
+        const now = Date.now();
+
+        // DEBOUNCE / DEDUPE:
+        // If we successfully logged this path recently (within 500ms), skip it.
+        // This handles React Strict Mode double-invocation and rapid re-renders.
+        if (lastLoggedPath === pagePath && (now - lastLoggedTime < 500)) {
+            if (import.meta.env.DEV) {
+                console.log('[diagnosticService] Skipping duplicate logVisit for:', pagePath);
+            }
+            return;
+        }
 
         // 1. Get current breadcrumbs from session storage (this is the most up-to-date local state)
         // We use the existing trackPageVisit logic which already maintains the breadcrumbs
@@ -91,6 +109,10 @@ export const logVisit = async () => {
             trackPageVisit(pagePath);
             breadcrumbs = getBreadcrumbs();
         }
+
+        // Update cache before async call to prevent race conditions
+        lastLoggedPath = pagePath;
+        lastLoggedTime = now;
 
         // 2. Upsert the session row
         // We use upsert so it creates row if new, or updates journey if existing
@@ -105,6 +127,8 @@ export const logVisit = async () => {
 
         if (error) {
             console.error('[diagnosticService] logVisit error:', error);
+            // Invalidate cache on error so we can try again if needed
+            lastLoggedPath = null;
         }
     } catch (err) {
         console.error('[diagnosticService] logVisit exception:', err);

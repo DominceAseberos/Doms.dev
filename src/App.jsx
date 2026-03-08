@@ -63,7 +63,7 @@ const RouteTracker = () => {
   useEffect(() => {
     diagnosticService.trackPageVisit(location.pathname);
     diagnosticService.logVisit();
-  }, [location]);
+  }, [location.pathname]);
 
   return null;
 };
