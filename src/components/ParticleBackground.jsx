@@ -10,7 +10,7 @@ const ParticleBackground = () => {
 
         let W, H, DPR;
         let COUNT, CONNECT_DIST, TAIL_LENGTH, SPEED, DOT_RADIUS, GRID_SIZE;
-        const DOT_COLOR = '#e8004d';
+        const DOT_COLOR = '#830a32ff';
 
         function getConfig() {
             const w = window.innerWidth;
@@ -87,7 +87,8 @@ const ParticleBackground = () => {
             for (let i = 0; i < nodes.length; i++) {
                 for (let j = i + 1; j < nodes.length; j++) {
                     const d = dist(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
-                    if (d < CONNECT_DIST) drawLine(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y, (1 - d / CONNECT_DIST) * 0.55);
+                    // To change the opacity of the lines connecting the particles, adjust the "0.95" multiplier below:
+                    if (d < CONNECT_DIST) drawLine(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y, (1 - d / CONNECT_DIST) * 0.6);
                 }
             }
 

@@ -1,8 +1,12 @@
 import React from 'react';
+import useLoadingStore from '../store/useLoadingStore';
 
 const NavBar = () => {
+    // Fix: the store uses 'isLoading', not 'loading'
+    const isLoading = useLoadingStore((state) => state.isLoading);
+
     return (
-        <nav>
+        <nav className={`transition-opacity duration-1000 ease-in-out ${isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <div className="nav-logo">DA — 2025</div>
             <ul className="nav-links">
                 <li><a href="#">Work</a></li>

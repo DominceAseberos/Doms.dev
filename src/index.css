@@ -6,7 +6,7 @@
     --bg: #0c0c0c;
     --white: #f2f0ed;
     --red: #d63b2f;
-    --gray: #444;
+    --gray: #8d8d8d;
     --gray-light: #777;
     --border: rgba(255, 255, 255, 0.07);
 }
@@ -21,6 +21,16 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
+}
+
+/* Custom SVG cursor for interactive elements */
+a,
+button,
+.tag,
+[role="button"],
+input[type="submit"],
+input[type="button"] {
+    cursor: url('./assets/cursor-hover.svg') 12 12, pointer !important;
 }
 
 /* ── NAV ── */
@@ -144,7 +154,6 @@ nav {
     font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    cursor: pointer;
     transition: opacity 0.2s;
 }
 
@@ -161,7 +170,6 @@ nav {
     font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    cursor: pointer;
     transition: color 0.2s, border-color 0.2s;
 }
 
@@ -201,7 +209,6 @@ nav {
     border: 1px solid var(--border);
     padding: 7px 14px;
     transition: color 0.2s, border-color 0.2s;
-    cursor: pointer;
 }
 
 .tag:hover {
@@ -296,11 +303,11 @@ nav {
 /* vertical label */
 .v-label {
     position: absolute;
-    right: -12px;
-    top: 50%;
+    right: -100px;
+    top: 30%;
     transform: translateY(-50%) rotate(90deg);
     font-family: 'DM Mono', monospace;
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 0.24em;
     color: var(--gray);
     text-transform: uppercase;
