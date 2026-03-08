@@ -19,7 +19,7 @@ function App() {
     return (
         <Router>
             <GlobalLoader />
-            <div className="min-h-screen bg-[#151226] text-[#e6e6ff] selection:bg-blue-500/30">
+            <div className="min-h-screen selection:bg-red-500/30">
                 <Routes>
                     <Route path="/" element={<Home />} />
                 </Routes>
