@@ -91,7 +91,7 @@ const AnimatedLogo = () => {
     return (
         <svg
             ref={svgRef}
-            className="w-[300px] h-[336px] drop-shadow-[0_0_30px_rgba(160,193,217,0.25)]"
+            className="w-[220px] h-[246px] drop-shadow-[0_0_30px_rgba(160,193,217,0.25)]"
             viewBox="0 0 253 283"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
