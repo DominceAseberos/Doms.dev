@@ -131,10 +131,10 @@ const ParticleBackground = () => {
     }, []);
 
     return (
-        <div className="fixed inset-0 z-0 bg-black font-mono overflow-hidden">
+        <div className="fixed inset-0 z-[-1] bg-black font-mono overflow-hidden pointer-events-none">
             <div
                 ref={gridRef}
-                className="fixed inset-0 z-0 pointer-events-none"
+                className="fixed inset-0 pointer-events-none"
                 style={{
                     backgroundImage: `
                         linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
@@ -142,7 +142,7 @@ const ParticleBackground = () => {
                     `
                 }}
             ></div>
-            <canvas ref={canvasRef} className="block fixed inset-0 z-10 pointer-events-none"></canvas>
+            <canvas ref={canvasRef} className="block fixed inset-0 pointer-events-none"></canvas>
         </div>
     );
 };
