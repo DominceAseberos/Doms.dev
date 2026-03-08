@@ -1,32 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import AnimatedLogo from './components/AnimatedLogo';
+import GlobalLoader from './components/GlobalLoader';
+import useLoadingStore from './store/useLoadingStore';
 
 function App() {
-    const [loading, setLoading] = useState(true);
-    const [fadeLoading, setFadeLoading] = useState(false);
+    const setLoading = useLoadingStore((state) => state.setLoading);
 
     useEffect(() => {
-        // Show loading screen for enough time to complete 1 loop
+        // App initial load complete after 3.2s
         const timer = setTimeout(() => {
-            setFadeLoading(true);
-            setTimeout(() => setLoading(false), 500); // fade out effect
+            setLoading(false);
         }, 3200);
 
         return () => clearTimeout(timer);
-    }, []);
-
-    if (loading) {
-        return (
-            <div className={`flex items-center justify-center min-h-screen bg-[#0a0f1a] transition-opacity duration-500 z-50 fixed inset-0 ${fadeLoading ? 'opacity-0' : 'opacity-100'}`}>
-                <AnimatedLogo />
-            </div>
-        );
-    }
+    }, [setLoading]);
 
     return (
         <Router>
+            <GlobalLoader />
             <div className="min-h-screen bg-[#151226] text-[#e6e6ff] selection:bg-blue-500/30">
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -37,3 +29,4 @@ function App() {
 }
 
 export default App;
+
