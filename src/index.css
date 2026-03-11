@@ -77,6 +77,19 @@ nav {
     color: var(--white);
 }
 
+/* ─── Hide nav links (keep logo) when project overlay is open ─── */
+body.ep-expanded .nav-links {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* Ensure smooth transition back in when overlay closes */
+.nav-links {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
 /* ── HERO ── */
 .hero {
     min-height: 100vh;
