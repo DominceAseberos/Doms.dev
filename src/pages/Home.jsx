@@ -2,6 +2,7 @@ import React from 'react';
 import ParticleBackground from '../components/ParticleBackground';
 import NavBar from '../components/NavBar';
 import HeroSection from '../components/HeroSection';
+import ProjectSection from '../components/ProjectSection';
 
 const Home = () => {
     return (
@@ -11,6 +12,7 @@ const Home = () => {
 
             <div className="relative z-10">
                 <HeroSection />
+                <ProjectSection />
             </div>
         </div>
     );

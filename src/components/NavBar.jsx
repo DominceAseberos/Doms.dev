@@ -1,5 +1,6 @@
 import React from 'react';
 import useLoadingStore from '../store/useLoadingStore';
+import AnimatedNavBarLogo from './AnimatedNavBarLogo';
 
 const NavBar = () => {
     // Fix: the store uses 'isLoading', not 'loading'
@@ -7,8 +8,8 @@ const NavBar = () => {
 
     return (
         <nav className={`transition-opacity duration-1000 ease-in-out ${isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-            <div className="nav-logo">
-                DA &mdash;<br />2025
+            <div className="nav-logo translate-y-[4px]">
+                <AnimatedNavBarLogo className="w-12 h-12" />
             </div>
             <ul className="nav-links">
                 <li><a href="#">Work</a></li>

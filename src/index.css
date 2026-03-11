@@ -84,6 +84,8 @@ nav {
     grid-template-columns: 1fr 1fr;
     position: relative;
     overflow: hidden;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
 /* left half */
@@ -106,6 +108,7 @@ nav {
     margin-bottom: 24px;
     opacity: 0;
     animation: fadeUp 0.6s 0.2s ease forwards;
+    will-change: transform, opacity;
 }
 
 .hero-name {
@@ -116,6 +119,7 @@ nav {
     text-transform: uppercase;
     opacity: 0;
     animation: fadeUp 0.7s 0.35s ease forwards;
+    will-change: transform, opacity;
     margin: 0;
 }
 
@@ -128,12 +132,13 @@ nav {
     margin-top: 36px;
     margin-bottom: 0;
     font-family: 'DM Mono', monospace;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.8;
     color: var(--gray-light);
-    max-width: 100%;
+    max-width: 85%;
     opacity: 0;
     animation: fadeUp 0.7s 0.5s ease forwards;
+    will-change: transform, opacity;
 }
 
 .hero-cta {
@@ -143,6 +148,7 @@ nav {
     align-items: center;
     opacity: 0;
     animation: fadeUp 0.7s 0.65s ease forwards;
+    will-change: transform, opacity;
 }
 
 .btn-primary {
@@ -195,6 +201,7 @@ nav {
     margin-bottom: 64px;
     opacity: 0;
     animation: fadeUp 0.7s 0.75s ease forwards;
+    will-change: transform, opacity;
     position: relative;
     z-index: 2;
     border-top: 1px solid var(--border);
@@ -241,6 +248,7 @@ nav {
     border-top: 1px solid var(--border);
     opacity: 0;
     animation: fadeUp 0.7s 0.9s ease forwards;
+    will-change: transform, opacity;
     position: relative;
     z-index: 2;
 }
@@ -302,6 +310,10 @@ nav {
     gap: 48px;
     white-space: nowrap;
     animation: marquee 18s linear infinite;
+    will-change: transform;
+    padding-right: 48px;
+    /* Perfect seamless math */
+    width: max-content;
 }
 
 .marquee-track span {
@@ -419,6 +431,7 @@ nav {
 
     .eyebrow {
         margin-bottom: 12px;
+        font-size: 10px;
     }
 
     .hero-desc {
@@ -452,13 +465,14 @@ nav {
         margin-left: 0;
         /* Adds space on the left */
         margin-right: 24px;
+        margin-bottom: 40px;
 
 
     }
 
     .marquee-wrap {
         position: absolute;
-        top: 40%;
+        top: 34%;
         left: 0;
         right: 0;
         overflow: hidden;
@@ -468,11 +482,15 @@ nav {
     }
 
     .marquee-track span {
-        font-size: clamp(50px, 8vw, 100px);
+        font-size: clamp(60px, 12vw, 120px);
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: -0.02em;
         flex-shrink: 0;
+    }
+
+    .marquee-track {
+        animation: marquee 12s linear infinite;
     }
 
     .tags-grid {
@@ -507,5 +525,139 @@ nav {
 
     .metric-lbl {
         font-size: 8px;
+    }
+}
+
+/* Tablet Layout Adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    nav {
+        padding: 36px 48px;
+        align-items: flex-start;
+    }
+
+    .hero {
+        margin-left: 48px;
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: flex-end;
+        gap: 0;
+    }
+
+    .v-label {
+        display: block;
+        right: -90px;
+        top: -40%;
+        font-size: 12px;
+    }
+
+    .hero-left {
+        border-right: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0;
+        justify-content: flex-start;
+        justify-items: center;
+        margin: 0;
+    }
+
+    .hero-name {
+        font-size: clamp(48px, 10vw, 84px);
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .eyebrow {
+        margin-bottom: 16px;
+        font-size: 14px;
+    }
+
+    .hero-desc {
+        font-size: 18px;
+        max-width: 80%;
+        margin: 0;
+    }
+
+    .hero-cta {
+        display: flex;
+        gap: 24px;
+        width: fit-content;
+        margin-top: 12px;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+        width: fit-content;
+        padding: 16px 24px;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .hero-right {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 0;
+        margin-top: 40px;
+        margin-left: 0;
+        margin-right: 48px;
+        margin-bottom: 64px;
+    }
+
+    .marquee-wrap {
+        position: absolute;
+        top: 34%;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.08;
+    }
+
+    .marquee-track span {
+        font-size: clamp(80px, 15vw, 150px);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        flex-shrink: 0;
+    }
+
+    .tags-grid {
+        grid-template-columns: repeat(4, 1fr);
+        margin-bottom: 0;
+        padding: 0;
+        gap: 12px;
+    }
+
+    .tag-grid-item {
+        padding: 14px 4px;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        justify-content: center;
+    }
+
+    .metric {
+        padding: 24px 0 0 0;
+    }
+
+    .metric:not(:first-child) {
+        padding-left: 24px;
+    }
+
+    .metric-val {
+        font-size: 48px;
+    }
+
+    .metric-val sup {
+        font-size: 14px;
+        margin-left: 2px;
+    }
+
+    .metric-lbl {
+        font-size: 12px;
     }
 }

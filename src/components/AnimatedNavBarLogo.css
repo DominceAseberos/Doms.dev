@@ -1,0 +1,35 @@
+.animated-nav-logo-wrap {
+    position: relative;
+    /* Removed fixed sizes to let the wrapper scale relative to its parent */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.animated-nav-logo-wrap svg path {
+    opacity: 0;
+    will-change: transform, opacity, filter;
+    transform-origin: center;
+}
+
+.animated-nav-logo-glow-bg {
+    position: absolute;
+    inset: -60px;
+    background: radial-gradient(ellipse at 50% 55%, rgba(100, 160, 220, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulseNav 6s ease-in-out infinite;
+}
+
+@keyframes glowPulseNav {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+}
