@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
+
 import Home from './pages/Home';
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
@@ -16,13 +19,27 @@ function App() {
         return () => clearTimeout(timer);
     }, [setLoading]);
 
+    // Initialize Lenis
+    useEffect(() => {
+        const lenis = new Lenis({
+            autoRaf: true,
+        });
+
+        // Uncomment for debug if needed:
+        // lenis.on('scroll', (e) => {
+        //     console.log(e);
+        // });
+    }, []);
+
     return (
         <Router>
             <GlobalLoader />
-            <div className="min-h-screen selection:bg-red-500/30">
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                </Routes>
+            <div id="smooth-wrapper" className="min-h-screen selection:bg-red-500/30">
+                <div id="smooth-content">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                    </Routes>
+                </div>
             </div>
         </Router>
     );

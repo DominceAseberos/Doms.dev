@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection = () => {
+    const heroRef = useRef(null);
+
+    useGSAP(() => {
+        gsap.to(heroRef.current, {
+            yPercent: 30, // Moves down 30% while normal scroll moves up 100%, creating parallax
+            ease: "none",
+            scrollTrigger: {
+                trigger: heroRef.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    }, { scope: heroRef });
+
     return (
-        <section className="hero">
+        <section className="hero" ref={heroRef}>
             <div className="marquee-wrap">
                 <div className="marquee-track">
                     <span>Motion</span><span>·</span>
