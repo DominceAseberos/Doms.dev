@@ -70,6 +70,9 @@ const ProjectSection = () => {
         if (isExpanding) return;
         setIsExpanding(true);
 
+        // Lock Lenis smooth scroll immediately — body overflow has no effect on Lenis
+        if (window.lenis) window.lenis.stop();
+
         const rect = cardEl.getBoundingClientRect();
         const vw = window.innerWidth;
         const vh = window.innerHeight;
@@ -214,6 +217,8 @@ const ProjectSection = () => {
                     document.body.removeChild(shrinkClone);
                     setExpandedProject(null);
                     document.body.classList.remove('ep-expanded');
+                    // Re-enable Lenis scroll after shrink fully completes
+                    if (window.lenis) window.lenis.start();
                 }
             });
         });

@@ -24,11 +24,9 @@ function App() {
         const lenis = new Lenis({
             autoRaf: true,
         });
-
-        // Uncomment for debug if needed:
-        // lenis.on('scroll', (e) => {
-        //     console.log(e);
-        // });
+        // Expose globally so components can call lenis.stop() / lenis.start()
+        window.lenis = lenis;
+        return () => { window.lenis = null; };
     }, []);
 
     return (
