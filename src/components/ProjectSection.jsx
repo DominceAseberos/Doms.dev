@@ -59,20 +59,24 @@ const ProjectSection = () => {
     const containerRef = useRef(null);
     const trackRef = useRef(null);
     const overlayRef = useRef(null);
+    const originRef = useRef(null); // Stores {rect} for reverse-zoom on close
     const [activeCard, setActiveCard] = useState(1);
     const [expandedProject, setExpandedProject] = useState(null);
     const [isExpanding, setIsExpanding] = useState(false);
 
+    // ── Open: zoom card → fullscreen ─────────────────────────────────────────
     const handleViewProject = useCallback((project, cardEl) => {
         if (isExpanding) return;
         setIsExpanding(true);
 
-        // Get card's current bounding rect for the zoom origin
         const rect = cardEl.getBoundingClientRect();
         const vw = window.innerWidth;
         const vh = window.innerHeight;
 
-        // Create a clone that sits exactly over the card in viewport coords
+        // Save origin so close can reverse-zoom back to this position
+        originRef.current = { rect };
+
+        // Clone the card and position it exactly over the real card
         const clone = cardEl.cloneNode(true);
         clone.style.cssText = `
             position: fixed;
@@ -89,7 +93,7 @@ const ProjectSection = () => {
         `;
         document.body.appendChild(clone);
 
-        // 1. Zoom the clone up to full screen
+        // Expand the clone to fullscreen
         gsap.to(clone, {
             top: 0,
             left: 0,
@@ -97,12 +101,10 @@ const ProjectSection = () => {
             height: vh,
             borderRadius: 0,
             duration: 0.65,
-            ease: "expo.inOut",
+            ease: 'expo.inOut',
             onComplete: () => {
-                // 2. Fade in the real React overlay
-                document.body.classList.add('ep-expanded'); // Hide nav links via CSS
+                document.body.classList.add('ep-expanded');
                 setExpandedProject(project);
-                // Wait one frame for React to render, then fade in
                 requestAnimationFrame(() => {
                     const overlay = overlayRef.current;
                     if (overlay) {
@@ -110,9 +112,7 @@ const ProjectSection = () => {
                             opacity: 0,
                             duration: 0.3,
                             ease: 'power2.out',
-                            onStart: () => {
-                                document.body.removeChild(clone);
-                            }
+                            onStart: () => { document.body.removeChild(clone); }
                         });
                         gsap.from(overlay.querySelectorAll('.ep-inner > *'), {
                             y: 40,
@@ -131,62 +131,90 @@ const ProjectSection = () => {
         });
     }, [isExpanding]);
 
-    const handleClose = useCallback((triggerEl) => {
+    // ── Close: fullscreen → shrink back to card position ─────────────────────
+    const handleClose = useCallback(() => {
         const overlay = overlayRef.current;
         if (!overlay) return;
-        gsap.to(overlay, {
-            opacity: 0,
-            scale: 1.04,
-            duration: 0.35,
-            ease: 'power2.in',
+
+        const origin = originRef.current;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const targetRect = origin?.rect || {
+            top: vh / 2 - 130,
+            left: vw / 2 - 100,
+            width: 200,
+            height: 260
+        };
+
+        // Dark shrink clone covers the screen in place of the React overlay
+        const shrinkClone = document.createElement('div');
+        shrinkClone.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: ${vw}px;
+            height: ${vh}px;
+            z-index: 9998;
+            border-radius: 0;
+            overflow: hidden;
+            pointer-events: none;
+            background: #06060a;
+        `;
+        document.body.appendChild(shrinkClone);
+
+        // Hide the React overlay immediately (clone takes over visually)
+        gsap.set(overlay, { opacity: 0 });
+
+        // Animate the clone shrinking back to the card's saved position
+        gsap.to(shrinkClone, {
+            top: targetRect.top,
+            left: targetRect.left,
+            width: targetRect.width,
+            height: targetRect.height,
+            borderRadius: 18,
+            duration: 0.6,
+            ease: 'expo.inOut',
             onComplete: () => {
+                document.body.removeChild(shrinkClone);
                 setExpandedProject(null);
-                document.body.classList.remove('ep-expanded'); // Restore nav links
-                gsap.set(overlay, { clearProps: 'all' });
+                document.body.classList.remove('ep-expanded');
+                if (overlayRef.current) gsap.set(overlayRef.current, { clearProps: 'all' });
             }
         });
     }, []);
 
+    // ── GSAP Scroll Tunnel ────────────────────────────────────────────────────
     useGSAP(() => {
-        // 1. Initial Reveal Animation for the new intro section
+        // Intro reveal text
         const revealTitle = containerRef.current.querySelector('.reveal-text');
         if (revealTitle) {
             const splitReveal = new SplitType(revealTitle, { types: 'words, chars' });
-
             gsap.from(splitReveal.chars, {
-                scrollTrigger: {
-                    trigger: revealTitle,
-                    start: "top 80%",
-                },
+                scrollTrigger: { trigger: revealTitle, start: 'top 80%' },
                 y: 100,
                 opacity: 0,
                 stagger: 0.02,
                 duration: 0.8,
-                ease: "power3.out"
+                ease: 'power3.out'
             });
         }
 
-        // 2. Hallway Card Pinning and Shrinking
+        // 2D Hallway card tunnel
         const section = containerRef.current.querySelector('.works-stage');
         const imgWrap = section.querySelector('.image-wrapper');
         const track = trackRef.current;
         const cards = gsap.utils.toArray('.h-card', track);
-
-        const TRAVEL = 3500; // Total Z distance to travel
+        const TRAVEL = 3500;
 
         let mm = gsap.matchMedia();
-
         mm.add({
-            isDesktop: "(min-width: 1025px)",
-            isTablet: "(min-width: 769px) and (max-width: 1024px)",
-            isMobile: "(max-width: 768px)"
+            isDesktop: '(min-width: 1025px)',
+            isTablet: '(min-width: 769px) and (max-width: 1024px)',
+            isMobile: '(max-width: 768px)'
         }, (context) => {
             let { isDesktop, isTablet, isMobile } = context.conditions;
-
-            // Variables for 2D Tunnel simulation
             const FOCAL_LENGTH = 300;
 
-            // Pre-position cards flat, assigning an abstract 'depth' index
             cards.forEach((card, i) => {
                 let baseX;
                 if (isMobile) {
@@ -196,13 +224,9 @@ const ProjectSection = () => {
                 } else {
                     baseX = i % 2 === 0 ? -500 : 480;
                 }
-
-                // Depth is abstract (0, 600, 1200...) instead of physical Z pixels
                 const depthOffset = (i * 600) + 200;
                 card.dataset.depth = depthOffset;
                 card.dataset.baseX = baseX;
-
-                // Set initial flat CSS (tiny and invisible in the distance)
                 gsap.set(card, {
                     x: baseX * 0.1,
                     yPercent: -50,
@@ -213,88 +237,61 @@ const ProjectSection = () => {
                 });
             });
 
-            // Calculate total scroll explicitly to match the depth of the furthest card
             const TOTAL_DEPTH = (cards.length * 600) + 400;
 
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
-                    start: "top top",
+                    start: 'top top',
                     end: `+=${TOTAL_DEPTH}`,
                     scrub: 1.5,
                     pin: true,
                     anticipatePin: 1,
                     onUpdate: (self) => {
                         const cameraDepth = self.progress * TOTAL_DEPTH;
-
                         let nearest = 0;
                         let maxScaleForHighlight = 0;
 
                         cards.forEach((card, i) => {
                             const cardDepth = parseFloat(card.dataset.depth);
                             const baseX = parseFloat(card.dataset.baseX);
-
-                            // Distance from camera 
-                            // > 0 means the card is ahead of camera
-                            // <= 0 means the card has passed through the camera
                             const distFromCamera = cardDepth - cameraDepth;
-
                             let scaleFactor = FOCAL_LENGTH / (distFromCamera + FOCAL_LENGTH);
-
-                            if (distFromCamera < -FOCAL_LENGTH) {
-                                // Card is completely behind the camera lens
-                                scaleFactor = 0;
-                            }
+                            if (distFromCamera < -FOCAL_LENGTH) scaleFactor = 0;
 
                             if (scaleFactor > 0) {
-                                // Fade curve
                                 let opacity = 0;
                                 if (scaleFactor < 0.25) {
-                                    opacity = scaleFactor * 4; // Fade in quicker from deep background
+                                    opacity = scaleFactor * 4;
                                 } else if (scaleFactor > 2) {
-                                    opacity = Math.max(0, 1 - (scaleFactor - 2)); // Fade out as it wraps around the camera
+                                    opacity = Math.max(0, 1 - (scaleFactor - 2));
                                 } else {
                                     opacity = 1;
                                 }
-
                                 card.style.opacity = opacity;
                                 card.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
-
-                                // Dynamic Z-index guarantees collision bounding boxes sort properly
                                 card.style.zIndex = Math.round(scaleFactor * 100);
-
-                                // Scatter horizontally from center equivalent to scaling
-                                const currentX = baseX * scaleFactor;
-
-                                gsap.set(card, {
-                                    scale: scaleFactor,
-                                    x: currentX
-                                });
-
-                                // Log closest readable card for the section counter
+                                gsap.set(card, { scale: scaleFactor, x: baseX * scaleFactor });
                                 if (scaleFactor > maxScaleForHighlight && scaleFactor <= 2.2) {
                                     maxScaleForHighlight = scaleFactor;
                                     nearest = i;
                                 }
                             } else {
-                                // Hide physically when behind camera
                                 card.style.opacity = 0;
                                 card.style.pointerEvents = 'none';
                             }
                         });
-
                         setActiveCard(nearest + 1);
                     }
                 }
             });
 
-            // Shrink the container initially
             tl.to(imgWrap, {
-                width: isMobile ? "94%" : isTablet ? "88%" : "80%",
-                height: isMobile ? "88%" : isTablet ? "80%" : "70%",
-                borderRadius: isMobile ? "16px" : "30px",
+                width: isMobile ? '94%' : isTablet ? '88%' : '80%',
+                height: isMobile ? '88%' : isTablet ? '80%' : '70%',
+                borderRadius: isMobile ? '16px' : '30px',
                 duration: 0.15,
-                ease: "power2.inOut"
+                ease: 'power2.inOut'
             }, 0);
         });
 
@@ -306,7 +303,7 @@ const ProjectSection = () => {
     return (
         <div ref={containerRef} className="portfolio-timeline">
 
-            {/* NEW INTRO REVEAL SECTION */}
+            {/* INTRO REVEAL */}
             <section className="hero" style={{ height: '50vh', minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div className="hero-left" style={{ width: '100%', textAlign: 'center', margin: 0, borderRight: 'none', padding: 0 }}>
                     <div className="eyebrow">Case Studies</div>
@@ -316,17 +313,15 @@ const ProjectSection = () => {
                 </div>
             </section>
 
-            {/* SINGLE PINNED WRAPPER FOR 3D HALLWAY */}
+            {/* HALLWAY TUNNEL */}
             <section className="works-stage">
                 <div className="image-wrapper">
-
                     <div className="works-label">Selected Work</div>
                     <div className="works-counter"><span>{String(activeCard).padStart(2, '0')}</span> / {String(projects.length).padStart(2, '0')}</div>
                     <div className="works-hint">Scroll to walk through</div>
 
                     <div className="hallway-scene">
                         <div className="hallway-track" ref={trackRef}>
-
                             {projects.map((p, i) => (
                                 <div className="h-card" key={i} style={{
                                     '--c1': p.colors[0],
@@ -363,14 +358,12 @@ const ProjectSection = () => {
                                     </div>
                                 </div>
                             ))}
-
                         </div>
                     </div>
-
                 </div>
             </section>
 
-            {/* FULLSCREEN PROJECT EXPANDED OVERLAY */}
+            {/* FULLSCREEN PROJECT OVERLAY */}
             {expandedProject && (
                 <div className="ep-overlay" ref={overlayRef}>
                     <button className="ep-close" onClick={handleClose}>✕</button>
