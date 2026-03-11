@@ -1,4 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -76,20 +77,24 @@ const ProjectSection = () => {
         // Save origin so close can reverse-zoom back to this position
         originRef.current = { rect };
 
-        // Clone the card and position it exactly over the real card
-        const clone = cardEl.cloneNode(true);
+        // Use a clean image-backed div instead of cloneNode to avoid
+        // inheriting GSAP's inline transform styles (scale/translateX/yPercent etc.)
+        // which cause a visible glitch during the zoom animation.
+        const clone = document.createElement('div');
         clone.style.cssText = `
             position: fixed;
             top: ${rect.top}px;
             left: ${rect.left}px;
             width: ${rect.width}px;
             height: ${rect.height}px;
-            z-index: 9999;
+            z-index: 10001;
             border-radius: 18px;
             overflow: hidden;
             pointer-events: none;
-            margin: 0;
-            transform: none;
+            background-image: url(${project.image});
+            background-size: cover;
+            background-position: center;
+            background-color: #06060a;
         `;
         document.body.appendChild(clone);
 
@@ -146,7 +151,11 @@ const ProjectSection = () => {
             height: 260
         };
 
-        // Dark shrink clone covers the screen in place of the React overlay
+        // Read the project image from the overlay so the shrink clone looks like the card
+        const epImage = overlay.querySelector('.ep-image');
+        const bgImage = epImage ? epImage.style.backgroundImage : 'none';
+
+        // Build a visually rich clone so the user can see it shrinking
         const shrinkClone = document.createElement('div');
         shrinkClone.style.cssText = `
             position: fixed;
@@ -154,25 +163,28 @@ const ProjectSection = () => {
             left: 0;
             width: ${vw}px;
             height: ${vh}px;
-            z-index: 9998;
+            z-index: 10001;
             border-radius: 0;
             overflow: hidden;
             pointer-events: none;
-            background: #06060a;
+            background-image: ${bgImage};
+            background-size: cover;
+            background-position: center;
+            background-color: #06060a;
         `;
         document.body.appendChild(shrinkClone);
 
-        // Hide the React overlay immediately (clone takes over visually)
+        // Instantly hide the React overlay — the clone takes over visually
         gsap.set(overlay, { opacity: 0 });
 
-        // Animate the clone shrinking back to the card's saved position
+        // Shrink the clone back to where the card originally was
         gsap.to(shrinkClone, {
             top: targetRect.top,
             left: targetRect.left,
             width: targetRect.width,
             height: targetRect.height,
             borderRadius: 18,
-            duration: 0.6,
+            duration: 0.65,
             ease: 'expo.inOut',
             onComplete: () => {
                 document.body.removeChild(shrinkClone);
@@ -239,6 +251,44 @@ const ProjectSection = () => {
 
             const TOTAL_DEPTH = (cards.length * 600) + 400;
 
+            // Named function so we can call it immediately for the initial state
+            const updateCards = (progress) => {
+                const cameraDepth = progress * TOTAL_DEPTH;
+                let nearest = 0;
+                let maxScaleForHighlight = 0;
+
+                cards.forEach((card, i) => {
+                    const cardDepth = parseFloat(card.dataset.depth);
+                    const baseX = parseFloat(card.dataset.baseX);
+                    const distFromCamera = cardDepth - cameraDepth;
+                    let scaleFactor = FOCAL_LENGTH / (distFromCamera + FOCAL_LENGTH);
+                    if (distFromCamera < -FOCAL_LENGTH) scaleFactor = 0;
+
+                    if (scaleFactor > 0) {
+                        let opacity = 0;
+                        if (scaleFactor < 0.25) {
+                            opacity = scaleFactor * 4;
+                        } else if (scaleFactor > 2) {
+                            opacity = Math.max(0, 1 - (scaleFactor - 2));
+                        } else {
+                            opacity = 1;
+                        }
+                        card.style.opacity = opacity;
+                        card.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
+                        card.style.zIndex = Math.round(scaleFactor * 100);
+                        gsap.set(card, { scale: scaleFactor, x: baseX * scaleFactor });
+                        if (scaleFactor > maxScaleForHighlight && scaleFactor <= 2.2) {
+                            maxScaleForHighlight = scaleFactor;
+                            nearest = i;
+                        }
+                    } else {
+                        card.style.opacity = 0;
+                        card.style.pointerEvents = 'none';
+                    }
+                });
+                setActiveCard(nearest + 1);
+            };
+
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
@@ -247,51 +297,18 @@ const ProjectSection = () => {
                     scrub: 1.5,
                     pin: true,
                     anticipatePin: 1,
-                    onUpdate: (self) => {
-                        const cameraDepth = self.progress * TOTAL_DEPTH;
-                        let nearest = 0;
-                        let maxScaleForHighlight = 0;
-
-                        cards.forEach((card, i) => {
-                            const cardDepth = parseFloat(card.dataset.depth);
-                            const baseX = parseFloat(card.dataset.baseX);
-                            const distFromCamera = cardDepth - cameraDepth;
-                            let scaleFactor = FOCAL_LENGTH / (distFromCamera + FOCAL_LENGTH);
-                            if (distFromCamera < -FOCAL_LENGTH) scaleFactor = 0;
-
-                            if (scaleFactor > 0) {
-                                let opacity = 0;
-                                if (scaleFactor < 0.25) {
-                                    opacity = scaleFactor * 4;
-                                } else if (scaleFactor > 2) {
-                                    opacity = Math.max(0, 1 - (scaleFactor - 2));
-                                } else {
-                                    opacity = 1;
-                                }
-                                card.style.opacity = opacity;
-                                card.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
-                                card.style.zIndex = Math.round(scaleFactor * 100);
-                                gsap.set(card, { scale: scaleFactor, x: baseX * scaleFactor });
-                                if (scaleFactor > maxScaleForHighlight && scaleFactor <= 2.2) {
-                                    maxScaleForHighlight = scaleFactor;
-                                    nearest = i;
-                                }
-                            } else {
-                                card.style.opacity = 0;
-                                card.style.pointerEvents = 'none';
-                            }
-                        });
-                        setActiveCard(nearest + 1);
-                    }
+                    onUpdate: (self) => updateCards(self.progress)
                 }
             });
 
+            // Render cards at progress=0 immediately — no scroll required
+            updateCards(0);
+
             tl.to(imgWrap, {
-                width: isMobile ? '94%' : isTablet ? '88%' : '80%',
-                height: isMobile ? '88%' : isTablet ? '80%' : '70%',
+                width: isMobile ? '88%' : isTablet ? '76%' : '72%',
                 borderRadius: isMobile ? '16px' : '30px',
-                duration: 0.15,
-                ease: 'power2.inOut'
+                duration: 1,
+                ease: 'power1.out'
             }, 0);
         });
 
@@ -363,8 +380,8 @@ const ProjectSection = () => {
                 </div>
             </section>
 
-            {/* FULLSCREEN PROJECT OVERLAY */}
-            {expandedProject && (
+            {/* FULLSCREEN PROJECT OVERLAY — rendered via portal to escape GSAP pin stacking context */}
+            {expandedProject && createPortal(
                 <div className="ep-overlay" ref={overlayRef}>
                     <button className="ep-close" onClick={handleClose}>✕</button>
                     <div className="ep-inner">
@@ -384,7 +401,8 @@ const ProjectSection = () => {
                         className="ep-image"
                         style={{ backgroundImage: `url(${expandedProject.image})` }}
                     />
-                </div>
+                </div>,
+                document.body
             )}
 
         </div>
