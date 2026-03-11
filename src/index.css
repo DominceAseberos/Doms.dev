@@ -65,7 +65,7 @@ nav {
 
 .nav-links a {
     font-family: 'DM Mono', monospace;
-    font-size: 20px;
+    font-size: 24px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--gray-light);

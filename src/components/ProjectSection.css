@@ -173,7 +173,7 @@
 
 .proj-name-ov h2 {
     font-family: 'Syne', sans-serif;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 800;
     color: #fff;
     text-shadow: 0 2px 16px rgba(0, 0, 0, .9);
@@ -181,7 +181,7 @@
 }
 
 .proj-name-ov p {
-    font-size: 9px;
+    font-size: 11px;
     color: #c8f542;
     letter-spacing: 2.5px;
     text-transform: uppercase;
@@ -195,7 +195,7 @@
 }
 
 .proj-blabel {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: #555;
@@ -203,7 +203,7 @@
 }
 
 .proj-btext {
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.7;
     color: #888;
 }
@@ -216,8 +216,8 @@
 }
 
 .proj-btag {
-    font-size: 10px;
-    padding: 3px 8px;
+    font-size: 11px;
+    padding: 4px 10px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 2px;
     color: #555;
@@ -245,7 +245,7 @@
 
 .proj-feed-ttl {
     font-family: 'Syne', sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -256,8 +256,8 @@
 .proj-live-badge {
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 8px;
+    gap: 6px;
+    font-size: 10px;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #42f5c8;
@@ -296,7 +296,7 @@
 }
 
 .proj-fi-type {
-    font-size: 9.5px;
+    font-size: 11px;
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 2px;
@@ -315,13 +315,13 @@
 }
 
 .proj-fi-txt {
-    font-size: 12.5px;
+    font-size: 14px;
     color: #888;
     line-height: 1.4;
 }
 
 .proj-fi-time {
-    font-size: 10px;
+    font-size: 12px;
     color: #555;
     margin-top: 2px;
 }
@@ -380,7 +380,7 @@
 
 .proj-div-num {
     font-family: 'Syne', sans-serif;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 800;
     color: #c8f542;
     letter-spacing: 2px;
@@ -389,7 +389,7 @@
 
 .proj-div-label {
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: #555;
@@ -592,14 +592,14 @@
 }
 
 .proj-pidx {
-    font-size: 8.5px;
+    font-size: 10px;
     letter-spacing: 2px;
     color: #555;
 }
 
 .proj-pstat {
-    font-size: 7.5px;
-    padding: 2px 7px;
+    font-size: 9px;
+    padding: 3px 9px;
     border-radius: 2px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -625,7 +625,7 @@
 
 .proj-ptitle {
     font-family: 'Syne', sans-serif;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     letter-spacing: -.3px;
     color: #fff;
@@ -633,7 +633,7 @@
 }
 
 .proj-pdesc {
-    font-size: 14px;
+    font-size: 16px;
     color: #bbb;
     line-height: 1.7;
     max-width: 600px;
@@ -648,8 +648,8 @@
 }
 
 .proj-ttag {
-    font-size: 8px;
-    padding: 2px 6px;
+    font-size: 10px;
+    padding: 3px 8px;
     border: 1px solid rgba(255, 255, 255, .05);
     border-radius: 2px;
     color: #888;
@@ -670,7 +670,7 @@
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     color: #aaa;
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     cursor: pointer;
@@ -749,7 +749,7 @@
 
 .proj-acard h3 {
     font-family: 'Syne', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     color: #fff;
     margin-bottom: 7px;
@@ -757,7 +757,7 @@
 }
 
 .proj-acard p {
-    font-size: 11px;
+    font-size: 13px;
     color: #bbb;
     line-height: 1.6;
     margin: 0;
@@ -765,7 +765,7 @@
 
 .proj-cnum {
     font-family: 'Syne', sans-serif;
-    font-size: 52px;
+    font-size: 64px;
     font-weight: 800;
     color: rgba(255, 255, 255, .03);
     position: absolute;
@@ -785,7 +785,7 @@
 
 .proj-ctablock h2 {
     font-family: 'Syne', sans-serif;
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 800;
     letter-spacing: -1px;
     margin-bottom: 8px;
@@ -793,7 +793,7 @@
 }
 
 .proj-ctablock p {
-    font-size: 11px;
+    font-size: 13px;
     color: #bbb;
     margin-bottom: 20px;
 }
@@ -806,7 +806,7 @@
     background: #c8f542;
     color: #0a0a0a;
     font-family: 'Syne', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
