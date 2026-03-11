@@ -98,12 +98,20 @@ const ProjectSection = () => {
         `;
         document.body.appendChild(clone);
 
-        // Expand the clone to fullscreen
+        // Determine target rect to match where ep-image will land in the overlay grid
+        // Desktop: right half (1fr 1fr grid). Mobile (≤768px): full width top half.
+        const isMobileExpand = vw <= 768;
+        const targetTop = 0;
+        const targetLeft = isMobileExpand ? 0 : vw / 2;
+        const targetWidth = isMobileExpand ? vw : vw / 2;
+        const targetHeight = isMobileExpand ? vh / 2 : vh;
+
+        // Expand the clone to where ep-image will be
         gsap.to(clone, {
-            top: 0,
-            left: 0,
-            width: vw,
-            height: vh,
+            top: targetTop,
+            left: targetLeft,
+            width: targetWidth,
+            height: targetHeight,
             borderRadius: 0,
             duration: 0.65,
             ease: 'expo.inOut',
@@ -111,13 +119,16 @@ const ProjectSection = () => {
                 document.body.classList.add('ep-expanded');
                 setExpandedProject(project);
                 requestAnimationFrame(() => {
+                    // Remove the clone first — overlay is already opacity:0 from CSS
+                    // so there's no flash between clone removal and overlay fade-in
+                    document.body.removeChild(clone);
                     const overlay = overlayRef.current;
                     if (overlay) {
-                        gsap.from(overlay, {
-                            opacity: 0,
+                        // Animate TO opacity:1 (overlay starts at 0 via CSS)
+                        gsap.to(overlay, {
+                            opacity: 1,
                             duration: 0.3,
-                            ease: 'power2.out',
-                            onStart: () => { document.body.removeChild(clone); }
+                            ease: 'power2.out'
                         });
                         gsap.from(overlay.querySelectorAll('.ep-inner > *'), {
                             y: 40,
@@ -127,8 +138,6 @@ const ProjectSection = () => {
                             ease: 'power3.out',
                             delay: 0.15
                         });
-                    } else {
-                        document.body.removeChild(clone);
                     }
                     setIsExpanding(false);
                 });
@@ -155,14 +164,21 @@ const ProjectSection = () => {
         const epImage = overlay.querySelector('.ep-image');
         const bgImage = epImage ? epImage.style.backgroundImage : 'none';
 
+        // Build shrink clone starting from where ep-image lives in the overlay grid
+        const isMobileClose = vw <= 768;
+        const cloneTop = 0;
+        const cloneLeft = isMobileClose ? 0 : vw / 2;
+        const cloneWidth = isMobileClose ? vw : vw / 2;
+        const cloneHeight = isMobileClose ? vh / 2 : vh;
+
         // Build a visually rich clone so the user can see it shrinking
         const shrinkClone = document.createElement('div');
         shrinkClone.style.cssText = `
             position: fixed;
-            top: 0;
-            left: 0;
-            width: ${vw}px;
-            height: ${vh}px;
+            top: ${cloneTop}px;
+            left: ${cloneLeft}px;
+            width: ${cloneWidth}px;
+            height: ${cloneHeight}px;
             z-index: 10001;
             border-radius: 0;
             overflow: hidden;
@@ -174,24 +190,32 @@ const ProjectSection = () => {
         `;
         document.body.appendChild(shrinkClone);
 
-        // Instantly hide the React overlay — the clone takes over visually
-        gsap.set(overlay, { opacity: 0 });
+        // Fade the overlay out while the clone shrinks simultaneously.
+        // Hiding the overlay instantly causes the left text panel to blink away,
+        // since the clone only covers the right (image) half.
+        requestAnimationFrame(() => {
+            // Fade out the whole overlay over the same duration as the shrink
+            gsap.to(overlay, {
+                opacity: 0,
+                duration: 0.35,
+                ease: 'power2.inOut'
+            });
 
-        // Shrink the clone back to where the card originally was
-        gsap.to(shrinkClone, {
-            top: targetRect.top,
-            left: targetRect.left,
-            width: targetRect.width,
-            height: targetRect.height,
-            borderRadius: 18,
-            duration: 0.65,
-            ease: 'expo.inOut',
-            onComplete: () => {
-                document.body.removeChild(shrinkClone);
-                setExpandedProject(null);
-                document.body.classList.remove('ep-expanded');
-                if (overlayRef.current) gsap.set(overlayRef.current, { clearProps: 'all' });
-            }
+            // Shrink the clone back to where the card originally was
+            gsap.to(shrinkClone, {
+                top: targetRect.top,
+                left: targetRect.left,
+                width: targetRect.width,
+                height: targetRect.height,
+                borderRadius: 18,
+                duration: 0.65,
+                ease: 'expo.inOut',
+                onComplete: () => {
+                    document.body.removeChild(shrinkClone);
+                    setExpandedProject(null);
+                    document.body.classList.remove('ep-expanded');
+                }
+            });
         });
     }, []);
 
