@@ -378,11 +378,19 @@ const ProjectSection = () => {
                     <div className="hallway-scene">
                         <div className="hallway-track" ref={trackRef}>
                             {projects.map((p, i) => (
-                                <div className="h-card" key={i} style={{
-                                    '--c1': p.colors[0],
-                                    '--c2': p.colors[1],
-                                    '--glow': p.glow
-                                }}>
+                                <div
+                                    className="h-card"
+                                    key={i}
+                                    style={{
+                                        '--c1': p.colors[0],
+                                        '--c2': p.colors[1],
+                                        '--glow': p.glow
+                                    }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleViewProject(p, e.currentTarget);
+                                    }}
+                                >
                                     <div className="h-card-face">
                                         <img className="h-card-image" src={p.image} alt={p.title} />
                                     </div>
@@ -402,14 +410,7 @@ const ProjectSection = () => {
                                                 <span className="ov-pill" key={idx}>{t}</span>
                                             ))}
                                         </div>
-                                        <button
-                                            className="ov-link"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                const card = e.target.closest('.h-card');
-                                                handleViewProject(p, card);
-                                            }}
-                                        >View Project ↗</button>
+                                        <button className="ov-link">View Project ↗</button>
                                     </div>
                                 </div>
                             ))}
