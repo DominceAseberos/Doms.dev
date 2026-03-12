@@ -61,6 +61,7 @@ const ProjectSection = () => {
     const trackRef = useRef(null);
     const overlayRef = useRef(null);
     const originRef = useRef(null); // Stores {rect} for reverse-zoom on close
+    const freezeCards = useRef(false); // When true, updateCards is skipped (cards stay frozen)
     const [activeCard, setActiveCard] = useState(1);
     const [expandedProject, setExpandedProject] = useState(null);
     const [isExpanding, setIsExpanding] = useState(false);
@@ -72,6 +73,9 @@ const ProjectSection = () => {
 
         // Lock Lenis smooth scroll immediately — body overflow has no effect on Lenis
         if (window.lenis) window.lenis.stop();
+
+        // Freeze card positions so ScrollTrigger onUpdate can't shift them
+        freezeCards.current = true;
 
         const rect = cardEl.getBoundingClientRect();
         const vw = window.innerWidth;
@@ -217,6 +221,8 @@ const ProjectSection = () => {
                     document.body.removeChild(shrinkClone);
                     setExpandedProject(null);
                     document.body.classList.remove('ep-expanded');
+                    // Unfreeze cards so ScrollTrigger onUpdate can drive them again
+                    freezeCards.current = false;
                     // Re-enable Lenis scroll after shrink fully completes
                     if (window.lenis) window.lenis.start();
                 }
@@ -282,6 +288,9 @@ const ProjectSection = () => {
 
             // Named function so we can call it immediately for the initial state
             const updateCards = (progress) => {
+                // Skip updates while overlay is open so cards stay frozen in place
+                if (freezeCards.current) return;
+
                 const cameraDepth = progress * TOTAL_DEPTH;
                 let nearest = 0;
                 let maxScaleForHighlight = 0;

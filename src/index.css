@@ -77,7 +77,11 @@ nav {
     color: var(--white);
 }
 
-/* ─── Hide nav links (keep logo) when project overlay is open ─── */
+/* ─── Lock scroll & hide nav links when project overlay is open ─── */
+body.ep-expanded {
+    overflow: hidden !important;
+}
+
 body.ep-expanded .nav-links {
     opacity: 0;
     transform: translateY(-8px);
