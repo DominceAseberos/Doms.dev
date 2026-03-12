@@ -1,9 +1,10 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { createPortal, flushSync } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import SplitType from 'split-type';
+import ExpandedProjectOverlay from './ExpandedProjectOverlay';
 import './ProjectSection.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,7 +13,7 @@ const projects = [
     {
         title: "Luminary OS",
         type: "Web App · Motion",
-        desc: "A conceptual operating system interface built entirely in the browser. Features a custom window manager, virtual file system, and WebGL-accelerated compositor.",
+        desc: "A conceptual operating system interface built entirely in the browser. Features a custom window manager, virtual file system, and WebGL-accelerated compositor.\n\n### The Challenge\nBuilding a seamless native-like experience in a browser environment posed significant performance challenges. We needed to handle window dragging, real-time blur layers, and complex state management without dropping below 60FPS.\n\n### Implementation\nBy leveraging React for the declarative UI and Zustand for the global window state, we isolated renders. The compositor was written in raw WebGL to offload the heavy blur and shadow calculations to the GPU.\n\n### Results\nThe final prototype is a fully functioning desktop environment that runs on any modern browser, demonstrating extreme frontend optimization techniques.",
         tech: ["React", "WebGL", "Zustand"],
         colors: ["#0b1a0d", "#132215"],
         glow: "rgba(100,220,80,.1)",
@@ -56,6 +57,15 @@ const projects = [
     }
 ];
 
+// ── Global Scroll Blocker for Flight Animation ───────────────────────────
+const preventGlobalScroll = (e) => {
+    // Only prevent if the event isn't coming from inside the expanded overlay
+    if (!e.target.closest('.ep-overlay')) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+    }
+};
+
 const ProjectSection = () => {
     const containerRef = useRef(null);
     const trackRef = useRef(null);
@@ -74,8 +84,13 @@ const ProjectSection = () => {
         freezeCards.current = true;
         setIsExpanding(true);
 
+        // Native Event Blocker: intercepts mouse immediately, zero render cycle delay
+        window.addEventListener('wheel', preventGlobalScroll, { passive: false });
+        window.addEventListener('touchmove', preventGlobalScroll, { passive: false });
+
         // Lock Lenis smooth scroll immediately 
         if (window.lenis) window.lenis.stop();
+        document.body.classList.add('ep-expanded');
 
         // Freeze hallway ScrollTrigger immediately to prevent any scrub lag catch-up
         if (hallwayST.current) hallwayST.current.disable(false);
@@ -120,7 +135,9 @@ const ProjectSection = () => {
             duration: 0.65,
             ease: 'expo.inOut',
             onComplete: () => {
-                document.body.classList.add('ep-expanded');
+                // Remove native flight animation scroll blocker
+                window.removeEventListener('wheel', preventGlobalScroll);
+                window.removeEventListener('touchmove', preventGlobalScroll);
 
                 // Synchronously render the overlay portal so overlayRef.current is immediately available
                 flushSync(() => {
@@ -408,25 +425,13 @@ const ProjectSection = () => {
             </section>
 
             {expandedProject && createPortal(
-                <div className="ep-overlay" ref={overlayRef}>
-                    <button className="ep-close" onClick={handleClose}>✕</button>
-                    <div className="ep-inner">
-                        <span className="ep-tag">Project</span>
-                        <h2 className="ep-title">{expandedProject.title}</h2>
-                        <p className="ep-type">{expandedProject.type}</p>
-                        <div className="ep-divider" />
-                        <p className="ep-desc">{expandedProject.desc}</p>
-                        <div className="ep-pills">
-                            {expandedProject.tech.map((t, i) => (
-                                <span className="ep-pill" key={i}>{t}</span>
-                            ))}
-                        </div>
-                        <a href="#" className="ep-cta">Open Case Study ↗</a>
-                    </div>
-                    <div
-                        className="ep-image"
-                        style={{ backgroundImage: `url(${expandedProject.image})` }}
-                    />
+                <div
+                    className="ep-overlay"
+                    ref={overlayRef}
+                    onWheel={(e) => e.stopPropagation()}
+                    onTouchMove={(e) => e.stopPropagation()}
+                >
+                    <ExpandedProjectOverlay project={expandedProject} onClose={handleClose} />
                 </div>,
                 document.body
             )}

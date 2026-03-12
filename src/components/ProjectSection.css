@@ -379,16 +379,39 @@
     z-index: 10000;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    overflow: hidden;
+    align-items: start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
     background: #06060a;
     opacity: 0;
+}
+
+/* Custom scrollbar for the isolated overlay */
+.ep-overlay::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ep-overlay::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ep-overlay::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+
+.ep-overlay::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .ep-image {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: relative;
+    position: sticky;
+    top: 0;
+    height: 100vh;
     overflow: hidden;
 }
 
@@ -407,6 +430,7 @@
     gap: 0;
     position: relative;
     z-index: 1;
+    min-height: 100vh;
 }
 
 .ep-tag {
@@ -491,7 +515,7 @@
 }
 
 .ep-close {
-    position: absolute;
+    position: fixed;
     top: 32px;
     right: 40px;
     z-index: 10001;
@@ -521,10 +545,12 @@
 @media (max-width: 768px) {
     .ep-overlay {
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: auto 1fr;
     }
 
     .ep-image {
+        position: relative;
+        height: 50vh;
         order: 1;
     }
 
