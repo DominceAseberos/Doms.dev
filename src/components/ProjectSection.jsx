@@ -68,14 +68,13 @@ const ProjectSection = () => {
 
     // ── Open: zoom card → fullscreen ─────────────────────────────────────────
     const handleViewProject = useCallback((project, cardEl) => {
-        if (isExpanding) return;
+        // Immediate check and freeze to prevent overlap with ScrollTrigger onUpdate
+        if (isExpanding || freezeCards.current) return;
+        freezeCards.current = true;
         setIsExpanding(true);
 
         // Lock Lenis smooth scroll immediately — body overflow has no effect on Lenis
         if (window.lenis) window.lenis.stop();
-
-        // Freeze card positions so ScrollTrigger onUpdate can't shift them
-        freezeCards.current = true;
 
         const rect = cardEl.getBoundingClientRect();
         const vw = window.innerWidth;
@@ -221,10 +220,13 @@ const ProjectSection = () => {
                     document.body.removeChild(shrinkClone);
                     setExpandedProject(null);
                     document.body.classList.remove('ep-expanded');
-                    // Unfreeze cards so ScrollTrigger onUpdate can drive them again
-                    freezeCards.current = false;
-                    // Re-enable Lenis scroll after shrink fully completes
-                    if (window.lenis) window.lenis.start();
+
+                    // Buffer unfreeze by one frame to let layout/Lenis settle 
+                    // and prevent any jumpy recalculations.
+                    requestAnimationFrame(() => {
+                        freezeCards.current = false;
+                        if (window.lenis) window.lenis.start();
+                    });
                 }
             });
         });
@@ -369,7 +371,7 @@ const ProjectSection = () => {
             </section>
 
             {/* HALLWAY TUNNEL */}
-            <section className="works-stage">
+            <section className="works-stage" style={{ pointerEvents: isExpanding ? 'none' : 'auto' }}>
                 <div className="image-wrapper">
                     <div className="works-label">Selected Work</div>
                     <div className="works-counter"><span>{String(activeCard).padStart(2, '0')}</span> / {String(projects.length).padStart(2, '0')}</div>

@@ -21,6 +21,7 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
+    scrollbar-gutter: stable;
 }
 
 /* Custom SVG cursor for interactive elements */
