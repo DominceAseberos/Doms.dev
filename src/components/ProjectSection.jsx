@@ -69,6 +69,7 @@ const preventGlobalScroll = (e) => {
 const ProjectSection = () => {
     const containerRef = useRef(null);
     const trackRef = useRef(null);
+    const gridRef = useRef(null); // Stores the ref for the floor grid
     const overlayRef = useRef(null);
     const originRef = useRef(null); // Stores {rect} for reverse-zoom on close
     const hallwayST = useRef(null); // Stores the hallway ScrollTrigger
@@ -326,6 +327,12 @@ const ProjectSection = () => {
                         card.style.pointerEvents = 'none';
                     }
                 });
+
+                // Animate the floor grid to match the camera speed
+                if (gridRef.current) {
+                    gridRef.current.style.backgroundPositionY = `${cameraDepth}px`;
+                }
+
                 setActiveCard(nearest + 1);
             };
 
@@ -381,6 +388,7 @@ const ProjectSection = () => {
                     <div className="works-hint">Scroll to walk through</div>
 
                     <div className="hallway-scene">
+                        <div className="tunnel-grid" ref={gridRef}></div>
                         <div className="hallway-track" ref={trackRef}>
                             {projects.map((p, i) => (
                                 <div
