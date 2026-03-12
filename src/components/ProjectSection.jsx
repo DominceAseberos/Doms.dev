@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
-import { createPortal } from 'react-dom';
+import { createPortal, flushSync } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -61,7 +61,8 @@ const ProjectSection = () => {
     const trackRef = useRef(null);
     const overlayRef = useRef(null);
     const originRef = useRef(null); // Stores {rect} for reverse-zoom on close
-    const freezeCards = useRef(false); // When true, updateCards is skipped (cards stay frozen)
+    const hallwayST = useRef(null); // Stores the hallway ScrollTrigger
+    const freezeCards = useRef(false); // When true, updateCards is skipped (fallback)
     const [activeCard, setActiveCard] = useState(1);
     const [expandedProject, setExpandedProject] = useState(null);
     const [isExpanding, setIsExpanding] = useState(false);
@@ -73,8 +74,11 @@ const ProjectSection = () => {
         freezeCards.current = true;
         setIsExpanding(true);
 
-        // Lock Lenis smooth scroll immediately — body overflow has no effect on Lenis
+        // Lock Lenis smooth scroll immediately 
         if (window.lenis) window.lenis.stop();
+
+        // Freeze hallway ScrollTrigger immediately to prevent any scrub lag catch-up
+        if (hallwayST.current) hallwayST.current.disable(false);
 
         const rect = cardEl.getBoundingClientRect();
         const vw = window.innerWidth;
@@ -83,36 +87,30 @@ const ProjectSection = () => {
         // Save origin so close can reverse-zoom back to this position
         originRef.current = { rect };
 
-        // Use a clean image-backed div instead of cloneNode to avoid
-        // inheriting GSAP's inline transform styles (scale/translateX/yPercent etc.)
-        // which cause a visible glitch during the zoom animation.
         const clone = document.createElement('div');
         clone.style.cssText = `
-            position: fixed;
-            top: ${rect.top}px;
-            left: ${rect.left}px;
-            width: ${rect.width}px;
-            height: ${rect.height}px;
-            z-index: 10001;
-            border-radius: 18px;
-            overflow: hidden;
-            pointer-events: none;
-            background-image: url(${project.image});
-            background-size: cover;
-            background-position: center;
-            background-color: #06060a;
-        `;
+                position: fixed;
+                top: ${rect.top}px;
+                left: ${rect.left}px;
+                width: ${rect.width}px;
+                height: ${rect.height}px;
+                z-index: 10001;
+                border-radius: 18px;
+                overflow: hidden;
+                pointer-events: none;
+                background-image: url(${project.image});
+                background-size: cover;
+                background-position: center;
+                background-color: #06060a;
+            `;
         document.body.appendChild(clone);
 
-        // Determine target rect to match where ep-image will land in the overlay grid
-        // Desktop: right half (1fr 1fr grid). Mobile (≤768px): full width top half.
         const isMobileExpand = vw <= 768;
         const targetTop = 0;
         const targetLeft = isMobileExpand ? 0 : vw / 2;
         const targetWidth = isMobileExpand ? vw : vw / 2;
         const targetHeight = isMobileExpand ? vh / 2 : vh;
 
-        // Expand the clone to where ep-image will be
         gsap.to(clone, {
             top: targetTop,
             left: targetLeft,
@@ -123,30 +121,30 @@ const ProjectSection = () => {
             ease: 'expo.inOut',
             onComplete: () => {
                 document.body.classList.add('ep-expanded');
-                setExpandedProject(project);
-                requestAnimationFrame(() => {
-                    // Remove the clone first — overlay is already opacity:0 from CSS
-                    // so there's no flash between clone removal and overlay fade-in
-                    document.body.removeChild(clone);
-                    const overlay = overlayRef.current;
-                    if (overlay) {
-                        // Animate TO opacity:1 (overlay starts at 0 via CSS)
-                        gsap.to(overlay, {
-                            opacity: 1,
-                            duration: 0.3,
-                            ease: 'power2.out'
-                        });
-                        gsap.from(overlay.querySelectorAll('.ep-inner > *'), {
-                            y: 40,
-                            opacity: 0,
-                            stagger: 0.07,
-                            duration: 0.5,
-                            ease: 'power3.out',
-                            delay: 0.15
-                        });
-                    }
-                    setIsExpanding(false);
+
+                // Synchronously render the overlay portal so overlayRef.current is immediately available
+                flushSync(() => {
+                    setExpandedProject(project);
                 });
+
+                document.body.removeChild(clone);
+                const overlay = overlayRef.current;
+                if (overlay) {
+                    gsap.to(overlay, {
+                        opacity: 1,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                    gsap.from(overlay.querySelectorAll('.ep-inner > *'), {
+                        y: 40,
+                        opacity: 0,
+                        stagger: 0.07,
+                        duration: 0.5,
+                        ease: 'power3.out',
+                        delay: 0.15
+                    });
+                }
+                setIsExpanding(false);
             }
         });
     }, [isExpanding]);
@@ -166,48 +164,40 @@ const ProjectSection = () => {
             height: 260
         };
 
-        // Read the project image from the overlay so the shrink clone looks like the card
         const epImage = overlay.querySelector('.ep-image');
         const bgImage = epImage ? epImage.style.backgroundImage : 'none';
 
-        // Build shrink clone starting from where ep-image lives in the overlay grid
         const isMobileClose = vw <= 768;
         const cloneTop = 0;
         const cloneLeft = isMobileClose ? 0 : vw / 2;
         const cloneWidth = isMobileClose ? vw : vw / 2;
         const cloneHeight = isMobileClose ? vh / 2 : vh;
 
-        // Build a visually rich clone so the user can see it shrinking
         const shrinkClone = document.createElement('div');
         shrinkClone.style.cssText = `
-            position: fixed;
-            top: ${cloneTop}px;
-            left: ${cloneLeft}px;
-            width: ${cloneWidth}px;
-            height: ${cloneHeight}px;
-            z-index: 10001;
-            border-radius: 0;
-            overflow: hidden;
-            pointer-events: none;
-            background-image: ${bgImage};
-            background-size: cover;
-            background-position: center;
-            background-color: #06060a;
-        `;
+                position: fixed;
+                top: ${cloneTop}px;
+                left: ${cloneLeft}px;
+                width: ${cloneWidth}px;
+                height: ${cloneHeight}px;
+                z-index: 10001;
+                border-radius: 0;
+                overflow: hidden;
+                pointer-events: none;
+                background-image: ${bgImage};
+                background-size: cover;
+                background-position: center;
+                background-color: #06060a;
+            `;
         document.body.appendChild(shrinkClone);
 
-        // Fade the overlay out while the clone shrinks simultaneously.
-        // Hiding the overlay instantly causes the left text panel to blink away,
-        // since the clone only covers the right (image) half.
         requestAnimationFrame(() => {
-            // Fade out the whole overlay over the same duration as the shrink
             gsap.to(overlay, {
                 opacity: 0,
                 duration: 0.35,
                 ease: 'power2.inOut'
             });
 
-            // Shrink the clone back to where the card originally was
             gsap.to(shrinkClone, {
                 top: targetRect.top,
                 left: targetRect.left,
@@ -221,9 +211,8 @@ const ProjectSection = () => {
                     setExpandedProject(null);
                     document.body.classList.remove('ep-expanded');
 
-                    // Buffer unfreeze by one frame to let layout/Lenis settle 
-                    // and prevent any jumpy recalculations.
                     requestAnimationFrame(() => {
+                        if (hallwayST.current) hallwayST.current.enable(false);
                         freezeCards.current = false;
                         if (window.lenis) window.lenis.start();
                     });
@@ -234,7 +223,6 @@ const ProjectSection = () => {
 
     // ── GSAP Scroll Tunnel ────────────────────────────────────────────────────
     useGSAP(() => {
-        // Intro reveal text
         const revealTitle = containerRef.current.querySelector('.reveal-text');
         if (revealTitle) {
             const splitReveal = new SplitType(revealTitle, { types: 'words, chars' });
@@ -248,12 +236,10 @@ const ProjectSection = () => {
             });
         }
 
-        // 2D Hallway card tunnel
         const section = containerRef.current.querySelector('.works-stage');
         const imgWrap = section.querySelector('.image-wrapper');
         const track = trackRef.current;
         const cards = gsap.utils.toArray('.h-card', track);
-        const TRAVEL = 3500;
 
         let mm = gsap.matchMedia();
         mm.add({
@@ -288,11 +274,7 @@ const ProjectSection = () => {
 
             const TOTAL_DEPTH = (cards.length * 600) + 400;
 
-            // Named function so we can call it immediately for the initial state
             const updateCards = (progress) => {
-                // Skip updates while overlay is open so cards stay frozen in place
-                if (freezeCards.current) return;
-
                 const cameraDepth = progress * TOTAL_DEPTH;
                 let nearest = 0;
                 let maxScaleForHighlight = 0;
@@ -316,7 +298,8 @@ const ProjectSection = () => {
                         card.style.opacity = opacity;
                         card.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
                         card.style.zIndex = Math.round(scaleFactor * 100);
-                        gsap.set(card, { scale: scaleFactor, x: baseX * scaleFactor });
+                        card.style.transform = `translate(-50%, -50%) translate3d(${baseX * scaleFactor}px, 0, 0) scale(${scaleFactor})`;
+
                         if (scaleFactor > maxScaleForHighlight && scaleFactor <= 2.2) {
                             maxScaleForHighlight = scaleFactor;
                             nearest = i;
@@ -337,11 +320,17 @@ const ProjectSection = () => {
                     scrub: 1.5,
                     pin: true,
                     anticipatePin: 1,
-                    onUpdate: (self) => updateCards(self.progress)
+                    onUpdate: (self) => {
+                        if (freezeCards.current) return;
+                        updateCards(tl.progress());
+                    }
+                },
+                onUpdate: () => {
+                    if (!freezeCards.current) updateCards(tl.progress());
                 }
             });
 
-            // Render cards at progress=0 immediately — no scroll required
+            hallwayST.current = tl.scrollTrigger;
             updateCards(0);
 
             tl.to(imgWrap, {
@@ -359,8 +348,6 @@ const ProjectSection = () => {
 
     return (
         <div ref={containerRef} className="portfolio-timeline">
-
-            {/* INTRO REVEAL */}
             <section className="hero" style={{ height: '50vh', minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div className="hero-left" style={{ width: '100%', textAlign: 'center', margin: 0, borderRight: 'none', padding: 0 }}>
                     <div className="eyebrow">Case Studies</div>
@@ -370,7 +357,6 @@ const ProjectSection = () => {
                 </div>
             </section>
 
-            {/* HALLWAY TUNNEL */}
             <section className="works-stage" style={{ pointerEvents: isExpanding ? 'none' : 'auto' }}>
                 <div className="image-wrapper">
                     <div className="works-label">Selected Work</div>
@@ -421,7 +407,6 @@ const ProjectSection = () => {
                 </div>
             </section>
 
-            {/* FULLSCREEN PROJECT OVERLAY — rendered via portal to escape GSAP pin stacking context */}
             {expandedProject && createPortal(
                 <div className="ep-overlay" ref={overlayRef}>
                     <button className="ep-close" onClick={handleClose}>✕</button>
@@ -445,7 +430,6 @@ const ProjectSection = () => {
                 </div>,
                 document.body
             )}
-
         </div>
     );
 };
