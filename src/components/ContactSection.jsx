@@ -41,8 +41,8 @@ const ContactSection = () => {
                 <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
                     Let's Build It.
                 </h2>
-                <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light">
-                    The lab is always open. Whether you have a project in mind, an idea to explore, or just want to connect—drop a line.
+                <p className="text-lg md:text-xl text-white/40 uppercase tracking-[0.3em] mb-12 max-w-2xl mx-auto font-medium">
+                    Transforming websites into digital magic.
                 </p>
 
                 <a
