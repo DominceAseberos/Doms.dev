@@ -1,7 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useLayoutEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './MoreProjectsSection.css';
 
-const MagneticImage = ({ rotateMultiplier = 2, offsetClass, placeholderText }) => {
+// Register ScrollTrigger
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
+
+const MagneticImage = ({ rotateMultiplier = 2, offsetClass, placeholderText, fwdRef }) => {
     const imgRef = useRef(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
@@ -34,7 +41,10 @@ const MagneticImage = ({ rotateMultiplier = 2, offsetClass, placeholderText }) =
 
     return (
         <div
-            ref={imgRef}
+            ref={(el) => {
+                imgRef.current = el;
+                if (fwdRef) fwdRef(el);
+            }}
             className={`relative w-full aspect-video rounded-xl shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer border border-[#ffffff10] ${offsetClass} bg-black/40`}
             style={{
                 transform: isHovered
@@ -62,23 +72,83 @@ const MagneticImage = ({ rotateMultiplier = 2, offsetClass, placeholderText }) =
 };
 
 const MoreProjectsSection = () => {
+    const sectionRef = useRef(null);
+    const textRef1 = useRef(null);
+    const textRef2 = useRef(null);
+    const btnRef = useRef(null);
+    const imgRefs = useRef([]);
+
+    useLayoutEffect(() => {
+        let ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top", // Pin exactly when top hits top
+                    end: "+=1500", // Scroll distance for the animation
+                    pin: true,
+                    scrub: 1, // Smooth scrubbing
+                }
+            });
+
+            // Initial states for animation
+            gsap.set([textRef1.current, textRef2.current, btnRef.current], {
+                y: 100,
+                opacity: 0
+            });
+
+            gsap.set(imgRefs.current, {
+                scale: 0.8,
+                opacity: 0,
+                x: (i) => i === 0 ? 100 : (i === 1 ? -100 : 100),
+                y: (i) => i === 0 ? 0 : 100
+            });
+
+            // Sequence
+            tl.to([textRef1.current, textRef2.current, btnRef.current], {
+                y: 0,
+                opacity: 1,
+                stagger: 0.1,
+                ease: "power3.out"
+            }, 0)
+                .to(imgRefs.current, {
+                    scale: 1,
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    stagger: 0.1,
+                    ease: "back.out(1.7)"
+                }, 0.2); // Start slightly after text starts
+
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
+    const addToImgRefs = (el) => {
+        if (el && !imgRefs.current.includes(el)) {
+            imgRefs.current.push(el);
+        }
+    };
+
     return (
-        <section className="relative min-h-[80vh] bg-[#505255] flex items-center pt-24 pb-24 z-20 overflow-hidden">
+        <section ref={sectionRef} className="relative min-h-[100vh] bg-[#505255] flex items-center pt-24 pb-24 z-20 overflow-hidden">
             <div className="container max-w-6xl mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
 
                     {/* Left Side: Explanatory Text & CTA */}
                     <div className="w-full lg:w-1/2">
-                        <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-[#f2ede6]">More Projects</h2>
-                        <p className="text-xl text-[#b8b2a8] mb-8 leading-relaxed max-w-lg">
+                        <h2 ref={textRef1} className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-[#f2ede6]">More Projects</h2>
+                        <p ref={textRef2} className="text-xl text-[#b8b2a8] mb-8 leading-relaxed max-w-lg">
                             Beyond the highlighted case studies, I have an extensive archive of professional work, freelance gigs, and side ventures. Explore the full catalog to see the breadth of my capabilities.
                         </p>
-                        <a
-                            href="/projects"
-                            className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-white border border-white/20 bg-transparent px-8 py-4 rounded-full hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"
-                        >
-                            View All Projects ↗
-                        </a>
+                        <div ref={btnRef}>
+                            <a
+                                href="/projects"
+                                className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-white border border-white/20 bg-transparent px-8 py-4 rounded-full hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"
+                            >
+                                View All Projects ↗
+                            </a>
+                        </div>
                     </div>
 
                     {/* Right Side: 3 Image Previews */}
@@ -86,15 +156,18 @@ const MoreProjectsSection = () => {
                         {/* We use a creative grid to display 3 preview images */}
                         <div className="grid grid-cols-2 gap-4 auto-rows-[160px] md:auto-rows-[200px]">
                             <MagneticImage
+                                fwdRef={addToImgRefs}
                                 placeholderText="Project Preview 1"
                                 offsetClass="col-span-2 row-span-1"
                             />
                             <MagneticImage
+                                fwdRef={addToImgRefs}
                                 placeholderText="Project Preview 2"
                                 offsetClass="col-span-1 row-span-1"
                                 rotateMultiplier={6}
                             />
                             <MagneticImage
+                                fwdRef={addToImgRefs}
                                 placeholderText="Project Preview 3"
                                 offsetClass="col-span-1 row-span-1"
                                 rotateMultiplier={6}
