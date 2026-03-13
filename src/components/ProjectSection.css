@@ -707,3 +707,31 @@
         right: 20px;
     }
 }
+
+/* ── Mobile: Reduce hero gap above project tunnel ─────────────────────────── */
+@media (max-width: 1023px) {
+    .portfolio-timeline .hero {
+        height: auto !important;
+        min-height: unset !important;
+        padding: 48px 0 32px 0 !important;
+        margin: 0 !important;
+        justify-content: center !important;
+    }
+
+    .portfolio-timeline .hero-left {
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-align: center !important;
+    }
+
+    .portfolio-timeline .hero-name {
+        font-size: clamp(24px, 8vw, 40px) !important;
+        text-align: center !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+}

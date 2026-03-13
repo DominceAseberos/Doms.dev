@@ -380,7 +380,7 @@ const ProjectSection = () => {
             <section className="hero" style={{ height: '50vh', minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div className="hero-left" style={{ width: '100%', textAlign: 'center', margin: 0, borderRight: 'none', padding: 0 }}>
                     <div className="eyebrow">Case Studies</div>
-                    <h1 className="hero-name reveal-text" style={{ fontSize: '6vw', letterSpacing: '-0.02em', overflow: 'hidden' }}>
+                    <h1 className="hero-name reveal-text" style={{ fontSize: '6vw', letterSpacing: '-0.02em', overflow: 'hidden', textAlign: 'center', margin: '0 auto' }}>
                         Selected Projects
                     </h1>
                 </div>

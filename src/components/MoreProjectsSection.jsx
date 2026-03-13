@@ -147,9 +147,9 @@ const MoreProjectsSection = () => {
             <div className="container max-w-6xl mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
 
-                    {/* Left Side: Explanatory Text & CTA */}
-                    <div className="w-full lg:w-1/2">
-                        <h2 ref={textRef1} className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-[#f2ede6]">More Projects</h2>
+                    {/* Left Side: Explanatory Text & CTA — order 3 on mobile, natural on desktop */}
+                    <div className="w-full lg:w-1/2 order-3 lg:order-none">
+                        <h2 ref={textRef1} className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-[#f2ede6] order-1 lg:order-none">More Projects</h2>
                         <p ref={textRef2} className="text-xl text-[#b8b2a8] mb-8 leading-relaxed max-w-lg">
                             Beyond the highlighted case studies, I have an extensive archive of professional work, freelance gigs, and side ventures. Explore the full catalog to see the breadth of my capabilities.
                         </p>
@@ -163,8 +163,8 @@ const MoreProjectsSection = () => {
                         </div>
                     </div>
 
-                    {/* Right Side: 3 Image Previews */}
-                    <div className="w-full lg:w-1/2 relative">
+                    {/* Right Side: 3 Image Previews — order 2 on mobile, natural on desktop */}
+                    <div className="w-full lg:w-1/2 relative order-2 lg:order-none">
                         {/* We use a creative grid to display 3 preview images */}
                         <div className="grid grid-cols-2 gap-4 auto-rows-[160px] md:auto-rows-[200px]">
                             <MagneticImage
