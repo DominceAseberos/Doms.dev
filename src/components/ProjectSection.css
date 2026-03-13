@@ -126,6 +126,30 @@
     z-index: 0;
 }
 
+.tunnel-light {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffffff;
+    transform: translate(-50%, -50%) scale(0);
+    box-shadow: 0 0 120px 60px #ffffff, 0 0 240px 120px rgba(200, 255, 62, 0.4);
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.whiteout-overlay {
+    position: absolute;
+    inset: -20px;
+    background: #f2ede6;
+    z-index: 9000;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .hallway-track {
     position: absolute;
     inset: 0;

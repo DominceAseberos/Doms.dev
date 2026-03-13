@@ -47,6 +47,8 @@ const ProjectSection = () => {
     const containerRef = useRef(null);
     const trackRef = useRef(null);
     const gridRef = useRef(null); // Stores the ref for the floor grid
+    const lightRef = useRef(null);
+    const whiteoutRef = useRef(null);
     const overlayRef = useRef(null);
     const originRef = useRef(null); // Stores {rect} for reverse-zoom on close
     const hallwayST = useRef(null); // Stores the hallway ScrollTrigger
@@ -268,9 +270,14 @@ const ProjectSection = () => {
             });
 
             const TOTAL_DEPTH = (cards.length * 600) + 400;
+            const CARD_DUR = 10;
+            const EXIT_DUR = 4;
+            const TOTAL_DUR = CARD_DUR + EXIT_DUR;
+            const MAX_CAMERA_DEPTH = TOTAL_DEPTH * (TOTAL_DUR / CARD_DUR);
+            const SCROLL_DIST = TOTAL_DEPTH + 1500;
 
             const updateCards = (progress) => {
-                const cameraDepth = progress * TOTAL_DEPTH;
+                const cameraDepth = progress * MAX_CAMERA_DEPTH;
                 let nearest = 0;
                 let maxScaleForHighlight = 0;
 
@@ -317,7 +324,7 @@ const ProjectSection = () => {
                 scrollTrigger: {
                     trigger: section,
                     start: 'top top',
-                    end: `+=${TOTAL_DEPTH}`,
+                    end: `+=${SCROLL_DIST}`,
                     scrub: 1.5,
                     pin: true,
                     anticipatePin: 1,
@@ -337,9 +344,30 @@ const ProjectSection = () => {
             tl.to(imgWrap, {
                 width: isMobile ? '88%' : isTablet ? '76%' : '72%',
                 borderRadius: isMobile ? '16px' : '30px',
-                duration: 1,
+                duration: CARD_DUR,
                 ease: 'power1.out'
             }, 0);
+
+            // Light appears at the end of the cards
+            tl.to(lightRef.current, {
+                scale: 1,
+                opacity: 1,
+                duration: EXIT_DUR * 0.2
+            }, CARD_DUR);
+
+            // Light explosion
+            tl.to(lightRef.current, {
+                scale: 200,
+                duration: EXIT_DUR * 0.5,
+                ease: "power3.in"
+            }, ">");
+
+            // Whiteout covers the screen
+            tl.to(whiteoutRef.current, {
+                opacity: 1,
+                duration: EXIT_DUR * 0.3,
+                ease: "power2.inOut"
+            }, ">-0.1");
         });
 
         return () => {
@@ -366,6 +394,7 @@ const ProjectSection = () => {
 
                     <div className="hallway-scene">
                         <div className="tunnel-grid" ref={gridRef}></div>
+                        <div className="tunnel-light" ref={lightRef}></div>
                         <div className="hallway-track" ref={trackRef}>
                             {projects.map((p, i) => (
                                 <div
@@ -407,6 +436,7 @@ const ProjectSection = () => {
                         </div>
                     </div>
                 </div>
+                <div className="whiteout-overlay" ref={whiteoutRef}></div>
             </section>
 
             {expandedProject && createPortal(
