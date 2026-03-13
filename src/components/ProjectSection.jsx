@@ -373,8 +373,9 @@ const ProjectSection = () => {
             <section className="hero" style={{ height: '50vh', minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div className="hero-left" style={{ width: '100%', textAlign: 'center', margin: 0, borderRight: 'none', padding: 0 }}>
                     <div className="eyebrow">Case Studies</div>
-                    <h1 className="hero-name reveal-text" style={{ fontSize: '6vw', letterSpacing: '-0.02em', overflow: 'hidden', textAlign: 'center', margin: '0 auto' }}>
-                        Selected Projects
+                    <h1 className="hero-name reveal-text" style={{ fontSize: 'clamp(2rem, 4.5vw, 6rem)', letterSpacing: '-0.02em', overflow: 'hidden', textAlign: 'center', margin: '0 auto', lineHeight: '0.9' }}>
+                        Selected<br className="hidden md:block" />
+                        <span className="inline md:hidden"> </span>Projects
                     </h1>
                 </div>
             </section>
