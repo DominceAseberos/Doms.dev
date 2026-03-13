@@ -1,4 +1,5 @@
 import React, { useRef, useLayoutEffect, forwardRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -7,6 +8,8 @@ if (typeof window !== "undefined") {
 }
 
 const AboutSection = forwardRef((props, ref) => {
+    const location = useLocation();
+    const isAboutPage = location.pathname === '/about';
     const sectionRef = useRef(null);
     const stripesRef = useRef([]);
     const headerRef = useRef(null);
@@ -82,9 +85,9 @@ const AboutSection = forwardRef((props, ref) => {
                             className="font-black uppercase tracking-tighter text-white leading-[1] text-center"
                             style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
                         >
-                            Built on{' '}
+                            Built with{' '}
                             <span className="text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
-                                Curiosity.
+                                Motion + Code.
                             </span>
                         </h2>
                     </div>
@@ -92,10 +95,10 @@ const AboutSection = forwardRef((props, ref) => {
                     <div ref={textRef} className="w-full max-w-3xl flex flex-col items-center">
                         <div className="space-y-6 text-gray-400 text-base sm:text-lg md:text-xl font-light leading-relaxed text-center">
                             <p>
-                                I'm Domince—a digital craftsman obsessed with the intersection of performance and poetry in code. For me, every project is an opportunity to solve an impossible puzzle.
+                                I'm Domince Aseberos, and I build interactive web experiences powered by GSAP, React, and modern frontend architecture. I focus on smooth motion, clean UI systems, and performance-first implementation.
                             </p>
                             <p>
-                                My workflow is anchored in high-speed experimentation and a relentless drive for architectural elegance. I don't just build websites; I engineer fluid, interactive environments that resonate with users.
+                                Beyond frontend motion work, I also build full-stack applications and design custom SVG assets to match each product's visual identity. From concept to deployment, I create end-to-end digital products that look sharp and feel alive.
                             </p>
                         </div>
 
@@ -107,16 +110,18 @@ const AboutSection = forwardRef((props, ref) => {
                             ))}
                         </div>
 
-                        <div className="pt-12 sm:pt-16">
-                            <a
-                                href="/about"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-8 py-4 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
-                            >
-                                More about me ↗
-                            </a>
-                        </div>
+                        {!isAboutPage && (
+                            <div className="pt-12 sm:pt-16">
+                                <a
+                                    href="/about"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-8 py-4 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
+                                >
+                                    More about me ↗
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
