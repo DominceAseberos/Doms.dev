@@ -1,10 +1,59 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useLayoutEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './LabSection.css';
 
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
+
 const LabSection = () => {
+    const sectionRef = useRef(null);
+    const rightColRef = useRef(null);
     const previewRef = useRef(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
+
+    useLayoutEffect(() => {
+        let ctx = gsap.context(() => {
+            let mm = gsap.matchMedia();
+
+            mm.add({
+                isDesktop: '(min-width: 1025px)',
+                isMobileOrTablet: '(max-width: 1024px)'
+            }, (context) => {
+                let { isDesktop, isMobileOrTablet } = context.conditions;
+
+                if (isDesktop) {
+                    // Pin entire section on desktop
+                    ScrollTrigger.create({
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "+=100%", // Pin for 1 screen height
+                        pin: true,
+                        anticipatePin: 1,
+                        onRefresh: self => {
+                            if (self.spacer) self.spacer.style.backgroundColor = "#505255";
+                        }
+                    });
+                } else if (isMobileOrTablet && rightColRef.current) {
+                    // Pin the entire section exactly when the card reaches the center
+                    ScrollTrigger.create({
+                        trigger: rightColRef.current,
+                        start: "center center",
+                        end: "+=100%", // Hold it for 1 screen height
+                        pin: sectionRef.current,
+                        anticipatePin: 1,
+                        onRefresh: self => {
+                            if (self.spacer) self.spacer.style.backgroundColor = "#505255";
+                        }
+                    });
+                }
+            });
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
 
     const handleMouseMove = (e) => {
         if (!previewRef.current) return;
@@ -35,7 +84,7 @@ const LabSection = () => {
     }
 
     return (
-        <section className="relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20 overflow-hidden">
+        <section ref={sectionRef} className="relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20 overflow-hidden">
             {/* Decorative Inner Polygons */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div
@@ -66,7 +115,7 @@ const LabSection = () => {
                     </div>
 
                     {/* Right Side: Magnetic Preview Card */}
-                    <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+                    <div ref={rightColRef} className="w-full lg:w-1/2 flex justify-center lg:justify-end">
                         <div
                             ref={previewRef}
                             className="relative w-full max-w-[500px] aspect-[4/3] rounded-3xl lab-card shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer"
