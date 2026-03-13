@@ -37,7 +37,10 @@ const EducationSection = () => {
     return (
         <section ref={sectionRef} className="relative w-full min-h-[60vh] bg-transparent flex items-center justify-center z-10 py-32">
             <div ref={contentRef} className="relative z-10 text-center text-white px-6 w-full max-w-5xl">
-                <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
+                <h2
+                    className="font-black uppercase tracking-tighter mb-6 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] leading-[1]"
+                    style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
+                >
                     Educational Background
                 </h2>
                 <p className="font-mono text-[10px] md:text-sm text-white/30 uppercase tracking-[0.4em] mb-12 max-w-4xl mx-auto font-bold leading-relaxed">
