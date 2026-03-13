@@ -343,10 +343,15 @@ const ProjectSection = () => {
 
             // Only shrink container on Desktop
             if (isDesktop) {
+                // Initialize border as transparent before animating
+                gsap.set(imgWrap, { border: '1px solid transparent' });
+
                 tl.to(imgWrap, {
                     width: '72%',
                     height: '85vh',
                     borderRadius: '30px',
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    boxShadow: '0 0 40px rgba(255, 255, 255, 0.05), 0 0 30px rgba(0,0,0,0.8)',
                     duration: CARD_DUR,
                     ease: 'power1.out'
                 }, 0);
