@@ -1,6 +1,7 @@
 import React, { useRef, useState, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ParticleMesh from './ParticleMesh';
 import './LabSection.css';
 
 if (typeof window !== "undefined") {
@@ -189,6 +190,9 @@ const LabSection = () => {
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                         >
+                            {/* Particle Mesh Background */}
+                            <ParticleMesh mouseX={mousePos.x} mouseY={mousePos.y} isHovered={isHovered} />
+
                             {/* Hover Backlight */}
                             <div
                                 className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
