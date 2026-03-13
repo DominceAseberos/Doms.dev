@@ -4,7 +4,7 @@ import './css/About.css';
 import ParticleBackground from '../../components/ParticleBackground';
 import NavBar from '../../components/NavBar';
 import AboutSection from '../../components/AboutSection';
-import ContactSection from '../../components/ContactSection';
+import EducationSection from './components/EducationSection';
 import useLoadingStore from '../../store/useLoadingStore';
 
 const AboutPage = () => {
@@ -28,7 +28,7 @@ const AboutPage = () => {
 
             <div className="relative z-10">
                 <AboutSection ref={sectionRef} />
-                <ContactSection />
+                <EducationSection />
             </div>
         </div>
     );
