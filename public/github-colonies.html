@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repo Colonies</title>
+<link rel="stylesheet" href="/github-colonies.css">
+
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Repo <em>Colonies</em></h1>
+    <p class="subtitle">each repository is a colony · ants carry commits</p>
+    <div class="global-stats" id="globalStats"></div>
+  </header>
+
+  <!-- ── GITHUB CONNECT PANEL ── -->
+  <div class="gh-panel" id="ghPanel">
+    <div class="gh-panel-inner">
+
+      <!-- collapsed bar -->
+      <div class="gh-bar" id="ghBar">
+        <div class="gh-bar-left">
+          <span class="gh-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+          </span>
+          <span class="gh-bar-title">GitHub Integration</span>
+          <span class="gh-status-dot" id="ghStatusDot"></span>
+          <span class="gh-status-text" id="ghStatusText">not connected · using demo data</span>
+        </div>
+        <div class="gh-bar-right">
+          <div class="gh-rate-meter" id="ghRateMeter" style="display:none">
+            <div class="rate-bar-track"><div class="rate-bar-fill" id="rateFill"></div></div>
+            <span class="rate-label" id="rateLabel">— / 5000</span>
+          </div>
+          <button class="gh-toggle-btn" id="ghToggleBtn">Connect ↓</button>
+        </div>
+      </div>
+
+      <!-- expanded form -->
+      <div class="gh-form" id="ghForm">
+        <div class="gh-form-grid">
+
+          <div class="gh-field">
+            <label class="gh-label" for="ghToken">
+              Personal Access Token
+              <a class="gh-help" href="https://github.com/settings/tokens/new?scopes=repo,read:user" target="_blank" rel="noopener">
+                create token ↗
+              </a>
+            </label>
+            <div class="gh-input-wrap">
+              <input class="gh-input" type="password" id="ghToken"
+                placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                autocomplete="off" spellcheck="false"/>
+              <button class="gh-eye-btn" id="ghEyeBtn" type="button" title="Show/hide token">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <p class="gh-field-hint">Needs <code>repo</code> + <code>read:user</code> scopes. Stored in localStorage — never sent anywhere except GitHub's API.</p>
+          </div>
+
+          <div class="gh-field">
+            <label class="gh-label" for="ghUsername">GitHub Username</label>
+            <input class="gh-input" type="text" id="ghUsername"
+              placeholder="octocat"
+              autocomplete="off" spellcheck="false"/>
+            <p class="gh-field-hint">Your username or any public user's handle.</p>
+          </div>
+
+          <div class="gh-field gh-field-options">
+            <label class="gh-label">Options</label>
+            <div class="gh-checks">
+              <label class="gh-check">
+                <input type="checkbox" id="ghPublicOnly" checked/>
+                <span>Public repos only</span>
+              </label>
+              <label class="gh-check">
+                <input type="checkbox" id="ghForked"/>
+                <span>Include forks</span>
+              </label>
+            </div>
+            <div class="gh-repo-limit">
+              <label class="gh-label" for="ghRepoLimit">Max repos</label>
+              <input class="gh-input gh-input-sm" type="number" id="ghRepoLimit" value="10" min="1" max="30"/>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="gh-form-footer">
+          <div class="gh-notice">
+            <span class="gh-notice-icon">⚡</span>
+            Rate-limit aware · results cached 15 min · ~50 requests per load
+          </div>
+          <div class="gh-actions">
+            <button class="gh-btn gh-btn-ghost" id="ghClearBtn">Clear saved</button>
+            <button class="gh-btn gh-btn-primary" id="ghConnectBtn">
+              <span id="ghConnectLabel">Load my colonies</span>
+              <span class="gh-spinner" id="ghSpinner" style="display:none">⣾</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="hint">Click any colony → ants walk carrying <b>sugar crystals</b> (commits) to the queen 🐜</p>
+
+  <div class="colonies-grid" id="coloniesGrid"></div>
+
+  <div class="legend">
+    <span class="leg-lbl">Commits / day</span>
+    <div class="leg-items">
+      <div class="leg-item"><div class="ldot" style="background:var(--g1)"></div>1–2</div>
+      <div class="leg-item"><div class="ldot" style="background:var(--g2)"></div>3–5</div>
+      <div class="leg-item"><div class="ldot" style="background:var(--g3)"></div>6–9</div>
+      <div class="leg-item"><div class="ldot" style="background:var(--accent2)"></div>10+</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── FAKE REPO DATA ────────────────────────────────────────────────────────────
+const LANG_COLORS = {
+  TypeScript: '#4a90d9', JavaScript: '#c8a830', Python: '#4a8f2c',
+  Rust: '#b94a2c', Go: '#38a8b0', 'C++': '#7a3ab8', Ruby: '#cc3344',
+  Swift: '#d06830', Kotlin: '#6e4ab8', Dart: '#38a0cc',
+};
+
+const CONTRIBUTORS = [
+  { name: 'ada',     color: '#c84040' },
+  { name: 'blaze',   color: '#4088c8' },
+  { name: 'clio',    color: '#44aa66' },
+  { name: 'dex',     color: '#c87830' },
+  { name: 'eira',    color: '#9944c8' },
+  { name: 'fox',     color: '#c83880' },
+  { name: 'gwen',    color: '#38c8b0' },
+  { name: 'hex',     color: '#a8b830' },
+];
+
+const DESCS = [
+  'A blazing-fast REST API for async task queues',
+  'UI component library with zero dependencies',
+  'CLI toolkit for monorepo management',
+  'Real-time collaboration engine over WebSockets',
+  'ML pipeline orchestrator with DAG scheduling',
+  'Lightweight auth middleware for edge runtimes',
+  'Type-safe ORM with automatic migration support',
+  'Cross-platform mobile app for habit tracking',
+  'Event-driven microservices framework',
+  'Browser extension for developer productivity',
+];
+
+const REPO_NAMES = [
+  'taskflow-api', 'velvet-ui', 'monoscope', 'collab-core',
+  'pipecraft', 'edgeauth', 'typedorm', 'habitloop',
+  'eventmesh', 'devpilot',
+];
+
+const LANGS = Object.keys(LANG_COLORS);
+
+function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+const TODAY       = new Date();
+const CURRENT_YEAR = TODAY.getFullYear();   // 2026
+const CURRENT_MONTH = TODAY.getMonth();     // 0-indexed, March = 2
+const START_YEAR   = CURRENT_YEAR - 3;     // show 4 years: 2023-2026
+const MONTH_NAMES  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function daysInMonth(year, month) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function genDays(n, activity, isFuture) {
+  if (isFuture) return Array.from({ length: n }, (_, i) => ({ day: i + 1, commits: 0 }));
+  return Array.from({ length: n }, (_, i) => {
+    const r = Math.random();
+    let c = 0;
+    if (r < activity) {
+      if      (r < activity * .08)  c = rnd(10, 18);
+      else if (r < activity * .2)   c = rnd(6, 9);
+      else if (r < activity * .45)  c = rnd(3, 5);
+      else                           c = rnd(1, 2);
+    }
+    return { day: i + 1, commits: c };
+  });
+}
+
+function genYears(activity) {
+  const years = {};
+  for (let y = START_YEAR; y <= CURRENT_YEAR; y++) {
+    years[y] = MONTH_NAMES.map((mName, mi) => {
+      // future months (after current month in current year) = 0 commits
+      const isFuture = (y === CURRENT_YEAR && mi > CURRENT_MONTH);
+      const numDays  = daysInMonth(y, mi);
+      // older years slightly less active
+      const actMod   = y === CURRENT_YEAR ? activity : activity * (0.5 + (y - START_YEAR) * 0.15);
+      const days     = genDays(numDays, actMod, isFuture);
+      const total    = days.reduce((s, d) => s + d.commits, 0);
+      return { month: mi, name: mName, days, total, isFuture };
+    });
+  }
+  return years;
+}
+
+function genContributors(total) {
+  const count = rnd(2, 5);
+  const pool  = [...CONTRIBUTORS].sort(() => Math.random() - .5).slice(0, count);
+  let remaining = total;
+  return pool.map((c, i) => {
+    const share = i === pool.length - 1
+      ? remaining
+      : Math.floor(remaining * (Math.random() * .4 + .1));
+    remaining -= share;
+    return { ...c, commits: share };
+  }).sort((a, b) => b.commits - a.commits);
+}
+
+const REPOS = REPO_NAMES.map((name, i) => {
+  const lang     = LANGS[i % LANGS.length];
+  const activity = .35 + Math.random() * .5;
+  const years    = genYears(activity);
+  // total = sum across all years
+  const total    = Object.values(years).flat().reduce((s, m) => s + m.total, 0);
+  // "days" for preview anthill = current year's total
+  const curYearTotal = years[CURRENT_YEAR].reduce((s, m) => s + m.total, 0);
+  const contribs = genContributors(total);
+  const lastActive = rnd(0, 14);
+  return {
+    name, lang, desc: DESCS[i], years, total, curYearTotal,
+    contribs, lastActive, activity,
+    stars: rnd(12, 4800),
+  };
+});
+
+// ── SVG ANT — horizontal, head facing right ─────────────────────────────────
+function antSVG(w, queen = false) {
+  const body   = queen ? '#dd5500' : '#d47828';
+  const thorax = queen ? '#ee6600' : '#e89a40';
+  const legs   = queen ? '#ff8833' : '#ffbb55';
+  const eyeC   = queen ? '#ffffff' : '#ffe880';
+  const antTip = queen ? '#ff3300' : '#ff9900';
+  const sw     = queen ? 1.8 : 1.4;
+  const W      = queen ? 54 : 44;
+  const H      = queen ? 22 : 16;
+
+  return '<svg class="ant-fig" viewBox="0 0 34 16" width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">'
+    + '<g stroke="' + legs + '" stroke-width="' + sw + '" stroke-linecap="round">'
+    + '<line x1="18" y1="8" x2="21" y2="3"/>'
+    + '<line x1="18" y1="8" x2="21" y2="13"/>'
+    + '<line x1="15" y1="8" x2="15" y2="2"/>'
+    + '<line x1="15" y1="8" x2="15" y2="14"/>'
+    + '<line x1="12" y1="8" x2="10" y2="3"/>'
+    + '<line x1="12" y1="8" x2="10" y2="13"/>'
+    + '</g>'
+    + '<ellipse cx="6"  cy="8" rx="5"   ry="3.8" fill="' + body   + '"/>'
+    + '<ellipse cx="15" cy="8" rx="3"   ry="2.6" fill="' + thorax + '"/>'
+    + '<circle  cx="24" cy="8" r="2.8"            fill="' + body   + '"/>'
+    + '<line x1="25.5" y1="5.8" x2="30" y2="2"    stroke="' + legs + '" stroke-width="1" stroke-linecap="round"/>'
+    + '<line x1="25.5" y1="5.8" x2="31" y2="5.5"  stroke="' + legs + '" stroke-width="1" stroke-linecap="round"/>'
+    + '<circle cx="30"  cy="2"   r="1" fill="' + antTip + '"/>'
+    + '<circle cx="31"  cy="5.5" r="1" fill="' + antTip + '"/>'
+    + '<circle cx="25.5" cy="6.5" r="1.2" fill="' + eyeC + '"/>'
+    + (queen ? '<ellipse cx="15" cy="4.5" rx="5" ry="1.8" fill="rgba(255,120,0,0.35)"/>' : '')
+    + '</svg>';
+}
+
+function barClass(c) {
+  if (c === 0) return 'b0';
+  if (c <= 2)  return 'b1';
+  if (c <= 5)  return 'b2';
+  if (c <= 9)  return 'b3';
+  return 'b4';
+}
+function barH(c) {
+  if (c === 0) return 2;
+  return Math.min(54, 5 + c * 3.2);
+}
+
+// ── MINI PREVIEW — anthill mound svg ─────────────────────────────────────────
+function buildPreview(repo) {
+  const allTotals = REPOS.map(r => r.curYearTotal);
+  const maxTotal  = Math.max(...allTotals);
+  // hill height: 18px (min) to 72px (max) above ground
+  const minH = 18, maxH = 72;
+  const hillH = Math.round(minH + (repo.curYearTotal / maxTotal) * (maxH - minH));
+  // hill width proportional to height
+  const hillW = Math.round(hillH * 2.2);
+
+  const div = document.createElement('div');
+  div.className = 'colony-preview';
+
+  // SVG anthill — drawn from ground line (y=82) upward
+  const W = 200, groundY = 82;
+  const cx = W / 2;
+  const peakY = groundY - hillH;
+  // bezier control points for organic mound shape
+  const cp1x = cx - hillW * 0.55, cp1y = groundY - hillH * 0.15;
+  const cp2x = cx - hillW * 0.1,  cp2y = peakY - hillH * 0.1;
+  const cp3x = cx + hillW * 0.1,  cp3y = peakY - hillH * 0.1;
+  const cp4x = cx + hillW * 0.55, cp4y = groundY - hillH * 0.15;
+  const leftX  = cx - hillW / 2;
+  const rightX = cx + hillW / 2;
+
+  // entrance hole — small dark oval at base of hill
+  const holeW = Math.max(8, hillW * 0.12);
+  const holeH = Math.max(5, hillH * 0.1);
+  const holeY = groundY - holeH * 0.6;
+
+  // dirt texture lines across the mound
+  const textureLines = Array.from({length: 4}, (_, i) => {
+    const t = (i + 1) / 5;
+    const ly = peakY + (groundY - peakY) * t;
+    const lw = hillW * (0.15 + t * 0.75);
+    return `<line x1="${cx - lw/2}" y1="${ly}" x2="${cx + lw/2}" y2="${ly}"
+      stroke="rgba(160,110,50,0.35)" stroke-width="0.8" stroke-linecap="round"/>`;
+  }).join('');
+
+  // small rocks/pebbles at base
+  const pebbles = [
+    { x: leftX  + hillW*0.08, y: groundY - 1, r: 2.5 },
+    { x: leftX  + hillW*0.18, y: groundY - 1, r: 1.5 },
+    { x: rightX - hillW*0.08, y: groundY - 1, r: 2 },
+    { x: rightX - hillW*0.2,  y: groundY - 1, r: 1.5 },
+    { x: cx,                   y: groundY - 1, r: 1.5 },
+  ].map(p => `<ellipse cx="${p.x}" cy="${p.y}" rx="${p.r}" ry="${p.r*0.6}" fill="#6a4820"/>`).join('');
+
+  div.innerHTML = `
+    <svg viewBox="0 0 ${W} 100" width="100%" height="100%"
+         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <!-- mound shadow -->
+      <ellipse cx="${cx}" cy="${groundY+1}" rx="${hillW*0.52}" ry="4"
+        fill="rgba(0,0,0,0.25)"/>
+      <!-- mound body -->
+      <path d="M${leftX},${groundY}
+               C${cp1x},${cp1y} ${cp2x},${cp2y} ${cx},${peakY}
+               C${cp3x},${cp3y} ${cp4x},${cp4y} ${rightX},${groundY} Z"
+        fill="url(#hillGrad)"/>
+      <!-- texture lines -->
+      ${textureLines}
+      <!-- entrance hole -->
+      <ellipse cx="${cx}" cy="${holeY}" rx="${holeW/2}" ry="${holeH/2}" fill="#1a0c04"/>
+      <ellipse cx="${cx}" cy="${holeY - holeH*0.15}" rx="${holeW/2 * 0.8}" ry="${holeH/2 * 0.5}"
+        fill="rgba(0,0,0,0.4)"/>
+      <!-- pebbles -->
+      ${pebbles}
+      <!-- gradient def -->
+      <defs>
+        <radialGradient id="hillGrad" cx="38%" cy="30%" r="70%">
+          <stop offset="0%"   stop-color="#8a6030"/>
+          <stop offset="45%"  stop-color="#6a4420"/>
+          <stop offset="100%" stop-color="#3e2810"/>
+        </radialGradient>
+      </defs>
+    </svg>
+  `;
+
+  // JS-driven ants — walk flat, shrink into entrance hole at 50%
+  const antCount = Math.min(4, Math.max(1, Math.round(repo.activity * 5)));
+  const cardW = 220; // approx card width; JS will use actual offsetWidth
+
+  for (let i = 0; i < antCount; i++) {
+    const ant = document.createElement('div');
+    ant.className = 'preview-ant';
+    ant.innerHTML = antSVG(11);
+    div.appendChild(ant);
+
+    // stagger start positions across the full width
+    let x = (i / antCount) * cardW * -1 - 20;
+    const speed = 28 + Math.random() * 18; // px/sec
+
+    let lastTime = null;
+    function step(ts) {
+      if (!lastTime) lastTime = ts;
+      const dt = (ts - lastTime) / 1000;
+      lastTime = ts;
+
+      const w = div.offsetWidth || cardW;
+      x += speed * dt;
+
+      // reset when off right edge
+      if (x > w + 20) x = -20;
+
+      // entrance is at 50% of card width
+      const entrancePct = x / w; // 0→1
+      const distToEntrance = Math.abs(entrancePct - 0.5);
+
+      // within 8% of center = shrinking into hole
+      let scale = 1, opacity = 1;
+      if (distToEntrance < 0.08) {
+        const t = 1 - (distToEntrance / 0.08); // 0→1 as approaching center
+        scale   = 1 - t * 0.85;
+        opacity = 1 - t * 0.9;
+      }
+
+      ant.style.transform = `scaleX(1) scale(${scale})`;
+      ant.style.opacity   = opacity;
+      ant.style.left      = x + 'px';
+
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  return div;
+}
+
+// ── EXPANDED ─────────────────────────────────────────────────────────────────
+function buildTunnel(days) {
+  const strip = document.createElement('div');
+  strip.className = 'tunnel-strip';
+  const bg = document.createElement('div');
+  bg.className = 'tunnel-bg';
+  bg.innerHTML = '<div class="tunnel-floor-line"></div><div class="tunnel-ceil-line"></div>';
+  strip.appendChild(bg);
+
+  // more pheromone dots spread across the taller tunnel
+  for (let p = 0; p < 48; p++) {
+    const dot = document.createElement('div');
+    dot.className = 'pher';
+    dot.style.left   = (p * 2.1 + Math.random() * 1.5) + '%';
+    dot.style.bottom = (10 + Math.random() * 110) + 'px';
+    bg.appendChild(dot);
+  }
+
+  // 5 lanes evenly spaced across the 140px tunnel height
+  // lane bottoms: 18, 40, 62, 84, 106
+  const LANES = [18, 40, 62, 84, 106];
+
+  const activeDays = days.filter(d => d.commits > 0);
+  activeDays.forEach((d, i) => {
+    const ant = document.createElement('div');
+    ant.className = 'tunnel-ant';
+    const dur   = 16 + Math.random() * 10;
+    const delay = -(i * (dur / Math.max(activeDays.length, 1)));
+    const bot   = LANES[i % LANES.length];
+    ant.style.cssText = 'animation-duration:' + dur + 's;animation-delay:' + delay + 's;bottom:' + bot + 'px;';
+    const label = (d.label || ('Day ' + d.day)) + ' · <strong>' + d.commits + '</strong> commit' + (d.commits !== 1 ? 's' : '');
+    ant.innerHTML = '<div class="ant-tip">' + label + '</div>' + antSVG(16) + '<div class="sugar">' + d.commits + '</div>';
+    strip.appendChild(ant);
+  });
+  return strip;
+}
+
+function buildDayBars(days) {
+  const bars = document.createElement('div');
+  bars.className = 'days-bars';
+  days.forEach(d => {
+    const col = document.createElement('div');
+    col.className = 'day-col';
+    col.innerHTML =
+      '<div class="day-tip">Day ' + d.day + ': ' + d.commits + ' commit' + (d.commits !== 1 ? 's' : '') + '</div>' +
+      '<div class="day-bar ' + barClass(d.commits) + '" style="height:' + barH(d.commits) + 'px"></div>' +
+      '<div class="day-num">' + d.day + '</div>';
+    bars.appendChild(col);
+  });
+  return bars;
+}
+
+function buildExpanded(repo) {
+  const wrap = document.createElement('div');
+  wrap.className = 'colony-expanded';
+
+  // ── Queen + Top Worker ──
+  const qs = document.createElement('div');
+  qs.className = 'queen-section';
+
+  // find top worker day: highest single-day commits across all years
+  const allDaysFlat = Object.values(repo.years).flat()
+    .flatMap(m => m.days.map(d => ({ commits: d.commits, day: d.day, monthName: m.name })));
+  const topDay = allDaysFlat.reduce((a, b) => b.commits > a.commits ? b : a, { commits: 0, day: 1, monthName: 'Jan' });
+
+  const lastStr = repo.lastActive === 0 ? 'today' : repo.lastActive + 'd ago';
+  const contribsHTML = repo.contribs.map((c, i) =>
+    '<div class="contrib' + (i === 0 ? ' top' : '') + '">' +
+    '<div class="contrib-avatar" style="background:' + c.color + '">' + c.name[0].toUpperCase() + '</div>' +
+    '<span><b>' + c.name + '</b> · ' + c.commits + '</span></div>'
+  ).join('');
+
+  // builds a portrait (queen or top worker) with clickable avatar + file upload
+  function makePortrait(isQueen, label, badgeText, badgeClass, nameLine, subLine) {
+    const wrap2 = document.createElement('div');
+    wrap2.className = 'ant-portrait';
+
+    // label above
+    const lbl = document.createElement('div');
+    lbl.className = 'portrait-label';
+    lbl.textContent = label;
+    wrap2.appendChild(lbl);
+
+    // avatar circle
+    const avatarWrap = document.createElement('div');
+    avatarWrap.className = 'portrait-body';
+    avatarWrap.style.marginTop = '10px';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'portrait-avatar' + (isQueen ? ' queen-av' : '');
+    avatar.title = 'Click to upload photo';
+
+    if (isQueen) {
+      const crown = document.createElement('div');
+      crown.className = 'portrait-crown';
+      crown.textContent = '👑';
+      avatar.appendChild(crown);
+    }
+
+    const inner = document.createElement('div');
+    inner.className = 'portrait-avatar-inner';
+
+    const uploadedImg = document.createElement('img');
+    uploadedImg.className = 'portrait-uploaded-img';
+    uploadedImg.alt = '';
+    inner.appendChild(uploadedImg);
+
+    const antDefault = document.createElement('div');
+    antDefault.className = 'portrait-ant-default';
+    antDefault.innerHTML = antSVG(isQueen ? 28 : 22, isQueen);
+    inner.appendChild(antDefault);
+
+    const hint = document.createElement('div');
+    hint.className = 'portrait-upload-hint';
+    hint.textContent = '📷';
+    inner.appendChild(hint);
+
+    avatar.appendChild(inner);
+
+    // hidden file input
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.style.display = 'none';
+    avatar.appendChild(fileInput);
+
+    avatar.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        uploadedImg.src = ev.target.result;
+        uploadedImg.style.display = 'block';
+        antDefault.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    avatarWrap.appendChild(avatar);
+    wrap2.appendChild(avatarWrap);
+
+    // badge below avatar
+    const badge = document.createElement('div');
+    badge.className = 'portrait-badge ' + (badgeClass || '');
+    badge.textContent = badgeText;
+    wrap2.appendChild(badge);
+
+    // name + sub
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'portrait-name';
+    nameDiv.innerHTML = nameLine + (subLine ? '<em>' + subLine + '</em>' : '');
+    wrap2.appendChild(nameDiv);
+
+    return wrap2;
+  }
+
+  // info column (left)
+  const infoDiv = document.createElement('div');
+  infoDiv.className = 'queen-info';
+  infoDiv.innerHTML =
+    '<div class="queen-repo-title">' + repo.name + '</div>' +
+    '<div class="queen-repo-desc">' + repo.desc + '</div>' +
+    '<div class="queen-stats">🍬 Total harvest: <b>' + repo.total + ' commits</b> (all time)<br>' +
+    '⭐ Stars: <b>' + repo.stars.toLocaleString() + '</b> &nbsp;·&nbsp; 🕐 Last active: <b class="hi">' + lastStr + '</b></div>' +
+    '<div class="contributors">' + contribsHTML + '</div>';
+  qs.appendChild(infoDiv);
+
+  // queen portrait (center)
+  const queenPortrait = makePortrait(
+    true, 'Queen',
+    '🍬 ' + repo.total,
+    '',
+    repo.name,
+    'all-time ' + repo.total + ' commits'
+  );
+  qs.appendChild(queenPortrait);
+
+  // top worker portrait (right)
+  const workerPortrait = makePortrait(
+    false, 'Top Worker',
+    '⚡ ' + topDay.commits,
+    'worker-badge',
+    topDay.monthName + ' · Day ' + topDay.day,
+    topDay.commits + ' commits in one day'
+  );
+  qs.appendChild(workerPortrait);
+
+  wrap.appendChild(qs);
+
+  // ── Year tabs ──
+  const yearSection = document.createElement('div');
+  yearSection.className = 'year-section';
+
+  const tabBar = document.createElement('div');
+  tabBar.className = 'year-tabs';
+
+  const years = Object.keys(repo.years).map(Number).sort();
+
+  // content panels keyed by year
+  const panels = {};
+
+  years.forEach(y => {
+    // tab button
+    const tab = document.createElement('button');
+    tab.className = 'year-tab' + (y === CURRENT_YEAR ? ' active' : '');
+    tab.textContent = y;
+    tab.dataset.year = y;
+    tabBar.appendChild(tab);
+
+    // panel
+    const panel = document.createElement('div');
+    panel.className = 'year-panel' + (y === CURRENT_YEAR ? ' visible' : '');
+    panel.dataset.year = y;
+
+    const yearTotal = repo.years[y].reduce((s, m) => s + m.total, 0);
+
+    // year summary
+    const ySummary = document.createElement('div');
+    ySummary.className = 'year-summary';
+    ySummary.innerHTML = '<span class="ys-label">' + y + (y === CURRENT_YEAR ? ' <em>· current</em>' : '') + '</span>' +
+      '<span class="ys-total"><b>' + yearTotal + '</b> commits</span>';
+    panel.appendChild(ySummary);
+
+    // tunnel — use all active days in the year
+    const allDays = repo.years[y].flatMap(m =>
+      m.days.map(d => ({ ...d, label: m.name + ' ' + d.day }))
+    );
+    const ts = document.createElement('div');
+    ts.className = 'tunnel-section';
+    ts.innerHTML = '<div class="tunnel-label">← worker tunnel</div>';
+    ts.appendChild(buildTunnel(allDays));
+    panel.appendChild(ts);
+
+    // month blocks
+    const monthsWrap = document.createElement('div');
+    monthsWrap.className = 'months-wrap';
+
+    repo.years[y].forEach(monthData => {
+      const mBlock = document.createElement('div');
+      mBlock.className = 'month-block' + (monthData.isFuture ? ' future' : '');
+      if (y === CURRENT_YEAR && monthData.month === CURRENT_MONTH) {
+        mBlock.classList.add('current-month');
+      }
+
+      const mHeader = document.createElement('div');
+      mHeader.className = 'month-header';
+      mHeader.innerHTML =
+        '<span class="month-name">' + monthData.name + '</span>' +
+        (monthData.isFuture
+          ? '<span class="future-badge">future</span>'
+          : '<span class="month-total">' + monthData.total + '</span>');
+      mBlock.appendChild(mHeader);
+
+      if (!monthData.isFuture) {
+        const barsWrap = document.createElement('div');
+        barsWrap.className = 'days-section month-days';
+        barsWrap.appendChild(buildDayBars(monthData.days));
+        mBlock.appendChild(barsWrap);
+      }
+      monthsWrap.appendChild(mBlock);
+    });
+
+    panel.appendChild(monthsWrap);
+    panels[y] = panel;
+    yearSection.appendChild(panel);
+  });
+
+  yearSection.insertBefore(tabBar, yearSection.firstChild);
+  wrap.appendChild(yearSection);
+
+  // tab switching
+  tabBar.addEventListener('click', e => {
+    const btn = e.target.closest('.year-tab');
+    if (!btn) return;
+    const y = Number(btn.dataset.year);
+    tabBar.querySelectorAll('.year-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    Object.values(panels).forEach(p => p.classList.remove('visible'));
+    panels[y].classList.add('visible');
+  });
+
+  return wrap;
+}
+
+
+// ── GLOBAL STATS ─────────────────────────────────────────────────────────────
+function renderGlobalStats(repos) {
+  const grandTotal = repos.reduce((s, r) => s + r.total, 0);
+  const totalStars = repos.reduce((s, r) => s + r.stars, 0);
+  const mostActive = repos.reduce((a, b) => b.total > a.total ? b : a);
+  const topDev = repos.flatMap(r => r.contribs)
+    .reduce((acc, c) => { acc[c.name] = (acc[c.name] || 0) + c.commits; return acc; }, {});
+  const topDevName = Object.entries(topDev).sort((a,b) => b[1]-a[1])[0][0];
+  document.getElementById('globalStats').innerHTML =
+    '<div class="gs"><span class="gs-val">' + repos.length + '</span><span class="gs-lbl">Colonies</span></div>' +
+    '<div class="gs"><span class="gs-val">' + grandTotal.toLocaleString() + '</span><span class="gs-lbl">Total Commits</span></div>' +
+    '<div class="gs"><span class="gs-val">' + totalStars.toLocaleString() + '</span><span class="gs-lbl">Total Stars</span></div>' +
+    '<div class="gs"><span class="gs-val">' + mostActive.name + '</span><span class="gs-lbl">Most Active</span></div>' +
+    '<div class="gs"><span class="gs-val">' + topDevName + '</span><span class="gs-lbl">Top Worker</span></div>';
+}
+
+function renderColonies(repos) {
+  const grid = document.getElementById('coloniesGrid');
+  grid.innerHTML = '';
+  let activeCard = null;
+  repos.forEach(repo => {
+    const card = document.createElement('div');
+    card.className = 'colony-card';
+    const langColor = LANG_COLORS[repo.lang] || '#888';
+    const lastActiveStr = repo.lastActive === 0 ? 'today'
+      : repo.lastActive === 1 ? 'yesterday'
+      : repo.lastActive + 'd ago';
+    const hdr = document.createElement('div');
+    hdr.className = 'card-header';
+    hdr.innerHTML =
+      '<div class="card-top">' +
+      '<span class="repo-name">' + repo.name + '</span>' +
+      '<span class="repo-lang" style="border-left:2px solid ' + langColor + '">' + repo.lang + '</span>' +
+      '</div>' +
+      '<div class="card-meta">' +
+      '<span class="meta-item accent">🍬 <b>' + repo.total + '</b> commits</span>' +
+      '<span class="meta-item">👑 <b>' + repo.contribs[0].name + '</b></span>' +
+      '<span class="meta-item">🕐 <b>' + lastActiveStr + '</b></span>' +
+      '</div>';
+    card.appendChild(hdr);
+    card.appendChild(buildPreview(repo));
+    card.appendChild(buildExpanded(repo));
+    card.addEventListener('click', e => {
+      if (e.target.closest('.close-btn')) return;
+      if (card.classList.contains('active')) return;
+      if (activeCard) {
+        activeCard.classList.remove('active');
+        const b = activeCard.querySelector('.close-btn');
+        if (b) b.remove();
+      }
+      card.classList.add('active');
+      activeCard = card;
+      const btn = document.createElement('button');
+      btn.className = 'close-btn';
+      btn.textContent = '[ close ]';
+      btn.onclick = e => { e.stopPropagation(); card.classList.remove('active'); btn.remove(); activeCard = null; };
+      card.appendChild(btn);
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+    });
+    grid.appendChild(card);
+  });
+  renderGlobalStats(repos);
+}
+
+// Initial render with fake data
+renderColonies(REPOS);
+
+// ── GITHUB API INTEGRATION ────────────────────────────────────────────────────
+const CACHE_TTL  = 15 * 60 * 1000; // 15 min
+
+let ghRateRemaining = 5000;
+let ghRateReset     = 0;
+
+function ghCache(key, data) {
+  try { localStorage.setItem('ghc_' + key, JSON.stringify({ data, ts: Date.now() })); } catch(e) {}
+}
+function ghCacheGet(key) {
+  try {
+    const raw = localStorage.getItem('ghc_' + key);
+    if (!raw) return null;
+    const { data, ts } = JSON.parse(raw);
+    if (Date.now() - ts < CACHE_TTL) return data;
+  } catch(e) {}
+  return null;
+}
+function ghCacheClear() {
+  try {
+    Object.keys(localStorage).filter(k => k.startsWith('ghc_')).forEach(k => localStorage.removeItem(k));
+  } catch(e) {}
+}
+
+function updateRateMeter(remaining, total) {
+  const meter = document.getElementById('ghRateMeter');
+  const fill  = document.getElementById('rateFill');
+  const label = document.getElementById('rateLabel');
+  if (!meter) return;
+  meter.style.display = 'flex';
+  const pct = Math.round((remaining / total) * 100);
+  fill.style.width = pct + '%';
+  fill.style.background = pct > 50 ? 'linear-gradient(90deg,var(--g3),var(--accent))'
+    : pct > 20 ? 'linear-gradient(90deg,var(--accent2),var(--accent))'
+    : 'linear-gradient(90deg,#cc3322,#ee5533)';
+  label.textContent = remaining.toLocaleString() + ' / ' + total.toLocaleString();
+}
+
+function setStatus(state, msg) {
+  const dot  = document.getElementById('ghStatusDot');
+  const text = document.getElementById('ghStatusText');
+  if (!dot || !text) return;
+  dot.className  = 'gh-status-dot ' + (state || '');
+  text.className = 'gh-status-text ' + (state || '');
+  text.textContent = msg;
+}
+
+async function ghFetch(path, token) {
+  const cached = ghCacheGet(path);
+  if (cached) return cached;
+
+  // Respect rate limit: if we're near 0, wait until reset
+  if (ghRateRemaining <= 5 && ghRateReset > 0) {
+    const waitMs = (ghRateReset * 1000) - Date.now() + 1000;
+    if (waitMs > 0) await new Promise(r => setTimeout(r, Math.min(waitMs, 60000)));
+  }
+
+  const url = 'https://api.github.com' + path;
+  const headers = { 'Accept': 'application/vnd.github+json' };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+
+  const res = await fetch(url, { headers });
+
+  // Update rate limit from response headers
+  const rem   = parseInt(res.headers.get('X-RateLimit-Remaining') || '5000', 10);
+  const total = parseInt(res.headers.get('X-RateLimit-Limit')     || '5000', 10);
+  const reset = parseInt(res.headers.get('X-RateLimit-Reset')     || '0',    10);
+  ghRateRemaining = rem;
+  ghRateReset     = reset;
+  updateRateMeter(rem, total);
+
+  if (res.status === 403 || res.status === 429) {
+    const retryAfter = parseInt(res.headers.get('Retry-After') || '60', 10);
+    throw new Error('Rate limited. Retry in ' + retryAfter + 's');
+  }
+  if (res.status === 401) throw new Error('Bad token — check your Personal Access Token');
+  if (res.status === 404) throw new Error('User or repo not found');
+  if (!res.ok) throw new Error('GitHub API error ' + res.status);
+
+  const data = await res.json();
+  ghCache(path, data);
+  return data;
+}
+
+// Convert GitHub's commit_activity (52 weeks × 7 days) into our years structure
+function commitActivityToYears(weeklyData) {
+  const years = {};
+  // weeklyData: [{ week: unix_ts, days: [sun,mon,tue,wed,thu,fri,sat], total }]
+  weeklyData.forEach(week => {
+    week.days.forEach((count, di) => {
+      const date = new Date((week.week + di * 86400) * 1000);
+      const y = date.getFullYear();
+      const m = date.getMonth();
+      const d = date.getDate();
+      if (!years[y]) years[y] = {};
+      if (!years[y][m]) years[y][m] = {};
+      years[y][m][d] = (years[y][m] || {})[d] || 0;
+      years[y][m][d] += count;
+    });
+  });
+  return years;
+}
+
+function buildYearsStructure(commitMap) {
+  const years = {};
+  for (let y = START_YEAR; y <= CURRENT_YEAR; y++) {
+    years[y] = MONTH_NAMES.map((mName, mi) => {
+      const isFuture = (y === CURRENT_YEAR && mi > CURRENT_MONTH);
+      const numDays  = daysInMonth(y, mi);
+      const monthMap = (commitMap[y] && commitMap[y][mi]) || {};
+      const days = Array.from({ length: numDays }, (_, i) => ({
+        day: i + 1,
+        commits: isFuture ? 0 : (monthMap[i + 1] || 0)
+      }));
+      return { month: mi, name: mName, days, total: days.reduce((s,d) => s + d.commits, 0), isFuture };
+    });
+  }
+  return years;
+}
+
+// Assign a consistent colour to a contributor name
+function nameToColor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
+  const hue = Math.abs(h) % 360;
+  return 'hsl(' + hue + ',65%,48%)';
+}
+
+async function loadGitHub(token, username, opts) {
+  setStatus('loading', 'connecting to GitHub…');
+
+  // 1. Fetch repo list
+  setStatus('loading', 'fetching repositories…');
+  const reposRaw = await ghFetch(
+    '/users/' + username + '/repos?sort=pushed&per_page=' + (opts.limit || 10) +
+    (opts.publicOnly ? '&type=public' : ''),
+    token
+  );
+
+  let repos = reposRaw;
+  if (!opts.forks) repos = repos.filter(r => !r.fork);
+  repos = repos.slice(0, opts.limit || 10);
+
+  if (repos.length === 0) throw new Error('No repositories found for ' + username);
+
+  // Show skeleton cards while loading stats
+  setStatus('loading', 'loading commit stats (' + repos.length + ' repos)…');
+
+  // 2. Fetch stats for each repo (commit_activity + contributors)
+  const result = [];
+  for (let i = 0; i < repos.length; i++) {
+    const r = repos[i];
+    setStatus('loading', 'loading ' + r.name + ' (' + (i+1) + '/' + repos.length + ')…');
+
+    let commitMap = {};
+    try {
+      // /stats/commit_activity → 52 weeks of per-day counts (may return 202 on first call)
+      let activity = await ghFetch('/repos/' + username + '/' + r.name + '/stats/commit_activity', token);
+      // GitHub returns 202 if stats are still being computed — retry once after 2s
+      if (!Array.isArray(activity)) {
+        await new Promise(res => setTimeout(res, 2500));
+        // clear cache for this one endpoint so we retry
+        try { localStorage.removeItem('ghc_/repos/' + username + '/' + r.name + '/stats/commit_activity'); } catch(e) {}
+        activity = await ghFetch('/repos/' + username + '/' + r.name + '/stats/commit_activity', token);
+      }
+      if (Array.isArray(activity)) commitMap = commitActivityToYears(activity);
+    } catch(e) { /* stats unavailable, use empty */ }
+
+    // contributors
+    let contribs = [];
+    try {
+      const cRaw = await ghFetch('/repos/' + username + '/' + r.name + '/contributors?per_page=8', token);
+      if (Array.isArray(cRaw)) {
+        contribs = cRaw.slice(0, 5).map(c => ({
+          name:    c.login,
+          commits: c.contributions,
+          color:   nameToColor(c.login)
+        }));
+      }
+    } catch(e) {}
+    if (contribs.length === 0) contribs = [{ name: username, commits: 0, color: nameToColor(username) }];
+
+    const years       = buildYearsStructure(commitMap);
+    const total       = Object.values(years).flat().reduce((s, m) => s + m.total, 0);
+    const curYearTotal= years[CURRENT_YEAR] ? years[CURRENT_YEAR].reduce((s, m) => s + m.total, 0) : 0;
+
+    // days-since-last-push
+    const pushed = r.pushed_at ? Math.floor((Date.now() - new Date(r.pushed_at)) / 86400000) : 0;
+
+    result.push({
+      name:       r.name,
+      lang:       r.language || 'Unknown',
+      desc:       r.description || 'No description',
+      years,
+      total,
+      curYearTotal,
+      contribs,
+      lastActive: Math.max(0, pushed),
+      activity:   Math.min(1, total / 500),
+      stars:      r.stargazers_count || 0,
+    });
+  }
+
+  return result;
+}
+
+// ── PANEL UI WIRING ───────────────────────────────────────────────────────────
+(function initPanel() {
+  const toggleBtn   = document.getElementById('ghToggleBtn');
+  const form        = document.getElementById('ghForm');
+  const tokenInput  = document.getElementById('ghToken');
+  const userInput   = document.getElementById('ghUsername');
+  const eyeBtn      = document.getElementById('ghEyeBtn');
+  const connectBtn  = document.getElementById('ghConnectBtn');
+  const clearBtn    = document.getElementById('ghClearBtn');
+  const spinner     = document.getElementById('ghSpinner');
+  const connectLbl  = document.getElementById('ghConnectLabel');
+  const publicChk   = document.getElementById('ghPublicOnly');
+  const forkChk     = document.getElementById('ghForked');
+  const limitInput  = document.getElementById('ghRepoLimit');
+
+  if (!toggleBtn) return;
+
+  // Restore saved values
+  try {
+    const saved = JSON.parse(localStorage.getItem('gh_settings') || '{}');
+    if (saved.token)    tokenInput.value  = saved.token;
+    if (saved.username) userInput.value   = saved.username;
+    if (saved.limit)    limitInput.value  = saved.limit;
+    if (saved.forks)    forkChk.checked   = saved.forks;
+    if (saved.publicOnly === false) publicChk.checked = false;
+  } catch(e) {}
+
+  // Toggle form open/close
+  toggleBtn.addEventListener('click', () => {
+    const open = form.classList.toggle('open');
+    toggleBtn.textContent = open ? 'Close ↑' : 'Connect ↓';
+    toggleBtn.classList.toggle('open', open);
+  });
+
+  // Show/hide token
+  eyeBtn.addEventListener('click', () => {
+    const show = tokenInput.type === 'password';
+    tokenInput.type = show ? 'text' : 'password';
+  });
+
+  // Clear cached data + reset to demo
+  clearBtn.addEventListener('click', () => {
+    ghCacheClear();
+    try { localStorage.removeItem('gh_settings'); } catch(e) {}
+    tokenInput.value = '';
+    userInput.value  = '';
+    setStatus('', 'not connected · using demo data');
+    document.getElementById('ghRateMeter').style.display = 'none';
+    renderColonies(REPOS);
+    form.classList.remove('open');
+    toggleBtn.textContent = 'Connect ↓';
+    toggleBtn.classList.remove('open');
+  });
+
+  // Connect button
+  connectBtn.addEventListener('click', async () => {
+    const token    = tokenInput.value.trim();
+    const username = userInput.value.trim();
+    if (!username) { setStatus('error', 'enter a GitHub username'); return; }
+
+    // Save settings (token stored locally, never sent anywhere else)
+    try {
+      localStorage.setItem('gh_settings', JSON.stringify({
+        token, username,
+        limit:     parseInt(limitInput.value) || 10,
+        forks:     forkChk.checked,
+        publicOnly:publicChk.checked
+      }));
+    } catch(e) {}
+
+    connectBtn.disabled = true;
+    connectLbl.textContent = 'Loading…';
+    spinner.style.display = 'inline-block';
+
+    try {
+      const ghRepos = await loadGitHub(token, username, {
+        limit:     parseInt(limitInput.value) || 10,
+        forks:     forkChk.checked,
+        publicOnly:publicChk.checked
+      });
+
+      renderColonies(ghRepos);
+      setStatus('connected', 'connected as ' + username + ' · ' + ghRepos.length + ' colonies loaded');
+      form.classList.remove('open');
+      toggleBtn.textContent = 'Connected ✓';
+      toggleBtn.classList.remove('open');
+    } catch(err) {
+      setStatus('error', err.message || 'Connection failed');
+    } finally {
+      connectBtn.disabled = false;
+      connectLbl.textContent = 'Load my colonies';
+      spinner.style.display = 'none';
+    }
+  });
+
+  // Auto-connect if saved token exists
+  try {
+    const saved = JSON.parse(localStorage.getItem('gh_settings') || '{}');
+    if (saved.token && saved.username) {
+      // Small delay so page renders first
+      setTimeout(() => connectBtn.click(), 400);
+    }
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>
