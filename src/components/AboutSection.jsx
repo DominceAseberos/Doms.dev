@@ -85,10 +85,18 @@ const AboutSection = forwardRef((props, ref) => {
                             className="font-black uppercase tracking-tighter text-white leading-[1] text-center"
                             style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
                         >
-                            Built with{' '}
-                            <span className="text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
-                                Motion + Code.
-                            </span>
+                            {isAboutPage ? (
+                                <span className="text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
+                                    Domince Aseberos
+                                </span>
+                            ) : (
+                                <>
+                                    Built with{' '}
+                                    <span className="text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
+                                        Motion + Code.
+                                    </span>
+                                </>
+                            )}
                         </h2>
                     </div>
 
