@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useLoadingStore from '../store/useLoadingStore';
 import AnimatedNavBarLogo from './AnimatedNavBarLogo';
 
@@ -38,7 +38,9 @@ const NavBar = () => {
     return (
         <nav className={`transition-opacity duration-1000 ease-in-out ${isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <div className="nav-logo translate-y-[4px]">
-                {renderLink('/projects', <AnimatedNavBarLogo className="w-12 h-12" />)}
+                <Link to="/" className="nav-link" aria-label="Go to home page">
+                    <AnimatedNavBarLogo className="w-12 h-12" />
+                </Link>
             </div>
             <ul className="nav-links">
                 {navItems.map((item) => (
