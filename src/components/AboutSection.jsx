@@ -100,9 +100,9 @@ const AboutSection = () => {
                             </p>
                         </div>
 
-                        <div className="flex flex-wrap gap-2 sm:gap-3 pt-8 sm:pt-10 justify-center">
+                        <div className="flex flex-wrap gap-2 sm:gap-4 pt-8 sm:pt-10 justify-center">
                             {['Creative Dev', 'React', 'GSAP', 'Next.js', 'UI Architect'].map((tag) => (
-                                <span key={tag} className="text-white/40 font-mono text-[10px] sm:text-xs uppercase tracking-widest px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-white/10 hover:border-[#c8ff3e]/40 hover:text-white transition-colors duration-300 backdrop-blur-sm">
+                                <span key={tag} className="text-white/20 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.4em] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/5 hover:border-[#c8ff3e]/30 hover:text-white transition-all duration-300 backdrop-blur-md">
                                     {tag}
                                 </span>
                             ))}

@@ -41,7 +41,7 @@ const ContactSection = () => {
                 <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
                     Let's Build It.
                 </h2>
-                <p className="text-sm md:text-base text-white/40 uppercase tracking-[0.4em] mb-12 max-w-4xl mx-auto font-bold leading-relaxed">
+                <p className="font-mono text-[10px] md:text-sm text-white/30 uppercase tracking-[0.4em] mb-12 max-w-4xl mx-auto font-bold leading-relaxed">
                     Transforming complex code into high-performance digital magic that captivates, converts, and defies the ordinary.
                 </p>
 
@@ -52,7 +52,7 @@ const ContactSection = () => {
                     Get In Touch ↗
                 </a>
 
-                <div className="mt-20 flex justify-center gap-8 text-xs text-gray-500 uppercase tracking-widest">
+                <div className="mt-20 flex justify-center gap-8 text-xs text-gray-500 uppercase tracking-widest font-mono">
                     <a href="#" className="hover:text-white transition-colors">Twitter</a>
                     <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
                     <a href="#" className="hover:text-white transition-colors">GitHub</a>

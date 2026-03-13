@@ -46,11 +46,11 @@
     backdrop-filter: blur(8px);
     border-radius: 99px;
     color: #c8ff3e;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.4em;
     text-transform: uppercase;
-    font-family: monospace;
+    font-family: 'DM Mono', monospace;
     white-space: nowrap;
     box-shadow:
         0 4px 15px rgba(0, 0, 0, 0.3),

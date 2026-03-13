@@ -149,9 +149,9 @@ const MoreProjectsSection = () => {
 
                     {/* Left Side: Explanatory Text & CTA — order 3 on mobile, natural on desktop */}
                     <div className="w-full lg:w-1/2 order-3 lg:order-none">
-                        <h2 ref={textRef1} className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-[#f2ede6] order-1 lg:order-none">More Projects</h2>
-                        <p ref={textRef2} className="text-xl text-[#b8b2a8] mb-8 leading-relaxed max-w-lg">
-                            Beyond the highlighted case studies, I have an extensive archive of professional work, freelance gigs, and side ventures. Explore the full catalog to see the breadth of my capabilities.
+                        <h2 ref={textRef1} className="text-5xl md:text-7xl font-bold tracking-tight mb-8 text-[#f2ede6]">More Projects</h2>
+                        <p ref={textRef2} className="font-mono text-xs md:text-sm text-white/30 uppercase tracking-[0.3em] mb-10 leading-relaxed max-w-lg font-bold">
+                            Beyond the highlighted case studies, I have an archive of work and side ventures. Explore the full catalog to see the breadth of my capabilities.
                         </p>
                         <div ref={btnRef}>
                             <a
