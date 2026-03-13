@@ -133,9 +133,9 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #ffffff;
+    background: #505255;
     transform: translate(-50%, -50%) scale(0);
-    box-shadow: 0 0 120px 60px #ffffff, 0 0 240px 120px rgba(200, 255, 62, 0.4);
+    box-shadow: 0 0 120px 60px #505255, 0 0 240px 120px rgba(200, 255, 62, 0.4);
     z-index: 10;
     pointer-events: none;
     opacity: 0;
@@ -144,7 +144,7 @@
 .whiteout-overlay {
     position: absolute;
     inset: -20px;
-    background: #f2ede6;
+    background: #505255;
     z-index: 9000;
     opacity: 0;
     pointer-events: none;

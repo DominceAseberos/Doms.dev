@@ -1,0 +1,36 @@
+.lab-section-bg {
+    background-color: #505255;
+    transition: background-color 0.3s ease;
+}
+
+.lab-title {
+    color: #f2ede6;
+}
+
+.lab-subtitle {
+    color: #b8b2a8;
+}
+
+.lab-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.lab-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(200, 255, 62, 0.2);
+}
+
+.lab-card-title {
+    color: #f2ede6;
+}
+
+.lab-card-desc {
+    color: #9c9490;
+}
+
+.lab-image-placeholder {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
