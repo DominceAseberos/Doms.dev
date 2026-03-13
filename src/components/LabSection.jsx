@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react';
 import './LabSection.css';
 
-const LabCard = ({ title, desc, offsetClass }) => {
-    const cardRef = useRef(null);
+const LabSection = () => {
+    const previewRef = useRef(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseMove = (e) => {
-        if (!cardRef.current) return;
-        const rect = cardRef.current.getBoundingClientRect();
+        if (!previewRef.current) return;
+        const rect = previewRef.current.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         setMousePos({ x, y });
@@ -24,84 +24,68 @@ const LabCard = ({ title, desc, offsetClass }) => {
     let rotateX = 0;
     let rotateY = 0;
 
-    if (isHovered && cardRef.current) {
-        const rect = cardRef.current.getBoundingClientRect();
+    if (isHovered && previewRef.current) {
+        const rect = previewRef.current.getBoundingClientRect();
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        // Max rotation 8 degrees
-        rotateX = -((mousePos.y - centerY) / centerY) * 8;
-        rotateY = ((mousePos.x - centerX) / centerX) * 8;
+        // Gentle rotation
+        rotateX = -((mousePos.y - centerY) / centerY) * 4;
+        rotateY = ((mousePos.x - centerX) / centerX) * 4;
     }
 
     return (
-        <div
-            ref={cardRef}
-            className={`p-6 lab-card rounded-2xl shadow-sm transition-transform duration-200 ease-out flex flex-col items-start relative overflow-hidden group ${offsetClass}`}
-            style={{
-                transform: isHovered
-                    ? `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`
-                    : 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)'
-            }}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-        >
-            {/* Mouse Tracking Glow Background */}
-            <div
-                className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
-                style={{
-                    opacity: isHovered ? 1 : 0,
-                    background: `radial-gradient(circle 250px at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.08), transparent 80%)`
-                }}
-            />
+        <section className="relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20 overflow-hidden">
+            <div className="container max-w-6xl mx-auto px-6 relative z-10">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
 
-            <div className="h-48 lab-image-placeholder rounded-xl w-full mb-6 flex items-center justify-center relative z-10 transition-colors group-hover:bg-black/30">
-                <span className="text-gray-400 font-mono text-sm">Preview Image</span>
-            </div>
-            <h3 className="text-xl font-bold mb-2 lab-card-title relative z-10">{title}</h3>
-            <p className="text-sm lab-card-desc mb-6 relative z-10 flex-grow">{desc}</p>
-            <a href="#" className="font-bold text-xs uppercase tracking-wider text-black bg-[#c8ff3e] px-4 py-2 rounded-full hover:bg-black hover:text-[#c8ff3e] transition-colors relative z-10 mt-auto">View Code ↗</a>
-        </div>
-    );
-};
+                    {/* Left Side: Explanatory Text & CTA */}
+                    <div className="w-full lg:w-1/2">
+                        <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 lab-title">The Sandbox</h2>
+                        <p className="text-xl lab-subtitle mb-8 leading-relaxed max-w-lg">
+                            This is where I throw code at the wall to see what sticks. A collection of experimental concepts, personal prototypes, and fun passion projects built purely for the joy of creation.
+                        </p>
+                        <a
+                            href="/lab"
+                            className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-8 py-4 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
+                        >
+                            Enter The Lab ↗
+                        </a>
+                    </div>
 
-const labProjects = [
-    {
-        title: "WebGPU Compute",
-        desc: "Fluid simulation running natively in the browser using WebGPU.",
-        offsetClass: "lg:mt-0"
-    },
-    {
-        title: "CSS 3D Engine",
-        desc: "A simple 3D rendering engine built without WebGL, using only CSS transforms.",
-        offsetClass: "lg:mt-12"
-    },
-    {
-        title: "Rust Wasm Parser",
-        desc: "High-performance markdown parser compiled to WebAssembly from Rust.",
-        offsetClass: "lg:mt-24"
-    }
-];
+                    {/* Right Side: Magnetic Preview Card */}
+                    <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+                        <div
+                            ref={previewRef}
+                            className="relative w-full max-w-[500px] aspect-[4/3] rounded-3xl lab-card shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer"
+                            style={{
+                                transform: isHovered
+                                    ? `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`
+                                    : 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)'
+                            }}
+                            onMouseMove={handleMouseMove}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            {/* Hover Backlight */}
+                            <div
+                                className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
+                                style={{
+                                    opacity: isHovered ? 1 : 0,
+                                    background: `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, rgba(200,255,62,0.15), transparent 80%)`
+                                }}
+                            />
 
-const LabSection = () => {
-    return (
-        <section className="relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20">
-            <div className="container max-w-6xl mx-auto px-6">
-                <div className="mb-16">
-                    <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 lab-title">The Lab</h2>
-                    <p className="text-lg lab-subtitle max-w-2xl">Smaller experiments, prototypes, and open source contributions.</p>
-                </div>
+                            {/* Animated Abstract Preview Graphic */}
+                            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors duration-500">
+                                <div className="w-24 h-24 border border-[rgba(200,255,62,0.3)] rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(200,255,62,0.1)] group-hover:shadow-[0_0_50px_rgba(200,255,62,0.3)] transition-shadow duration-500">
+                                    <div className="w-10 h-10 bg-[#c8ff3e] rounded-full blur-sm opacity-80 animate-ping"></div>
+                                </div>
+                                <span className="text-gray-300 font-mono text-sm tracking-widest uppercase opacity-70">Interactive Preview</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
-                    {labProjects.map((project, index) => (
-                        <LabCard
-                            key={index}
-                            title={project.title}
-                            desc={project.desc}
-                            offsetClass={project.offsetClass}
-                        />
-                    ))}
                 </div>
             </div>
         </section>
