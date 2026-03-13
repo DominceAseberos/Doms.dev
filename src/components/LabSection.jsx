@@ -11,8 +11,17 @@ const LabSection = () => {
     const sectionRef = useRef(null);
     const rightColRef = useRef(null);
     const previewRef = useRef(null);
+    const tagsRef = useRef([]);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
+
+    const tags = [
+        { label: "UI components", x: "10%", y: "15%" },
+        { label: "Prototypes", x: "85%", y: "20%" },
+        { label: "Experiments", x: "15%", y: "85%" },
+        { label: "AI", x: "80%", y: "80%" },
+        { label: "Fun", x: "50%", y: "10%" }
+    ];
 
     useLayoutEffect(() => {
         let ctx = gsap.context(() => {
@@ -26,27 +35,67 @@ const LabSection = () => {
 
                 if (isDesktop) {
                     // Pin entire section on desktop
-                    ScrollTrigger.create({
-                        trigger: sectionRef.current,
-                        start: "top top",
-                        end: "+=100%", // Pin for 1 screen height
-                        pin: true,
-                        anticipatePin: 1,
-                        onRefresh: self => {
-                            if (self.spacer) self.spacer.style.backgroundColor = "#505255";
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: sectionRef.current,
+                            start: "top top",
+                            end: "+=200%", // Longer pin for better sequencing
+                            pin: true,
+                            scrub: 1,
+                            anticipatePin: 1,
+                            onRefresh: self => {
+                                if (self.spacer) self.spacer.style.backgroundColor = "#505255";
+                            }
                         }
                     });
+
+                    // Animate tags one by one
+                    tagsRef.current.forEach((tag, i) => {
+                        const targetPos = tags[i];
+                        tl.to(tag, {
+                            opacity: 1,
+                            scale: 1,
+                            left: targetPos.x,
+                            top: targetPos.y,
+                            duration: 0.5,
+                            ease: "back.out(1.7)"
+                        }, i / tags.length); // Spaced out along the scrub
+                    });
+
                 } else if (isMobileOrTablet && rightColRef.current) {
                     // Pin the entire section exactly when the card reaches the center
-                    ScrollTrigger.create({
-                        trigger: rightColRef.current,
-                        start: "center center",
-                        end: "+=100%", // Hold it for 1 screen height
-                        pin: sectionRef.current,
-                        anticipatePin: 1,
-                        onRefresh: self => {
-                            if (self.spacer) self.spacer.style.backgroundColor = "#505255";
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: rightColRef.current,
+                            start: "center center",
+                            end: "+=200%",
+                            pin: sectionRef.current,
+                            scrub: 1,
+                            anticipatePin: 1,
+                            onRefresh: self => {
+                                if (self.spacer) self.spacer.style.backgroundColor = "#505255";
+                            }
                         }
+                    });
+
+                    // Animate tags one by one on mobile
+                    tagsRef.current.forEach((tag, i) => {
+                        const targetPos = { ...tags[i] };
+
+                        // Pull tags in from the edges on mobile to prevent clipping
+                        if (targetPos.x === "10%") targetPos.x = "18%";
+                        if (targetPos.x === "85%") targetPos.x = "80%";
+                        if (targetPos.x === "15%") targetPos.x = "22%";
+                        if (targetPos.x === "80%") targetPos.x = "75%";
+
+                        tl.to(tag, {
+                            opacity: 1,
+                            scale: 1,
+                            left: targetPos.x,
+                            top: targetPos.y,
+                            duration: 0.5,
+                            ease: "back.out(1.7)"
+                        }, i / tags.length);
                     });
                 }
             });
@@ -115,10 +164,22 @@ const LabSection = () => {
                     </div>
 
                     {/* Right Side: Magnetic Preview Card */}
-                    <div ref={rightColRef} className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+                    <div ref={rightColRef} className="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
+                        {/* Floating Tags */}
+                        {tags.map((tag, i) => (
+                            <div
+                                key={i}
+                                ref={el => tagsRef.current[i] = el}
+                                className="floating-tag"
+                                style={{ top: '50%', left: '50%' }}
+                            >
+                                {tag.label}
+                            </div>
+                        ))}
+
                         <div
                             ref={previewRef}
-                            className="relative w-full max-w-[500px] aspect-[4/3] rounded-3xl lab-card shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer"
+                            className="relative w-full max-w-[500px] aspect-[4/3] rounded-3xl lab-card shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer z-10"
                             style={{
                                 transform: isHovered
                                     ? `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`
