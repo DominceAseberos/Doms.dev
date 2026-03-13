@@ -33,7 +33,7 @@
 /* Labels */
 .works-label {
     position: absolute;
-    top: 40px;
+    top: 100px;
     left: 48px;
     z-index: 30;
     display: flex;
@@ -55,7 +55,7 @@
 
 .works-counter {
     position: absolute;
-    top: 40px;
+    top: 100px;
     right: 48px;
     z-index: 30;
     font-size: 11px;
@@ -747,12 +747,12 @@
     }
 
     .works-label {
-        top: 24px;
+        top: 100px;
         left: 24px;
     }
 
     .works-counter {
-        top: 24px;
+        top: 100px;
         right: 24px;
     }
 
