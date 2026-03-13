@@ -341,6 +341,17 @@ const ProjectSection = () => {
             hallwayST.current = tl.scrollTrigger;
             updateCards(0);
 
+            // Only shrink container on Desktop
+            if (isDesktop) {
+                tl.to(imgWrap, {
+                    width: '72%',
+                    height: '85vh',
+                    borderRadius: '30px',
+                    duration: CARD_DUR,
+                    ease: 'power1.out'
+                }, 0);
+            }
+
             // Light appears at the end of the cards
             tl.to(lightRef.current, {
                 scale: 1,
