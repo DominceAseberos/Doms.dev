@@ -132,6 +132,18 @@ const MoreProjectsSection = () => {
 
     return (
         <section ref={sectionRef} className="relative min-h-[100vh] bg-[#505255] flex items-center pt-24 pb-24 z-20 overflow-hidden">
+            {/* Decorative Inner Polygons */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div
+                    className="absolute top-0 right-0 w-[85%] h-full bg-[#494b4e]"
+                    style={{ clipPath: 'polygon(25% 0, 100% 0, 100% 100%, 0 100%)' }}
+                ></div>
+                <div
+                    className="absolute bottom-0 right-0 w-[50%] h-[75%] bg-gradient-to-tr from-[#3f4144] to-transparent opacity-80"
+                    style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }}
+                ></div>
+            </div>
+
             <div className="container max-w-6xl mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
 

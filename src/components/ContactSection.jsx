@@ -58,7 +58,7 @@ const ContactSection = () => {
     };
 
     return (
-        <section ref={sectionRef} className="relative w-full h-screen bg-transparent overflow-hidden flex items-center justify-center z-10">
+        <section ref={sectionRef} className="relative w-full h-screen bg-transparent overflow-hidden flex items-center justify-center -mt-32 z-10 pt-32">
 
             {/* The Reverse Warp Stripes Overlay (Matched to the gray #505255 of previous section) */}
             <div className="absolute inset-0 z-20 pointer-events-none flex flex-col">
@@ -83,7 +83,7 @@ const ContactSection = () => {
 
                 <a
                     href="mailto:hello@example.com"
-                    className="inline-flex items-center justify-center font-bold text-lg uppercase tracking-widest text-black bg-white px-10 py-5 rounded-full hover:bg-[#c8ff3e] hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(200,255,62,0.4)]"
+                    className="inline-flex items-center justify-center font-bold text-lg uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-10 py-5 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
                 >
                     Get In Touch ↗
                 </a>

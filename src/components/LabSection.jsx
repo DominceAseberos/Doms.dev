@@ -36,6 +36,18 @@ const LabSection = () => {
 
     return (
         <section className="relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20 overflow-hidden">
+            {/* Decorative Inner Polygons */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <div
+                    className="absolute top-0 left-0 w-[80%] h-full bg-[#494b4e]"
+                    style={{ clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0 100%)' }}
+                ></div>
+                <div
+                    className="absolute top-[10%] left-0 w-[40%] h-[60%] bg-[#c8ff3e] opacity-[0.03]"
+                    style={{ clipPath: 'polygon(0 0, 100% 20%, 75% 100%, 0 100%)' }}
+                ></div>
+            </div>
+
             <div className="container max-w-6xl mx-auto px-6 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
 
