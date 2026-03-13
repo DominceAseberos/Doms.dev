@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -50,7 +49,7 @@ const HeroSection = () => {
 
                 <div className="hero-cta">
                     <button className="btn-primary">View Work</button>
-                    <Link to="/contact" className="btn-ghost inline-block text-center decoration-0">Get in Touch</Link>
+                    <a href="/contact" target="_blank" rel="noopener noreferrer" className="btn-ghost inline-block text-center decoration-0">Get in Touch</a>
                 </div>
             </div>
 

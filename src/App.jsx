@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
-import Home from './pages/Home';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import LabPage from './pages/LabPage';
+import Home from './pages/Home/index';
+import ProjectsPage from './pages/Projects/index';
+import AboutPage from './pages/About/index';
+import ContactPage from './pages/Contact/index';
+import LabPage from './pages/Lab/index';
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
 
@@ -39,6 +40,7 @@ function App() {
                 <div id="smooth-content">
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/projects" element={<ProjectsPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/lab" element={<LabPage />} />

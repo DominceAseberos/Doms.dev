@@ -78,6 +78,18 @@ nav {
     color: var(--white);
 }
 
+.nav-links a.active,
+.nav-links a[aria-current="page"] {
+    color: var(--white);
+    opacity: 0.9;
+    cursor: default;
+}
+
+.nav-links a.active:hover,
+.nav-links a[aria-current="page"]:hover {
+    color: var(--white);
+}
+
 /* ─── Lock scroll & hide nav links when project overlay is open ─── */
 body.ep-expanded {
     overflow: hidden !important;

@@ -1,5 +1,4 @@
 import React, { useRef, useLayoutEffect } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -46,12 +45,14 @@ const ContactSection = () => {
                     Transforming complex code into high-performance digital magic that captivates, converts, and defies the ordinary.
                 </p>
 
-                <Link
-                    to="/contact"
+                <a
+                    href="/contact"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center justify-center font-bold text-lg uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-10 py-5 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
                 >
                     Get In Touch ↗
-                </Link>
+                </a>
 
                 <div className="mt-20 flex justify-center gap-8 text-xs text-gray-500 uppercase tracking-widest font-mono">
                     <a href="#" className="hover:text-white transition-colors">Twitter</a>

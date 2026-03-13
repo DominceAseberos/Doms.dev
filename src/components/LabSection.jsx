@@ -156,12 +156,14 @@ const LabSection = () => {
                         <p className="font-mono text-xs md:text-sm text-white/30 uppercase tracking-[0.3em] mb-10 leading-relaxed max-w-lg font-bold">
                             Throwing code at the wall to see what sticks. Experimental concepts, personal prototypes, and passion projects built for the joy of creation.
                         </p>
-                        <Link
-                            to="/lab"
+                        <a
+                            href="/lab"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-8 py-4 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
                         >
                             Enter The Lab ↗
-                        </Link>
+                        </a>
                     </div>
 
                     {/* Right Side: Magnetic Preview Card */}

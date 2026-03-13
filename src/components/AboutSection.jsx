@@ -1,5 +1,4 @@
 import React, { useRef, useLayoutEffect } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -109,12 +108,14 @@ const AboutSection = () => {
                         </div>
 
                         <div className="pt-12 sm:pt-16">
-                            <Link
-                                to="/about"
+                            <a
+                                href="/about"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-8 py-4 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
                             >
                                 More about me ↗
-                            </Link>
+                            </a>
                         </div>
                     </div>
                 </div>

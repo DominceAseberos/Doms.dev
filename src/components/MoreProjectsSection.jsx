@@ -156,6 +156,8 @@ const MoreProjectsSection = () => {
                         <div ref={btnRef}>
                             <a
                                 href="/projects"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-white border border-white/20 bg-transparent px-8 py-4 rounded-full hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"
                             >
                                 View All Projects ↗
