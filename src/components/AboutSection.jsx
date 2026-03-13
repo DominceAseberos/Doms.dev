@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef, useLayoutEffect, forwardRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -6,7 +6,7 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const AboutSection = () => {
+const AboutSection = forwardRef((props, ref) => {
     const sectionRef = useRef(null);
     const stripesRef = useRef([]);
     const headerRef = useRef(null);
@@ -63,7 +63,7 @@ const AboutSection = () => {
     };
 
     return (
-        <section ref={sectionRef} className="relative w-full min-h-screen bg-transparent overflow-hidden flex items-center justify-center z-10 py-24 sm:py-32">
+        <section ref={(el) => { sectionRef.current = el; if (ref) ref.current = el; }} className="relative w-full min-h-screen bg-transparent overflow-hidden flex items-center justify-center z-10 py-24 sm:py-32">
             <div className="absolute inset-0 z-20 pointer-events-none flex flex-col">
                 {Array.from({ length: stripeCount }).map((_, i) => (
                     <div
@@ -122,6 +122,6 @@ const AboutSection = () => {
             </div>
         </section>
     );
-};
+});
 
 export default AboutSection;

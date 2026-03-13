@@ -1,19 +1,33 @@
-import React from 'react';
-import './About.css';
+import React, { useEffect, useRef } from 'react';
+import './css/About.css';
 
 import ParticleBackground from '../../components/ParticleBackground';
 import NavBar from '../../components/NavBar';
 import AboutSection from '../../components/AboutSection';
 import ContactSection from '../../components/ContactSection';
+import useLoadingStore from '../../store/useLoadingStore';
 
 const AboutPage = () => {
+    const isLoading = useLoadingStore((state) => state.isLoading);
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        if (!isLoading && window.lenis) {
+            // Scroll to finish the background animation reveal (1500px as per ScrollTrigger end)
+            window.lenis.scrollTo(1500, {
+                duration: 5,
+                easing: (t) => t
+            });
+        }
+    }, [isLoading]);
+
     return (
         <div className="relative min-h-screen">
             <ParticleBackground />
             <NavBar />
 
             <div className="relative z-10">
-                <AboutSection />
+                <AboutSection ref={sectionRef} />
                 <ContactSection />
             </div>
         </div>
