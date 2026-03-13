@@ -1,21 +1,21 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import useLoadingStore from '../store/useLoadingStore';
 import AnimatedNavBarLogo from './AnimatedNavBarLogo';
 
 const NavBar = () => {
-    // Fix: the store uses 'isLoading', not 'loading'
     const isLoading = useLoadingStore((state) => state.isLoading);
 
     return (
         <nav className={`transition-opacity duration-1000 ease-in-out ${isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <div className="nav-logo translate-y-[4px]">
-                <AnimatedNavBarLogo className="w-12 h-12" />
+                <Link to="/"><AnimatedNavBarLogo className="w-12 h-12" /></Link>
             </div>
             <ul className="nav-links">
-                <li><a href="#">Work</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Lab</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><Link to="/">Work</Link></li>
+                <li><Link to="/about">About</Link></li>
+                <li><Link to="/lab">Lab</Link></li>
+                <li><Link to="/contact">Contact</Link></li>
             </ul>
         </nav>
     );

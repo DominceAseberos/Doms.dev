@@ -5,6 +5,8 @@ import 'lenis/dist/lenis.css';
 
 import Home from './pages/Home';
 import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import LabPage from './pages/LabPage';
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
 
@@ -38,6 +40,8 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/about" element={<AboutPage />} />
+                        <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/lab" element={<LabPage />} />
                     </Routes>
                 </div>
             </div>
