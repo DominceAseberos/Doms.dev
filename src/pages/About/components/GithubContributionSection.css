@@ -3,6 +3,26 @@
     padding: 4rem 1.5rem 6rem;
 }
 
+.github-contrib-head {
+    max-width: 1200px;
+    margin: 0 auto 0.9rem;
+}
+
+.github-contrib-title {
+    font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.github-contrib-subtitle {
+    margin-top: 0.4rem;
+    font-size: 0.83rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
 .github-contrib-actions {
     max-width: 1200px;
     margin: 0 auto 1rem;
@@ -10,6 +30,12 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+}
+
+.github-contrib-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
 }
 
 .github-contrib-status {
@@ -38,6 +64,18 @@
     cursor: not-allowed;
 }
 
+.github-contrib-lab-btn {
+    border: 1px solid rgba(170, 255, 120, 0.4);
+    background: rgba(143, 255, 92, 0.12);
+    color: rgba(200, 255, 170, 0.95);
+    border-radius: 9999px;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
 .github-contrib-card {
     width: 100%;
     max-width: 1200px;
@@ -57,6 +95,32 @@
     display: block;
 }
 
+.github-contrib-footer {
+    max-width: 1200px;
+    margin: 1rem auto 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(170, 255, 120, 0.28);
+    background: rgba(143, 255, 92, 0.08);
+    border-radius: 14px;
+    text-align: center;
+    font-size: 0.84rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.github-contrib-footer-link {
+    display: inline-block;
+    margin-left: 0.25rem;
+    padding: 0.2rem 0.58rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(170, 255, 120, 0.45);
+    background: rgba(143, 255, 92, 0.14);
+    color: rgba(220, 255, 195, 0.98);
+    text-decoration: none;
+    font-weight: 600;
+}
+
 @media (max-width: 768px) {
     .github-contrib-card {
         height: 78vh;
@@ -72,6 +136,11 @@
     .github-contrib-actions {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .github-contrib-buttons {
+        width: 100%;
+        justify-content: flex-start;
     }
 
     .github-contrib-card {

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './GithubContributionSection.css';
 
 const USERNAME = import.meta.env.VITE_GITHUB_USERNAME;
@@ -289,16 +290,27 @@ const GithubContributionSection = () => {
 
     return (
         <section className="github-contrib-wrap">
+            <div className="github-contrib-head">
+                <h2 className="github-contrib-title">Interactive GitHub Constellation</h2>
+                <p className="github-contrib-subtitle">
+                    Live repository activity mapped as a navigable star system.
+                </p>
+            </div>
             <div className="github-contrib-actions">
                 {status ? <p className="github-contrib-status">{status}</p> : <span />}
-                <button
-                    type="button"
-                    className="github-contrib-refresh"
-                    onClick={() => loadLiveData(true)}
-                    disabled={isRefreshing}
-                >
-                    {isRefreshing ? 'Refreshing…' : 'Refresh Data'}
-                </button>
+                <div className="github-contrib-buttons">
+                    <button
+                        type="button"
+                        className="github-contrib-refresh"
+                        onClick={() => loadLiveData(true)}
+                        disabled={isRefreshing}
+                    >
+                        {isRefreshing ? 'Refreshing…' : 'Refresh Data'}
+                    </button>
+                    <Link to="/lab" className="github-contrib-lab-btn">
+                        Open Lab
+                    </Link>
+                </div>
             </div>
             <div className="github-contrib-card">
                 <iframe
@@ -309,6 +321,10 @@ const GithubContributionSection = () => {
                     loading="lazy"
                 />
             </div>
+            <p className="github-contrib-footer">
+                Find more GitHub contribution visualizations on{' '}
+                <Link to="/lab" className="github-contrib-footer-link">my Lab</Link>.
+            </p>
         </section>
     );
 };
