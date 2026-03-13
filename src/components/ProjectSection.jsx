@@ -417,7 +417,7 @@ const ProjectSection = () => {
                                     <div className="h-card-overlay">
                                         <span className="ov-tag">Project</span>
                                         <div className="ov-title">{p.title}</div>
-                                        <p className="ov-desc">{p.desc}</p>
+                                        <p className="ov-desc">{p.desc.split('\n\n')[0]}</p>
                                         <div className="ov-pills">
                                             {p.tech.map((t, idx) => (
                                                 <span className="ov-pill" key={idx}>{t}</span>
