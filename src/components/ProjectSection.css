@@ -734,4 +734,25 @@
         padding: 0 !important;
         width: 100% !important;
     }
+
+    .works-label,
+    .works-hint {
+        font-size: 8px !important;
+        letter-spacing: 0.15em !important;
+    }
+
+    .works-counter {
+        font-size: 9px !important;
+        letter-spacing: 0.15em !important;
+    }
+
+    .works-label {
+        top: 24px;
+        left: 24px;
+    }
+
+    .works-counter {
+        top: 24px;
+        right: 24px;
+    }
 }
