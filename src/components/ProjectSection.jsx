@@ -5,57 +5,34 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import SplitType from 'split-type';
 import ExpandedProjectOverlay from './ExpandedProjectOverlay';
+import portfolioData from '../data/portfolioData.json';
 import './ProjectSection.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-    {
-        title: "Luminary OS",
-        type: "Web App · Motion",
-        desc: "A conceptual operating system interface built entirely in the browser. Features a custom window manager, virtual file system, and WebGL-accelerated compositor.\n\n### The Challenge\nBuilding a seamless native-like experience in a browser environment posed significant performance challenges. We needed to handle window dragging, real-time blur layers, and complex state management without dropping below 60FPS.\n\n### Implementation\nBy leveraging React for the declarative UI and Zustand for the global window state, we isolated renders. The compositor was written in raw WebGL to offload the heavy blur and shadow calculations to the GPU.\n\n### Results\nThe final prototype is a fully functioning desktop environment that runs on any modern browser, demonstrating extreme frontend optimization techniques.",
-        tech: ["React", "WebGL", "Zustand"],
-        colors: ["#0b1a0d", "#132215"],
-        glow: "rgba(100,220,80,.1)",
-        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        title: "Vanta Protocol",
-        type: "GSAP · Three.js",
-        desc: "Decentralized data visualizer for high-frequency trading. WebSockets stream live order book data into a custom WebGL instanced rendering engine.",
-        tech: ["TypeScript", "Three.js"],
-        colors: ["#1a0e08", "#261508"],
-        glow: "rgba(220,120,40,.1)",
-        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        title: "Nexus Synth",
-        type: "WebGL · Canvas",
-        desc: "Browser-based modular synthesizer using the Web Audio API. Connect oscillators, filters, and LFOs visually using an SVG node graph.",
-        tech: ["Web Audio", "Canvas API"],
-        colors: ["#08080f", "#0d0d1e"],
-        glow: "rgba(80,100,255,.1)",
-        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        title: "Meridian",
-        type: "React · Animation",
-        desc: "Luxury shopping experience with magnetic hover effects and a scroll-driven product showcase that boosted conversion by 40%.",
-        tech: ["React", "Framer", "GSAP"],
-        colors: ["#12060e", "#1c0a18"],
-        glow: "rgba(200,60,180,.1)",
-        image: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        title: "Void",
-        type: "p5.js · GLSL",
-        desc: "Procedurally generated art driven by noise algorithms. Every session is unique — no two outputs are ever the same.",
-        tech: ["p5.js", "WebGL", "GLSL"],
-        colors: ["#081210", "#0c1c18"],
-        glow: "rgba(40,200,160,.1)",
-        image: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=800&auto=format&fit=crop"
-    }
+// ── Theming for imported projects ─────────────────────────────────────────
+const projectThemes = [
+    { colors: ["#0b1a0d", "#132215"], glow: "rgba(100,220,80,.1)" },
+    { colors: ["#1a0e08", "#261508"], glow: "rgba(220,120,40,.1)" },
+    { colors: ["#08080f", "#0d0d1e"], glow: "rgba(80,100,255,.1)" },
+    { colors: ["#12060e", "#1c0a18"], glow: "rgba(200,60,180,.1)" },
+    { colors: ["#081210", "#0c1c18"], glow: "rgba(40,200,160,.1)" }
 ];
+
+const projects = portfolioData.projects.map((p, index) => {
+    const theme = projectThemes[index % projectThemes.length];
+    return {
+        title: p.title,
+        type: p.projectType,
+        desc: `${p.shortDescription}\n\n${p.fullDocumentation || ''}`,
+        tech: p.stacks,
+        colors: theme.colors,
+        glow: theme.glow,
+        image: p.image,
+        liveUrl: p.livePreviewLink,
+        githubUrl: p.githubLink
+    };
+});
 
 // ── Global Scroll Blocker for Flight Animation ───────────────────────────
 const preventGlobalScroll = (e) => {
