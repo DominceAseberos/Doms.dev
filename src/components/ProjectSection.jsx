@@ -341,13 +341,6 @@ const ProjectSection = () => {
             hallwayST.current = tl.scrollTrigger;
             updateCards(0);
 
-            tl.to(imgWrap, {
-                width: isMobile ? '88%' : isTablet ? '76%' : '72%',
-                borderRadius: isMobile ? '16px' : '30px',
-                duration: CARD_DUR,
-                ease: 'power1.out'
-            }, 0);
-
             // Light appears at the end of the cards
             tl.to(lightRef.current, {
                 scale: 1,

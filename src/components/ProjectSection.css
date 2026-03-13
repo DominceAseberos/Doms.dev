@@ -22,9 +22,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
-    aspect-ratio: 16 / 9;
-    border-radius: 30px;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
     overflow: hidden;
     background: #0a0a08;
     z-index: 1;
@@ -754,5 +754,14 @@
     .works-counter {
         top: 24px;
         right: 24px;
+    }
+
+    /* ── Mobile: Project Container Full Height ─────────────────── */
+    .portfolio-timeline .image-wrapper {
+        width: 100% !important;
+        height: 100vh !important;
+        aspect-ratio: auto !important;
+        border-radius: 0 !important;
+        transform: translate(-50%, -50%) !important;
     }
 }
