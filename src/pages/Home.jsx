@@ -5,6 +5,7 @@ import HeroSection from '../components/HeroSection';
 import ProjectSection from '../components/ProjectSection';
 import MoreProjectsSection from '../components/MoreProjectsSection';
 import LabSection from '../components/LabSection';
+import AboutSection from '../components/AboutSection';
 import ContactSection from '../components/ContactSection';
 
 const Home = () => {
@@ -18,6 +19,7 @@ const Home = () => {
                 <ProjectSection />
                 <MoreProjectsSection />
                 <LabSection />
+                <AboutSection />
                 <ContactSection />
             </div>
         </div>
