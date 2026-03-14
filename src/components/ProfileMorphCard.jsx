@@ -40,54 +40,67 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
             });
         }
 
+        const reveal = (x, y) => {
+            gsap.to(maskCircle, {
+                attr: { cx: x, cy: y, r: 45 },
+                duration: 0.1,
+                ease: 'none',
+            });
+            debrisRefs.current.forEach((debris, index) => {
+                if (!debris) return;
+                gsap.to(debris, {
+                    attr: {
+                        cx: x + (Math.random() - 0.5) * 35,
+                        cy: y + (Math.random() - 0.5) * 35,
+                        r: index % 2 === 0 ? 11 : 7,
+                    },
+                    duration: 0.2 + (index * 0.05),
+                    ease: 'power1.out',
+                });
+            });
+        };
+
+        const hide = () => {
+            gsap.to(maskCircle, { attr: { r: 0 }, duration: 0.4, ease: 'power2.in' });
+            debrisRefs.current.forEach((debris) => {
+                if (!debris) return;
+                gsap.to(debris, { attr: { r: 0 }, duration: 0.5, ease: 'power2.in' });
+            });
+        };
+
         const onMove = (e) => {
             const rect = stage.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const isInside = x > 0 && x < rect.width && y > 0 && y < rect.height;
-
-            if (isInside) {
-                gsap.to(maskCircle, {
-                    attr: { cx: x, cy: y, r: 45 },
-                    duration: 0.1,
-                    ease: 'none',
-                });
-
-                debrisRefs.current.forEach((debris, index) => {
-                    if (!debris) return;
-                    gsap.to(debris, {
-                        attr: {
-                            cx: x + (Math.random() - 0.5) * 35,
-                            cy: y + (Math.random() - 0.5) * 35,
-                            r: index % 2 === 0 ? 11 : 7,
-                        },
-                        duration: 0.2 + (index * 0.05),
-                        ease: 'power1.out',
-                    });
-                });
-                return;
-            }
-
-            gsap.to(maskCircle, {
-                attr: { r: 0 },
-                duration: 0.4,
-                ease: 'power2.in',
-            });
-
-            debrisRefs.current.forEach((debris) => {
-                if (!debris) return;
-                gsap.to(debris, {
-                    attr: { r: 0 },
-                    duration: 0.5,
-                    ease: 'power2.in',
-                });
-            });
+            if (isInside) { reveal(x, y); return; }
+            hide();
         };
 
+        const onTouch = (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            if (!touch) return;
+            const rect = stage.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            reveal(x, y);
+        };
+
+        const onTouchEnd = () => hide();
+
         window.addEventListener('mousemove', onMove);
+        stage.addEventListener('touchstart', onTouch, { passive: false });
+        stage.addEventListener('touchmove', onTouch, { passive: false });
+        stage.addEventListener('touchend', onTouchEnd);
+        stage.addEventListener('touchcancel', onTouchEnd);
 
         return () => {
             window.removeEventListener('mousemove', onMove);
+            stage.removeEventListener('touchstart', onTouch);
+            stage.removeEventListener('touchmove', onTouch);
+            stage.removeEventListener('touchend', onTouchEnd);
+            stage.removeEventListener('touchcancel', onTouchEnd);
             turbTween?.kill();
         };
     }, []);
@@ -98,8 +111,10 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
                 <img
                     src={realSrc}
                     alt={alt}
+                    draggable="false"
+                    onContextMenu={(e) => e.preventDefault()}
                     className="h-full w-full object-cover"
-                    style={{ objectPosition: 'center 82%' }}
+                    style={{ objectPosition: 'center 82%', userSelect: 'none', WebkitUserDrag: 'none' }}
                 />
             </div>
 
@@ -113,6 +128,8 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
                 <img
                     src={animeRenderSrc}
                     alt={`${alt} anime variant`}
+                    draggable="false"
+                    onContextMenu={(e) => e.preventDefault()}
                     onError={() => {
                         if (animeRenderSrc !== realSrc) {
                             setAnimeRenderSrc(realSrc);
@@ -120,7 +137,7 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
                         }
                     }}
                     className={`h-full w-full object-cover ${animeFallback ? 'saturate-[1.35] contrast-[1.2] brightness-[1.08]' : ''}`}
-                    style={{ objectPosition: 'center 82%' }}
+                    style={{ objectPosition: 'center 82%', userSelect: 'none', WebkitUserDrag: 'none' }}
                 />
             </div>
 
