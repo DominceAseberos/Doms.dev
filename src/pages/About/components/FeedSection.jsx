@@ -33,6 +33,26 @@ const FeedSection = () => {
 
     const selectedPost = sortedPosts.find((post) => post.id === selectedId) || sortedPosts[0] || null;
 
+    const selectedMedia = useMemo(() => {
+        if (!selectedPost) {
+            return [];
+        }
+
+        const multiImages = Array.isArray(selectedPost.images)
+            ? selectedPost.images.filter((src) => typeof src === 'string' && src.trim().length > 0)
+            : [];
+
+        if (multiImages.length) {
+            return multiImages;
+        }
+
+        if (typeof selectedPost.image === 'string' && selectedPost.image.trim().length > 0) {
+            return [selectedPost.image];
+        }
+
+        return [];
+    }, [selectedPost]);
+
     const handleListWheel = (event) => {
         const listEl = listScrollRef.current;
         if (!listEl) return;
@@ -75,9 +95,18 @@ const FeedSection = () => {
                                 {selectedPost.body ? <p className="feed-card-body ui-body-copy">{selectedPost.body}</p> : null}
                             </div>
 
-                            {selectedPost.image ? (
-                                <div className="feed-media-wrap">
-                                    <img src={selectedPost.image} alt={selectedPost.title} className="feed-media" loading="lazy" />
+                            {selectedMedia.length ? (
+                                <div className={`feed-media-wrap ${selectedMedia.length > 1 ? 'feed-media-grid' : ''}`}>
+                                    {selectedMedia.map((src, index) => (
+                                        <div key={`${src}-${index}`} className="feed-media-item">
+                                            <img
+                                                src={src}
+                                                alt={`${selectedPost.title} ${index + 1}`}
+                                                className="feed-media"
+                                                loading="lazy"
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
                             ) : null}
 

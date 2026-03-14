@@ -3,8 +3,13 @@
     "id": "image-test-post",
     "type": "image",
     "title": "Image test post",
-    "body": "Testing image rendering in the feed detail panel. This uses an existing asset from the project files.",
-    "image": "/assets/projects/cover/BananaLeaf.png",
+    "body": "Testing multi-image rendering in the feed detail panel. This uses existing assets from the project files.",
+    "images": [
+      "/assets/projects/cover/BananaLeaf.png",
+      "/assets/projects/cover/FocusQuest.png",
+      "/assets/projects/cover/Baylora.png",
+      "/assets/projects/cover/Templyx.png"
+    ],
     "createdAt": "2026-03-16",
     "tags": ["Test", "Image"]
   },
