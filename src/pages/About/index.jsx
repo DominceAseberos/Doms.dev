@@ -14,12 +14,13 @@ const AboutPage = () => {
     const sectionRef = useRef(null);
 
     useEffect(() => {
-        if (!isLoading) {
-            if (window.lenis) {
-                window.lenis.scrollTo(0, { immediate: true });
-            } else {
-                window.scrollTo(0, 0);
-            }
+        if (!isLoading && window.lenis) {
+            window.lenis.scrollTo(1500, {
+                duration: 5,
+                easing: (t) => t
+            });
+        } else if (!isLoading) {
+            window.scrollTo(0, 0);
         }
     }, [isLoading]);
 
