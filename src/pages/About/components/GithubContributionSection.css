@@ -95,67 +95,180 @@
     display: block;
 }
 
-.github-contrib-footer {
+/* ── Side Cards Row ─────────────────────────────── */
+.gc-side-cards {
     max-width: 1200px;
-    margin: 1rem auto 0;
-    padding: 1rem 1.1rem;
-    border: 1px solid rgba(170, 255, 120, 0.28);
-    background: rgba(143, 255, 92, 0.08);
-    border-radius: 14px;
-    color: rgba(255, 255, 255, 0.82);
+    margin: 2rem auto 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
 
-.github-contrib-footer-title {
+.gc-universe-card,
+.gc-commit-card {
+    padding: 1.4rem 1.5rem 1.5rem;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(6, 8, 20, 0.55);
+    backdrop-filter: blur(14px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.gc-universe-card {
+    border-color: rgba(170, 255, 120, 0.18);
+    background: rgba(10, 18, 8, 0.55);
+}
+
+.gc-commit-card {
+    border-color: rgba(120, 180, 255, 0.18);
+    background: rgba(6, 10, 20, 0.55);
+}
+
+.gc-card-eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.gc-card-title {
     margin: 0;
-    text-align: center;
-    font-size: 0.8rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(235, 255, 219, 0.95);
-}
-
-.github-contrib-footer-legend {
-    margin-top: 0.72rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.45rem;
-}
-
-.github-contrib-footer-pill {
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.28rem 0.58rem;
-    border-radius: 999px;
-    border: 1px solid rgba(170, 255, 120, 0.35);
-    background: rgba(143, 255, 92, 0.12);
-    color: rgba(220, 255, 195, 0.98);
-}
-
-.github-contrib-footer-actions {
-    margin-top: 0.72rem;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.github-contrib-footer-link {
-    display: inline-block;
-    padding: 0.2rem 0.58rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(170, 255, 120, 0.45);
-    background: rgba(143, 255, 92, 0.14);
-    color: rgba(220, 255, 195, 0.98);
-    text-decoration: none;
+    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
     font-weight: 600;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.gc-card-desc {
+    margin: 0;
+    font-size: 0.76rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.02em;
+}
+
+/* Universe legend */
+.gc-universe-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.32rem;
+    margin-top: 0.2rem;
+}
+
+.gc-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: rgba(220, 255, 195, 0.75);
+}
+
+.gc-legend-icon {
+    font-size: 0.85rem;
+    width: 1.2rem;
+    text-align: center;
+}
+
+.gc-legend-arrow {
+    color: rgba(170, 255, 120, 0.4);
+    font-size: 0.65rem;
+}
+
+.gc-legend-val {
+    color: rgba(200, 255, 170, 0.95);
+    font-weight: 600;
+}
+
+/* Commit card */
+.gc-commit-repo {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.1rem;
+}
+
+.gc-commit-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(120, 220, 255, 0.85);
+    box-shadow: 0 0 6px rgba(120, 220, 255, 0.6);
+    flex-shrink: 0;
+}
+
+.gc-commit-repo-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(160, 210, 255, 0.9);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(120, 180, 255, 0.3);
+}
+
+.gc-commit-message {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.7);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.gc-commit-unavailable {
+    margin: 0;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.06em;
+}
+
+/* Shared CTA */
+.gc-card-cta {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(200, 255, 170, 0.85);
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.gc-commit-card .gc-card-cta {
+    color: rgba(160, 210, 255, 0.85);
+}
+
+.gc-card-cta:hover {
+    color: rgba(255, 255, 255, 0.98);
+}
+
+.gc-cta-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+}
+
+.gc-card-cta:hover .gc-cta-arrow {
+    transform: translate(2px, -2px);
 }
 
 @media (max-width: 768px) {
     .github-contrib-card {
         height: 78vh;
         border-radius: 16px;
+    }
+
+    .gc-side-cards {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -179,16 +292,12 @@
         border-radius: 12px;
     }
 
-    .github-contrib-footer {
-        padding: 0.85rem 0.8rem;
+    .gc-universe-card,
+    .gc-commit-card {
+        padding: 1.1rem 1.1rem 1.2rem;
     }
 
-    .github-contrib-footer-title {
-        font-size: 0.74rem;
-        letter-spacing: 0.12em;
-    }
-
-    .github-contrib-footer-pill {
-        font-size: 0.64rem;
+    .gc-card-title {
+        font-size: 0.95rem;
     }
 }

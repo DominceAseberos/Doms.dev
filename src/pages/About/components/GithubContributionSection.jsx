@@ -4,6 +4,8 @@ import './GithubContributionSection.css';
 
 const USERNAME = import.meta.env.VITE_GITHUB_USERNAME;
 const TOKEN    = import.meta.env.VITE_GITHUB_TOKEN;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const CACHE_TTL = 15 * 60 * 1000;
 const MAX_REPOS = 100;
 const SNAPSHOT_KEY = 'gsc_snapshot_repos';
@@ -224,12 +226,114 @@ async function fetchRepos() {
     return loaded;
 }
 
+async function fetchLatestCommit() {
+    const cacheKey = `/functions/latest-commit/${USERNAME || 'me'}`;
+    const cached = cacheGet(cacheKey);
+    if (cached) return cached;
+
+    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+        try {
+            const res = await fetch(`${SUPABASE_URL}/functions/v1/latest-commit`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                },
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data?.latestCommit) {
+                    cacheSet(cacheKey, data.latestCommit);
+                    return data.latestCommit;
+                }
+            }
+        } catch (_) {}
+    }
+
+    if (TOKEN) {
+        const ownedRepos = await ghFetch('/user/repos?visibility=all&affiliation=owner&sort=pushed&per_page=20');
+        if (!Array.isArray(ownedRepos) || !ownedRepos.length) return null;
+
+        const ownLogin = String(USERNAME || '').toLowerCase();
+        const repos = ownedRepos
+            .filter(repo => !repo?.fork)
+            .filter(repo => (repo?.owner?.login || '').toLowerCase() === ownLogin)
+            .slice(0, 12);
+
+        const commitsByRepo = await Promise.all(
+            repos.map(async repo => {
+                try {
+                    const rows = await ghFetch(
+                        `/repos/${repo.full_name}/commits?per_page=1`
+                    );
+                    if (!Array.isArray(rows) || !rows.length) return null;
+                    const item = rows[0];
+                    const date = item?.commit?.author?.date || item?.commit?.committer?.date;
+                    if (!item?.sha || !date) return null;
+                    return {
+                        message: item?.commit?.message || 'No commit message',
+                        repo: repo.full_name,
+                        sha: item.sha,
+                        time: date,
+                        url: item?.html_url || `https://github.com/${repo.full_name}/commit/${item.sha}`,
+                    };
+                } catch (_) {
+                    return null;
+                }
+            })
+        );
+
+        const latest = commitsByRepo
+            .filter(Boolean)
+            .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())[0] || null;
+
+        if (latest) cacheSet(cacheKey, latest);
+        return latest;
+    }
+
+    const events = await ghFetch(`/users/${USERNAME}/events/public?per_page=30`);
+    if (!Array.isArray(events)) return null;
+
+    const pushEvent = events.find(event => (
+        event?.type === 'PushEvent' &&
+        event?.payload?.commits &&
+        event.payload.commits.length > 0 &&
+        event?.repo?.name
+    ));
+
+    if (!pushEvent) return null;
+
+    const commits = pushEvent.payload.commits;
+    const latest = commits[commits.length - 1];
+    if (!latest?.sha) return null;
+
+    const commitData = {
+        message: latest.message || 'No commit message',
+        repo: pushEvent.repo.name,
+        sha: latest.sha,
+        time: pushEvent.created_at,
+        url: `https://github.com/${pushEvent.repo.name}/commit/${latest.sha}`,
+    };
+
+    cacheSet(cacheKey, commitData);
+    return commitData;
+}
+
 const GithubContributionSection = () => {
     const iframeRef = useRef(null);
     const reposRef  = useRef(null);
     const iframeReadyRef = useRef(false);
     const [status, setStatus] = useState('Loading your constellation…');
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [latestCommit, setLatestCommit] = useState(null);
+
+    const latestRepoUrl = latestCommit?.repo ? `https://github.com/${latestCommit.repo}` : '';
+    const latestCommitUrl = latestCommit?.url
+        || (latestCommit?.repo && latestCommit?.sha
+            ? `https://github.com/${latestCommit.repo}/commit/${latestCommit.sha}`
+            : '');
 
     function postDataToIframe() {
         if (!iframeReadyRef.current) return;
@@ -249,13 +353,18 @@ const GithubContributionSection = () => {
         setIsRefreshing(true);
 
         try {
-            const repos = await fetchRepos();
+            const [repos, latest] = await Promise.all([
+                fetchRepos(),
+                fetchLatestCommit().catch(() => null),
+            ]);
             reposRef.current = repos;
+            setLatestCommit(latest);
             saveSnapshot(repos);
             setStatus('');
             postDataToIframe();
         } catch (err) {
             reposRef.current = [];
+            setLatestCommit(null);
             setStatus('Could not load live data: ' + err.message);
             postDataToIframe();
         } finally {
@@ -270,6 +379,9 @@ const GithubContributionSection = () => {
             reposRef.current = snapshot;
             setStatus('');
             postDataToIframe();
+            fetchLatestCommit()
+                .then((latest) => setLatestCommit(latest))
+                .catch(() => setLatestCommit(null));
             return;
         }
 
@@ -321,24 +433,60 @@ const GithubContributionSection = () => {
                     loading="lazy"
                 />
             </div>
-            <div className="github-contrib-footer">
-                <p className="github-contrib-footer-title">Now Building: GitHub Population Universe</p>
-                <div className="github-contrib-footer-legend" aria-label="GitHub population visualization legend">
-                    <span className="github-contrib-footer-pill">Country = Universe</span>
-                    <span className="github-contrib-footer-pill">City = Planet</span>
-                    <span className="github-contrib-footer-pill">Users = Population</span>
-                    <span className="github-contrib-footer-pill">Repo = Individual Star</span>
-                </div>
-                <div className="github-contrib-footer-actions">
+            <div className="gc-side-cards">
+                <div className="gc-universe-card">
+                    <div className="gc-card-eyebrow">Side Project</div>
+                    <h3 className="gc-card-title">GitHub Population Universe</h3>
+                    <p className="gc-card-desc">
+                        Mapping the entire GitHub ecosystem as a living universe —
+                        countries become galaxies, cities become planets, users become
+                        inhabitants, and repositories become individual stars.
+                    </p>
+                    <div className="gc-universe-legend">
+                        <div className="gc-legend-item"><span className="gc-legend-icon">🌌</span><span>Country</span><span className="gc-legend-arrow">→</span><span className="gc-legend-val">Universe</span></div>
+                        <div className="gc-legend-item"><span className="gc-legend-icon">🪐</span><span>City</span><span className="gc-legend-arrow">→</span><span className="gc-legend-val">Planet</span></div>
+                        <div className="gc-legend-item"><span className="gc-legend-icon">👥</span><span>Users</span><span className="gc-legend-arrow">→</span><span className="gc-legend-val">Population</span></div>
+                        <div className="gc-legend-item"><span className="gc-legend-icon">⭐</span><span>Repo</span><span className="gc-legend-arrow">→</span><span className="gc-legend-val">Star</span></div>
+                    </div>
                     <a
                         href="https://gremote-universe.vercel.app/"
                         target="_blank"
                         rel="noreferrer"
-                        className="github-contrib-footer-link"
+                        className="gc-card-cta"
                     >
-                        Visit GRemote Universe
+                        Visit GRemote Universe <span className="gc-cta-arrow">↗</span>
                     </a>
-                    <Link to="/lab" className="github-contrib-footer-link">Explore My Lab</Link>
+                </div>
+
+                <div className="gc-commit-card">
+                    <div className="gc-card-eyebrow">Live Activity</div>
+                    <h3 className="gc-card-title">Latest Commit</h3>
+                    {latestCommit ? (
+                        <>
+                            <div className="gc-commit-repo">
+                                <span className="gc-commit-dot" />
+                                <a
+                                    href={latestRepoUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="gc-commit-repo-link"
+                                >
+                                    {latestCommit.repo}
+                                </a>
+                            </div>
+                            <p className="gc-commit-message">{latestCommit.message.split('\n')[0]}</p>
+                            <a
+                                href={latestCommitUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="gc-card-cta"
+                            >
+                                View Commit <span className="gc-cta-arrow">↗</span>
+                            </a>
+                        </>
+                    ) : (
+                        <p className="gc-commit-unavailable">Fetching latest activity…</p>
+                    )}
                 </div>
             </div>
         </section>
