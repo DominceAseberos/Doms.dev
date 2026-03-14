@@ -7,6 +7,7 @@ import AboutSection from '../../components/AboutSection';
 import EducationSection from './components/EducationSection';
 import GithubContributionSection from './components/GithubContributionSection';
 import FeedSection from './components/FeedSection';
+import AboutSocialFooter from './components/AboutSocialFooter';
 import useLoadingStore from '../../store/useLoadingStore';
 
 const AboutPage = () => {
@@ -34,6 +35,7 @@ const AboutPage = () => {
                 <EducationSection />
                 <GithubContributionSection />
                 <FeedSection />
+                <AboutSocialFooter />
             </div>
         </div>
     );

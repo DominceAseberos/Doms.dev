@@ -1,0 +1,116 @@
+.about-social-footer {
+    width: 100%;
+    padding: 2rem 1.5rem 4.5rem;
+}
+
+.about-social-footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+}
+
+.about-social-footer__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.about-social-footer__title {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.96);
+    font-size: clamp(1.35rem, 2.2vw, 2.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+}
+
+.about-social-footer__text {
+    margin: 0;
+    font-size: 0.95rem;
+    max-width: 42rem;
+}
+
+.about-social-footer__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.about-social-footer__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #0c0c0c;
+    background: #c8ff3e;
+    border-radius: 999px;
+    padding: 0.9rem 1.25rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 20px rgba(200, 255, 62, 0.2);
+}
+
+.about-social-footer__cta:hover {
+    background: rgba(255, 255, 255, 0.96);
+    transform: translateY(-1px);
+    box-shadow: 0 0 28px rgba(255, 255, 255, 0.18);
+}
+
+.about-social-footer__links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.about-social-footer__link {
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.about-social-footer__link:hover {
+    color: rgba(255, 255, 255, 1);
+    border-color: rgba(200, 255, 62, 0.45);
+    background: rgba(200, 255, 62, 0.08);
+}
+
+@media (max-width: 768px) {
+    .about-social-footer {
+        padding: 1.5rem 1rem 3.5rem;
+    }
+
+    .about-social-footer__inner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .about-social-footer__actions {
+        width: 100%;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    .about-social-footer__links {
+        width: 100%;
+    }
+}
