@@ -33,17 +33,17 @@ const EducationSection = () => {
             );
 
             // Parallax: heading starts low and rises as section enters
+            // Parallax: heading rises during the last 300px of the AboutSection pin
             gsap.fromTo(
                 headingRef.current,
-                { y: 80 },
+                { y: 220 },
                 {
                     y: 0,
                     ease: 'none',
                     scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: 'top bottom',
-                        end: 'top 30%',
-                        scrub: 1.5,
+                            start: 1200,
+                            end: 1500,
+                        scrub: 1.2,
                     }
                 }
             );

@@ -18,6 +18,7 @@ const AboutSection = forwardRef((props, ref) => {
     const stripesRef = useRef([]);
     const headerRef = useRef(null);
     const textRef = useRef(null);
+    const cardRef = useRef(null);
 
     const stripeCount = 20;
 
@@ -35,6 +36,7 @@ const AboutSection = forwardRef((props, ref) => {
 
             gsap.set(headerRef.current, { opacity: 0, scale: 0.8, filter: "blur(10px)" });
             gsap.set(textRef.current, { opacity: 0, y: 30 });
+            if (cardRef.current) gsap.set(cardRef.current, { opacity: 0, y: 50, scale: 0.92 });
 
             tl.to(stripesRef.current, {
                 xPercent: (i) => i % 2 === 0 ? 100 : -100,
@@ -56,7 +58,14 @@ const AboutSection = forwardRef((props, ref) => {
                     y: 0,
                     duration: 1,
                     ease: "power2.out"
-                }, "-=0.6");
+                }, "-=0.6")
+                .to(cardRef.current, {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1.1,
+                    ease: "power2.out"
+                }, "-=0.8");
 
         }, sectionRef);
 
@@ -71,9 +80,10 @@ const AboutSection = forwardRef((props, ref) => {
 
     return (
         <section
+            id="about-hero"
             ref={(el) => { sectionRef.current = el; if (ref) ref.current = el; }}
-            className={`relative w-full bg-transparent flex z-10 py-24 sm:py-32 ${isAboutPage ? 'items-start justify-start' : 'min-h-screen items-center justify-center'}`}
-            style={isAboutPage ? { minHeight: 'calc(100vh - 100px)' } : {}}
+            className={`relative w-full bg-transparent flex z-10 ${isAboutPage ? 'pt-14 pb-4 sm:pt-16 sm:pb-6 items-start justify-start' : 'py-24 sm:py-32 min-h-screen items-center justify-center'}`}
+            style={isAboutPage ? { minHeight: 'calc(100vh - 240px)' } : {}}
         >
             <div className="absolute inset-x-0 top-0 z-20 pointer-events-none flex flex-col overflow-hidden" style={{ height: '100vh' }}>
                 {Array.from({ length: stripeCount }).map((_, i) => (
@@ -115,7 +125,7 @@ const AboutSection = forwardRef((props, ref) => {
                             </div>
                         </div>
                         {/* Right column: profile card */}
-                        <div className="w-[220px] sm:w-[280px] md:w-[320px] lg:w-[360px] aspect-[3/4] flex-shrink-0 mx-auto lg:mx-0">
+                        <div ref={cardRef} className="w-[220px] sm:w-[280px] md:w-[320px] lg:w-[360px] aspect-[3/4] flex-shrink-0 mx-auto lg:mx-0">
                             <ProfileMorphCard
                                 realSrc={humanPortrait}
                                 animeSrc={animePortrait}
