@@ -456,6 +456,9 @@ const GithubContributionSection = () => {
                     >
                         Visit GRemote Universe <span className="gc-cta-arrow">↗</span>
                     </a>
+                    <Link to="/lab" className="gc-card-cta gc-card-cta--secondary">
+                        View more in my Lab <span className="gc-cta-arrow">→</span>
+                    </Link>
                 </div>
 
                 <div className="gc-commit-card">

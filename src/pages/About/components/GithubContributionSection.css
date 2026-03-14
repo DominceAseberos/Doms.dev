@@ -261,6 +261,18 @@
     transform: translate(2px, -2px);
 }
 
+.gc-card-cta--secondary {
+    color: rgba(255, 255, 255, 0.42);
+    margin-top: 0;
+    padding-top: 0;
+}
+.gc-card-cta--secondary:hover {
+    color: rgba(255, 255, 255, 0.82);
+}
+.gc-card-cta--secondary .gc-cta-arrow {
+    font-size: 0.78rem;
+}
+
 @media (max-width: 768px) {
     .github-contrib-card {
         height: 78vh;
