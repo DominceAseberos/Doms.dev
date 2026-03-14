@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import posts from '../../../data/feedPosts.json';
 import './FeedSection.css';
 
@@ -26,21 +26,29 @@ const FeedSection = () => {
     }, []);
 
     const hasPosts = sortedPosts.length > 0;
+    const recentPost = hasPosts ? sortedPosts[0] : null;
+    const pastPosts = hasPosts ? sortedPosts.slice(1) : [];
     const [selectedId, setSelectedId] = useState(hasPosts ? sortedPosts[0].id : null);
+    const listScrollRef = useRef(null);
 
     const selectedPost = sortedPosts.find((post) => post.id === selectedId) || sortedPosts[0] || null;
 
-    const getPreview = (text) => {
-        if (!text) {
-            return 'No description.';
-        }
+    const handleListWheel = (event) => {
+        const listEl = listScrollRef.current;
+        if (!listEl) return;
 
-        const compact = text.replace(/\s+/g, ' ').trim();
-        if (compact.length <= 90) {
-            return compact;
-        }
+        const { deltaY } = event;
+        const maxScrollTop = listEl.scrollHeight - listEl.clientHeight;
+        if (maxScrollTop <= 0) return;
 
-        return `${compact.slice(0, 90)}…`;
+        const prevTop = listEl.scrollTop;
+        const nextTop = Math.max(0, Math.min(maxScrollTop, prevTop + deltaY));
+
+        if (nextTop !== prevTop) {
+            listEl.scrollTop = nextTop;
+            event.preventDefault();
+            event.stopPropagation();
+        }
     };
 
     return (
@@ -76,9 +84,25 @@ const FeedSection = () => {
                         </article>
 
                         <aside className="feed-list-card" aria-label="Recent posts">
-                            <div className="feed-list-head ui-sub-label">Latest posts</div>
-                            <div className="feed-list-scroll">
-                                {sortedPosts.map((post) => {
+                            <div className="feed-list-head ui-sub-label">Past posts</div>
+                            <div
+                                ref={listScrollRef}
+                                className="feed-list-scroll"
+                                onWheel={handleListWheel}
+                            >
+                                {recentPost && selectedId !== recentPost.id ? (
+                                    <button
+                                        type="button"
+                                        className="feed-list-item"
+                                        onClick={() => setSelectedId(recentPost.id)}
+                                        aria-pressed="false"
+                                    >
+                                        <div className="feed-list-meta ui-sub-label">Back to most recent</div>
+                                        <h4 className="feed-list-title">{recentPost.title}</h4>
+                                    </button>
+                                ) : null}
+
+                                {pastPosts.map((post) => {
                                     const isActive = post.id === selectedPost.id;
                                     return (
                                         <button
@@ -90,10 +114,13 @@ const FeedSection = () => {
                                         >
                                             <div className="feed-list-meta ui-sub-label">{formatDate(post.createdAt)}</div>
                                             <h4 className="feed-list-title">{post.title}</h4>
-                                            <p className="feed-list-preview ui-body-copy">{getPreview(post.body)}</p>
                                         </button>
                                     );
                                 })}
+
+                                {!pastPosts.length ? (
+                                    <p className="feed-list-empty ui-body-copy">No past posts yet.</p>
+                                ) : null}
                             </div>
                         </aside>
                     </div>

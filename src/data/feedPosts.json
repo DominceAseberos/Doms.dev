@@ -1,10 +1,83 @@
 [
   {
+    "id": "image-test-post",
+    "type": "image",
+    "title": "Image test post",
+    "body": "Testing image rendering in the feed detail panel. This uses an existing asset from the project files.",
+    "image": "/assets/projects/cover/BananaLeaf.png",
+    "createdAt": "2026-03-16",
+    "tags": ["Test", "Image"]
+  },
+  {
     "id": "welcome-feed",
     "type": "text",
     "title": "Welcome to my feed",
     "body": "This is where I’ll share build notes, visual experiments, image drops, and short updates from current work. Visitors only see what I decide to publish here.",
     "createdAt": "2026-03-15",
     "tags": ["Update", "Personal"]
+  },
+  {
+    "id": "shader-tests-night",
+    "type": "text",
+    "title": "Night shader test",
+    "body": "Tried a softer glow blend for node halos and adjusted falloff so dense clusters stay readable.",
+    "createdAt": "2026-03-14",
+    "tags": ["Visual", "Experiment"]
+  },
+  {
+    "id": "feed-layout-pass",
+    "type": "text",
+    "title": "Feed layout polish",
+    "body": "Refined spacing and typography so section rhythm matches the About page blocks.",
+    "createdAt": "2026-03-13",
+    "tags": ["UI", "Layout"]
+  },
+  {
+    "id": "mobile-density-fix",
+    "type": "text",
+    "title": "Mobile density fix",
+    "body": "Reduced visual noise on small screens by gating labels and balancing panel density.",
+    "createdAt": "2026-03-12",
+    "tags": ["Mobile", "UX"]
+  },
+  {
+    "id": "constellation-pass-02",
+    "type": "text",
+    "title": "Constellation spacing update",
+    "body": "Expanded node spread and added repulsion pass to avoid overlap in tight views.",
+    "createdAt": "2026-03-11",
+    "tags": ["Canvas", "Systems"]
+  },
+  {
+    "id": "about-structure-refine",
+    "type": "text",
+    "title": "About page structure refine",
+    "body": "Split visual and narrative blocks for better scan flow and cleaner left-right balance.",
+    "createdAt": "2026-03-10",
+    "tags": ["About", "Content"]
+  },
+  {
+    "id": "education-row-layout",
+    "type": "text",
+    "title": "Education row layout",
+    "body": "Converted the education block into image + text columns to match site rhythm.",
+    "createdAt": "2026-03-09",
+    "tags": ["Section", "Alignment"]
+  },
+  {
+    "id": "typography-pass-v2",
+    "type": "text",
+    "title": "Typography consistency pass",
+    "body": "Harmonized labels, body copy, and section subtitles across About, Lab, and Contact.",
+    "createdAt": "2026-03-08",
+    "tags": ["Type", "System"]
+  },
+  {
+    "id": "small-motion-drop",
+    "type": "text",
+    "title": "Small motion drop",
+    "body": "Added subtle reveal timing tweaks to make transitions feel less abrupt.",
+    "createdAt": "2026-03-07",
+    "tags": ["Motion", "GSAP"]
   }
 ]
