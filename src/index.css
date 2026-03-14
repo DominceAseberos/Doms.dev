@@ -462,8 +462,8 @@ body.ep-expanded .nav-links {
         padding: 32px 24px;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        gap: 18px;
     }
 
     .nav-logo {
@@ -471,13 +471,15 @@ body.ep-expanded .nav-links {
         font-size: 11px;
         display: flex;
         justify-content: center;
-        width: 100%;
+        width: auto;
+        flex: 0 0 auto;
     }
 
     .nav-links {
         gap: 16px;
         justify-content: center;
-        width: 100%;
+        width: auto;
+        flex-wrap: nowrap;
     }
 
     .nav-links a {
