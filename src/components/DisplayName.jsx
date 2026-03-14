@@ -18,7 +18,7 @@ const DisplayName = ({
     return (
         <div className={wrapperClasses}>
             {showKicker && (
-                <div className="font-mono text-sm tracking-[0.4em] text-white/30 uppercase mb-6">
+                <div className="ui-sub-label text-sm mb-6">
                     {kickerText}
                 </div>
             )}

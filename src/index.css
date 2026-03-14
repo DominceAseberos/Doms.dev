@@ -34,6 +34,43 @@ input[type="button"] {
     cursor: url('./assets/cursor-hover.svg') 12 12, pointer !important;
 }
 
+.ui-body-copy {
+    color: rgba(255, 255, 255, 0.82);
+    font-weight: 400;
+    line-height: 1.7;
+}
+
+.ui-sub-label {
+    color: rgba(255, 255, 255, 0.74);
+    font-size: clamp(0.72rem, 0.68rem + 0.12vw, 0.9rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+}
+
+.ui-field-label {
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+}
+
+.ui-pill {
+    color: rgba(255, 255, 255, 0.92);
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    font-size: clamp(0.68rem, 0.64rem + 0.08vw, 0.78rem);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.ui-pill:hover {
+    color: rgba(255, 255, 255, 1);
+    border-color: rgba(200, 255, 62, 0.55);
+}
+
 /* ── NAV ── */
 nav {
     position: fixed;

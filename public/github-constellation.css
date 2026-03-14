@@ -12,7 +12,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%}
 
 /* legend */
 #legend{position:absolute;bottom:24px;left:28px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}
-.leg{display:flex;align-items:center;gap:7px;font-size:9px;color:rgba(255,255,255,.32);letter-spacing:1.5px;text-transform:uppercase}
+.leg{display:flex;align-items:center;gap:7px;font-size:11px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase}
 .ldot{border-radius:50%;flex-shrink:0}
 
 /* ── UNIVERSE OVERVIEW PANEL ── */
@@ -31,16 +31,16 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%}
   padding:10px 20px 8px;
   border-bottom:1px solid rgba(255,255,255,.06);
 }
-#univ-title{font-size:9px;color:rgba(255,255,255,.28);letter-spacing:3px;text-transform:uppercase}
-#univ-pulse{display:flex;align-items:center;gap:6px;font-size:9px;color:rgba(100,200,140,.55);letter-spacing:2px;text-transform:uppercase}
+#univ-title{font-size:11px;color:rgba(255,255,255,.42);letter-spacing:3px;text-transform:uppercase}
+#univ-pulse{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(100,200,140,.7);letter-spacing:2px;text-transform:uppercase}
 .pulse-dot{width:6px;height:6px;border-radius:50%;background:rgba(100,200,140,.7);animation:pulseDot 2s ease-in-out infinite}
 @keyframes pulseDot{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 #univ-metrics{display:flex;align-items:stretch;padding:0}
 .univ-metric{flex:1;padding:12px 16px 14px;text-align:center;border-right:1px solid rgba(255,255,255,.05)}
 .univ-metric:last-child{border-right:none}
 .um-val{font-size:22px;font-weight:700;color:rgba(255,255,255,.92);letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}
-.um-lbl{font-size:8px;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;margin-top:5px}
-.um-sub{font-size:9px;color:rgba(255,255,255,.2);margin-top:3px;letter-spacing:.5px}
+.um-lbl{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:2px;text-transform:uppercase;margin-top:5px}
+.um-sub{font-size:11px;color:rgba(255,255,255,.38);margin-top:3px;letter-spacing:.5px}
 .um-bar{height:2px;border-radius:1px;margin-top:9px;overflow:hidden;background:rgba(255,255,255,.06)}
 .um-bar-fill{height:100%;border-radius:1px;transition:width .8s ease}
 .um-accent-blue{color:rgba(100,170,255,.9)}
@@ -48,9 +48,9 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%}
 .um-accent-amber{color:rgba(255,190,60,.9)}
 .um-accent-purple{color:rgba(180,120,255,.9)}
 #univ-langbar{border-top:1px solid rgba(255,255,255,.05);padding:8px 20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.lang-chip{display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(255,255,255,.32);letter-spacing:1px}
+.lang-chip{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.52);letter-spacing:1px}
 .lang-chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.lang-chip b{color:rgba(255,255,255,.5);font-weight:500}
+.lang-chip b{color:rgba(255,255,255,.72);font-weight:600}
 @media(max-width:640px){
   #universe{min-width:calc(100vw - 32px);bottom:16px}
   .um-val{font-size:17px}

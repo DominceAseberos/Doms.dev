@@ -56,7 +56,7 @@ const ContactPage = () => {
 
             <main className="relative z-10 pt-32 pb-24 px-6 sm:px-12 max-w-7xl mx-auto">
                 <div className="contact-header mb-16 sm:mb-24">
-                    <span className="font-mono text-[10px] sm:text-xs text-white/30 uppercase tracking-[0.6em] mb-4 block">
+                    <span className="ui-sub-label sm:text-xs mb-4 block">
                         Available for Collaboration
                     </span>
                     <h1 className="text-6xl sm:text-8xl md:text-9xl font-black uppercase tracking-tighter leading-[0.8] mb-8">
@@ -70,31 +70,31 @@ const ContactPage = () => {
                     <div className="w-full lg:w-3/5">
                         <form onSubmit={handleSubmit} className="space-y-8" ref={formRef}>
                             <div className="contact-form-group border-b border-white/10 focus-within:border-[#c8ff3e] transition-colors pb-4">
-                                <label className="font-mono text-[9px] text-white/30 uppercase tracking-[0.4em] mb-4 block">01 — Name</label>
+                                <label className="ui-field-label mb-4 block">01 — Name</label>
                                 <input
                                     type="text"
                                     placeholder="Your Name"
-                                    className="w-full bg-transparent border-none outline-none text-xl sm:text-2xl font-light placeholder:text-white/10"
+                                    className="w-full bg-transparent border-none outline-none text-xl sm:text-2xl font-normal placeholder:text-white/20"
                                     required
                                 />
                             </div>
 
                             <div className="contact-form-group border-b border-white/10 focus-within:border-[#c8ff3e] transition-colors pb-4">
-                                <label className="font-mono text-[9px] text-white/30 uppercase tracking-[0.4em] mb-4 block">02 — Email</label>
+                                <label className="ui-field-label mb-4 block">02 — Email</label>
                                 <input
                                     type="email"
                                     placeholder="Your Email"
-                                    className="w-full bg-transparent border-none outline-none text-xl sm:text-2xl font-light placeholder:text-white/10"
+                                    className="w-full bg-transparent border-none outline-none text-xl sm:text-2xl font-normal placeholder:text-white/20"
                                     required
                                 />
                             </div>
 
                             <div className="contact-form-group border-b border-white/10 focus-within:border-[#c8ff3e] transition-colors pb-4">
-                                <label className="font-mono text-[9px] text-white/30 uppercase tracking-[0.4em] mb-4 block">03 — Message</label>
+                                <label className="ui-field-label mb-4 block">03 — Message</label>
                                 <textarea
                                     rows="1"
                                     placeholder="Your Message"
-                                    className="w-full bg-transparent border-none outline-none text-xl sm:text-2xl font-light placeholder:text-white/10 resize-none"
+                                    className="w-full bg-transparent border-none outline-none text-xl sm:text-2xl font-normal placeholder:text-white/20 resize-none"
                                     onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }}
                                     required
                                 />
@@ -115,12 +115,12 @@ const ContactPage = () => {
                     <div className="w-full lg:w-2/5 flex flex-col justify-between py-4">
                         <div className="contact-info space-y-12">
                             <div>
-                                <h3 className="font-mono text-[10px] text-white/20 uppercase tracking-[0.4em] mb-6">Contact Details</h3>
+                                <h3 className="ui-sub-label mb-6">Contact Details</h3>
                                 <a href="mailto:hello@domince.dev" className="text-xl sm:text-2xl hover:text-[#c8ff3e] transition-colors">hello@domince.dev</a>
                             </div>
 
                             <div>
-                                <h3 className="font-mono text-[10px] text-white/20 uppercase tracking-[0.4em] mb-6">Socials</h3>
+                                <h3 className="ui-sub-label mb-6">Socials</h3>
                                 <div className="flex flex-col gap-3">
                                     <a href="#" className="text-lg hover:text-[#c8ff3e] transition-colors">Twitter (X)</a>
                                     <a href="#" className="text-lg hover:text-[#c8ff3e] transition-colors">LinkedIn</a>
@@ -129,8 +129,8 @@ const ContactPage = () => {
                             </div>
 
                             <div>
-                                <h3 className="font-mono text-[10px] text-white/20 uppercase tracking-[0.4em] mb-6">Location</h3>
-                                <p className="text-lg text-white/60">Digital Space (Remote)</p>
+                                <h3 className="ui-sub-label mb-6">Location</h3>
+                                <p className="text-lg ui-body-copy">Digital Space (Remote)</p>
                             </div>
                         </div>
                     </div>

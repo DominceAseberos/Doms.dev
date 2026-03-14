@@ -65,7 +65,7 @@ const MagneticImage = ({ rotateMultiplier = 2, offsetClass, placeholderText, fwd
             />
 
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center p-4">
-                <span className="text-gray-400 font-mono text-sm tracking-widest uppercase opacity-70 bg-black/50 px-3 py-1 rounded-full group-hover:text-[#c8ff3e] transition-colors">{placeholderText}</span>
+                <span className="ui-sub-label text-sm opacity-80 bg-black/50 px-3 py-1 rounded-full group-hover:text-[#c8ff3e] transition-colors">{placeholderText}</span>
             </div>
         </div>
     );
@@ -150,7 +150,7 @@ const MoreProjectsSection = () => {
                     {/* Left Side: Explanatory Text & CTA — order 3 on mobile, natural on desktop */}
                     <div className="w-full lg:w-1/2 order-3 lg:order-none">
                         <h2 ref={textRef1} className="text-5xl md:text-7xl font-bold tracking-tight mb-8 text-[#f2ede6]">More Projects</h2>
-                        <p ref={textRef2} className="font-mono text-xs md:text-sm text-white/30 uppercase tracking-[0.3em] mb-10 leading-relaxed max-w-lg font-bold">
+                        <p ref={textRef2} className="ui-body-copy text-base md:text-lg mb-10 max-w-lg">
                             Beyond the highlighted case studies, I have an archive of work and side ventures. Explore the full catalog to see the breadth of my capabilities.
                         </p>
                         <div ref={btnRef}>

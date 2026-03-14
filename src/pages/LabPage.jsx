@@ -11,13 +11,13 @@ const LabPage = () => {
             </div>
 
             <main className="relative z-10 pt-48 px-6 text-center">
-                <span className="font-mono text-xs text-white/30 uppercase tracking-[0.6em] mb-8 block">
+                <span className="ui-sub-label mb-8 block">
                     Experimental Hub
                 </span>
                 <h1 className="text-7xl sm:text-9xl font-black uppercase tracking-tighter mb-12">
                     The <span className="text-[#c8ff3e]">Lab</span>
                 </h1>
-                <p className="max-w-xl mx-auto text-white/50 text-lg sm:text-xl font-light leading-relaxed">
+                <p className="max-w-xl mx-auto ui-body-copy text-lg sm:text-xl">
                     Under construction. This is where the code experiments live. Check back soon for interactive prototypes and architectural puzzles.
                 </p>
             </main>

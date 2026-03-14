@@ -153,7 +153,7 @@ const LabSection = () => {
                     {/* Left Side: Explanatory Text & CTA */}
                     <div className="w-full lg:w-1/2">
                         <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 text-[#f2ede6]">The Sandbox</h2>
-                        <p className="font-mono text-xs md:text-sm text-white/30 uppercase tracking-[0.3em] mb-10 leading-relaxed max-w-lg font-bold">
+                        <p className="ui-body-copy text-base md:text-lg mb-10 max-w-lg">
                             Throwing code at the wall to see what sticks. Experimental concepts, personal prototypes, and passion projects built for the joy of creation.
                         </p>
                         <a
@@ -209,7 +209,7 @@ const LabSection = () => {
                                 <div className="w-24 h-24 border border-[rgba(200,255,62,0.3)] rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(200,255,62,0.1)] group-hover:shadow-[0_0_50px_rgba(200,255,62,0.3)] transition-shadow duration-500">
                                     <div className="w-10 h-10 bg-[#c8ff3e] rounded-full blur-sm opacity-80 animate-ping"></div>
                                 </div>
-                                <span className="text-white/30 font-mono text-[9px] md:text-sm tracking-[0.4em] uppercase font-bold">Interactive Preview</span>
+                                <span className="ui-sub-label text-[10px] md:text-sm">Interactive Preview</span>
                             </div>
                         </div>
                     </div>

@@ -49,7 +49,7 @@ const ProjectTabs = ({ onView }) => {
             <div className="project-tabs-header">
                 <div className="project-tabs-title">
                     <h2 className="text-5xl md:text-7xl font-bold tracking-tight text-[#f2ede6]">Projects</h2>
-                    <p className="text-white/30 font-mono text-sm md:text-base max-w-2xl mt-4">
+                    <p className="ui-body-copy text-base md:text-lg max-w-2xl mt-4">
                         Browse a curated set of work. Toggle a category to surface the projects that match your interests.
                     </p>
                 </div>

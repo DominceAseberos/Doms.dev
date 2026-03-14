@@ -24,21 +24,21 @@ const AboutPage = () => {
                     {/* Sticky Sidebar Info */}
                     <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-12">
                         <div className="space-y-4">
-                            <p className="text-[#c8ff3e] font-mono text-sm tracking-widest uppercase mb-2">Location</p>
-                            <p className="text-2xl font-light">Worldwide / Remote</p>
+                            <p className="text-[#c8ff3e] ui-sub-label text-sm mb-2">Location</p>
+                            <p className="text-2xl ui-body-copy">Worldwide / Remote</p>
                         </div>
 
                         <div className="space-y-4">
-                            <p className="text-[#c8ff3e] font-mono text-sm tracking-widest uppercase mb-2">Social</p>
+                            <p className="text-[#c8ff3e] ui-sub-label text-sm mb-2">Social</p>
                             <div className="flex flex-col space-y-2">
-                                <a href="#" className="text-xl font-light text-gray-400 hover:text-white transition-colors duration-300">Instagram</a>
-                                <a href="#" className="text-xl font-light text-gray-400 hover:text-white transition-colors duration-300">Twitter (X)</a>
-                                <a href="#" className="text-xl font-light text-gray-400 hover:text-white transition-colors duration-300">LinkedIn</a>
+                                <a href="#" className="text-xl text-white/82 hover:text-white transition-colors duration-300">Instagram</a>
+                                <a href="#" className="text-xl text-white/82 hover:text-white transition-colors duration-300">Twitter (X)</a>
+                                <a href="#" className="text-xl text-white/82 hover:text-white transition-colors duration-300">LinkedIn</a>
                             </div>
                         </div>
 
                         <div className="space-y-4">
-                            <p className="text-[#c8ff3e] font-mono text-sm tracking-widest uppercase mb-2">Capabilities</p>
+                            <p className="text-[#c8ff3e] ui-sub-label text-sm mb-2">Capabilities</p>
                             <div className="flex flex-wrap gap-2 text-sm">
                                 {['Creative Development', 'Interaction Design', 'Technical Architecture', 'Custom Animation', 'Full-stack Systems'].map(item => (
                                     <span key={item} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-gray-300">{item}</span>
@@ -54,7 +54,7 @@ const AboutPage = () => {
                                 Engineering <br />
                                 <span className="text-[#c8ff3e]">Digital Poetry</span>
                             </h1>
-                            <p className="text-2xl md:text-3xl font-light text-gray-400 leading-relaxed max-w-4xl">
+                            <p className="text-2xl md:text-3xl ui-body-copy max-w-4xl">
                                 I'm Domince, a multi-disciplinary craftsman dedicated to pushing the technical boundaries of what's possible on the web.
                             </p>
                         </section>
@@ -62,13 +62,13 @@ const AboutPage = () => {
                         <section className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/10 pt-12">
                             <div className="space-y-4">
                                 <h3 className="text-xl font-bold uppercase tracking-wider">The Philosophy</h3>
-                                <p className="text-gray-400 font-light leading-relaxed">
+                                <p className="ui-body-copy">
                                     I believe the best digital experiences aren't just seen—they're felt. My work focuses on creating fluid, visceral interactions that respond to user intent with surgical precision.
                                 </p>
                             </div>
                             <div className="space-y-4">
                                 <h3 className="text-xl font-bold uppercase tracking-wider">The Approach</h3>
-                                <p className="text-gray-400 font-light leading-relaxed">
+                                <p className="ui-body-copy">
                                     I avoid the "templated" mindset. Every line of code is handwritten to serve a specific purpose, prioritizing efficiency, scalability, and that elusive 'wow' factor.
                                 </p>
                             </div>
@@ -77,7 +77,7 @@ const AboutPage = () => {
                         <section className="space-y-12 bg-white/5 border border-white/10 p-8 md:p-12 rounded-[2rem] backdrop-blur-md">
                             <div className="space-y-4">
                                 <h3 className="text-xl font-bold uppercase tracking-wider text-[#c8ff3e]">Beyond the browser</h3>
-                                <p className="text-xl font-light text-gray-300 leading-relaxed">
+                                <p className="text-xl ui-body-copy">
                                     When I'm not deep in a GSAP timeline or refining a React component, you'll probably find me exploring the latest in creative technology, contributing to open-source experiments, or searching for the perfect cup of coffee.
                                 </p>
                             </div>

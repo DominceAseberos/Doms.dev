@@ -107,7 +107,7 @@ const AboutSection = forwardRef((props, ref) => {
                                 className="about-name-compact"
                             />
                             <div ref={textRef} className="flex flex-col gap-8">
-                                <div className="space-y-6 text-gray-400 text-base sm:text-lg md:text-xl font-light leading-relaxed">
+                                <div className="space-y-6 ui-body-copy text-base sm:text-lg md:text-xl">
                                     <p>
                                         I'm Domince Aseberos, and I build interactive web experiences powered by GSAP, React, and modern frontend architecture. I focus on smooth motion, clean UI systems, and performance-first implementation.
                                     </p>
@@ -117,7 +117,7 @@ const AboutSection = forwardRef((props, ref) => {
                                 </div>
                                 <div className="flex flex-wrap gap-2 sm:gap-4">
                                     {['Creative Dev', 'React', 'GSAP', 'Next.js', 'UI Architect'].map((tag) => (
-                                        <span key={tag} className="text-white/55 bg-black/30 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.4em] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 hover:border-[#c8ff3e]/40 hover:text-white transition-all duration-300 backdrop-blur-md">
+                                        <span key={tag} className="ui-pill px-4 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all duration-300 backdrop-blur-md">
                                             {tag}
                                         </span>
                                     ))}
@@ -147,7 +147,7 @@ const AboutSection = forwardRef((props, ref) => {
                             </h2>
                         </div>
                         <div ref={textRef} className="w-full max-w-3xl flex flex-col items-center">
-                            <div className="space-y-6 text-gray-400 text-base sm:text-lg md:text-xl font-light leading-relaxed text-center">
+                            <div className="space-y-6 ui-body-copy text-base sm:text-lg md:text-xl text-center">
                                 <p>
                                     I'm Domince Aseberos, and I build interactive web experiences powered by GSAP, React, and modern frontend architecture. I focus on smooth motion, clean UI systems, and performance-first implementation.
                                 </p>
@@ -157,7 +157,7 @@ const AboutSection = forwardRef((props, ref) => {
                             </div>
                             <div className="flex flex-wrap gap-2 sm:gap-4 pt-8 sm:pt-10 justify-center">
                                 {['Creative Dev', 'React', 'GSAP', 'Next.js', 'UI Architect'].map((tag) => (
-                                    <span key={tag} className="text-white/55 bg-black/30 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.4em] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 hover:border-[#c8ff3e]/40 hover:text-white transition-all duration-300 backdrop-blur-md">
+                                    <span key={tag} className="ui-pill px-4 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all duration-300 backdrop-blur-md">
                                         {tag}
                                     </span>
                                 ))}

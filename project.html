@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Dominic Aseberos</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+
+/* ─────────────────────────────────
+   RESET & TOKENS
+───────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --ink:   #0a0a08;
+  --paper: #f2ede6;
+  --acid:  #c8ff3e;
+  --fog:   #b8b2a8;
+  --mid:   #6b6560;
+  --line:  rgba(184,178,168,.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Space Mono', monospace;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+body * { cursor: none !important; }
+
+/* ─────────────────────────────────
+   CURSOR
+───────────────────────────────── */
+#cursor {
+  position: fixed;
+  width: 14px; height: 14px;
+  background: var(--acid);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 999999;
+  left: 0; top: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: width .2s, height .2s, background .2s, opacity .2s;
+  box-shadow: 0 0 0 1px rgba(200,255,62,.25), 0 0 18px rgba(200,255,62,.35);
+  will-change: left, top;
+}
+#cursor.on  { opacity: 1; }
+#cursor.big {
+  width: 50px; height: 50px;
+  background: transparent;
+  border: 1.5px solid var(--acid);
+  box-shadow: 0 0 20px rgba(200,255,62,.15);
+}
+
+/* ─────────────────────────────────
+   PROGRESS BAR
+───────────────────────────────── */
+#progress {
+  position: fixed; top:0; left:0;
+  height: 2px; width: 0%;
+  background: var(--acid);
+  z-index: 9999;
+  transform-origin: left;
+}
+
+/* ─────────────────────────────────
+   NAV
+───────────────────────────────── */
+nav {
+  position: fixed; top:0; left:0; right:0;
+  z-index: 1000;
+  padding: 24px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--line);
+  background: rgba(10,10,8,.85);
+  backdrop-filter: blur(16px);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: .14em;
+  color: var(--paper); text-decoration: none;
+}
+.nav-logo span { color: var(--acid); }
+.nav-right {
+  display: flex; align-items: center; gap: 36px;
+}
+.nav-right a {
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--mid); text-decoration: none;
+  transition: color .2s;
+}
+.nav-right a:hover, .nav-right a.active { color: var(--acid); }
+.nav-avail {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--fog);
+}
+.nav-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--acid);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%,100% { opacity:1; } 50% { opacity:.3; }
+}
+
+/* ─────────────────────────────────
+   PAGE WRAPPER
+───────────────────────────────── */
+.page { padding-top: 89px; }
+
+/* ─────────────────────────────────
+   SECTION HEADER
+───────────────────────────────── */
+.proj-header {
+  padding: 80px 48px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 48px;
+}
+.ph-left {}
+.ph-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 10px; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--acid); margin-bottom: 20px;
+}
+.ph-eyebrow::before { content:''; display:block; width:30px; height:1px; background:var(--acid); }
+.ph-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(64px, 10vw, 140px);
+  line-height: .88; letter-spacing: .01em;
+  color: var(--paper);
+}
+.ph-title em {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(242,237,230,.25);
+  font-style: normal;
+}
+.ph-right {
+  max-width: 260px;
+  font-size: 12px; line-height: 1.8; color: var(--mid);
+  padding-bottom: 8px;
+}
+.ph-right strong { color: var(--paper); display:block; margin-bottom:6px; }
+
+/* ─────────────────────────────────
+   FILTERS + BREATHING BAR
+───────────────────────────────── */
+.proj-controls {
+  padding: 0 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 64px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.filters { display: flex; gap: 6px; }
+.f-btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; letter-spacing: .18em; text-transform: uppercase;
+  padding: 7px 18px; border-radius: 100px;
+  border: 1px solid rgba(184,178,168,.14);
+  background: transparent; color: var(--fog);
+  transition: all .2s;
+}
+.f-btn.active, .f-btn:hover {
+  background: var(--acid); border-color: var(--acid); color: var(--ink);
+}
+
+/* Breathing bar on the right of controls */
+.breath-wrap {
+  display: flex; align-items: center; gap: 14px;
+}
+.breath-label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--mid); }
+.breath-track {
+  width: 160px; height: 1px;
+  background: rgba(184,178,168,.1);
+  position: relative;
+}
+.breath-fill {
+  position: absolute; top:0; left:50%;
+  transform: translateX(-50%);
+  height: 1px; width: 0%;
+  background: linear-gradient(90deg, transparent, var(--acid) 50%, transparent);
+  transition: none;
+}
+.breath-dot {
+  position: absolute; top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width: 5px; height: 5px; border-radius:50%;
+  background: var(--acid);
+  box-shadow: 0 0 10px 3px rgba(200,255,62,.45);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 8px 2px rgba(200,255,62,.4); transform:translate(-50%,-50%) scale(1); }
+  50%      { box-shadow: 0 0 18px 5px rgba(200,255,62,.15); transform:translate(-50%,-50%) scale(1.6); }
+}
+.breath-pct { font-size: 9px; letter-spacing: .16em; color: var(--acid); min-width: 28px; }
+
+/* ─────────────────────────────────
+   THE GRID
+───────────────────────────────── */
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Size classes */
+.pg-wide   { grid-column: span 7; }
+.pg-mid    { grid-column: span 5; }
+.pg-half   { grid-column: span 6; }
+.pg-third  { grid-column: span 4; }
+.pg-full   { grid-column: span 12; }
+
+/* Base card */
+.pg-card {
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  min-height: 400px;
+  transition: background .3s;
+}
+.pg-card:hover { background: #0d0d0b; }
+
+/* Visual zone */
+.pg-vis {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+}
+.pg-vis-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(145deg, var(--c1,#111), var(--c2,#1a1a1a));
+}
+.pg-vis-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.pg-glow {
+  position: absolute; top:-40px; left:-40px;
+  width: 240px; height: 240px; border-radius:50%;
+  background: var(--glow, rgba(200,255,62,.06));
+  filter: blur(60px);
+  pointer-events: none;
+}
+.pg-mock {
+  position: absolute; inset: 0;
+  display: flex; align-items: center;
+  padding: 32px 36px;
+  gap: 20px;
+}
+.pg-mock-left { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+.pg-bar { height: 5px; border-radius: 3px; }
+.pg-mock-tag {
+  margin-top: 12px;
+  font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(184,178,168,.3);
+}
+.pg-mock-icon { font-size: 56px; opacity: .38; flex-shrink: 0; }
+.pg-vignette {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(8,8,6,.9) 0%, rgba(8,8,6,.05) 55%, transparent 100%);
+}
+.pg-date {
+  position: absolute; top:18px; right:18px;
+  font-size: 9px; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(184,178,168,.4);
+  background: rgba(10,10,8,.65);
+  padding: 4px 10px; border-radius: 3px;
+  border: 1px solid rgba(184,178,168,.1);
+}
+
+/* Info zone */
+.pg-info {
+  padding: 22px 28px 26px;
+  border-top: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative;
+}
+.pg-num {
+  font-size: 9px; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--acid);
+}
+.pg-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(17px, 1.7vw, 24px); line-height: 1.2;
+  color: var(--paper);
+}
+.pg-type {
+  font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--mid);
+}
+.pg-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
+.pg-pill {
+  font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid rgba(184,178,168,.13);
+  border-radius: 100px; color: var(--fog);
+}
+
+/* Arrow */
+.pg-arrow {
+  position: absolute; bottom: 22px; right: 22px;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid rgba(184,178,168,.13);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--mid);
+  transition: border-color .2s, color .2s, transform .25s;
+}
+.pg-card:hover .pg-arrow {
+  border-color: var(--acid); color: var(--acid);
+  transform: rotate(-45deg);
+}
+
+/* ── Hover overlay ── */
+.pg-overlay {
+  position: absolute; inset: 0; z-index: 20;
+  background: rgba(8,8,6,.94);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+  display: flex; flex-direction: column;
+  justify-content: center; padding: 40px;
+}
+.pg-card:hover .pg-overlay { opacity: 1; pointer-events: auto; }
+
+.ov-tag {
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--acid); margin-bottom: 14px;
+}
+.ov-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(20px, 2.2vw, 32px); line-height: 1.15;
+  color: var(--paper); margin-bottom: 14px;
+}
+.ov-desc {
+  font-size: 11.5px; line-height: 1.85; color: var(--fog);
+  margin-bottom: 22px;
+}
+.ov-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 26px; }
+.ov-pill {
+  font-size: 9px; letter-spacing: .11em; text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid rgba(200,255,62,.28);
+  border-radius: 100px; color: var(--acid);
+}
+.ov-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink); background: var(--acid);
+  padding: 11px 24px; text-decoration: none; border-radius: 3px;
+  width: fit-content; transition: background .18s;
+}
+.ov-link:hover { background: var(--paper); }
+
+/* ── Stat cell ── */
+.pg-stat {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 28px; padding: 40px;
+  min-height: 400px;
+}
+.pg-stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 88px; line-height: 1; color: var(--acid);
+}
+.pg-stat-label {
+  font-size: 9px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--mid); margin-top: 2px;
+}
+.pg-stat-div { width: 1px; height: 36px; background: rgba(184,178,168,.14); }
+.pg-stat-year {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px; line-height: 1; color: var(--paper);
+}
+
+/* ─────────────────────────────────
+   FOOTER ROW
+───────────────────────────────── */
+.proj-footer {
+  padding: 32px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--line);
+}
+.pf-copy { font-size: 10px; letter-spacing: .12em; color: var(--mid); }
+.pf-links { display: flex; gap: 24px; }
+.pf-links a {
+  font-size: 10px; letter-spacing: .14em; color: var(--mid);
+  text-decoration: none; transition: color .2s;
+}
+.pf-links a:hover { color: var(--acid); }
+
+/* ─────────────────────────────────
+   CARD REVEAL INIT STATE
+───────────────────────────────── */
+.pg-card { opacity: 0; transform: translateY(32px); }
+
+/* ─────────────────────────────────
+   RESPONSIVE
+───────────────────────────────── */
+@media (max-width: 900px) {
+  .pg-wide, .pg-mid, .pg-half, .pg-third { grid-column: span 12; }
+  .proj-header { grid-template-columns: 1fr; }
+  .ph-right { max-width: 100%; }
+  nav { padding: 20px 24px; }
+  .proj-header, .proj-controls { padding-left: 24px; padding-right: 24px; }
+  .breath-wrap { display: none; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+<!-- Progress -->
+<div id="progress"></div>
+
+<!-- Nav -->
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="proj-header">
+    <div class="ph-left">
+      <div class="ph-eyebrow">Selected Work</div>
+      <div class="ph-title">Pro<em>jects</em></div>
+    </div>
+    <div class="ph-right">
+      <strong>5 Case Studies — 2023–2024</strong>
+      Browse a curated set of work. Each one built with intention, shipped without compromise.
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="proj-controls">
+    <div class="filters">
+      <button class="f-btn active" data-filter="all">All</button>
+      <button class="f-btn" data-filter="portfolio">Portfolio</button>
+      <button class="f-btn" data-filter="fullstack">Full Stack</button>
+      <button class="f-btn" data-filter="ai">AI / ML</button>
+    </div>
+    <div class="breath-wrap">
+      <span class="breath-label">Scroll</span>
+      <div class="breath-track">
+        <div class="breath-fill" id="breathFill"></div>
+        <div class="breath-dot"></div>
+      </div>
+      <span class="breath-pct" id="breathPct">0%</span>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="proj-grid">
+
+    <!-- 01 · WIDE · Banana Leaf -->
+    <div class="pg-card pg-wide" data-cat="ai"
+         style="--c1:#061508;--c2:#0b2210;--glow:rgba(50,190,65,.1)">
+      <div class="pg-vis">
+        <div class="pg-vis-bg"></div>
+        <div class="pg-glow"></div>
+        <div class="pg-mock">
+          <div class="pg-mock-left">
+            <div class="pg-bar" style="width:72%;background:rgba(55,190,65,.55)"></div>
+            <div class="pg-bar" style="width:44%;background:rgba(55,190,65,.35)"></div>
+            <div class="pg-bar" style="width:88%;background:rgba(55,190,65,.44)"></div>
+            <div class="pg-mock-tag">Python · OpenCV · scikit-learn · Flask</div>
+          </div>
+          <div class="pg-mock-icon">🍃</div>
+        </div>
+        <div class="pg-vignette"></div>
+        <div class="pg-date">NOV 2023</div>
+      </div>
+      <div class="pg-info">
+        <span class="pg-num">01</span>
+        <div class="pg-name">Banana Leaf Disease Detector</div>
+        <span class="pg-type">Machine Learning · Image Processing</span>
+        <div class="pg-pills">
+          <span class="pg-pill">Python</span>
+          <span class="pg-pill">OpenCV</span>
+          <span class="pg-pill">scikit-learn</span>
+          <span class="pg-pill">KNN</span>
+          <span class="pg-pill">Flask</span>
+        </div>
+        <div class="pg-arrow">↗</div>
+      </div>
+      <div class="pg-overlay">
+        <span class="ov-tag">Machine Learning · Nov 2023</span>
+        <div class="ov-title">Banana Leaf<br>Disease Detector</div>
+        <p class="ov-desc">ML web app built with Python, OpenCV, scikit-learn and Flask. Detects whether a banana leaf is Healthy, Unhealthy, or Not a Leaf using image processing and KNN classification.</p>
+        <div class="ov-pills">
+          <span class="ov-pill">Python</span><span class="ov-pill">OpenCV</span>
+          <span class="ov-pill">scikit-learn</span><span class="ov-pill">KNN</span><span class="ov-pill">Flask</span>
+        </div>
+        <a href="#" class="ov-link">View Details ↗</a>
+      </div>
+    </div>
+
+    <!-- 02 · MID · Focus Quest -->
+    <div class="pg-card pg-mid" data-cat="fullstack"
+         style="--c1:#0d0618;--c2:#170a30;--glow:rgba(120,70,240,.12)">
+      <div class="pg-vis">
+        <div class="pg-vis-bg"></div>
+        <div class="pg-glow"></div>
+        <div class="pg-mock">
+          <div class="pg-mock-left">
+            <div class="pg-bar" style="width:60%;background:rgba(130,70,240,.6)"></div>
+            <div class="pg-bar" style="width:30%;background:rgba(130,70,240,.35)"></div>
+            <div class="pg-bar" style="width:78%;background:rgba(130,70,240,.46)"></div>
+            <div class="pg-mock-tag">RPG · XP · Quests · Full Stack</div>
+          </div>
+          <div class="pg-mock-icon">⚔️</div>
+        </div>
+        <div class="pg-vignette"></div>
+        <div class="pg-date">FEB 2024</div>
+      </div>
+      <div class="pg-info">
+        <span class="pg-num">02</span>
+        <div class="pg-name">Focus Quest App</div>
+        <span class="pg-type">Productivity · RPG · Full Stack</span>
+        <div class="pg-pills">
+          <span class="pg-pill">React</span>
+          <span class="pg-pill">Node.js</span>
+          <span class="pg-pill">MongoDB</span>
+          <span class="pg-pill">GSAP</span>
+        </div>
+        <div class="pg-arrow">↗</div>
+      </div>
+      <div class="pg-overlay">
+        <span class="ov-tag">Full Stack · Feb 2024</span>
+        <div class="ov-title">Focus Quest App</div>
+        <p class="ov-desc">A productivity RPG app turning tasks into quests with XP and stats. Gamifies your workflow so every completed task feels like levelling up.</p>
+        <div class="ov-pills">
+          <span class="ov-pill">React</span><span class="ov-pill">Node.js</span>
+          <span class="ov-pill">MongoDB</span><span class="ov-pill">GSAP</span>
+        </div>
+        <a href="#" class="ov-link">View Details ↗</a>
+      </div>
+    </div>
+
+    <!-- 03 · MID · Baylora -->
+    <div class="pg-card pg-mid" data-cat="fullstack"
+         style="--c1:#08091a;--c2:#0e102c;--glow:rgba(55,110,240,.1)">
+      <div class="pg-vis">
+        <div class="pg-vis-bg"></div>
+        <div class="pg-glow"></div>
+        <div class="pg-mock">
+          <div class="pg-mock-left">
+            <div class="pg-bar" style="width:80%;background:rgba(55,110,240,.55)"></div>
+            <div class="pg-bar" style="width:50%;background:rgba(55,110,240,.34)"></div>
+            <div class="pg-bar" style="width:65%;background:rgba(55,110,240,.42)"></div>
+            <div class="pg-mock-tag">Marketplace · Auth · Bidding</div>
+          </div>
+          <div class="pg-mock-icon">⌚</div>
+        </div>
+        <div class="pg-vignette"></div>
+        <div class="pg-date">MAY 2024</div>
+      </div>
+      <div class="pg-info">
+        <span class="pg-num">03</span>
+        <div class="pg-name">Baylora</div>
+        <span class="pg-type">Marketplace · Trading Platform</span>
+        <div class="pg-pills">
+          <span class="pg-pill">React</span>
+          <span class="pg-pill">Node.js</span>
+          <span class="pg-pill">PostgreSQL</span>
+          <span class="pg-pill">JWT</span>
+        </div>
+        <div class="pg-arrow">↗</div>
+      </div>
+      <div class="pg-overlay">
+        <span class="ov-tag">Full Stack · May 2024</span>
+        <div class="ov-title">Baylora</div>
+        <p class="ov-desc">A modern marketplace and trading platform. Users can sell, trade, or mix transactions with bidding, verified profiles, and secure authentication.</p>
+        <div class="ov-pills">
+          <span class="ov-pill">React</span><span class="ov-pill">Node.js</span>
+          <span class="ov-pill">PostgreSQL</span><span class="ov-pill">JWT</span>
+        </div>
+        <a href="#" class="ov-link">View Details ↗</a>
+      </div>
+    </div>
+
+    <!-- 04 · WIDE · Templyx -->
+    <div class="pg-card pg-wide" data-cat="portfolio"
+         style="--c1:#0c0e16;--c2:#151a28;--glow:rgba(70,190,240,.09)">
+      <div class="pg-vis">
+        <div class="pg-vis-bg"></div>
+        <div class="pg-glow"></div>
+        <div class="pg-mock">
+          <div class="pg-mock-left">
+            <div class="pg-bar" style="width:90%;background:rgba(70,190,240,.5)"></div>
+            <div class="pg-bar" style="width:55%;background:rgba(70,190,240,.3)"></div>
+            <div class="pg-bar" style="width:72%;background:rgba(70,190,240,.4)"></div>
+            <div class="pg-mock-tag">Portfolio · Auth · Realtime · Community</div>
+          </div>
+          <div class="pg-mock-icon">💻</div>
+        </div>
+        <div class="pg-vignette"></div>
+        <div class="pg-date">AUG 2024</div>
+      </div>
+      <div class="pg-info">
+        <span class="pg-num">04</span>
+        <div class="pg-name">Templyx</div>
+        <span class="pg-type">Portfolio Platform · Developer Tool</span>
+        <div class="pg-pills">
+          <span class="pg-pill">React</span>
+          <span class="pg-pill">Supabase</span>
+          <span class="pg-pill">Tailwind</span>
+          <span class="pg-pill">Realtime</span>
+        </div>
+        <div class="pg-arrow">↗</div>
+      </div>
+      <div class="pg-overlay">
+        <span class="ov-tag">Full Stack · Aug 2024</span>
+        <div class="ov-title">Templyx</div>
+        <p class="ov-desc">A modern portfolio platform for developers with authentication, real-time features, and community interaction. Built for devs who want presence without the fuss.</p>
+        <div class="ov-pills">
+          <span class="ov-pill">React</span><span class="ov-pill">Supabase</span>
+          <span class="ov-pill">Tailwind</span><span class="ov-pill">Realtime</span>
+        </div>
+        <a href="#" class="ov-link">View Details ↗</a>
+      </div>
+    </div>
+
+    <!-- 05 · HALF · AI Summarizer -->
+    <div class="pg-card pg-half" data-cat="ai"
+         style="--c1:#0e0612;--c2:#1a0c22;--glow:rgba(190,70,240,.1)">
+      <div class="pg-vis">
+        <div class="pg-vis-bg"></div>
+        <div class="pg-glow"></div>
+        <div class="pg-mock">
+          <div class="pg-mock-left">
+            <div class="pg-bar" style="width:84%;background:rgba(190,70,240,.55)"></div>
+            <div class="pg-bar" style="width:40%;background:rgba(190,70,240,.3)"></div>
+            <div class="pg-bar" style="width:68%;background:rgba(190,70,240,.42)"></div>
+            <div class="pg-mock-tag">NLP · AI · Summarizer · FastAPI</div>
+          </div>
+          <div class="pg-mock-icon">🤖</div>
+        </div>
+        <div class="pg-vignette"></div>
+        <div class="pg-date">OCT 2024</div>
+      </div>
+      <div class="pg-info">
+        <span class="pg-num">05</span>
+        <div class="pg-name">AI Text Summarizer</div>
+        <span class="pg-type">AI · NLP · Web Application</span>
+        <div class="pg-pills">
+          <span class="pg-pill">Python</span>
+          <span class="pg-pill">NLP API</span>
+          <span class="pg-pill">React</span>
+          <span class="pg-pill">FastAPI</span>
+        </div>
+        <div class="pg-arrow">↗</div>
+      </div>
+      <div class="pg-overlay">
+        <span class="ov-tag">AI / NLP · Oct 2024</span>
+        <div class="ov-title">AI Text Summarizer</div>
+        <p class="ov-desc">A web app that generates concise summaries from long text or articles using an AI-powered NLP API. Fast, clean, and surprisingly accurate.</p>
+        <div class="ov-pills">
+          <span class="ov-pill">Python</span><span class="ov-pill">NLP API</span>
+          <span class="ov-pill">React</span><span class="ov-pill">FastAPI</span>
+        </div>
+        <a href="#" class="ov-link">View Details ↗</a>
+      </div>
+    </div>
+
+    <!-- Stat cell -->
+    <div class="pg-card pg-half" data-cat="all" style="opacity:1;transform:none;">
+      <div class="pg-stat">
+        <div>
+          <div class="pg-stat-num">5</div>
+          <div class="pg-stat-label">Projects Shipped</div>
+        </div>
+        <div class="pg-stat-div"></div>
+        <div>
+          <div class="pg-stat-year">2023–24</div>
+          <div class="pg-stat-label">Active Period</div>
+        </div>
+        <div class="pg-stat-div"></div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--paper);line-height:1;">4+</div>
+          <div class="pg-stat-label">Tech Stacks</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /proj-grid -->
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Cursor ──
+const cur = document.getElementById('cursor');
+let mx = 0, my = 0, cx = 0, cy = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.classList.add('on');
+}, { passive: true });
+document.addEventListener('mouseleave', () => cur.classList.remove('on'));
+document.addEventListener('mouseenter', () => cur.classList.add('on'));
+
+(function loop() {
+  cx += (mx - cx) * 0.16;
+  cy += (my - cy) * 0.16;
+  cur.style.left = cx + 'px';
+  cur.style.top  = cy + 'px';
+  requestAnimationFrame(loop);
+})();
+
+document.querySelectorAll('a, button, .pg-card').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('big'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+// ── Progress + breathing bar ──
+const fill = document.getElementById('breathFill');
+const pct  = document.getElementById('breathPct');
+
+window.addEventListener('scroll', () => {
+  const p = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  document.getElementById('progress').style.width = (p * 100) + '%';
+  fill.style.width = (p * 100) + '%';
+  pct.textContent  = Math.round(p * 100) + '%';
+}, { passive: true });
+
+// ── Card reveal ──
+gsap.utils.toArray('.pg-card').forEach((card, i) => {
+  gsap.to(card, {
+    opacity: 1, y: 0,
+    duration: 0.7,
+    ease: 'power3.out',
+    delay: (i % 3) * 0.07,
+    scrollTrigger: { trigger: card, start: 'top 90%' }
+  });
+});
+
+// ── Filter ──
+document.querySelectorAll('.f-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.pg-card').forEach(card => {
+      const cat = card.dataset.cat || 'all';
+      const show = filter === 'all' || cat === filter;
+      gsap.to(card, {
+        opacity: show ? 1 : 0.18,
+        scale:   show ? 1 : 0.97,
+        duration: 0.35,
+        ease: 'power2.out'
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>

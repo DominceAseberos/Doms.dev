@@ -40,8 +40,8 @@ const HeroSection = () => {
 
                 <DisplayName showKicker />
 
-                <p className="font-mono text-sm md:text-base tracking-[0.05em] leading-relaxed text-white/40 max-w-lg mt-8 mb-12">
-                    Crafting high-performance web experiences where code meets motion. <span className="text-white/60">GSAP · WebGL · React.</span>
+                <p className="ui-body-copy text-sm md:text-base tracking-[0.02em] max-w-lg mt-8 mb-12">
+                    Crafting high-performance web experiences where code meets motion. <span className="text-white/85">GSAP · WebGL · React.</span>
                 </p>
 
                 <div className="hero-cta">

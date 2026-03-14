@@ -62,7 +62,7 @@ const EducationSection = () => {
                 >
                     Educational Background
                 </h2>
-                <p className="font-mono text-[10px] md:text-sm text-white/30 uppercase tracking-[0.4em] mb-10 max-w-4xl mx-auto font-bold leading-relaxed text-center">
+                <p className="ui-sub-label md:text-sm mb-10 max-w-4xl mx-auto leading-relaxed text-center">
                     Academic Foundation
                 </p>
 
@@ -77,7 +77,7 @@ const EducationSection = () => {
                         <h3 className="text-2xl md:text-4xl font-bold text-[#f2ede6] tracking-tight">
                             University of Mindanao Tagum City
                         </h3>
-                        <p className="font-mono text-xs md:text-sm uppercase tracking-[0.25em] text-white/50">
+                        <p className="text-sm md:text-base uppercase tracking-[0.12em] text-white/82 font-medium">
                             Bachelor of Science in Computer Science
                         </p>
                     </div>
