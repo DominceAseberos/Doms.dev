@@ -21,6 +21,14 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
         const maskCircle = maskCircleRef.current;
         if (!stage || !maskCircle) return;
 
+        gsap.to(stage, {
+            boxShadow: '0 0 22px rgba(212,245,60,0.35), 0 0 60px rgba(212,245,60,0.12), inset 0 0 12px rgba(212,245,60,0.06)',
+            duration: 2.2,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+        });
+
         let turbTween;
         if (turbulenceRef.current) {
             turbTween = gsap.to(turbulenceRef.current, {
@@ -85,7 +93,7 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
     }, []);
 
     return (
-        <div ref={stageRef} className="relative w-full h-full overflow-hidden rounded-2xl border border-white/20 bg-black/50 backdrop-blur-sm">
+        <div ref={stageRef} className="relative w-full h-full overflow-hidden rounded-2xl border border-[#d4f53c]/30 bg-black/50 backdrop-blur-sm" style={{ cursor: 'none' }}>
             <div className="absolute inset-0 z-[1]">
                 <img
                     src={realSrc}
@@ -116,9 +124,11 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
                 />
             </div>
 
-            <div className="absolute inset-0 z-[2] border border-[#d4f53c]/10 pointer-events-none" />
-            <div className="absolute inset-[10%] z-[2] border border-[#d4f53c]/5 pointer-events-none" />
-            <div className="absolute inset-[20%] z-[2] border border-[#d4f53c]/[0.03] pointer-events-none" />
+            {/* Corner bracket accents */}
+            <div className="absolute top-3 left-3 z-[6] w-6 h-6 border-t-2 border-l-2 border-[#d4f53c]/70 rounded-tl-sm pointer-events-none" />
+            <div className="absolute top-3 right-3 z-[6] w-6 h-6 border-t-2 border-r-2 border-[#d4f53c]/70 rounded-tr-sm pointer-events-none" />
+            <div className="absolute bottom-3 left-3 z-[6] w-6 h-6 border-b-2 border-l-2 border-[#d4f53c]/70 rounded-bl-sm pointer-events-none" />
+            <div className="absolute bottom-3 right-3 z-[6] w-6 h-6 border-b-2 border-r-2 border-[#d4f53c]/70 rounded-br-sm pointer-events-none" />
 
             <svg className="absolute inset-0 h-full w-full pointer-events-none opacity-0" aria-hidden="true">
                 <defs>
