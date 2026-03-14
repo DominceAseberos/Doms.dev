@@ -177,6 +177,6 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%}
   #gh-panel{width:calc(100vw - 32px);right:16px;top:16px}
   #universe{bottom:16px}
   #hdr{display:none}
-  #filters{top:auto;bottom:70px;left:16px;transform:none;justify-content:flex-start;max-width:calc(100vw - 32px)}
+  #filters{display:none}
   #controls{bottom:70px;right:16px}
 }
