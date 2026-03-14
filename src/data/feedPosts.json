@@ -1,0 +1,10 @@
+[
+  {
+    "id": "welcome-feed",
+    "type": "text",
+    "title": "Welcome to my feed",
+    "body": "This is where I’ll share build notes, visual experiments, image drops, and short updates from current work. Visitors only see what I decide to publish here.",
+    "createdAt": "2026-03-15",
+    "tags": ["Update", "Personal"]
+  }
+]

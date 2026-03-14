@@ -6,6 +6,7 @@ import NavBar from '../../components/NavBar';
 import AboutSection from '../../components/AboutSection';
 import EducationSection from './components/EducationSection';
 import GithubContributionSection from './components/GithubContributionSection';
+import FeedSection from './components/FeedSection';
 import useLoadingStore from '../../store/useLoadingStore';
 
 const AboutPage = () => {
@@ -31,6 +32,7 @@ const AboutPage = () => {
                 <AboutSection ref={sectionRef} />
                 <EducationSection />
                 <GithubContributionSection />
+                <FeedSection />
             </div>
         </div>
     );
