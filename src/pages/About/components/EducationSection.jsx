@@ -35,15 +35,15 @@ const EducationSection = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative w-full min-h-[60vh] bg-transparent flex items-center justify-center z-10 py-32">
-            <div ref={contentRef} className="relative z-10 text-center text-white px-6 w-full max-w-5xl">
+        <section ref={sectionRef} className="relative w-full min-h-screen bg-transparent flex items-center justify-center z-10 py-16">
+            <div ref={contentRef} className="relative z-10 text-center text-white px-6 w-full max-w-5xl flex flex-col items-center">
                 <h2
-                    className="font-black uppercase tracking-tighter mb-6 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] leading-[1]"
+                    className="font-black uppercase tracking-tighter mb-6 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] leading-[1] text-center mx-auto"
                     style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
                 >
                     Educational Background
                 </h2>
-                <p className="font-mono text-[10px] md:text-sm text-white/30 uppercase tracking-[0.4em] mb-12 max-w-4xl mx-auto font-bold leading-relaxed">
+                <p className="font-mono text-[10px] md:text-sm text-white/30 uppercase tracking-[0.4em] mb-10 max-w-4xl mx-auto font-bold leading-relaxed text-center">
                     Academic Foundation
                 </p>
 
@@ -54,7 +54,7 @@ const EducationSection = () => {
                         className="w-full max-w-[560px] mx-auto rounded-xl border border-white/10"
                     />
 
-                    <div className="mt-8 space-y-4">
+                    <div className="mt-8 space-y-4 text-center">
                         <h3 className="text-2xl md:text-4xl font-bold text-[#f2ede6] tracking-tight">
                             University of Mindanao Tagum City
                         </h3>

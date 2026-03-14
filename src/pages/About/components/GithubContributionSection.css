@@ -98,20 +98,51 @@
 .github-contrib-footer {
     max-width: 1200px;
     margin: 1rem auto 0;
-    padding: 0.85rem 1rem;
+    padding: 1rem 1.1rem;
     border: 1px solid rgba(170, 255, 120, 0.28);
     background: rgba(143, 255, 92, 0.08);
     border-radius: 14px;
-    text-align: center;
-    font-size: 0.84rem;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
     color: rgba(255, 255, 255, 0.82);
+}
+
+.github-contrib-footer-title {
+    margin: 0;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(235, 255, 219, 0.95);
+}
+
+.github-contrib-footer-legend {
+    margin-top: 0.72rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem;
+}
+
+.github-contrib-footer-pill {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.58rem;
+    border-radius: 999px;
+    border: 1px solid rgba(170, 255, 120, 0.35);
+    background: rgba(143, 255, 92, 0.12);
+    color: rgba(220, 255, 195, 0.98);
+}
+
+.github-contrib-footer-actions {
+    margin-top: 0.72rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .github-contrib-footer-link {
     display: inline-block;
-    margin-left: 0.25rem;
     padding: 0.2rem 0.58rem;
     border-radius: 9999px;
     border: 1px solid rgba(170, 255, 120, 0.45);
@@ -146,5 +177,18 @@
     .github-contrib-card {
         height: 72vh;
         border-radius: 12px;
+    }
+
+    .github-contrib-footer {
+        padding: 0.85rem 0.8rem;
+    }
+
+    .github-contrib-footer-title {
+        font-size: 0.74rem;
+        letter-spacing: 0.12em;
+    }
+
+    .github-contrib-footer-pill {
+        font-size: 0.64rem;
     }
 }

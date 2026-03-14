@@ -321,10 +321,26 @@ const GithubContributionSection = () => {
                     loading="lazy"
                 />
             </div>
-            <p className="github-contrib-footer">
-                Find more GitHub contribution visualizations on{' '}
-                <Link to="/lab" className="github-contrib-footer-link">my Lab</Link>.
-            </p>
+            <div className="github-contrib-footer">
+                <p className="github-contrib-footer-title">Now Building: GitHub Population Universe</p>
+                <div className="github-contrib-footer-legend" aria-label="GitHub population visualization legend">
+                    <span className="github-contrib-footer-pill">Country = Universe</span>
+                    <span className="github-contrib-footer-pill">City = Planet</span>
+                    <span className="github-contrib-footer-pill">Users = Population</span>
+                    <span className="github-contrib-footer-pill">Repo = Individual Star</span>
+                </div>
+                <div className="github-contrib-footer-actions">
+                    <a
+                        href="https://gremote-universe.vercel.app/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="github-contrib-footer-link"
+                    >
+                        Visit GRemote Universe
+                    </a>
+                    <Link to="/lab" className="github-contrib-footer-link">Explore My Lab</Link>
+                </div>
+            </div>
         </section>
     );
 };
