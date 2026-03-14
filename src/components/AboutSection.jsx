@@ -122,6 +122,15 @@ const AboutSection = forwardRef((props, ref) => {
                                         </span>
                                     ))}
                                 </div>
+                                <div className="pt-2">
+                                    <a
+                                        href="/resume.pdf"
+                                        download
+                                        className="inline-flex items-center justify-center font-bold text-xs sm:text-sm uppercase tracking-[0.18em] text-[#0c0c0c] bg-[#c8ff3e] px-6 sm:px-8 py-3.5 rounded-full hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.24)] hover:shadow-[0_0_36px_rgba(255,255,255,0.22)]"
+                                    >
+                                        Download Resume
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         {/* Right column: profile card */}
