@@ -54,7 +54,7 @@ const EducationSection = () => {
 
     return (
         <section ref={sectionRef} className="relative w-full min-h-screen bg-transparent flex items-center justify-center z-10 py-16">
-            <div ref={contentRef} className="relative z-10 text-center text-white px-6 w-full max-w-5xl flex flex-col items-center">
+            <div ref={contentRef} className="relative z-10 text-center text-white px-6 w-full max-w-none flex flex-col items-center">
                 <h2
                     ref={headingRef}
                     className="font-black uppercase tracking-tighter mb-6 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] leading-[1] text-center mx-auto"
