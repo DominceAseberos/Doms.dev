@@ -198,7 +198,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%}
     <p>each star is a repository · orbits are contributors</p>
   </div>
 
-  <div id="hint">hover a star · scroll to zoom · drag to pan</div>
+  <div id="hint">hover a star &middot; scroll to zoom &middot; drag to pan &middot; pinch on mobile</div>
 
   <div id="filters"></div>
 
@@ -358,6 +358,17 @@ window.addEventListener('resize', resize);
 // ═══════════════════════════════════════════════════════════════════════════════
 // BUILD SCENE
 // ═══════════════════════════════════════════════════════════════════════════════
+function fitToView(){
+  if(!nodes.length) return;
+  const xs = nodes.map(n=>n.x), ys = nodes.map(n=>n.y);
+  const minX=Math.min(...xs), maxX=Math.max(...xs);
+  const minY=Math.min(...ys), maxY=Math.max(...ys);
+  const bw = maxX - minX + 200, bh = maxY - minY + 200;
+  const z = Math.min(W/bw, H/bh) * 0.80;
+  targetCamZ = Math.max(0.18, Math.min(1.2, z));
+  targetCamX = 0; targetCamY = 0;
+}
+
 function buildScene(){
   buildBgStars();
   buildNebulae();
@@ -365,6 +376,7 @@ function buildScene(){
   buildConstellationLines();
   buildFilters();
   updateStats();
+  fitToView();
 }
 
 function buildBgStars(){
@@ -397,10 +409,11 @@ function buildNodes(){
   const minC = Math.min(...filtered.map(r=>r.commits));
   const range = maxC - minC || 1;
 
-  // golden angle spiral from center
+  // golden angle spiral — world spread grows with repo count so nodes aren't cramped
   const golden = Math.PI*(3-Math.sqrt(5));
-  const maxR   = Math.min(W,H) * 0.36;
-  const minR   = Math.min(W,H) * 0.08;
+  const worldSpread = Math.max(Math.min(W,H)*0.42, filtered.length * 80);
+  const maxR   = worldSpread;
+  const minR   = worldSpread * 0.10;
   const CX = W/2, CY = H/2;
 
   nodes = filtered.map((repo, i) => {
@@ -439,12 +452,35 @@ function buildNodes(){
       visible:    true,
     };
   });
+
+  // ── repulsion pass: push overlapping nodes apart ──
+  const minGap = 60; // minimum centre-to-centre gap beyond radii
+  for(let iter=0; iter<40; iter++){
+    for(let i=0; i<nodes.length; i++){
+      for(let j=i+1; j<nodes.length; j++){
+        const dx = nodes[j].x - nodes[i].x;
+        const dy = nodes[j].y - nodes[i].y;
+        const d  = Math.sqrt(dx*dx+dy*dy) || 0.01;
+        const minD = nodes[i].radius + nodes[j].radius + minGap;
+        if(d < minD){
+          const push = (minD - d) * 0.5;
+          const nx = dx/d, ny = dy/d;
+          nodes[i].x -= nx*push; nodes[i].y -= ny*push;
+          nodes[j].x += nx*push; nodes[j].y += ny*push;
+        }
+      }
+    }
+  }
 }
 
 function buildConstellationLines(){
   // Connect nearby stars with faint lines (like constellation art)
   constellationLines = [];
-  const maxDist = Math.min(W,H) * 0.28;
+  // Use world spread to set max connection distance (scales with how far apart nodes are)
+  const worldR = nodes.length > 1
+    ? Math.max(...nodes.map(n=>Math.hypot(n.x-W/2, n.y-H/2))) * 0.55
+    : Math.min(W,H) * 0.28;
+  const maxDist = Math.max(worldR, Math.min(W,H) * 0.28);
   for(let i=0;i<nodes.length;i++){
     for(let j=i+1;j<nodes.length;j++){
       const dx = nodes[i].x - nodes[j].x;
@@ -661,14 +697,16 @@ function drawFrame(){
       const ox = x + Math.cos(angle)*orb.orbitR;
       const oy = y + Math.sin(angle)*orb.orbitR;
 
-      // orbit ring
-      ctx.beginPath();
-      ctx.arc(x, y, orb.orbitR, 0, Math.PI*2);
-      ctx.strokeStyle = (isHov||isSel) ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.03)';
-      ctx.lineWidth = 0.5;
-      ctx.setLineDash([2,6]);
-      ctx.stroke();
-      ctx.setLineDash([]);
+// orbit ring — only when zoomed in enough to reduce clutter
+        if(camZ >= 0.45 || isHov || isSel){
+          ctx.beginPath();
+          ctx.arc(x, y, orb.orbitR, 0, Math.PI*2);
+          ctx.strokeStyle = (isHov||isSel) ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.03)';
+          ctx.lineWidth = 0.5;
+          ctx.setLineDash([2,6]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
 
       // trail
       if(!paused){
@@ -764,14 +802,19 @@ function drawFrame(){
       ctx.lineWidth=0.8; ctx.stroke();
     }
 
-    // repo name — always visible, below outermost orbit
+    // repo name — only when zoomed in enough, always on hover/select
     const maxOrbit = contribs.length ? contribs[contribs.length-1].orbitR + 10 : r+14;
-    const labelAlpha = (isHov||isSel) ? 0.9 : (0.35 + norm*0.25);
-    const fontSize   = Math.max(9, Math.min(13, radius*0.55));
-    ctx.font = `${(isHov||isSel)?'500 ':''}${fontSize}px monospace`;
-    ctx.textAlign='center';
-    ctx.fillStyle=`rgba(255,255,255,${labelAlpha*fadeIn})`;
-    ctx.fillText(node.repo.name, x, y+maxOrbit+18);
+    const showLabel = (isHov||isSel) || camZ >= 0.65;
+    if(showLabel){
+      const labelAlpha = (isHov||isSel) ? 0.92 : Math.max(0, (camZ-0.65)/0.35) * (0.4 + norm*0.25);
+      if(labelAlpha > 0){
+        const fontSize = Math.max(9, Math.min(13, radius*0.55));
+        ctx.font = `${(isHov||isSel)?'500 ':''}${fontSize}px monospace`;
+        ctx.textAlign='center';
+        ctx.fillStyle=`rgba(255,255,255,${labelAlpha*fadeIn})`;
+        ctx.fillText(node.repo.name, x, y+maxOrbit+18);
+      }
+    }
   });
 
   ctx.restore(); // end world space
@@ -897,7 +940,6 @@ window.addEventListener('message', e => {
     repos = e.data.repos;
     activeFilter = null;
     selectedNode = null;
-    targetCamX = 0; targetCamY = 0; targetCamZ = 1;
     buildScene();
     if (repos.length) {
       setStatus('✓ ' + repos.length + ' repos · live', 'ok');
