@@ -14,12 +14,12 @@ const AboutPage = () => {
     const sectionRef = useRef(null);
 
     useEffect(() => {
-        if (!isLoading && window.lenis) {
-            // Scroll to finish the background animation reveal (1500px as per ScrollTrigger end)
-            window.lenis.scrollTo(1500, {
-                duration: 5,
-                easing: (t) => t
-            });
+        if (!isLoading) {
+            if (window.lenis) {
+                window.lenis.scrollTo(0, { immediate: true });
+            } else {
+                window.scrollTo(0, 0);
+            }
         }
     }, [isLoading]);
 

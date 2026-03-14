@@ -41,7 +41,7 @@ const EducationSection = () => {
                     y: 0,
                     ease: 'none',
                     scrollTrigger: {
-                            start: 1200,
+                            start: 900,
                             end: 1500,
                         scrub: 1.2,
                     }

@@ -82,8 +82,8 @@ const AboutSection = forwardRef((props, ref) => {
         <section
             id="about-hero"
             ref={(el) => { sectionRef.current = el; if (ref) ref.current = el; }}
-            className={`relative w-full bg-transparent flex z-10 ${isAboutPage ? 'pt-14 pb-4 sm:pt-16 sm:pb-6 items-start justify-start' : 'py-24 sm:py-32 min-h-screen items-center justify-center'}`}
-            style={isAboutPage ? { minHeight: 'calc(100vh - 240px)' } : {}}
+            className={`relative w-full bg-transparent flex z-10 ${isAboutPage ? 'pt-14 pb-0 sm:pt-16 sm:pb-0 items-start justify-start' : 'py-24 sm:py-32 min-h-screen items-center justify-center'}`}
+            style={isAboutPage ? { minHeight: 'calc(100vh - 460px)' } : {}}
         >
             <div className="absolute inset-x-0 top-0 z-20 pointer-events-none flex flex-col overflow-hidden" style={{ height: '100vh' }}>
                 {Array.from({ length: stripeCount }).map((_, i) => (
