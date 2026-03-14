@@ -59,10 +59,19 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%}
 .lang-chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .lang-chip b{color:rgba(255,255,255,.72);font-weight:600}
 @media(max-width:640px){
-  #universe{min-width:calc(100vw - 32px);bottom:16px}
-  .um-val{font-size:17px}
-  .univ-metric{padding:10px 10px 12px}
+  #universe{min-width:calc(100vw - 24px);bottom:16px;left:12px;right:12px;transform:none}
+  #univ-metrics{display:grid;grid-template-columns:1fr 1fr;}
+  /* hide avg commits on mobile — fits 4 metrics in 2x2 grid */
+  #univ-metrics .univ-metric:last-child{display:none}
+  .univ-metric{padding:10px 12px 12px;border-right:none;border-bottom:1px solid rgba(255,255,255,.05)}
+  .univ-metric:nth-child(odd){border-right:1px solid rgba(255,255,255,.05)}
+  .univ-metric:nth-child(3),.univ-metric:nth-child(4){border-bottom:none}
+  .um-val{font-size:18px}
+  .um-lbl{font-size:9px;letter-spacing:1px;white-space:nowrap}
+  .um-sub{font-size:9px;white-space:nowrap}
   #univ-langbar{display:none}
+  #univ-title{font-size:10px}
+  #univ-pulse{font-size:10px}
 }
 
 /* tooltip */
@@ -182,7 +191,7 @@ canvas{display:block;position:fixed;inset:0;width:100%;height:100%}
 /* mobile */
 @media(max-width:600px){
   #gh-panel{width:calc(100vw - 32px);right:16px;top:16px}
-  #universe{bottom:52px}
+  #universe{bottom:56px;left:12px;right:12px;transform:none}
   #hdr{display:none}
   #filters{display:none}
   #controls{bottom:70px;right:16px}
