@@ -85,25 +85,46 @@ const AboutSection = forwardRef((props, ref) => {
                 ))}
             </div>
 
-            <div className={`w-full relative z-10 ${isAboutPage ? 'max-w-[1600px] mx-auto px-6 md:px-12' : 'max-w-5xl px-6'}`}>
-                <div className={`flex flex-col gap-12 sm:gap-16 lg:gap-24 ${isAboutPage ? 'items-start' : 'items-center'}`}>
-                    <div ref={headerRef} className="w-full">
-                        {isAboutPage ? (
-                            <div className="w-full grid grid-cols-[minmax(0,1fr)_auto] items-end gap-5 sm:gap-8 md:gap-10">
-                                <DisplayName
-                                    as="h2"
-                                    staticMode
-                                    className="about-name-compact"
-                                />
-                                <div className="w-[180px] sm:w-[250px] md:w-[300px] lg:w-[340px] aspect-[3/4] flex-shrink-0">
-                                    <ProfileMorphCard
-                                        realSrc={humanPortrait}
-                                        animeSrc={animePortrait}
-                                        alt="Domince portrait"
-                                    />
+            <div className={`w-full relative z-10 ${isAboutPage ? 'max-w-[1400px] mx-auto px-6 md:px-16' : 'max-w-5xl px-6'}`}>
+                {isAboutPage ? (
+                    <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-center mt-10 sm:mt-14">
+                        {/* Left column: name + bio + tags */}
+                        <div ref={headerRef} className="flex flex-col gap-10">
+                            <DisplayName
+                                as="h2"
+                                staticMode
+                                className="about-name-compact"
+                            />
+                            <div ref={textRef} className="flex flex-col gap-8">
+                                <div className="space-y-6 text-gray-400 text-base sm:text-lg md:text-xl font-light leading-relaxed">
+                                    <p>
+                                        I'm Domince Aseberos, and I build interactive web experiences powered by GSAP, React, and modern frontend architecture. I focus on smooth motion, clean UI systems, and performance-first implementation.
+                                    </p>
+                                    <p>
+                                        Beyond frontend motion work, I also build full-stack applications and design custom SVG assets to match each product's visual identity. From concept to deployment, I create end-to-end digital products that look sharp and feel alive.
+                                    </p>
+                                </div>
+                                <div className="flex flex-wrap gap-2 sm:gap-4">
+                                    {['Creative Dev', 'React', 'GSAP', 'Next.js', 'UI Architect'].map((tag) => (
+                                        <span key={tag} className="text-white/55 bg-black/30 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.4em] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 hover:border-[#c8ff3e]/40 hover:text-white transition-all duration-300 backdrop-blur-md">
+                                            {tag}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
-                        ) : (
+                        </div>
+                        {/* Right column: profile card */}
+                        <div className="w-[220px] sm:w-[280px] md:w-[320px] lg:w-[360px] aspect-[3/4] flex-shrink-0 mx-auto lg:mx-0">
+                            <ProfileMorphCard
+                                realSrc={humanPortrait}
+                                animeSrc={animePortrait}
+                                alt="Domince portrait"
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24 items-center">
+                        <div ref={headerRef} className="w-full">
                             <h2
                                 className="font-black uppercase tracking-tighter text-white leading-[1] text-center"
                                 style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
@@ -113,28 +134,23 @@ const AboutSection = forwardRef((props, ref) => {
                                     Motion + Code.
                                 </span>
                             </h2>
-                        )}
-                    </div>
-
-                    <div ref={textRef} className={`w-full max-w-3xl flex flex-col ${isAboutPage ? 'items-start' : 'items-center'}`}>
-                        <div className={`space-y-6 text-gray-400 text-base sm:text-lg md:text-xl font-light leading-relaxed ${isAboutPage ? 'text-left' : 'text-center'}`}>
-                            <p>
-                                I'm Domince Aseberos, and I build interactive web experiences powered by GSAP, React, and modern frontend architecture. I focus on smooth motion, clean UI systems, and performance-first implementation.
-                            </p>
-                            <p>
-                                Beyond frontend motion work, I also build full-stack applications and design custom SVG assets to match each product's visual identity. From concept to deployment, I create end-to-end digital products that look sharp and feel alive.
-                            </p>
                         </div>
-
-                        <div className={`flex flex-wrap gap-2 sm:gap-4 pt-8 sm:pt-10 ${isAboutPage ? 'justify-start' : 'justify-center'}`}>
-                            {['Creative Dev', 'React', 'GSAP', 'Next.js', 'UI Architect'].map((tag) => (
-                                <span key={tag} className="text-white/55 bg-black/30 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.4em] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 hover:border-[#c8ff3e]/40 hover:text-white transition-all duration-300 backdrop-blur-md">
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-
-                        {!isAboutPage && (
+                        <div ref={textRef} className="w-full max-w-3xl flex flex-col items-center">
+                            <div className="space-y-6 text-gray-400 text-base sm:text-lg md:text-xl font-light leading-relaxed text-center">
+                                <p>
+                                    I'm Domince Aseberos, and I build interactive web experiences powered by GSAP, React, and modern frontend architecture. I focus on smooth motion, clean UI systems, and performance-first implementation.
+                                </p>
+                                <p>
+                                    Beyond frontend motion work, I also build full-stack applications and design custom SVG assets to match each product's visual identity. From concept to deployment, I create end-to-end digital products that look sharp and feel alive.
+                                </p>
+                            </div>
+                            <div className="flex flex-wrap gap-2 sm:gap-4 pt-8 sm:pt-10 justify-center">
+                                {['Creative Dev', 'React', 'GSAP', 'Next.js', 'UI Architect'].map((tag) => (
+                                    <span key={tag} className="text-white/55 bg-black/30 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.4em] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 hover:border-[#c8ff3e]/40 hover:text-white transition-all duration-300 backdrop-blur-md">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
                             <div className="pt-12 sm:pt-16">
                                 <a
                                     href="/about"
@@ -145,9 +161,9 @@ const AboutSection = forwardRef((props, ref) => {
                                     More about me ↗
                                 </a>
                             </div>
-                        )}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </section>
     );
