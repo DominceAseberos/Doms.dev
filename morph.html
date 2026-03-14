@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Identity D — Portal Morph v6</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      color: #f0ede6;
+      overflow: hidden;
+      cursor: none;
+      user-select: none;
+      margin: 0;
+    }
+
+    .portal-stage {
+      position: relative;
+      /* Ensure the whole image fits without cropping */
+      height: 90vh;
+      max-width: 90vw;
+      aspect-ratio: 768 / 1376;
+      overflow: hidden;
+      border: 1px solid rgba(212, 245, 60, 0.1);
+    }
+
+    .layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .layer-reality {
+      z-index: 1;
+    }
+
+    .layer-anime {
+      z-index: 5;
+      /* Using SVG mask for organic slime effect */
+      -webkit-mask: url(#slime-mask);
+      mask: url(#slime-mask);
+    }
+
+    .scan-ring {
+      position: absolute;
+      border: 1px solid rgba(212, 245, 60, 0.10);
+      pointer-events: none;
+      animation: pulse-ring 3s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    .sr1 {
+      inset: 0;
+      animation-delay: 0s;
+    }
+
+    .sr2 {
+      inset: 10%;
+      border-color: rgba(212, 245, 60, 0.04);
+      animation-delay: 0.9s;
+    }
+
+    .sr3 {
+      inset: 20%;
+      border-color: rgba(212, 245, 60, 0.02);
+      animation-delay: 1.8s;
+    }
+
+    @keyframes pulse-ring {
+
+      0%,
+      100% {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.012);
+      }
+    }
+
+
+
+    #cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      background: #d4f53c;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+      /* Remove transform, GSAP will handle it */
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="portal-stage" id="trigger">
+    <div class="layer layer-reality">
+      <img src="/src/assets/human.webp" alt="Human Reality" />
+    </div>
+
+    <div class="layer layer-anime" id="anime-layer">
+      <img src="/src/assets/anime.webp" alt="Anime Version" />
+    </div>
+  </div>
+
+  <div id="cursor-dot"></div>
+
+  <!-- SVG Filter & Mask for Cut + Debris Effect -->
+  <svg style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; opacity: 0;"
+    aria-hidden="true" viewBox="0 0 100% 100%">
+    <filter id="slime-filter" x="-50%" y="-50%" width="200%" height="200%">
+      <!-- Higher frequency for sharper, more jagged "cut" look -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <mask id="slime-mask" maskUnits="userSpaceOnUse">
+      <rect width="100%" height="100%" fill="white" />
+      <!-- Primary cut circle -->
+      <circle id="mask-circle" cx="-200" cy="-200" r="60" fill="black" filter="url(#slime-filter)" />
+      <!-- Debris particles -->
+      <circle class="debris" cx="-200" cy="-200" r="15" fill="black" filter="url(#slime-filter)" />
+      <circle class="debris" cx="-200" cy="-200" r="10" fill="black" filter="url(#slime-filter)" />
+      <circle class="debris" cx="-200" cy="-200" r="12" fill="black" filter="url(#slime-filter)" />
+      <circle class="debris" cx="-200" cy="-200" r="8" fill="black" filter="url(#slime-filter)" />
+    </mask>
+  </svg>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script>
+    const anime = document.getElementById('anime-layer');
+    const trigger = document.getElementById('trigger');
+    const dot = document.getElementById('cursor-dot');
+    const maskCircle = document.getElementById('mask-circle');
+    const debris = document.querySelectorAll('.debris');
+    const turb = document.querySelector('feTurbulence');
+
+    console.log("Morph Morph initialized:", { anime, trigger, dot, maskCircle, turb });
+
+    // Center the dot initial position
+    gsap.set(dot, { xPercent: -50, yPercent: -50 });
+
+    // Subtle boiling animation for the slime
+    if (turb) {
+      gsap.to(turb, {
+        attr: { baseFrequency: 0.02 },
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+    }
+
+    window.addEventListener('mousemove', e => {
+      // Movement for the custom cursor dot
+      gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0 });
+
+      const rect = trigger.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+        // Active hover inside the portal - Primary cut
+        gsap.to(maskCircle, {
+          attr: { cx: x, cy: y, r: 80 },
+          duration: 0.1,
+          ease: 'none'
+        });
+
+        // Animate debris with slight lag
+        debris.forEach((d, i) => {
+          gsap.to(d, {
+            attr: {
+              cx: x + (Math.random() - 0.5) * 60,
+              cy: y + (Math.random() - 0.5) * 60,
+              r: i % 2 === 0 ? 20 : 12
+            },
+            duration: 0.2 + (i * 0.05),
+            ease: 'power1.out'
+          });
+        });
+      } else {
+        // Move cut circle out
+        gsap.to(maskCircle, {
+          attr: { r: 0 },
+          duration: 0.4,
+          ease: 'power2.in'
+        });
+        // Move debris out
+        debris.forEach(d => {
+          gsap.to(d, {
+            attr: { r: 0 },
+            duration: 0.5,
+            ease: 'power2.in'
+          });
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

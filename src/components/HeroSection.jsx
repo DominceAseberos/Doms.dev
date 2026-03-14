@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import DisplayName from './DisplayName';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,11 +38,7 @@ const HeroSection = () => {
             <div className="hero-left">
                 <div className="v-label">Developer × Motion Designer</div>
 
-                <h1 className="hero-name">
-                    <div className="font-mono text-sm tracking-[0.4em] text-white/30 uppercase mb-6">Portfolio — Selected Work</div>
-                    Domince<br />
-                    <span className="line2">Aseberos</span>
-                </h1>
+                <DisplayName showKicker />
 
                 <p className="font-mono text-sm md:text-base tracking-[0.05em] leading-relaxed text-white/40 max-w-lg mt-8 mb-12">
                     Crafting high-performance web experiences where code meets motion. <span className="text-white/60">GSAP · WebGL · React.</span>

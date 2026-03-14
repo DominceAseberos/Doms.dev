@@ -2,6 +2,10 @@ import React, { useRef, useLayoutEffect, forwardRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import DisplayName from './DisplayName';
+import ProfileMorphCard from './ProfileMorphCard';
+import humanPortrait from '../assets/human-cutout.png';
+import animePortrait from '../assets/anime-cutout.png';
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -66,7 +70,10 @@ const AboutSection = forwardRef((props, ref) => {
     };
 
     return (
-        <section ref={(el) => { sectionRef.current = el; if (ref) ref.current = el; }} className="relative w-full min-h-screen bg-transparent overflow-hidden flex items-center justify-center z-10 py-24 sm:py-32">
+        <section
+            ref={(el) => { sectionRef.current = el; if (ref) ref.current = el; }}
+            className={`relative w-full min-h-screen bg-transparent overflow-hidden flex z-10 py-24 sm:py-32 ${isAboutPage ? 'items-start justify-start' : 'items-center justify-center'}`}
+        >
             <div className="absolute inset-0 z-20 pointer-events-none flex flex-col">
                 {Array.from({ length: stripeCount }).map((_, i) => (
                     <div
@@ -78,30 +85,39 @@ const AboutSection = forwardRef((props, ref) => {
                 ))}
             </div>
 
-            <div className="container max-w-5xl mx-auto px-6 relative z-10">
-                <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24 items-center">
+            <div className={`w-full relative z-10 ${isAboutPage ? 'max-w-[1600px] mx-auto px-6 md:px-12' : 'max-w-5xl px-6'}`}>
+                <div className={`flex flex-col gap-12 sm:gap-16 lg:gap-24 ${isAboutPage ? 'items-start' : 'items-center'}`}>
                     <div ref={headerRef} className="w-full">
-                        <h2
-                            className="font-black uppercase tracking-tighter text-white leading-[1] text-center"
-                            style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
-                        >
-                            {isAboutPage ? (
+                        {isAboutPage ? (
+                            <div className="w-full grid grid-cols-[minmax(0,1fr)_auto] items-end gap-5 sm:gap-8 md:gap-10">
+                                <DisplayName
+                                    as="h2"
+                                    staticMode
+                                    className="about-name-compact"
+                                />
+                                <div className="w-[180px] sm:w-[250px] md:w-[300px] lg:w-[340px] aspect-[3/4] flex-shrink-0">
+                                    <ProfileMorphCard
+                                        realSrc={humanPortrait}
+                                        animeSrc={animePortrait}
+                                        alt="Domince portrait"
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <h2
+                                className="font-black uppercase tracking-tighter text-white leading-[1] text-center"
+                                style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
+                            >
+                                Built with{' '}
                                 <span className="text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
-                                    Domince Aseberos
+                                    Motion + Code.
                                 </span>
-                            ) : (
-                                <>
-                                    Built with{' '}
-                                    <span className="text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
-                                        Motion + Code.
-                                    </span>
-                                </>
-                            )}
-                        </h2>
+                            </h2>
+                        )}
                     </div>
 
-                    <div ref={textRef} className="w-full max-w-3xl flex flex-col items-center">
-                        <div className="space-y-6 text-gray-400 text-base sm:text-lg md:text-xl font-light leading-relaxed text-center">
+                    <div ref={textRef} className={`w-full max-w-3xl flex flex-col ${isAboutPage ? 'items-start' : 'items-center'}`}>
+                        <div className={`space-y-6 text-gray-400 text-base sm:text-lg md:text-xl font-light leading-relaxed ${isAboutPage ? 'text-left' : 'text-center'}`}>
                             <p>
                                 I'm Domince Aseberos, and I build interactive web experiences powered by GSAP, React, and modern frontend architecture. I focus on smooth motion, clean UI systems, and performance-first implementation.
                             </p>
@@ -110,7 +126,7 @@ const AboutSection = forwardRef((props, ref) => {
                             </p>
                         </div>
 
-                        <div className="flex flex-wrap gap-2 sm:gap-4 pt-8 sm:pt-10 justify-center">
+                        <div className={`flex flex-wrap gap-2 sm:gap-4 pt-8 sm:pt-10 ${isAboutPage ? 'justify-start' : 'justify-center'}`}>
                             {['Creative Dev', 'React', 'GSAP', 'Next.js', 'UI Architect'].map((tag) => (
                                 <span key={tag} className="text-white/55 bg-black/30 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.4em] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 hover:border-[#c8ff3e]/40 hover:text-white transition-all duration-300 backdrop-blur-md">
                                     {tag}
