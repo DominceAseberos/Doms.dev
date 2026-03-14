@@ -117,6 +117,13 @@
     height: 100%;
 }
 
+.feed-media-trigger {
+    padding: 0;
+    border: 0;
+    cursor: zoom-in;
+    background: transparent;
+}
+
 .feed-media-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -239,6 +246,22 @@
     font-size: 0.9rem;
 }
 
+.feed-list-toggle {
+    display: none;
+    margin-top: 0.2rem;
+    width: 100%;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(200, 255, 62, 0.35);
+    background: rgba(200, 255, 62, 0.08);
+    color: rgba(230, 255, 190, 0.95);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.75rem;
+    cursor: pointer;
+}
+
 .feed-empty {
     border-radius: 1.75rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -256,6 +279,63 @@
 
 .feed-empty-copy {
     margin: 0;
+}
+
+.feed-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 4, 12, 0.84);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 5.5rem 1.2rem 1.2rem;
+}
+
+.feed-lightbox-inner {
+    position: relative;
+    width: min(88vw, 920px);
+    max-height: calc(100vh - 7rem);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(8, 10, 18, 0.84);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feed-lightbox-image {
+    width: 100%;
+    max-height: calc(100vh - 7.5rem);
+    object-fit: contain;
+    display: block;
+}
+
+.feed-lightbox-close {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    z-index: 10;
+    pointer-events: auto;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(8, 10, 18, 0.7);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feed-lightbox-close:hover {
+    border-color: rgba(200, 255, 62, 0.55);
+    color: rgba(255, 255, 255, 1);
 }
 
 @media (max-width: 1024px) {
@@ -317,5 +397,9 @@
 
     .feed-list-scroll {
         max-height: none;
+    }
+
+    .feed-list-toggle {
+        display: block;
     }
 }
