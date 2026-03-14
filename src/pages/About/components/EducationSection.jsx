@@ -10,9 +10,11 @@ if (typeof window !== "undefined") {
 const EducationSection = () => {
     const sectionRef = useRef(null);
     const contentRef = useRef(null);
+    const headingRef = useRef(null);
 
     useLayoutEffect(() => {
         let ctx = gsap.context(() => {
+            // Stagger fade-in for content children
             gsap.fromTo(
                 contentRef.current.children,
                 { opacity: 0, y: 50 },
@@ -29,6 +31,22 @@ const EducationSection = () => {
                     }
                 }
             );
+
+            // Parallax: heading starts low and rises as section enters
+            gsap.fromTo(
+                headingRef.current,
+                { y: 80 },
+                {
+                    y: 0,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top bottom',
+                        end: 'top 30%',
+                        scrub: 1.5,
+                    }
+                }
+            );
         }, sectionRef);
 
         return () => ctx.revert();
@@ -38,6 +56,7 @@ const EducationSection = () => {
         <section ref={sectionRef} className="relative w-full min-h-screen bg-transparent flex items-center justify-center z-10 py-16">
             <div ref={contentRef} className="relative z-10 text-center text-white px-6 w-full max-w-5xl flex flex-col items-center">
                 <h2
+                    ref={headingRef}
                     className="font-black uppercase tracking-tighter mb-6 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] leading-[1] text-center mx-auto"
                     style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
                 >
