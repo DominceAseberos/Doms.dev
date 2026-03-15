@@ -105,8 +105,8 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
         <section
             id="about-hero"
             ref={(el) => { sectionRef.current = el; if (ref) ref.current = el; }}
-            className={`relative w-full bg-transparent flex z-50 ${isAboutPage ? 'pt-14 pb-0 sm:pt-16 sm:pb-0 items-start justify-start' : 'py-24 sm:py-32 min-h-screen items-center justify-center'}`}
-            style={isAboutPage ? { minHeight: 'calc(100vh - 150px)' } : {}}
+            className={`relative w-full bg-transparent flex z-50 ${isAboutPage ? 'pt-12 pb-0 sm:pt-16 sm:pb-0 items-start justify-start' : 'py-24 sm:py-32 min-h-screen items-center justify-center'}`}
+            style={isAboutPage ? { minHeight: '82vh' } : {}}
         >
             <div className="absolute inset-x-0 top-0 z-[100] pointer-events-none flex flex-col overflow-hidden" style={{ height: '100vh' }}>
                 {Array.from({ length: stripeCount }).map((_, i) => (
@@ -121,9 +121,9 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
 
             <div className={`w-full relative z-10 ${isAboutPage ? 'max-w-[1400px] mx-auto px-6 md:px-16' : 'max-w-5xl px-6'}`}>
                 {isAboutPage ? (
-                    <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-center mt-10 sm:mt-14">
+                    <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 lg:gap-20 items-center mt-6 sm:mt-14">
                         {/* Left column: name + bio + tags */}
-                        <div ref={headerRef} className="flex flex-col gap-10">
+                        <div ref={headerRef} className="flex flex-col gap-6">
                             <DisplayName
                                 as="h2"
                                 staticMode

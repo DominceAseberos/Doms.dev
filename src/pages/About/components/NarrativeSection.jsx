@@ -25,7 +25,7 @@ const NarrativeSection = forwardRef((props, ref) => {
     );
 
     return (
-        <section ref={ref} className="relative z-10 pt-32 md:pt-40 pb-24 px-6 md:px-12 max-w-[1400px] mx-auto text-white">
+        <section ref={ref} className="relative z-10 pt-8 md:pt-16 pb-24 px-6 md:px-12 max-w-[1400px] mx-auto text-white">
             <h2 
                 className="font-black uppercase tracking-tight mb-12 lg:mb-16 text-left leading-[1.1] text-[#f2ede6]"
                 style={{ fontSize: 'clamp(2.5rem, 8vw, 8rem)', fontFamily: "'Bebas Neue', sans-serif" }}
