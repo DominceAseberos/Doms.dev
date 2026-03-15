@@ -61,23 +61,7 @@ const FeedSection = () => {
         ? pastPosts
         : pastPosts.slice(0, MOBILE_LIST_LIMIT);
 
-    const handleListWheel = (event) => {
-        const listEl = listScrollRef.current;
-        if (!listEl) return;
 
-        const { deltaY } = event;
-        const maxScrollTop = listEl.scrollHeight - listEl.clientHeight;
-        if (maxScrollTop <= 0) return;
-
-        const prevTop = listEl.scrollTop;
-        const nextTop = Math.max(0, Math.min(maxScrollTop, prevTop + deltaY));
-
-        if (nextTop !== prevTop) {
-            listEl.scrollTop = nextTop;
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    };
 
     useEffect(() => {
         if (!expandedImage) return;
@@ -144,7 +128,6 @@ const FeedSection = () => {
                             <div
                                 ref={listScrollRef}
                                 className="feed-list-scroll"
-                                onWheel={handleListWheel}
                             >
                                 {recentPost && selectedId !== recentPost.id ? (
                                     <button

@@ -8,20 +8,20 @@ import EducationSection from './components/EducationSection';
 import GithubContributionSection from './components/GithubContributionSection';
 import FeedSection from './components/FeedSection';
 import AboutSocialFooter from './components/AboutSocialFooter';
+import NarrativeSection from './components/NarrativeSection';
 import useLoadingStore from '../../store/useLoadingStore';
 
 const AboutPage = () => {
     const isLoading = useLoadingStore((state) => state.isLoading);
     const sectionRef = useRef(null);
+    const narrativeRef = useRef(null);
 
     useEffect(() => {
-        if (!isLoading && window.lenis) {
-            window.lenis.scrollTo(1500, {
-                duration: 5,
-                easing: (t) => t
-            });
-        } else if (!isLoading) {
+        if (!isLoading) {
             window.scrollTo(0, 0);
+            if (window.lenis) {
+                window.lenis.scrollTo(0, { immediate: true });
+            }
         }
     }, [isLoading]);
 
@@ -31,7 +31,8 @@ const AboutPage = () => {
             <NavBar />
 
             <div className="relative z-10">
-                <AboutSection ref={sectionRef} />
+                <AboutSection ref={sectionRef} narrativeRef={narrativeRef} />
+                <NarrativeSection ref={narrativeRef} />
                 <EducationSection />
                 <GithubContributionSection />
                 <FeedSection />

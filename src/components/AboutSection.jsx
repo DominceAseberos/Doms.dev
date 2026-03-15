@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import DisplayName from './DisplayName';
 import ProfileMorphCard from './ProfileMorphCard';
+import useLoadingStore from '../store/useLoadingStore';
 import humanPortrait from '../assets/human-cutout.png';
 import animePortrait from '../assets/anime-cutout.png';
 
@@ -11,7 +12,7 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const AboutSection = forwardRef((props, ref) => {
+const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
     const location = useLocation();
     const isAboutPage = location.pathname === '/about';
     const sectionRef = useRef(null);
@@ -21,28 +22,40 @@ const AboutSection = forwardRef((props, ref) => {
     const cardRef = useRef(null);
 
     const stripeCount = 20;
+    const isLoading = useLoadingStore((state) => state.isLoading);
 
     useLayoutEffect(() => {
-        let ctx = gsap.context(() => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top top",
-                    end: "+=1500",
-                    pin: true,
-                    scrub: 1,
-                }
-            });
+        if (isLoading) return;
 
+        let ctx = gsap.context(() => {
             gsap.set(headerRef.current, { opacity: 0, scale: 0.8, filter: "blur(10px)" });
             gsap.set(textRef.current, { opacity: 0, y: 30 });
             if (cardRef.current) gsap.set(cardRef.current, { opacity: 0, y: 50, scale: 0.92 });
+            
+            if (isAboutPage && narrativeRef && narrativeRef.current) {
+                gsap.set(narrativeRef.current, { opacity: 0, y: 40 });
+            }
+
+            const tlConfig = isAboutPage 
+                ? { delay: 0.2 } 
+                : {
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: "top top",
+                        end: "+=1500",
+                        pin: true,
+                        scrub: 1,
+                    }
+                  };
+
+            const tl = gsap.timeline(tlConfig);
 
             tl.to(stripesRef.current, {
                 xPercent: (i) => i % 2 === 0 ? 100 : -100,
+                duration: isAboutPage ? 1.5 : 0.5,
                 ease: "power2.inOut",
                 stagger: {
-                    amount: 0.6,
+                    amount: 0.8,
                     from: "center"
                 }
             })
@@ -67,10 +80,19 @@ const AboutSection = forwardRef((props, ref) => {
                     ease: "power2.out"
                 }, "-=0.8");
 
+            if (isAboutPage && narrativeRef && narrativeRef.current) {
+                tl.to(narrativeRef.current, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power2.out"
+                }, "-=0.6");
+            }
+
         }, sectionRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [isLoading, isAboutPage]);
 
     const addToStripes = (el) => {
         if (el && !stripesRef.current.includes(el)) {
@@ -82,10 +104,10 @@ const AboutSection = forwardRef((props, ref) => {
         <section
             id="about-hero"
             ref={(el) => { sectionRef.current = el; if (ref) ref.current = el; }}
-            className={`relative w-full bg-transparent flex z-10 ${isAboutPage ? 'pt-14 pb-0 sm:pt-16 sm:pb-0 items-start justify-start' : 'py-24 sm:py-32 min-h-screen items-center justify-center'}`}
-            style={isAboutPage ? { minHeight: 'calc(100vh - 460px)' } : {}}
+            className={`relative w-full bg-transparent flex z-50 ${isAboutPage ? 'pt-14 pb-0 sm:pt-16 sm:pb-0 items-start justify-start' : 'py-24 sm:py-32 min-h-screen items-center justify-center'}`}
+            style={isAboutPage ? { minHeight: 'calc(100vh - 150px)' } : {}}
         >
-            <div className="absolute inset-x-0 top-0 z-20 pointer-events-none flex flex-col overflow-hidden" style={{ height: '100vh' }}>
+            <div className="absolute inset-x-0 top-0 z-[100] pointer-events-none flex flex-col overflow-hidden" style={{ height: '100vh' }}>
                 {Array.from({ length: stripeCount }).map((_, i) => (
                     <div
                         key={i}
@@ -107,14 +129,7 @@ const AboutSection = forwardRef((props, ref) => {
                                 className="about-name-compact"
                             />
                             <div ref={textRef} className="flex flex-col gap-8">
-                                <div className="space-y-6 ui-body-copy text-base sm:text-lg md:text-xl">
-                                    <p>
-                                        I'm Domince Aseberos, and I build interactive web experiences powered by GSAP, React, and modern frontend architecture. I focus on smooth motion, clean UI systems, and performance-first implementation.
-                                    </p>
-                                    <p>
-                                        Beyond frontend motion work, I also build full-stack applications and design custom SVG assets to match each product's visual identity. From concept to deployment, I create end-to-end digital products that look sharp and feel alive.
-                                    </p>
-                                </div>
+                                {/* Bio text was removed here to prevent multiple introductions on the About page */}
                                 <div className="flex flex-wrap gap-2 sm:gap-4">
                                     {['Creative Dev', 'React', 'GSAP', 'Next.js', 'UI Architect'].map((tag) => (
                                         <span key={tag} className="ui-pill px-4 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all duration-300 backdrop-blur-md">
