@@ -9,9 +9,10 @@
 }
 
 .github-contrib-title {
-    font-size: clamp(1.2rem, 2.2vw, 1.9rem);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     color: rgba(255, 255, 255, 0.9);
 }
 
@@ -261,15 +262,15 @@
     transform: translate(2px, -2px);
 }
 
-.gc-card-cta--secondary {
+.gc-card-cta-secondary {
     color: rgba(255, 255, 255, 0.42);
     margin-top: 0;
     padding-top: 0;
 }
-.gc-card-cta--secondary:hover {
+.gc-card-cta-secondary:hover {
     color: rgba(255, 255, 255, 0.82);
 }
-.gc-card-cta--secondary .gc-cta-arrow {
+.gc-card-cta-secondary .gc-cta-arrow {
     font-size: 0.78rem;
 }
 

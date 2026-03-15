@@ -8,12 +8,13 @@ const NarrativeSection = forwardRef((props, ref) => {
         return () => clearInterval(timer);
     }, []);
 
-    const formatTime = (date) => {
+    const formatTime = (date, timeZone = undefined) => {
         return date.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit',
-            hour12: true
+            hour12: true,
+            timeZone: timeZone
         });
     };
 
@@ -24,18 +25,48 @@ const NarrativeSection = forwardRef((props, ref) => {
     );
 
     return (
-        <section ref={ref} className="relative z-10 pt-16 pb-24 px-6 md:px-12 max-w-[1400px] mx-auto text-white">
-            <h2 className="text-3xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-normal sm:leading-[0.9] mb-12 lg:mb-16 text-left">
+        <section ref={ref} className="relative z-10 pt-32 md:pt-40 pb-24 px-6 md:px-12 max-w-[1400px] mx-auto text-white">
+            <h2 
+                className="font-black uppercase tracking-tight mb-12 lg:mb-16 text-left leading-[1.1] text-[#f2ede6]"
+                style={{ fontSize: 'clamp(2.5rem, 8vw, 8rem)', fontFamily: "'Bebas Neue', sans-serif" }}
+            >
                 Engineering <span className="text-[#c8ff3e]">Digital Poetry</span>
             </h2>
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
                 {/* Main Narrative Content - Prioritized on Mobile */}
-                <div className="order-1 lg:order-2 lg:col-span-8 space-y-16 lg:space-y-24">
+                <div className="order-1 lg:order-2 lg:col-span-8 space-y-20 lg:space-y-32">
                     <section className="space-y-8">
                         <p className="text-2xl md:text-3xl lg:text-4xl ui-body-copy max-w-4xl leading-tight">
                             I’m Domince Aseberos, a technical architect specializing in the transition from static logic to immersive, motion-driven web systems.
                         </p>
                     </section>
+
+                    {/* Secondary Content - Now inside the right column */}
+                    <div className="space-y-20 lg:space-y-32 w-full">
+                        <section className="space-y-20 border-t border-white/10 pt-12">
+                            <div className="space-y-4">
+                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">The Philosophy</h3>
+                                <p className="text-lg ui-body-copy leading-relaxed">
+                                    I believe that the modern web belongs to those who move the fastest. By integrating AI-driven logic into my architectural workflow, I bypass manual friction to focus on what truly matters: creating high-performance, immersive systems that respond to user intent with surgical precision.
+                                </p>
+                            </div>
+                            <div className="space-y-4">
+                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">The Approach</h3>
+                                <p className="text-lg ui-body-copy leading-relaxed">
+                                    I don't believe in manual friction for the sake of it. I leverage AI-augmented development to accelerate the architectural process, allowing me to focus on high-level logic, complex motion sequencing, and scalability. By integrating intelligent tools into my workflow, I transform ideas into high-performance, cinematic experiences with surgical speed and precision.
+                                </p>
+                            </div>
+                        </section>
+
+                        <section className="space-y-12 bg-white/5 border border-white/10 p-8 md:p-16 rounded-[3rem] backdrop-blur-md">
+                            <div className="space-y-6">
+                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">Beyond the Browser</h3>
+                                <p className="text-lg ui-body-copy leading-relaxed">
+                                    When the GSAP timeline stops and I exit dev mode, the focus shifts to personal optimization and exploration. You’ll usually find me recalibrating through high-intensity training, engaging in competitive online gaming, or catching up on the latest anime. I balance this creative downtime with the same surgical precision I apply to my code—ensuring all academic milestones and architectural projects are executed to my standards.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
                 </div>
 
                 {/* Sticky Sidebar Info - Becomes Compact Grid on Mobile */}
@@ -46,9 +77,16 @@ const NarrativeSection = forwardRef((props, ref) => {
                             <p className="text-xl lg:text-3xl ui-body-copy text-white/90">Worldwide / Remote</p>
                         </div>
 
-                        <div className="space-y-4">
-                            <p className="text-[#c8ff3e] ui-sub-label text-base uppercase tracking-widest opacity-60">Local Time</p>
-                            <p className="text-xl lg:text-3xl ui-body-copy text-white/90 font-mono tabular-nums">{formatTime(time)}</p>
+                        <div className="flex flex-col sm:flex-row lg:flex-col gap-8 lg:gap-12">
+                            <div className="space-y-4">
+                                <p className="text-[#c8ff3e] ui-sub-label text-base uppercase tracking-widest opacity-60">Visitor Time</p>
+                                <p className="text-xl lg:text-3xl ui-body-copy text-white/90 font-mono tabular-nums">{formatTime(time)}</p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <p className="text-[#c8ff3e] ui-sub-label text-base uppercase tracking-widest opacity-60">Manila / PH</p>
+                                <p className="text-xl lg:text-3xl ui-body-copy text-white/90 font-mono tabular-nums">{formatTime(time, 'Asia/Manila')}</p>
+                            </div>
                         </div>
 
                         <div className="space-y-4">
@@ -121,32 +159,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     </div>
                 </div>
 
-                {/* Secondary Content - Stays below Sidebar on Mobile */}
-                <div className="order-3 lg:col-span-8 lg:ml-auto space-y-24 w-full">
-                    <section className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/10 pt-12">
-                        <div className="space-y-4">
-                            <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">The Philosophy</h3>
-                            <p className="text-lg ui-body-copy leading-relaxed">
-                                I believe that the modern web belongs to those who move the fastest. By integrating AI-driven logic into my architectural workflow, I bypass manual friction to focus on what truly matters: creating high-performance, immersive systems that respond to user intent with surgical precision.
-                            </p>
-                        </div>
-                        <div className="space-y-4">
-                            <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">The Approach</h3>
-                            <p className="text-lg ui-body-copy leading-relaxed">
-                                I don't believe in manual friction for the sake of it. I leverage AI-augmented development to accelerate the architectural process, allowing me to focus on high-level logic, complex motion sequencing, and scalability. By integrating intelligent tools into my workflow, I transform ideas into high-performance, cinematic experiences with surgical speed and precision.
-                            </p>
-                        </div>
-                    </section>
 
-                    <section className="space-y-12 bg-white/5 border border-white/10 p-8 md:p-16 rounded-[3rem] backdrop-blur-md">
-                        <div className="space-y-6">
-                            <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">Beyond the Browser</h3>
-                            <p className="text-lg ui-body-copy leading-relaxed">
-                                When the GSAP timeline stops and I exit dev mode, the focus shifts to personal optimization and exploration. You’ll usually find me recalibrating through high-intensity training, engaging in competitive online gaming, or catching up on the latest anime. I balance this creative downtime with the same surgical precision I apply to my code—ensuring all academic milestones and architectural projects are executed to my standards.
-                            </p>
-                        </div>
-                    </section>
-                </div>
             </div>
         </section>
     );

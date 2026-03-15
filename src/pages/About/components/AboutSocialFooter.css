@@ -3,7 +3,7 @@
     padding: 2rem 1.5rem 4.5rem;
 }
 
-.about-social-footer__inner {
+.about-social-footer-inner {
     max-width: 1200px;
     margin: 0 auto;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -14,28 +14,28 @@
     gap: 1.25rem;
 }
 
-.about-social-footer__copy {
+.about-social-footer-copy {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
 }
 
-.about-social-footer__title {
+.about-social-footer-title {
     margin: 0;
     color: rgba(255, 255, 255, 0.96);
-    font-size: clamp(1.35rem, 2.2vw, 2.2rem);
-    line-height: 1.02;
-    letter-spacing: -0.03em;
-    font-weight: 800;
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
 }
 
-.about-social-footer__text {
+.about-social-footer-text {
     margin: 0;
     font-size: 0.95rem;
     max-width: 42rem;
 }
 
-.about-social-footer__actions {
+.about-social-footer-actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -43,7 +43,7 @@
     gap: 1rem;
 }
 
-.about-social-footer__cta {
+.about-social-footer-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -60,20 +60,20 @@
     box-shadow: 0 0 20px rgba(200, 255, 62, 0.2);
 }
 
-.about-social-footer__cta:hover {
+.about-social-footer-cta:hover {
     background: rgba(255, 255, 255, 0.96);
     transform: translateY(-1px);
     box-shadow: 0 0 28px rgba(255, 255, 255, 0.18);
 }
 
-.about-social-footer__links {
+.about-social-footer-links {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 0.8rem;
 }
 
-.about-social-footer__link {
+.about-social-footer-link {
     color: rgba(255, 255, 255, 0.82);
     text-decoration: none;
     font-size: 0.84rem;
@@ -87,7 +87,7 @@
     transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
 
-.about-social-footer__link:hover {
+.about-social-footer-link:hover {
     color: rgba(255, 255, 255, 1);
     border-color: rgba(200, 255, 62, 0.45);
     background: rgba(200, 255, 62, 0.08);
@@ -98,19 +98,19 @@
         padding: 1.5rem 1rem 3.5rem;
     }
 
-    .about-social-footer__inner {
+    .about-social-footer-inner {
         align-items: flex-start;
         flex-direction: column;
     }
 
-    .about-social-footer__actions {
+    .about-social-footer-actions {
         width: 100%;
         align-items: flex-start;
         justify-content: flex-start;
         flex-direction: column;
     }
 
-    .about-social-footer__links {
+    .about-social-footer-links {
         width: 100%;
     }
 }

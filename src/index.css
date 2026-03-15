@@ -252,6 +252,17 @@ body.ep-expanded .nav-links {
     opacity: 0.85;
 }
 
+.btn-primary:active {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .hero-name.about-name-compact {
+        margin-top: 3.5rem;
+    }
+}
+
+/* ── UI SYSTEM CARDS ── */
 .btn-ghost {
     background: transparent;
     color: var(--gray-light);

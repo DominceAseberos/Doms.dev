@@ -57,10 +57,10 @@ const EducationSection = () => {
             <div ref={contentRef} className="relative z-10 text-white px-6 md:px-16 w-full max-w-[1400px] flex flex-col items-start">
                 <h2
                     ref={headingRef}
-                    className="font-black uppercase tracking-tighter mb-4 text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] leading-[0.95] text-left max-w-[9ch]"
-                    style={{ fontSize: 'clamp(1.35rem, 3.1vw, 3.4rem)' }}
+                    className="font-bold uppercase tracking-tight text-[#c8ff3e]"
+                    style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 8vw, 8rem)", lineHeight: 1.1 }}
                 >
-                    Educational Background
+                    <span className="text-[#f2ede6]">Educational</span> Background
                 </h2>
                 <p className="ui-sub-label md:text-sm mb-10 leading-relaxed text-left">
                     Academic Foundation
