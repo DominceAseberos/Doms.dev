@@ -2,17 +2,61 @@ import React from 'react';
 import './ProjectCard.css';
 
 const ProjectCard = ({ project, onView }) => {
+    const t = project.theme || {};
+    const cardImage = project.images?.[0] || project.image || '/assets/projects/cover/BananaLeaf.png';
+
     return (
-        <div className="project-card" onClick={() => onView?.(project)}>
-            <div className="project-card-image" style={{ backgroundImage: `url(${project.image})` }} />
-            <div className="project-card-body">
-                <div className="project-card-meta">
-                    <span className="project-card-type">{project.type}</span>
-                    <span className="project-card-date">{project.dateCreated}</span>
+        <div
+            className={`pg-card ${t.gridClass || 'pg-half'}`}
+            data-cat={t.cat || 'all'}
+            style={{
+                '--c1': t.c1 || '#111',
+                '--c2': t.c2 || '#1a1a1a',
+                '--glow': t.glow || 'rgba(200,255,62,.06)',
+            }}
+            onClick={() => onView?.(project)}
+        >
+            {/* ── Visual zone ── */}
+            <div className="pg-vis">
+                <div className="pg-vis-bg"></div>
+                <div className="pg-glow"></div>
+                <img src={cardImage} alt={`${project.title} preview`} className="pg-cover" loading="lazy" />
+                <div className="pg-vignette"></div>
+                <div className="pg-date pg-label-lg">{project.displayDate}</div>
+            </div>
+
+            {/* ── Info zone ── */}
+            <div className="pg-info">
+                <span className="pg-num pg-label-lg">{project.num}</span>
+                <div className="pg-name pg-title-lg">{project.title}</div>
+                <span className="pg-type pg-label-lg">{project.displayType || t.displayType || project.projectType}</span>
+                <div className="pg-pills">
+                    {project.stacks?.map((s) => (
+                        <span key={s} className="pg-pill pg-pill-lg">{s}</span>
+                    ))}
                 </div>
-                <h3 className="project-card-title">{project.title}</h3>
-                <p className="project-card-desc">{project.shortDescription}</p>
-                <div className="project-card-cta">View Details ↗</div>
+                <div className="pg-arrow">↗</div>
+            </div>
+
+            {/* ── Hover overlay ── */}
+            <div className="pg-overlay">
+                <span className="ov-tag pg-label-lg">{project.displayType || t.displayType || project.projectType} · {project.overlayDate}</span>
+                <div className="ov-title pg-title-lg">{project.title}</div>
+                <p className="ov-desc pg-subtitle-lg">{t.ovDesc || project.shortDescription}</p>
+                <div className="ov-pills">
+                    {project.stacks?.map((s) => (
+                        <span key={s} className="ov-pill pg-pill-lg">{s}</span>
+                    ))}
+                </div>
+                <a
+                    href={project.livePreviewLink || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ov-link pg-label-lg"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    View Details ↗
+                </a>
             </div>
         </div>
     );

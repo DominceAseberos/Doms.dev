@@ -5,6 +5,7 @@ import 'lenis/dist/lenis.css';
 
 import Home from './pages/Home/index';
 import ProjectsPage from './pages/Projects/index';
+import ProjectCaseStudyPage from './pages/Projects/components/ProjectCaseStudyPage';
 import AboutPage from './pages/About/index';
 import ContactPage from './pages/Contact/index';
 import LabPage from './pages/Lab/index';
@@ -41,6 +42,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/projects" element={<ProjectsPage />} />
+                        <Route path="/projects/:projectId" element={<ProjectCaseStudyPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/lab" element={<LabPage />} />
