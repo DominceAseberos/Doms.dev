@@ -7,7 +7,11 @@
             "dateCreated": "2023-11-20",
             "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/banana-leaf.png",
             "images": [
-                "/assets/projects/cover/BananaLeaf.png"
+                "/assets/projects/cover/BananaLeaf.png?desktop-main",
+                "/assets/projects/cover/FocusQuest.png?desktop-gallery-01",
+                "/assets/projects/cover/Baylora.png?desktop-gallery-02",
+                "/assets/projects/cover/Templyx.png?tablet-gallery-01",
+                "/assets/projects/cover/summarizer.png?mobile-gallery-01"
             ],
             "stacks": [
                 "Python",

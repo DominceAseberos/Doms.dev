@@ -55,6 +55,12 @@ function isVideoSource(source = '') {
     return /\.(mp4|webm|ogg)(\?.*)?$/i.test(String(source));
 }
 
+function getAssetFileName(source = '') {
+    const cleanSource = String(source).split('?')[0];
+    const parts = cleanSource.split('/').filter(Boolean);
+    return parts[parts.length - 1] || 'asset-file';
+}
+
 const defaultCaseStudyConfig = {
     introSubtitle: 'A breakdown of process, layout, and implementation decisions for this project.',
     highlightsOverline: 'Section 02',
@@ -161,7 +167,6 @@ const ProjectCaseStudyPage = () => {
         year: 'numeric',
     });
 
-    const landingAssets = (project.images || []).slice(0, 6);
     const uiuxPoints = [
         'Clear visual hierarchy for faster scanning',
         'CTA placement designed for conversion flow',
@@ -195,6 +200,11 @@ const ProjectCaseStudyPage = () => {
     const activeMedia = mediaByView[activeView] || [];
     const heroMedia = activeMedia[0] || coverImage;
     const galleryMedia = activeMedia.slice(1);
+    const assetGroups = availableViews.map((view) => ({
+        view,
+        label: VIEW_META[view].label,
+        files: mediaByView[view] || [],
+    })).filter((group) => group.files.length > 0);
 
     const credits = {
         design: project.credits?.design || 'Domince',
@@ -225,13 +235,6 @@ const ProjectCaseStudyPage = () => {
         return <img src={source} alt={alt} className={className} />;
     };
 
-    const quickLinks = [
-        { to: '/projects', label: 'All Projects' },
-        { to: '/about', label: 'About' },
-        { to: '/lab', label: 'Lab' },
-        { to: '/contact', label: 'Contact' },
-    ];
-
     const caseStudyFooter = (
         <footer className="cs-shell cs-bottom-footer cs-animate" aria-label="Case study footer links">
             <div className="cs-bottom-footer__inner">
@@ -251,13 +254,6 @@ const ProjectCaseStudyPage = () => {
                         )}
                     </div>
                 </div>
-                <nav className="cs-bottom-footer__right" aria-label="Other links">
-                    {quickLinks.map((link) => (
-                        <Link key={link.to} to={link.to} className="cs-bottom-footer__link">
-                            {link.label}
-                        </Link>
-                    ))}
-                </nav>
             </div>
         </footer>
     );
@@ -403,13 +399,24 @@ const ProjectCaseStudyPage = () => {
                     <section className="cs-shell cs-assets-list cs-animate">
                         <p className="cs-overline">Assets</p>
                         <div className="cs-assets-list-wrap">
-                            {(project.images || [coverImage]).map((source, index) => (
-                                <article key={`${source}-${index}`} className="cs-asset-row">
-                                    <div className="cs-asset-meta">
-                                        <FiFolder size={16} />
-                                        <span>Asset {String(index + 1).padStart(2, '0')}</span>
+                            {assetGroups.map((group) => (
+                                <article key={group.view} className="cs-asset-folder">
+                                    <div className="cs-asset-folder__head">
+                                        <div className="cs-asset-meta">
+                                            <FiFolder size={16} />
+                                            <span>{group.label} Assets</span>
+                                        </div>
+                                        <span className="cs-asset-count">{group.files.length} files</span>
                                     </div>
-                                    <a href={source} download className="cs-asset-download">Download</a>
+
+                                    <div className="cs-asset-folder__list">
+                                        {group.files.map((source, index) => (
+                                            <div key={`${group.view}-${source}-${index}`} className="cs-asset-file-row">
+                                                <span className="cs-asset-file-name">{getAssetFileName(source)}</span>
+                                                <a href={source} download className="cs-asset-download">Download</a>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </article>
                             ))}
                         </div>
@@ -558,16 +565,25 @@ const ProjectCaseStudyPage = () => {
 
                 <section className="cs-shell cs-assets cs-animate">
                     <p className="cs-overline">Assets</p>
-                    <h3 className="cs-heading">Downloadable Asset Images</h3>
-                    <div className="cs-grid-2">
-                        {landingAssets.map((image, index) => (
-                            <article className="cs-highlight-card" key={`${image}-${index}`}>
-                                <div className="cs-thumb-wrap">
-                                    <img src={image} alt={`${project.title} asset ${index + 1}`} className="cs-thumb" />
+                    <h3 className="cs-heading">Downloadable Asset Folders</h3>
+                    <div className="cs-assets-list-wrap">
+                        {assetGroups.map((group) => (
+                            <article key={`default-${group.view}`} className="cs-asset-folder">
+                                <div className="cs-asset-folder__head">
+                                    <div className="cs-asset-meta">
+                                        <FiFolder size={16} />
+                                        <span>{group.label} Assets</span>
+                                    </div>
+                                    <span className="cs-asset-count">{group.files.length} files</span>
                                 </div>
-                                <div className="cs-asset-footer">
-                                    <p className="cs-caption">Asset {String(index + 1).padStart(2, '0')}</p>
-                                    <a href={image} download className="cs-asset-download">Download</a>
+
+                                <div className="cs-asset-folder__list">
+                                    {group.files.map((source, index) => (
+                                        <div key={`default-${group.view}-${source}-${index}`} className="cs-asset-file-row">
+                                            <span className="cs-asset-file-name">{getAssetFileName(source)}</span>
+                                            <a href={source} download className="cs-asset-download">Download</a>
+                                        </div>
+                                    ))}
                                 </div>
                             </article>
                         ))}
