@@ -137,13 +137,21 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                         </span>
                                     ))}
                                 </div>
-                                <div className="pt-2">
+                                <div className="pt-2 flex flex-wrap gap-4">
                                     <a
                                         href="/resume.pdf"
                                         download
                                         className="inline-flex items-center justify-center font-bold text-xs sm:text-sm uppercase tracking-[0.18em] text-[#0c0c0c] bg-[#c8ff3e] px-6 sm:px-8 py-3.5 rounded-full hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.24)] hover:shadow-[0_0_36px_rgba(255,255,255,0.22)]"
                                     >
                                         Download Resume
+                                    </a>
+                                    <a
+                                        href="/resume.pdf"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center justify-center font-bold text-xs sm:text-sm uppercase tracking-[0.18em] text-[#f2ede6] border border-[#f2ede6]/20 bg-[#f2ede6]/5 px-6 sm:px-8 py-3.5 rounded-full hover:bg-[#f2ede6]/10 hover:border-[#f2ede6]/40 hover:scale-[1.02] transition-all duration-300 backdrop-blur-sm"
+                                    >
+                                        Open CV
                                     </a>
                                 </div>
                             </div>
