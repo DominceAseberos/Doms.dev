@@ -34,6 +34,10 @@ const FeedSection = () => {
     const [showAllPastMobile, setShowAllPastMobile] = useState(false);
     const [expandedImage, setExpandedImage] = useState(null);
     const listScrollRef = useRef(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startY, setStartY] = useState(0);
+    const [scrollTop, setScrollTop] = useState(0);
+    const [dragActive, setDragActive] = useState(false); // Used to differentiate click vs drag
 
     const selectedPost = sortedPosts.find((post) => post.id === selectedId) || sortedPosts[0] || null;
 
@@ -75,6 +79,47 @@ const FeedSection = () => {
         window.addEventListener('keydown', onKeyDown);
         return () => window.removeEventListener('keydown', onKeyDown);
     }, [expandedImage]);
+
+    const handleMouseDown = (e) => {
+        const container = listScrollRef.current;
+        if (!container) return;
+
+        setIsDragging(true);
+        setDragActive(false);
+        setStartY(e.pageY - container.offsetTop);
+        setScrollTop(container.scrollTop);
+    };
+
+    const handleMouseLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleMouseUp = (e) => {
+        // Delay resetting dragActive to prevent immediate click trigger
+        setTimeout(() => setIsDragging(false), 0);
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        
+        const container = listScrollRef.current;
+        if (!container) return;
+
+        const y = e.pageY - container.offsetTop;
+        const walk = (y - startY) * 1.5; // Scroll multiplier
+        
+        if (Math.abs(walk) > 5) {
+            setDragActive(true);
+        }
+        
+        container.scrollTop = scrollTop - walk;
+    };
+
+    const handleItemClick = (postId) => {
+        if (dragActive) return;
+        setSelectedId(postId);
+    };
 
     return (
         <section className="feed-section relative z-10">
@@ -127,13 +172,17 @@ const FeedSection = () => {
                             <div className="feed-list-head ui-sub-label">Past posts</div>
                             <div
                                 ref={listScrollRef}
-                                className="feed-list-scroll"
+                                className={`feed-list-scroll ${isDragging ? 'is-dragging' : ''}`}
+                                onMouseDown={handleMouseDown}
+                                onMouseLeave={handleMouseLeave}
+                                onMouseUp={handleMouseUp}
+                                onMouseMove={handleMouseMove}
                             >
                                 {recentPost && selectedId !== recentPost.id ? (
                                     <button
                                         type="button"
                                         className="feed-list-item"
-                                        onClick={() => setSelectedId(recentPost.id)}
+                                        onClick={() => handleItemClick(recentPost.id)}
                                         aria-pressed="false"
                                     >
                                         <div className="feed-list-meta ui-sub-label">Back to most recent</div>
@@ -148,7 +197,7 @@ const FeedSection = () => {
                                             key={post.id}
                                             type="button"
                                             className={`feed-list-item ${isActive ? 'is-active' : ''}`}
-                                            onClick={() => setSelectedId(post.id)}
+                                            onClick={() => handleItemClick(post.id)}
                                             aria-pressed={isActive}
                                         >
                                             <div className="feed-list-meta ui-sub-label">{formatDate(post.createdAt)}</div>

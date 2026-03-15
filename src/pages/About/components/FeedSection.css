@@ -202,6 +202,21 @@
     gap: 0.65rem;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    user-select: none; /* Prevent text selection during drag */
+}
+
+.feed-list-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.feed-list-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.feed-list-scroll.is-dragging {
+    cursor: grabbing;
 }
 
 .feed-list-item {

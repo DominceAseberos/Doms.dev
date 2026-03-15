@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import DisplayName from './DisplayName';
 import ProfileMorphCard from './ProfileMorphCard';
+import { FiGithub } from 'react-icons/fi';
 import useLoadingStore from '../store/useLoadingStore';
 import humanPortrait from '../assets/human-cutout.png';
 import animePortrait from '../assets/anime-cutout.png';
@@ -141,7 +142,7 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                     <a
                                         href="/resume.pdf"
                                         download
-                                        className="inline-flex items-center justify-center font-bold text-xs sm:text-sm uppercase tracking-[0.18em] text-[#0c0c0c] bg-[#c8ff3e] px-6 sm:px-8 py-3.5 rounded-full hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.24)] hover:shadow-[0_0_36px_rgba(255,255,255,0.22)]"
+                                        className="btn-primary"
                                     >
                                         Download Resume
                                     </a>
@@ -149,9 +150,18 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                         href="/resume.pdf"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center justify-center font-bold text-xs sm:text-sm uppercase tracking-[0.18em] text-[#f2ede6] border border-[#f2ede6]/20 bg-[#f2ede6]/5 px-6 sm:px-8 py-3.5 rounded-full hover:bg-[#f2ede6]/10 hover:border-[#f2ede6]/40 hover:scale-[1.02] transition-all duration-300 backdrop-blur-sm"
+                                        className="btn-ghost"
                                     >
                                         Open CV
+                                    </a>
+                                    <a
+                                        href="https://github.com/Domince07"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="btn-ghost !p-0 inline-flex items-center justify-center w-[58px] h-[58px]"
+                                        aria-label="GitHub Profile"
+                                    >
+                                        <FiGithub size={24} />
                                     </a>
                                 </div>
                             </div>
