@@ -1,6 +1,7 @@
 .cs-page {
     --cs-paper: #f2ede6;
     --cs-acid: #c8ff3e;
+    --cs-on-acid: #0a0a08;
     --cs-line: rgba(255, 255, 255, 0.08);
     --cs-soft: rgba(255, 255, 255, 0.74);
     --cs-body: rgba(255, 255, 255, 0.82);
@@ -8,6 +9,15 @@
     padding-top: 108px;
     padding-bottom: 80px;
     font-family: 'Syne', sans-serif;
+}
+
+html[data-theme='light'] .cs-page {
+    --cs-paper: #121212;
+    --cs-acid: var(--accent, #a7cf2f);
+    --cs-on-acid: #121212;
+    --cs-line: rgba(0, 0, 0, 0.1);
+    --cs-soft: rgba(0, 0, 0, 0.72);
+    --cs-body: rgba(0, 0, 0, 0.82);
 }
 
 .cs-shell {
@@ -100,8 +110,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    border: 1px solid rgba(200, 255, 62, 0.45);
-    background: rgba(200, 255, 62, 0.14);
+    border: 1px solid color-mix(in srgb, var(--cs-paper) 18%, transparent);
+    background: color-mix(in srgb, var(--cs-paper) 8%, transparent);
     color: var(--cs-paper);
     font-family: 'DM Mono', monospace;
     font-size: 12px;
@@ -109,16 +119,23 @@
     text-transform: uppercase;
     text-decoration: none;
     padding: 11px 18px;
+    box-shadow: inset 0 0 0 1px transparent;
     transition: 0.2s ease;
 }
 
 .cs-link-btn:hover {
-    background: rgba(200, 255, 62, 0.25);
+    border-color: rgba(200, 255, 62, 0.55);
+    background: var(--cs-acid);
+    color: var(--cs-on-acid);
 }
 
 .cs-link-btn--ghost {
-    border-color: rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--cs-line);
+    background: transparent;
+}
+
+.cs-link-btn--ghost:hover {
+    color: var(--cs-paper);
 }
 
 .cs-hero,

@@ -14,9 +14,46 @@
     --about-pill-text: rgba(255, 255, 255, 0.92);
     --about-pill-bg: rgba(0, 0, 0, 0.55);
     --about-pill-border: rgba(255, 255, 255, 0.4);
+    --card-hover: #11110d;
+    --vis-bg: linear-gradient(145deg, var(--c1, #111), var(--c2, #1a1a1a));
+    --vis-grid: rgba(255,255,255,.022);
+    --vignette: linear-gradient(to top, rgba(8,8,6,.9) 0%, rgba(8,8,6,.05) 55%, transparent 100%);
+    --date-bg: rgba(10,10,8,.65);
+    --overlay-bg: rgba(8,8,6,.94);
+    --title-stroke: rgba(242,237,230,.25);
+    --subtle-track: rgba(184,178,168,.1);
+    --cover-border: rgba(255, 255, 255, 0.08);
+    --arrow-border: rgba(184,178,168,.13);
+    --divider-line: rgba(184,178,168,.14);
 
     padding-top: 89px;
     font-family: 'Syne', sans-serif;
+}
+
+html[data-theme='light'] .proj-page {
+    --ink: #f5f1ea;
+    --paper: #121212;
+    --acid: var(--accent, #a7cf2f);
+    --fog: #605b55;
+    --mid: #746d66;
+    --line: rgba(0, 0, 0, 0.08);
+    --about-title: #121212;
+    --about-label: rgba(0, 0, 0, 0.72);
+    --about-body: rgba(0, 0, 0, 0.82);
+    --about-pill-text: rgba(18, 18, 18, 0.92);
+    --about-pill-bg: rgba(18, 18, 18, 0.06);
+    --about-pill-border: rgba(18, 18, 18, 0.18);
+    --card-hover: #ebe4db;
+    --vis-bg: linear-gradient(145deg, rgba(18, 18, 18, 0.035), rgba(18, 18, 18, 0.08));
+    --vis-grid: rgba(0,0,0,.045);
+    --vignette: linear-gradient(to top, rgba(245,241,234,.9) 0%, rgba(245,241,234,.08) 55%, transparent 100%);
+    --date-bg: rgba(255,255,255,.72);
+    --overlay-bg: rgba(245,241,234,.96);
+    --title-stroke: rgba(18,18,18,.24);
+    --subtle-track: rgba(18,18,18,.12);
+    --cover-border: rgba(18,18,18,.1);
+    --arrow-border: rgba(18,18,18,.14);
+    --divider-line: rgba(18,18,18,.14);
 }
 
 /* ─────────────────────────────────
@@ -92,7 +129,7 @@
 }
 .ph-title em {
     color: transparent;
-    -webkit-text-stroke: 1px rgba(242,237,230,.25);
+    -webkit-text-stroke: 1px var(--title-stroke);
     font-style: normal;
 }
 .ph-right {
@@ -141,7 +178,7 @@
 .f-btn:hover {
     background: var(--acid);
     border-color: var(--acid);
-    color: var(--ink);
+    color: var(--on-accent, var(--ink));
 }
 
 /* Breathing bar */
@@ -159,7 +196,7 @@
 .breath-track {
     width: 160px;
     height: 1px;
-    background: rgba(184,178,168,.1);
+    background: var(--subtle-track);
     position: relative;
 }
 .breath-fill {
@@ -239,7 +276,7 @@
     transform: translateY(32px);
     cursor: pointer;
 }
-.pg-card:hover { background: #0d0d0b; }
+.pg-card:hover { background: var(--card-hover); }
 
 /* ── Visual zone ── */
 .pg-vis {
@@ -251,15 +288,15 @@
 .pg-vis-bg {
     position: absolute;
     inset: 0;
-    background: linear-gradient(145deg, var(--c1, #111), var(--c2, #1a1a1a));
+    background: var(--vis-bg);
 }
 .pg-vis-bg::after {
     content: '';
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+        linear-gradient(var(--vis-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--vis-grid) 1px, transparent 1px);
     background-size: 40px 40px;
 }
 .pg-glow {
@@ -280,7 +317,7 @@
     height: calc(100% - 20px);
     object-fit: cover;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--cover-border);
     filter: contrast(1.04) saturate(1.05);
 }
 .pg-mock {
@@ -316,7 +353,7 @@
 .pg-vignette {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(8,8,6,.9) 0%, rgba(8,8,6,.05) 55%, transparent 100%);
+    background: var(--vignette);
 }
 .pg-date {
     position: absolute;
@@ -326,7 +363,7 @@
     letter-spacing: .18em;
     text-transform: uppercase;
     color: var(--about-label);
-    background: rgba(10,10,8,.65);
+    background: var(--date-bg);
     padding: 4px 10px;
     border-radius: 3px;
     border: 1px solid var(--about-pill-border);
@@ -385,7 +422,7 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 1px solid rgba(184,178,168,.13);
+    border: 1px solid var(--arrow-border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -404,7 +441,7 @@
     position: absolute;
     inset: 0;
     z-index: 20;
-    background: rgba(8,8,6,.94);
+    background: var(--overlay-bg);
     opacity: 0;
     pointer-events: none;
     transition: opacity .3s ease;
@@ -461,7 +498,7 @@
     font-size: 11px;
     letter-spacing: .16em;
     text-transform: uppercase;
-    color: var(--ink);
+    color: var(--on-accent, var(--ink));
     background: var(--acid);
     padding: 11px 24px;
     text-decoration: none;
@@ -469,7 +506,10 @@
     width: fit-content;
     transition: background .18s;
 }
-.ov-link:hover { background: var(--paper); }
+.ov-link:hover {
+    background: var(--paper);
+    color: var(--ink);
+}
 
 /* ── Stat cell ── */
 .pg-stat {
@@ -503,7 +543,7 @@
 .pg-stat-div {
     width: 1px;
     height: 36px;
-    background: rgba(184,178,168,.14);
+    background: var(--divider-line);
 }
 .pg-stat-year {
     font-family: 'Bebas Neue', sans-serif;

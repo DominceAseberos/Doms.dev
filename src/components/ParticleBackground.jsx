@@ -1,8 +1,21 @@
 import React, { useEffect, useRef } from 'react';
+import useThemeStore from '../store/useThemeStore';
 
 const ParticleBackground = () => {
     const canvasRef = useRef(null);
     const gridRef = useRef(null);
+    const theme = useThemeStore((state) => state.theme);
+    const isLightTheme = theme === 'light';
+    const palette = {
+        dot: isLightTheme ? 'rgba(18, 18, 18, 0.52)' : 'rgba(131, 10, 50, 0.5)',
+        lineRgb: isLightTheme ? '18, 18, 18' : '232, 0, 77',
+        glowRgb: isLightTheme ? '40, 40, 40' : '255, 80, 120',
+        trailRgb: isLightTheme ? '18, 18, 18' : '232, 0, 77',
+        coreRgb: isLightTheme ? '18, 18, 18' : '255, 200, 210',
+        grid: isLightTheme
+            ? 'rgba(0, 0, 0, 0.055)'
+            : 'rgba(255, 255, 255, 0.028)',
+    };
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -10,18 +23,17 @@ const ParticleBackground = () => {
 
         let W, H, DPR;
         let COUNT, CONNECT_DIST, TAIL_LENGTH, SPEED, DOT_RADIUS, GRID_SIZE;
-        const DOT_COLOR = '#830a32ff';
 
         function getConfig() {
             const w = window.innerWidth;
             if (w < 480) {
-                COUNT = 40; DOT_RADIUS = 1.8; CONNECT_DIST = 80; SPEED = 0.3; TAIL_LENGTH = 60; GRID_SIZE = 40;
+                COUNT = 34; DOT_RADIUS = 1.6; CONNECT_DIST = 80; SPEED = 0.28; TAIL_LENGTH = 56; GRID_SIZE = 40;
             } else if (w < 768) {
-                COUNT = 60; DOT_RADIUS = 2; CONNECT_DIST = 100; SPEED = 0.35; TAIL_LENGTH = 80; GRID_SIZE = 50;
+                COUNT = 48; DOT_RADIUS = 1.8; CONNECT_DIST = 98; SPEED = 0.32; TAIL_LENGTH = 70; GRID_SIZE = 50;
             } else if (w < 1280) {
-                COUNT = 120; DOT_RADIUS = 2.2; CONNECT_DIST = 120; SPEED = 0.4; TAIL_LENGTH = 100; GRID_SIZE = 60;
+                COUNT = 92; DOT_RADIUS = 2; CONNECT_DIST = 112; SPEED = 0.36; TAIL_LENGTH = 88; GRID_SIZE = 60;
             } else {
-                COUNT = 160; DOT_RADIUS = 2.2; CONNECT_DIST = 140; SPEED = 0.45; TAIL_LENGTH = 120; GRID_SIZE = 60;
+                COUNT = 118; DOT_RADIUS = 2; CONNECT_DIST = 126; SPEED = 0.4; TAIL_LENGTH = 102; GRID_SIZE = 60;
             }
         }
 
@@ -69,7 +81,7 @@ const ParticleBackground = () => {
         const dist = (ax, ay, bx, by) => { const dx = ax - bx, dy = ay - by; return Math.sqrt(dx * dx + dy * dy); };
         function drawLine(x1, y1, x2, y2, alpha, w = 0.8) {
             ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
-            ctx.strokeStyle = `rgba(232,0,77,${alpha})`; ctx.lineWidth = w; ctx.stroke();
+            ctx.strokeStyle = `rgba(${palette.lineRgb},${alpha})`; ctx.lineWidth = w; ctx.stroke();
         }
 
         let animFrame;
@@ -87,8 +99,7 @@ const ParticleBackground = () => {
             for (let i = 0; i < nodes.length; i++) {
                 for (let j = i + 1; j < nodes.length; j++) {
                     const d = dist(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
-                    // To change the opacity of the lines connecting the particles, adjust the "0.95" multiplier below:
-                    if (d < CONNECT_DIST) drawLine(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y, (1 - d / CONNECT_DIST) * 0.6);
+                    if (d < CONNECT_DIST) drawLine(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y, (1 - d / CONNECT_DIST) * 0.24);
                 }
             }
 
@@ -102,23 +113,23 @@ const ParticleBackground = () => {
                 if (s.life <= 0) { stars.splice(i, 1); continue; }
                 const ba = s.alpha * s.life;
                 for (let t = 1; t < s.trail.length; t++) {
-                    const p = t / s.trail.length, a = p * p * ba * 0.85;
+                    const p = t / s.trail.length, a = p * p * ba * 0.42;
                     ctx.beginPath(); ctx.moveTo(s.trail[t - 1].x, s.trail[t - 1].y); ctx.lineTo(s.trail[t].x, s.trail[t].y);
-                    ctx.strokeStyle = `rgba(232,0,77,${a})`; ctx.lineWidth = p * 2.2; ctx.lineCap = 'round'; ctx.stroke();
+                    ctx.strokeStyle = `rgba(${palette.trailRgb},${a})`; ctx.lineWidth = p * 1.6; ctx.lineCap = 'round'; ctx.stroke();
                 }
                 const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 14);
-                grd.addColorStop(0, `rgba(255,80,120,${ba * 0.6})`);
-                grd.addColorStop(0.4, `rgba(232,0,77,${ba * 0.2})`);
+                grd.addColorStop(0, `rgba(${palette.glowRgb},${ba * 0.2})`);
+                grd.addColorStop(0.4, `rgba(${palette.trailRgb},${ba * 0.12})`);
                 grd.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(s.x, s.y, 14, 0, Math.PI * 2); ctx.fill();
                 ctx.beginPath(); ctx.arc(s.x, s.y, 2.5, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,200,210,${ba})`; ctx.fill();
+                ctx.fillStyle = `rgba(${palette.coreRgb},${ba * 0.58})`; ctx.fill();
             }
 
             nodes.forEach(n => {
                 ctx.beginPath();
                 ctx.arc(n.x, n.y, DOT_RADIUS, 0, Math.PI * 2);
-                ctx.fillStyle = DOT_COLOR; ctx.fill();
+                ctx.fillStyle = palette.dot; ctx.fill();
             });
         }
 
@@ -129,17 +140,20 @@ const ParticleBackground = () => {
             clearInterval(starInterval);
             cancelAnimationFrame(animFrame);
         };
-    }, []);
+    }, [theme]);
 
     return (
-        <div className="fixed inset-0 z-[-1] bg-black font-mono overflow-hidden pointer-events-none">
+        <div
+            className="fixed inset-0 z-[-1] font-mono overflow-hidden pointer-events-none"
+            style={{ backgroundColor: 'var(--bg)', transition: 'background-color 0.25s ease' }}
+        >
             <div
                 ref={gridRef}
                 className="fixed inset-0 pointer-events-none"
                 style={{
                     backgroundImage: `
-                        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)
+                        linear-gradient(${palette.grid} 1px, transparent 1px),
+                        linear-gradient(90deg, ${palette.grid} 1px, transparent 1px)
                     `
                 }}
             ></div>

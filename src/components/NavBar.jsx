@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { FiMoon, FiSun } from 'react-icons/fi';
 import useLoadingStore from '../store/useLoadingStore';
+import useThemeStore from '../store/useThemeStore';
 import AnimatedNavBarLogo from './AnimatedNavBarLogo';
 
 const NavBar = () => {
@@ -8,6 +10,8 @@ const NavBar = () => {
     const location = useLocation();
     const currentPath = location.pathname;
     const [isScrolled, setIsScrolled] = useState(false);
+    const theme = useThemeStore((state) => state.theme);
+    const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -28,22 +32,17 @@ const NavBar = () => {
 
     const renderLink = (to, label) => {
         const isActive = currentPath === to;
-        const commonProps = {
-            className: `nav-link${isActive ? ' active' : ''}`,
-            ...(isActive
-                ? {
-                      'aria-current': 'page',
-                      onClick: (e) => e.preventDefault(),
-                      tabIndex: -1
-                  }
-                : {
-                      href: to,
-                      target: '_blank',
-                      rel: 'noopener noreferrer'
-                  })
-        };
-
-        return <a {...commonProps}>{label}</a>;
+        return (
+            <Link
+                to={to}
+                className={`nav-link${isActive ? ' active' : ''}`}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={isActive ? (e) => e.preventDefault() : undefined}
+                tabIndex={isActive ? -1 : undefined}
+            >
+                {label}
+            </Link>
+        );
     };
 
     return (
@@ -53,11 +52,23 @@ const NavBar = () => {
                     <AnimatedNavBarLogo className="w-12 h-12" />
                 </Link>
             </div>
-            <ul className="nav-links">
-                {navItems.map((item) => (
-                    <li key={item.to}>{renderLink(item.to, item.label)}</li>
-                ))}
-            </ul>
+            <div className="nav-right">
+                <ul className="nav-links">
+                    {navItems.map((item) => (
+                        <li key={item.to}>{renderLink(item.to, item.label)}</li>
+                    ))}
+                </ul>
+                <button
+                    type="button"
+                    className="theme-toggle"
+                    onClick={toggleTheme}
+                    aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+                    title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+                >
+                    {theme === 'dark' ? <FiSun size={16} /> : <FiMoon size={16} />}
+                    <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
+                </button>
+            </div>
         </nav>
     );
 };

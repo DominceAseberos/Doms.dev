@@ -11,9 +11,11 @@ import ContactPage from './pages/Contact/index';
 import LabPage from './pages/Lab/index';
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
+import useThemeStore from './store/useThemeStore';
 
 function App() {
     const setLoading = useLoadingStore((state) => state.setLoading);
+    const initTheme = useThemeStore((state) => state.initTheme);
 
     useEffect(() => {
         // App initial load complete after 3.2s
@@ -23,6 +25,10 @@ function App() {
 
         return () => clearTimeout(timer);
     }, [setLoading]);
+
+    useEffect(() => {
+        initTheme();
+    }, [initTheme]);
 
     // Initialize Lenis
     useEffect(() => {
