@@ -43,6 +43,7 @@ function App() {
     return (
         <Router>
             <GlobalLoader />
+            <div className="nav-hover-zone" aria-hidden="true" />
             <div id="smooth-wrapper" className="min-h-screen selection:bg-red-500/30">
                 <div id="smooth-content">
                     <Routes>

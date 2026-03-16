@@ -7,6 +7,7 @@ import { FiMonitor, FiTablet, FiSmartphone, FiFolder, FiArrowLeft, FiLink2 } fro
 
 import ParticleBackground from '../../../components/ParticleBackground';
 import NavBar from '../../../components/NavBar';
+import useThemeStore from '../../../store/useThemeStore';
 import portfolioData from '../../../data/portfolioData.json';
 import './ProjectCaseStudyPage.css';
 
@@ -85,6 +86,8 @@ const ProjectCaseStudyPage = () => {
     const { projectId } = useParams();
     const rootRef = useRef(null);
     const [activeView, setActiveView] = useState('desktop');
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
 
     const project = useMemo(
         () => portfolioData.projects.find((item) => item.id === projectId),
@@ -146,20 +149,30 @@ const ProjectCaseStudyPage = () => {
     }, [projectId]);
 
     if (!project) {
-        return (
-            <div className="relative min-h-screen">
-                <ParticleBackground />
-                <NavBar />
-                <main className="cs-page relative z-10" ref={rootRef}>
-                    <section className="cs-shell cs-animate">
-                        <p className="cs-overline">Project not found</p>
-                        <h1 className="cs-title">This case study does not exist.</h1>
-                        <Link to="/projects" className="cs-link-btn">Back to Projects ↗</Link>
-                    </section>
-                </main>
-            </div>
-        );
+        // Redirect to first valid projectId
+        const firstProjectId = portfolioData.projects?.[0]?.id || 'banana-leaf-detection';
+        window.location.replace(`/projects/${firstProjectId}`);
+        return null;
     }
+
+    {/* Decorative Inner Polygons (Sandbox style) */}
+    <div className="absolute inset-0 z-0 pointer-events-none">
+        <div
+            className="absolute top-0 left-0 w-[80%] h-full"
+            style={{
+                clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0 100%)',
+                backgroundColor: isLight ? '#e6f7d9' : '#494b4e'
+            }}
+        ></div>
+        <div
+            className="absolute top-[10%] left-0 w-[40%] h-[60%]"
+            style={{
+                clipPath: 'polygon(0 0, 100% 20%, 75% 100%, 0 100%)',
+                backgroundColor: isLight ? '#c8ff3e' : '#c8ff3e',
+                opacity: isLight ? 0.08 : 0.03
+            }}
+        ></div>
+    </div>
 
     const formattedDate = new Date(project.dateCreated).toLocaleDateString('en-US', {
         month: 'long',

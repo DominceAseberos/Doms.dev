@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import umtcLogo from '../../../assets/umtc-logopng.webp';
+import './EducationSection.css';
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -53,34 +54,34 @@ const EducationSection = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="relative w-full min-h-screen bg-transparent flex items-center justify-center z-10 py-16">
+        <section ref={sectionRef} className="education-section relative w-full min-h-screen bg-transparent flex items-center justify-center z-10 py-16">
             <div ref={contentRef} className="relative z-10 text-white px-6 md:px-16 w-full max-w-[1400px] flex flex-col items-start">
                 <h2
                     ref={headingRef}
                     className="font-bold uppercase tracking-tight text-[#c8ff3e]"
                     style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 8vw, 8rem)", lineHeight: 1.1 }}
                 >
-                    <span className="text-[#f2ede6]">Educational</span> Background
+                    <span className="es-heading-name">Educational</span> Background
                 </h2>
                 <p className="ui-sub-label md:text-sm mb-10 leading-relaxed text-left">
                     Academic Foundation
                 </p>
 
                 <div className="w-full grid grid-cols-1 lg:grid-cols-[minmax(280px,560px)_1fr] gap-8 lg:gap-14 items-center">
-                    <div className="w-full rounded-3xl border border-white/10 bg-black/40 backdrop-blur-md p-5 md:p-6">
+                    <div className="es-logo-card w-full rounded-3xl p-5 md:p-6">
                         <img
                             src={umtcLogo}
                             alt="University of Mindanao Tagum City"
-                            className="w-full rounded-xl border border-white/10"
+                            className="es-logo-img w-full rounded-xl"
                         />
                     </div>
 
                     <div className="w-full flex flex-col items-start justify-center text-left">
                         <div className="space-y-4 md:space-y-5 max-w-2xl">
-                            <h3 className="text-2xl md:text-4xl font-bold text-[#f2ede6] tracking-tight">
+                            <h3 className="es-institution-name text-2xl md:text-4xl font-bold tracking-tight">
                                 University of Mindanao Tagum City
                             </h3>
-                            <p className="text-sm md:text-base uppercase tracking-[0.12em] text-white/82 font-medium">
+                            <p className="es-degree-text text-sm md:text-base uppercase tracking-[0.12em] font-medium">
                                 Bachelor of Science in Computer Science
                             </p>
                         </div>

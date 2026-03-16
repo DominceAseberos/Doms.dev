@@ -1,4 +1,5 @@
 import React, { useRef, useState, useLayoutEffect } from 'react';
+import useThemeStore from '../store/useThemeStore';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ParticleMesh from './ParticleMesh';
@@ -133,38 +134,49 @@ const LabSection = () => {
         rotateY = ((mousePos.x - centerX) / centerX) * 4;
     }
 
+    // Use theme from store
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
+
     return (
-        <section ref={sectionRef} className="relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20 overflow-hidden">
+        <section ref={sectionRef} className={`relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20 overflow-hidden ${isLight ? 'bg-[#e6f7d9]' : ''}`}> 
             {/* Decorative Inner Polygons */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div
-                    className="absolute top-0 left-0 w-[80%] h-full bg-[#494b4e]"
-                    style={{ clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0 100%)' }}
+                    className="absolute top-0 left-0 w-[80%] h-full"
+                    style={{
+                        clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0 100%)',
+                        backgroundColor: isLight ? '#e6f7d9' : '#494b4e'
+                    }}
                 ></div>
                 <div
-                    className="absolute top-[10%] left-0 w-[40%] h-[60%] bg-[#c8ff3e] opacity-[0.03]"
-                    style={{ clipPath: 'polygon(0 0, 100% 20%, 75% 100%, 0 100%)' }}
+                    className="absolute top-[10%] left-0 w-[40%] h-[60%]"
+                    style={{
+                        clipPath: 'polygon(0 0, 100% 20%, 75% 100%, 0 100%)',
+                        backgroundColor: isLight ? '#c8ff3e' : '#c8ff3e',
+                        opacity: isLight ? 0.08 : 0.03
+                    }}
                 ></div>
             </div>
 
-            <div className="container max-w-6xl mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
+                <div className="container max-w-6xl mx-auto px-6 relative z-10">
+                    <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
 
-                    {/* Left Side: Explanatory Text & CTA */}
-                    <div className="w-full lg:w-1/2">
-                        <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 text-[#f2ede6]">The Sandbox</h2>
-                        <p className="ui-body-copy text-base md:text-lg mb-10 max-w-lg">
-                            Throwing code at the wall to see what sticks. Experimental concepts, personal prototypes, and passion projects built for the joy of creation.
-                        </p>
-                        <a
-                            href="/lab"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-8 py-4 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
-                        >
-                            Enter The Lab ↗
-                        </a>
-                    </div>
+                        {/* Left Side: Explanatory Text & CTA */}
+                        <div className="w-full lg:w-1/2">
+                            <h2 className={`text-5xl md:text-7xl font-bold tracking-tight mb-8 ${isLight ? 'text-[#222]' : 'text-[#f2ede6]'}`}>The Sandbox</h2>
+                            <p className={`ui-body-copy text-base md:text-lg mb-10 max-w-lg ${isLight ? 'text-[#333]' : ''}`}> 
+                                Throwing code at the wall to see what sticks. Experimental concepts, personal prototypes, and passion projects built for the joy of creation.
+                            </p>
+                            <a
+                                href="/lab"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] ${isLight ? 'text-[#222] bg-[#c8ff3e] border-none hover:bg-white hover:text-black' : 'text-[#505255] bg-[#c8ff3e] hover:bg-white hover:scale-105'}`}
+                            >
+                                Enter The Lab ↗
+                            </a>
+                        </div>
 
                     {/* Right Side: Magnetic Preview Card */}
                     <div ref={rightColRef} className="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
@@ -173,7 +185,7 @@ const LabSection = () => {
                             <div
                                 key={i}
                                 ref={el => tagsRef.current[i] = el}
-                                className="floating-tag"
+                                className={`floating-tag ${isLight ? 'text-[#222] bg-[#c8ff3e] border-none' : ''}`}
                                 style={{ top: '50%', left: '50%' }}
                             >
                                 {tag.label}
@@ -182,7 +194,7 @@ const LabSection = () => {
 
                         <div
                             ref={previewRef}
-                            className="relative w-full max-w-[500px] aspect-[4/3] rounded-3xl lab-card shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer z-10"
+                            className={`relative w-full max-w-[500px] aspect-[4/3] rounded-3xl lab-card shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer z-10 ${isLight ? 'bg-[#f6f7fa]' : ''}`}
                             style={{
                                 transform: isHovered
                                     ? `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`
@@ -200,16 +212,18 @@ const LabSection = () => {
                                 className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
                                 style={{
                                     opacity: isHovered ? 1 : 0,
-                                    background: `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, rgba(200,255,62,0.15), transparent 80%)`
+                                    background: isLight
+                                        ? `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, rgba(34,34,34,0.12), transparent 80%)`
+                                        : `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, rgba(200,255,62,0.15), transparent 80%)`
                                 }}
                             />
 
                             {/* Animated Abstract Preview Graphic */}
-                            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors duration-500">
+                            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center ${isLight ? 'bg-[#e6f7d9]/60' : 'bg-black/20'} group-hover:bg-black/10 transition-colors duration-500`}>
                                 <div className="w-24 h-24 border border-[rgba(200,255,62,0.3)] rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(200,255,62,0.1)] group-hover:shadow-[0_0_50px_rgba(200,255,62,0.3)] transition-shadow duration-500">
                                     <div className="w-10 h-10 bg-[#c8ff3e] rounded-full blur-sm opacity-80 animate-ping"></div>
                                 </div>
-                                <span className="ui-sub-label text-[10px] md:text-sm">Interactive Preview</span>
+                                <span className={`ui-sub-label text-[10px] md:text-sm ${isLight ? 'text-[#222]' : ''}`}>Interactive Preview</span>
                             </div>
                         </div>
                     </div>

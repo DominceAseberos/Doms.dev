@@ -1,4 +1,5 @@
 import React, { useRef, useState, useLayoutEffect } from 'react';
+import useThemeStore from '../store/useThemeStore';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './MoreProjectsSection.css';
@@ -130,17 +131,26 @@ const MoreProjectsSection = () => {
         }
     };
 
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
     return (
-        <section ref={sectionRef} className="relative min-h-[100vh] bg-[#505255] flex items-center pt-24 pb-24 z-20 overflow-hidden">
+        <section ref={sectionRef} className={`relative min-h-[100vh] flex items-center pt-24 pb-24 z-20 overflow-hidden ${isLight ? 'bg-[#e6f7d9]' : 'bg-[#505255]'}`}> 
             {/* Decorative Inner Polygons */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div
-                    className="absolute top-0 right-0 w-[85%] h-full bg-[#494b4e]"
-                    style={{ clipPath: 'polygon(25% 0, 100% 0, 100% 100%, 0 100%)' }}
+                    className="absolute top-0 right-0 w-[85%] h-full"
+                    style={{
+                        clipPath: 'polygon(25% 0, 100% 0, 100% 100%, 0 100%)',
+                        backgroundColor: isLight ? '#e6f7d9' : '#494b4e'
+                    }}
                 ></div>
                 <div
-                    className="absolute bottom-0 right-0 w-[50%] h-[75%] bg-gradient-to-tr from-[#3f4144] to-transparent opacity-80"
-                    style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }}
+                    className="absolute bottom-0 right-0 w-[50%] h-[75%]"
+                    style={{
+                        clipPath: 'polygon(100% 0, 100% 100%, 0 100%)',
+                        background: isLight ? '#c8ff3e' : 'linear-gradient(to top right, #3f4144, transparent)',
+                        opacity: isLight ? 0.08 : 0.8
+                    }}
                 ></div>
             </div>
 
@@ -149,8 +159,8 @@ const MoreProjectsSection = () => {
 
                     {/* Left Side: Explanatory Text & CTA — order 3 on mobile, natural on desktop */}
                     <div className="w-full lg:w-1/2 order-3 lg:order-none">
-                        <h2 ref={textRef1} className="text-5xl md:text-7xl font-bold tracking-tight mb-8 text-[#f2ede6]">More Projects</h2>
-                        <p ref={textRef2} className="ui-body-copy text-base md:text-lg mb-10 max-w-lg">
+                        <h2 ref={textRef1} className={`text-5xl md:text-7xl font-bold tracking-tight mb-8 ${isLight ? 'text-[#222]' : 'text-[#f2ede6]'}`}>More Projects</h2>
+                        <p ref={textRef2} className={`ui-body-copy text-base md:text-lg mb-10 max-w-lg ${isLight ? 'text-[#333]' : ''}`}> 
                             Beyond the highlighted case studies, I have an archive of work and side ventures. Explore the full catalog to see the breadth of my capabilities.
                         </p>
                         <div ref={btnRef}>
@@ -158,7 +168,7 @@ const MoreProjectsSection = () => {
                                 href="/projects"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-white border border-white/20 bg-transparent px-8 py-4 rounded-full hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"
+                                className={`inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] ${isLight ? 'text-[#222] bg-[#c8ff3e] border-none hover:bg-white hover:text-black' : 'text-white border border-white/20 bg-transparent hover:bg-white hover:text-black'}`}
                             >
                                 View All Projects ↗
                             </a>

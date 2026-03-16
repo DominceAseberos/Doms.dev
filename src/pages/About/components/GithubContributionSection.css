@@ -1,4 +1,29 @@
+/* ── Github Contribution tokens ── */
 .github-contrib-wrap {
+    --gc-title-color: rgba(255, 255, 255, 0.9);
+    --gc-subtitle-color: rgba(255, 255, 255, 0.45);
+    --gc-status-color: rgba(255, 255, 255, 0.35);
+    --gc-refresh-border: rgba(255, 255, 255, 0.18);
+    --gc-refresh-bg: rgba(255, 255, 255, 0.06);
+    --gc-refresh-color: rgba(255, 255, 255, 0.8);
+    --gc-card-border: rgba(255, 255, 255, 0.07);
+    --gc-card-bg: rgba(3, 4, 14, 0.6);
+    --gc-universe-border: rgba(170, 255, 120, 0.18);
+    --gc-universe-bg: rgba(10, 18, 8, 0.55);
+    --gc-commit-border: rgba(120, 180, 255, 0.18);
+    --gc-commit-bg: rgba(6, 10, 20, 0.55);
+    --gc-eyebrow-color: rgba(255, 255, 255, 0.5);
+    --gc-card-title-color: rgba(255, 255, 255, 0.95);
+    --gc-card-desc-color: rgba(255, 255, 255, 0.68);
+    --gc-legend-item-color: rgba(220, 255, 195, 0.85);
+    --gc-legend-val-color: rgba(200, 255, 170, 0.95);
+    --gc-cta-color: rgba(200, 255, 170, 0.92);
+    --gc-commit-cta-color: rgba(160, 210, 255, 0.85);
+    --gc-cta-secondary-color: rgba(255, 255, 255, 0.42);
+    --gc-message-color: rgba(255, 255, 255, 0.82);
+    --gc-unavailable-color: rgba(255, 255, 255, 0.45);
+    --gc-iframe-border: rgba(255, 255, 255, 0.07);
+
     width: 100%;
     padding: 4rem 1.5rem 6rem;
 }
@@ -13,7 +38,7 @@
     font-family: 'Bebas Neue', sans-serif;
     line-height: 1.1;
     letter-spacing: -0.02em;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--gc-title-color);
 }
 
 .github-contrib-subtitle {
@@ -21,7 +46,7 @@
     font-size: 0.83rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
+    color: var(--gc-subtitle-color);
 }
 
 .github-contrib-actions {
@@ -43,21 +68,22 @@
     text-align: left;
     font-size: 0.75rem;
     letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--gc-status-color);
     margin: 0;
     text-transform: uppercase;
 }
 
 .github-contrib-refresh {
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--gc-refresh-border);
+    background: var(--gc-refresh-bg);
+    color: var(--gc-refresh-color);
     border-radius: 9999px;
     padding: 0.4rem 0.85rem;
     font-size: 0.7rem;
     letter-spacing: 0.09em;
     text-transform: uppercase;
     cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 }
 
 .github-contrib-refresh:disabled {
@@ -83,8 +109,8 @@
     margin: 0 auto;
     border-radius: 24px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    background: rgba(3, 4, 14, 0.6);
+    border: 1px solid var(--gc-iframe-border);
+    background: var(--gc-card-bg);
     backdrop-filter: blur(16px);
     height: min(82vh, 980px);
 }
@@ -109,7 +135,7 @@
 .gc-commit-card {
     padding: 1.4rem 1.5rem 1.5rem;
     border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--gc-card-border);
     background: rgba(6, 8, 20, 0.55);
     backdrop-filter: blur(14px);
     display: flex;
@@ -118,20 +144,20 @@
 }
 
 .gc-universe-card {
-    border-color: rgba(170, 255, 120, 0.18);
-    background: rgba(10, 18, 8, 0.55);
+    border-color: var(--gc-universe-border);
+    background: var(--gc-universe-bg);
 }
 
 .gc-commit-card {
-    border-color: rgba(120, 180, 255, 0.18);
-    background: rgba(6, 10, 20, 0.55);
+    border-color: var(--gc-commit-border);
+    background: var(--gc-commit-bg);
 }
 
 .gc-card-eyebrow {
     font-size: 0.72rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--gc-eyebrow-color);
 }
 
 .gc-card-title {
@@ -139,14 +165,14 @@
     font-size: clamp(1.1rem, 1.7vw, 1.4rem);
     font-weight: 700;
     letter-spacing: 0.03em;
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--gc-card-title-color);
 }
 
 .gc-card-desc {
     margin: 0;
     font-size: 0.88rem;
     line-height: 1.65;
-    color: rgba(255, 255, 255, 0.68);
+    color: var(--gc-card-desc-color);
     letter-spacing: 0.01em;
 }
 
@@ -164,7 +190,7 @@
     gap: 0.45rem;
     font-size: 0.82rem;
     letter-spacing: 0.04em;
-    color: rgba(220, 255, 195, 0.85);
+    color: var(--gc-legend-item-color);
 }
 
 .gc-legend-icon {
@@ -179,7 +205,7 @@
 }
 
 .gc-legend-val {
-    color: rgba(200, 255, 170, 0.95);
+    color: var(--gc-legend-val-color);
     font-weight: 600;
 }
 
@@ -213,7 +239,7 @@
     margin: 0;
     font-size: 0.92rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.82);
+    color: var(--gc-message-color);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -223,7 +249,7 @@
 .gc-commit-unavailable {
     margin: 0;
     font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.45);
+    color: var(--gc-unavailable-color);
     letter-spacing: 0.06em;
 }
 
@@ -238,7 +264,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
-    color: rgba(200, 255, 170, 0.92);
+    color: var(--gc-cta-color);
     border: none;
     background: none;
     cursor: pointer;
@@ -246,7 +272,7 @@
 }
 
 .gc-commit-card .gc-card-cta {
-    color: rgba(160, 210, 255, 0.85);
+    color: var(--gc-commit-cta-color);
 }
 
 .gc-card-cta:hover {
@@ -263,7 +289,7 @@
 }
 
 .gc-card-cta-secondary {
-    color: rgba(255, 255, 255, 0.42);
+    color: var(--gc-cta-secondary-color);
     margin-top: 0;
     padding-top: 0;
 }
@@ -313,4 +339,39 @@
     .gc-card-title {
         font-size: 1.05rem;
     }
+}
+
+/* ── Light Theme Overrides ── */
+html[data-theme='light'] .github-contrib-wrap {
+    --gc-title-color: rgba(18, 18, 18, 0.9);
+    --gc-subtitle-color: rgba(18, 18, 18, 0.5);
+    --gc-status-color: rgba(18, 18, 18, 0.4);
+    --gc-refresh-border: rgba(18, 18, 18, 0.18);
+    --gc-refresh-bg: rgba(18, 18, 18, 0.05);
+    --gc-refresh-color: rgba(18, 18, 18, 0.8);
+    --gc-card-border: rgba(18, 18, 18, 0.08);
+    --gc-card-bg: rgba(245, 241, 234, 0.72);
+    --gc-universe-border: rgba(100, 180, 60, 0.22);
+    --gc-universe-bg: rgba(240, 248, 236, 0.72);
+    --gc-commit-border: rgba(60, 130, 200, 0.22);
+    --gc-commit-bg: rgba(235, 240, 250, 0.72);
+    --gc-eyebrow-color: rgba(18, 18, 18, 0.55);
+    --gc-card-title-color: rgba(18, 18, 18, 0.95);
+    --gc-card-desc-color: rgba(18, 18, 18, 0.72);
+    --gc-legend-item-color: rgba(40, 100, 20, 0.88);
+    --gc-legend-val-color: rgba(40, 120, 20, 0.95);
+    --gc-cta-color: rgba(40, 120, 20, 0.9);
+    --gc-commit-cta-color: rgba(30, 100, 180, 0.88);
+    --gc-cta-secondary-color: rgba(18, 18, 18, 0.45);
+    --gc-message-color: rgba(18, 18, 18, 0.82);
+    --gc-unavailable-color: rgba(18, 18, 18, 0.45);
+    --gc-iframe-border: rgba(18, 18, 18, 0.08);
+}
+
+html[data-theme='light'] .gc-card-cta:hover {
+    color: rgba(18, 18, 18, 0.98);
+}
+
+html[data-theme='light'] .gc-card-cta-secondary:hover {
+    color: rgba(18, 18, 18, 0.82);
 }

@@ -328,6 +328,10 @@ const ProjectSection = () => {
                     scrub: 1.5,
                     pin: true,
                     anticipatePin: 1,
+                    onEnter: () => document.body.classList.add('nav-hidden-in-hallway'),
+                    onEnterBack: () => document.body.classList.add('nav-hidden-in-hallway'),
+                    onLeave: () => document.body.classList.add('nav-hidden-in-hallway'),
+                    onLeaveBack: () => document.body.classList.remove('nav-hidden-in-hallway'),
                     onUpdate: (self) => {
                         if (freezeCards.current) return;
                         updateCards(tl.progress());
@@ -380,6 +384,7 @@ const ProjectSection = () => {
         });
 
         return () => {
+            document.body.classList.remove('nav-hidden-in-hallway');
             if (revealTitle) SplitType.revert('.reveal-text');
         };
     }, { scope: containerRef });

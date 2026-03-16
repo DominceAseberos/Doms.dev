@@ -1,0 +1,41 @@
+/* ── Education Section tokens ── */
+.education-section {
+    --es-heading-primary: #f2ede6;
+    --es-card-border: rgba(255, 255, 255, 0.1);
+    --es-card-bg: rgba(0, 0, 0, 0.4);
+    --es-img-border: rgba(255, 255, 255, 0.1);
+    --es-institution-color: #f2ede6;
+    --es-degree-color: rgba(255, 255, 255, 0.82);
+}
+
+/* ── Light Theme Overrides ── */
+html[data-theme='light'] .education-section {
+    --es-heading-primary: #121212;
+    --es-card-border: rgba(18, 18, 18, 0.1);
+    --es-card-bg: rgba(245, 241, 234, 0.72);
+    --es-img-border: rgba(18, 18, 18, 0.1);
+    --es-institution-color: #121212;
+    --es-degree-color: rgba(18, 18, 18, 0.82);
+}
+
+.es-heading-name {
+    color: var(--es-heading-primary);
+}
+
+.es-logo-card {
+    border: 1px solid var(--es-card-border);
+    background: var(--es-card-bg);
+    backdrop-filter: blur(12px);
+}
+
+.es-logo-img {
+    border: 1px solid var(--es-img-border);
+}
+
+.es-institution-name {
+    color: var(--es-institution-color);
+}
+
+.es-degree-text {
+    color: var(--es-degree-color);
+}

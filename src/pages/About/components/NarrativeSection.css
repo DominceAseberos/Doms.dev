@@ -1,0 +1,109 @@
+/* ── Narrative Section tokens ── */
+.narrative-section {
+    --ns-body-color: rgba(255, 255, 255, 0.82);
+    --ns-section-border: rgba(255, 255, 255, 0.1);
+    --ns-card-bg: rgba(255, 255, 255, 0.05);
+    --ns-card-border: rgba(255, 255, 255, 0.1);
+    --ns-sidebar-label: rgba(200, 255, 62, 1);
+    --ns-sidebar-text: rgba(255, 255, 255, 0.9);
+    --ns-link-color: rgba(255, 255, 255, 0.9);
+    --ns-link-hover: #c8ff3e;
+    --ns-pill-text: rgba(200, 200, 200, 0.9);
+    --ns-pill-bg: rgba(255, 255, 255, 0.05);
+    --ns-pill-border: rgba(255, 255, 255, 0.1);
+    --ns-pill-hover-bg: rgba(255, 255, 255, 0.1);
+    --ns-pill-hover-border: rgba(255, 255, 255, 0.2);
+    --ns-ai-pill-text: rgba(255, 255, 255, 0.9);
+    --ns-ai-pill-bg: rgba(200, 255, 62, 0.05);
+    --ns-ai-pill-border: rgba(200, 255, 62, 0.1);
+    --ns-ai-pill-hover-bg: rgba(200, 255, 62, 0.1);
+    --ns-ai-pill-hover-border: rgba(200, 255, 62, 0.2);
+}
+
+/* Section divider */
+.ns-divider {
+    border-top: 1px solid var(--ns-section-border);
+    padding-top: 3rem;
+}
+
+/* "Beyond the Browser" info card */
+.ns-info-card {
+    background: var(--ns-card-bg);
+    border: 1px solid var(--ns-card-border);
+    backdrop-filter: blur(12px);
+}
+
+/* Sidebar label (Location, Visitor Time, etc.) */
+.ns-sidebar-label {
+    color: var(--ns-sidebar-label);
+    opacity: 0.6;
+}
+
+/* Sidebar body text */
+.ns-sidebar-text {
+    color: var(--ns-sidebar-text);
+}
+
+/* Social links */
+.ns-social-link {
+    color: var(--ns-link-color);
+    transition: color 0.3s ease;
+}
+
+.ns-social-link:hover {
+    color: var(--ns-link-hover);
+}
+
+/* Generic skill/tool pills */
+.ns-pill {
+    color: var(--ns-pill-text);
+    background: var(--ns-pill-bg);
+    border: 1px solid var(--ns-pill-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.ns-pill:hover {
+    background: var(--ns-pill-hover-bg);
+    border-color: var(--ns-pill-hover-border);
+}
+
+/* AI stack pills */
+.ns-ai-pill {
+    color: var(--ns-ai-pill-text);
+    background: var(--ns-ai-pill-bg);
+    border: 1px solid var(--ns-ai-pill-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.ns-ai-pill:hover {
+    background: var(--ns-ai-pill-hover-bg);
+    border-color: var(--ns-ai-pill-hover-border);
+}
+
+/* ── Light Theme Overrides ── */
+html[data-theme='light'] .narrative-section {
+    --ns-body-color: rgba(18, 18, 18, 0.82);
+    --ns-section-border: rgba(18, 18, 18, 0.1);
+    --ns-card-bg: rgba(18, 18, 18, 0.04);
+    --ns-card-border: rgba(18, 18, 18, 0.1);
+    --ns-sidebar-label: rgba(100, 150, 0, 1);
+    --ns-sidebar-text: rgba(18, 18, 18, 0.9);
+    --ns-link-color: rgba(18, 18, 18, 0.82);
+    --ns-link-hover: #4a7c00;
+    --ns-pill-text: rgba(40, 40, 40, 0.88);
+    --ns-pill-bg: rgba(18, 18, 18, 0.05);
+    --ns-pill-border: rgba(18, 18, 18, 0.12);
+    --ns-pill-hover-bg: rgba(18, 18, 18, 0.1);
+    --ns-pill-hover-border: rgba(18, 18, 18, 0.22);
+    --ns-ai-pill-text: rgba(18, 18, 18, 0.9);
+    --ns-ai-pill-bg: rgba(100, 150, 0, 0.06);
+    --ns-ai-pill-border: rgba(100, 150, 0, 0.14);
+    --ns-ai-pill-hover-bg: rgba(100, 150, 0, 0.12);
+    --ns-ai-pill-hover-border: rgba(100, 150, 0, 0.24);
+}
+
+/* Main page heading — override the hardcoded cream color in light mode */
+html[data-theme='light'] .narrative-section h2 {
+    color: #121212 !important;
+}
+
