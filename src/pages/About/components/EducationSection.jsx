@@ -58,7 +58,7 @@ const EducationSection = () => {
             <div ref={contentRef} className="relative z-10 text-white px-6 md:px-16 w-full max-w-[1400px] flex flex-col items-start">
                 <h2
                     ref={headingRef}
-                    className="font-bold uppercase tracking-tight text-[#c8ff3e]"
+                    className="font-bold uppercase tracking-tight text-[var(--accent)]"
                     style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 8vw, 8rem)", lineHeight: 1.1 }}
                 >
                     <span className="es-heading-name">Educational</span> Background

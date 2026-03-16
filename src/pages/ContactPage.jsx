@@ -2,10 +2,13 @@ import React, { useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import NavBar from '../components/NavBar';
 import ParticleBackground from '../components/ParticleBackground';
+import useThemeStore from '../store/useThemeStore';
 
 const ContactPage = () => {
     const formRef = useRef(null);
     const containerRef = useRef(null);
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
 
     useLayoutEffect(() => {
         let ctx = gsap.context(() => {
@@ -61,7 +64,7 @@ const ContactPage = () => {
                     </span>
                     <h1 className="text-6xl sm:text-8xl md:text-9xl font-black uppercase tracking-tighter leading-[0.8] mb-8">
                         Let's Talk <br />
-                        <span className="text-[#c8ff3e] drop-shadow-[0_0_30px_rgba(200,255,62,0.3)]">Digital</span>
+                        <span className="text-[var(--accent)] drop-shadow-[0_0_30px_rgba(200,255,62,0.1)]">Digital</span>
                     </h1>
                 </div>
 
@@ -103,7 +106,7 @@ const ContactPage = () => {
                             <div className="pt-8">
                                 <button
                                     type="submit"
-                                    className="group relative inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-12 py-5 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
+                                    className={`group relative inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest px-12 py-5 rounded-full transition-all duration-300 ${isLight ? 'text-white bg-[#121212] hover:bg-[var(--accent)] hover:text-black' : 'text-[#505255] bg-[#c8ff3e] hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]'}`}
                                 >
                                     Send Message ↗
                                 </button>
@@ -116,15 +119,15 @@ const ContactPage = () => {
                         <div className="contact-info space-y-12">
                             <div>
                                 <h3 className="ui-sub-label mb-6">Contact Details</h3>
-                                <a href="mailto:hello@domince.dev" className="text-xl sm:text-2xl hover:text-[#c8ff3e] transition-colors">hello@domince.dev</a>
+                                <a href="mailto:hello@domince.dev" className="text-xl sm:text-2xl hover:text-[var(--accent)] transition-colors">hello@domince.dev</a>
                             </div>
 
                             <div>
                                 <h3 className="ui-sub-label mb-6">Socials</h3>
                                 <div className="flex flex-col gap-3">
-                                    <a href="#" className="text-lg hover:text-[#c8ff3e] transition-colors">Twitter (X)</a>
-                                    <a href="#" className="text-lg hover:text-[#c8ff3e] transition-colors">LinkedIn</a>
-                                    <a href="#" className="text-lg hover:text-[#c8ff3e] transition-colors">GitHub</a>
+                                    <a href="#" className="text-lg hover:text-[var(--accent)] transition-colors">Twitter (X)</a>
+                                    <a href="#" className="text-lg hover:text-[var(--accent)] transition-colors">LinkedIn</a>
+                                    <a href="#" className="text-lg hover:text-[var(--accent)] transition-colors">GitHub</a>
                                 </div>
                             </div>
 

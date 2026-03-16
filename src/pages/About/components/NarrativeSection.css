@@ -7,7 +7,7 @@
     --ns-sidebar-label: rgba(200, 255, 62, 1);
     --ns-sidebar-text: rgba(255, 255, 255, 0.9);
     --ns-link-color: rgba(255, 255, 255, 0.9);
-    --ns-link-hover: #c8ff3e;
+    --ns-link-hover: var(--accent);
     --ns-pill-text: rgba(200, 200, 200, 0.9);
     --ns-pill-bg: rgba(255, 255, 255, 0.05);
     --ns-pill-border: rgba(255, 255, 255, 0.1);
@@ -86,20 +86,22 @@ html[data-theme='light'] .narrative-section {
     --ns-section-border: rgba(18, 18, 18, 0.1);
     --ns-card-bg: rgba(18, 18, 18, 0.04);
     --ns-card-border: rgba(18, 18, 18, 0.1);
-    --ns-sidebar-label: rgba(100, 150, 0, 1);
+    --ns-sidebar-label: rgba(80, 120, 0, 1);
     --ns-sidebar-text: rgba(18, 18, 18, 0.9);
     --ns-link-color: rgba(18, 18, 18, 0.82);
     --ns-link-hover: #4a7c00;
-    --ns-pill-text: rgba(40, 40, 40, 0.88);
-    --ns-pill-bg: rgba(18, 18, 18, 0.05);
-    --ns-pill-border: rgba(18, 18, 18, 0.12);
-    --ns-pill-hover-bg: rgba(18, 18, 18, 0.1);
-    --ns-pill-hover-border: rgba(18, 18, 18, 0.22);
-    --ns-ai-pill-text: rgba(18, 18, 18, 0.9);
-    --ns-ai-pill-bg: rgba(100, 150, 0, 0.06);
-    --ns-ai-pill-border: rgba(100, 150, 0, 0.14);
-    --ns-ai-pill-hover-bg: rgba(100, 150, 0, 0.12);
-    --ns-ai-pill-hover-border: rgba(100, 150, 0, 0.24);
+    /* Regular pills — dark ink text, subtle dark border */
+    --ns-pill-text: rgba(18, 18, 18, 0.85);
+    --ns-pill-bg: rgba(18, 18, 18, 0.06);
+    --ns-pill-border: rgba(18, 18, 18, 0.18);
+    --ns-pill-hover-bg: rgba(18, 18, 18, 0.12);
+    --ns-pill-hover-border: rgba(18, 18, 18, 0.3);
+    /* AI pills — dark ink on acid-tinted chip */
+    --ns-ai-pill-text: #1a2e00;
+    --ns-ai-pill-bg: rgba(167, 207, 47, 0.18);
+    --ns-ai-pill-border: rgba(100, 150, 0, 0.35);
+    --ns-ai-pill-hover-bg: rgba(167, 207, 47, 0.28);
+    --ns-ai-pill-hover-border: rgba(100, 150, 0, 0.5);
 }
 
 /* Main page heading — override the hardcoded cream color in light mode */

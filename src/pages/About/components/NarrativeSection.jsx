@@ -31,7 +31,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                 className="font-black uppercase tracking-tight mb-12 lg:mb-16 text-left leading-[1.1] text-[#f2ede6]"
                 style={{ fontSize: 'clamp(2.5rem, 8vw, 8rem)', fontFamily: "'Bebas Neue', sans-serif" }}
             >
-                Engineering <span className="text-[#c8ff3e]">Digital Poetry</span>
+                Engineering <span className="text-[var(--accent)] font-bold">Digital Poetry</span>
             </h2>
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
                 {/* Main Narrative Content - Prioritized on Mobile */}
@@ -46,13 +46,13 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <div className="space-y-20 lg:space-y-32 w-full">
                         <section className="ns-divider space-y-20">
                             <div className="space-y-4">
-                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">The Philosophy</h3>
+                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[var(--accent)]">The Philosophy</h3>
                                 <p className="text-lg ui-body-copy leading-relaxed">
                                     I believe that the modern web belongs to those who move the fastest. By integrating AI-driven logic into my architectural workflow, I bypass manual friction to focus on what truly matters: creating high-performance, immersive systems that respond to user intent with surgical precision.
                                 </p>
                             </div>
                             <div className="space-y-4">
-                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">The Approach</h3>
+                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[var(--accent)]">The Approach</h3>
                                 <p className="text-lg ui-body-copy leading-relaxed">
                                     I don't believe in manual friction for the sake of it. I leverage AI-augmented development to accelerate the architectural process, allowing me to focus on high-level logic, complex motion sequencing, and scalability. By integrating intelligent tools into my workflow, I transform ideas into high-performance, cinematic experiences with surgical speed and precision.
                                 </p>
@@ -61,7 +61,7 @@ const NarrativeSection = forwardRef((props, ref) => {
 
                         <section className="ns-info-card space-y-12 p-8 md:p-16 rounded-[3rem]">
                             <div className="space-y-6">
-                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[#c8ff3e]">Beyond the Browser</h3>
+                                <h3 className="text-2xl font-bold uppercase tracking-wider text-[var(--accent)]">Beyond the Browser</h3>
                                 <p className="text-lg ui-body-copy leading-relaxed">
                                     When the GSAP timeline stops and I exit dev mode, the focus shifts to personal optimization and exploration. You'll usually find me recalibrating through high-intensity training, engaging in competitive online gaming, or catching up on the latest anime. I balance this creative downtime with the same surgical precision I apply to my code—ensuring all academic milestones and architectural projects are executed to my standards.
                                 </p>

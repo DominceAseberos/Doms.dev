@@ -6,6 +6,7 @@ import DisplayName from './DisplayName';
 import ProfileMorphCard from './ProfileMorphCard';
 import { FiGithub } from 'react-icons/fi';
 import useLoadingStore from '../store/useLoadingStore';
+import useThemeStore from '../store/useThemeStore';
 import humanPortrait from '../assets/human-cutout.png';
 import animePortrait from '../assets/anime-cutout.png';
 
@@ -24,6 +25,8 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
 
     const stripeCount = 20;
     const isLoading = useLoadingStore((state) => state.isLoading);
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
 
     useLayoutEffect(() => {
         if (isLoading) return;
@@ -113,8 +116,8 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                     <div
                         key={i}
                         ref={addToStripes}
-                        className="w-full bg-[#505255]"
-                        style={{ height: `${100 / stripeCount}%` }}
+                        className="w-full"
+                        style={{ height: `${100 / stripeCount}%`, backgroundColor: isLight ? (i % 2 === 0 ? '#e6f7d9' : '#f2ede6') : '#505255' }}
                     />
                 ))}
             </div>
@@ -179,11 +182,11 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                     <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24 items-center">
                         <div ref={headerRef} className="w-full">
                             <h2
-                                className="font-black uppercase tracking-tighter text-white leading-[1] text-center"
+                                className={`font-black uppercase tracking-tighter leading-[1] text-center ${isLight ? 'text-[#121212]' : 'text-white'}`}
                                 style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
                             >
                                 Built with{' '}
-                                <span className="text-[#c8ff3e] drop-shadow-[0_0_20px_rgba(200,255,62,0.3)]">
+                                <span className={`drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] ${isLight ? 'text-[var(--accent)]' : 'text-[#c8ff3e]'}`}>
                                     Motion + Code.
                                 </span>
                             </h2>
@@ -209,7 +212,7 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                     href="/about"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest text-[#505255] bg-[#c8ff3e] px-8 py-4 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
+                                    className={`inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 ${isLight ? 'text-white bg-[#121212] hover:bg-[var(--accent)] hover:text-black' : 'text-[#505255] bg-[#c8ff3e] hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]'}`}
                                 >
                                     More about me ↗
                                 </a>

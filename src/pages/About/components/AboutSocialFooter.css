@@ -59,7 +59,7 @@
     justify-content: center;
     text-decoration: none;
     color: #0c0c0c;
-    background: #c8ff3e;
+    background: var(--accent);
     border-radius: 999px;
     padding: 0.9rem 1.25rem;
     font-size: 0.8rem;

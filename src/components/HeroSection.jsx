@@ -4,10 +4,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import DisplayName from './DisplayName';
 
+import useThemeStore from '../store/useThemeStore';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection = () => {
     const heroRef = useRef(null);
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
 
     useGSAP(() => {
         gsap.to(heroRef.current, {
@@ -40,8 +44,8 @@ const HeroSection = () => {
 
                 <DisplayName showKicker />
 
-                <p className="ui-body-copy text-sm md:text-base tracking-[0.02em] max-w-lg mt-8 mb-12">
-                    Crafting high-performance web experiences where code meets motion. <span className="text-white/85">GSAP · WebGL · React.</span>
+                <p className={`ui-body-copy text-sm md:text-base tracking-[0.02em] max-w-lg mt-8 mb-12 ${isLight ? 'opacity-70' : 'opacity-80'}`}>
+                    Crafting high-performance web experiences where code meets motion. <span className="opacity-80">GSAP · WebGL · React.</span>
                 </p>
 
                 <div className="hero-cta">

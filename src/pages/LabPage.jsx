@@ -15,7 +15,7 @@ const LabPage = () => {
                     Experimental Hub
                 </span>
                 <h1 className="text-7xl sm:text-9xl font-black uppercase tracking-tighter mb-12">
-                    The <span className="text-[#c8ff3e]">Lab</span>
+                    The <span className="text-[var(--accent)]">Lab</span>
                 </h1>
                 <p className="max-w-xl mx-auto ui-body-copy text-lg sm:text-xl">
                     Under construction. This is where the code experiments live. Check back soon for interactive prototypes and architectural puzzles.

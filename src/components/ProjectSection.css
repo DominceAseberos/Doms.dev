@@ -42,7 +42,7 @@
     font-size: 10px;
     letter-spacing: .25em;
     text-transform: uppercase;
-    color: #c8ff3e;
+    color: var(--accent);
 }
 
 .works-label::before {
@@ -50,7 +50,7 @@
     display: block;
     width: 32px;
     height: 1px;
-    background: #c8ff3e;
+    background: var(--accent);
 }
 
 .works-counter {
@@ -133,8 +133,14 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #505255;
     transform: translate(-50%, -50%) scale(0);
+}
+.tunnel-light-light {
+    background: #e6f7d9;
+    box-shadow: 0 0 120px 60px #e6f7d9, 0 0 240px 120px rgba(200, 255, 62, 0.15);
+}
+.tunnel-light-dark {
+    background: #505255;
     box-shadow: 0 0 120px 60px #505255, 0 0 240px 120px rgba(200, 255, 62, 0.4);
     z-index: 10;
     pointer-events: none;
@@ -144,10 +150,16 @@
 .whiteout-overlay {
     position: absolute;
     inset: -20px;
-    background: #505255;
     z-index: 9000;
     opacity: 0;
     pointer-events: none;
+}
+
+.whiteout-light {
+    background: #e6f7d9;
+}
+.whiteout-dark {
+    background: #505255;
 }
 
 .hallway-track {
@@ -175,6 +187,13 @@
     border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, .09);
     overflow: hidden;
+}
+
+.h-card-face-light {
+    background: #e6f7d9 !important;
+}
+.h-card-face-dark {
+    background: radial-gradient(circle at 50% 50%, #232726 0%, #505255 100%);
 }
 
 .h-card-image {
@@ -287,7 +306,7 @@
     font-size: 10px;
     letter-spacing: .22em;
     text-transform: uppercase;
-    color: #c8ff3e;
+    color: var(--accent);
     margin-bottom: 14px;
 }
 
@@ -321,7 +340,7 @@
     padding: 4px 11px;
     border: 1px solid rgba(200, 255, 62, .28);
     border-radius: 100px;
-    color: #c8ff3e;
+    color: var(--accent);
 }
 
 .ov-link {
@@ -332,7 +351,7 @@
     letter-spacing: .16em;
     text-transform: uppercase;
     color: #0a0a08;
-    background: #c8ff3e;
+    background: var(--accent);
     padding: 11px 22px;
     text-decoration: none;
     border-radius: 4px;
@@ -488,7 +507,7 @@
     font-size: 10px;
     letter-spacing: .3em;
     text-transform: uppercase;
-    color: #c8ff3e;
+    color: var(--accent);
     margin-bottom: 20px;
 }
 
@@ -567,7 +586,7 @@
     border-radius: 4px;
     font-family: monospace;
     font-size: 13px;
-    color: #c8ff3e;
+    color: var(--accent);
 }
 
 .ep-desc-markdown pre {
@@ -587,7 +606,7 @@
 }
 
 .ep-desc-markdown blockquote {
-    border-left: 3px solid #c8ff3e;
+    border-left: 3px solid var(--accent);
     padding-left: 16px;
     margin: 0 0 20px 0;
     color: #b8b2a8;
@@ -631,7 +650,7 @@
     align-items: center;
     gap: 8px;
     padding: 14px 32px;
-    background: #c8ff3e;
+    background: var(--accent);
     color: #06060a;
     font-size: 12px;
     font-weight: 700;

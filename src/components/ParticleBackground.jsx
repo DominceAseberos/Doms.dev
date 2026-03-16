@@ -13,7 +13,7 @@ const ParticleBackground = () => {
         trailRgb: isLightTheme ? '18, 18, 18' : '232, 0, 77',
         coreRgb: isLightTheme ? '18, 18, 18' : '255, 200, 210',
         grid: isLightTheme
-            ? 'rgba(0, 0, 0, 0.055)'
+            ? 'rgba(255, 255, 255, 0.4)'
             : 'rgba(255, 255, 255, 0.028)',
     };
 

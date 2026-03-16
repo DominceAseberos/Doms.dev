@@ -1,4 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
+import useThemeStore from '../store/useThemeStore';
 import { createPortal, flushSync } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -44,6 +45,8 @@ const preventGlobalScroll = (e) => {
 };
 
 const ProjectSection = () => {
+        const theme = useThemeStore((state) => state.theme);
+        const isLight = theme === 'light';
     const containerRef = useRef(null);
     const trackRef = useRef(null);
     const gridRef = useRef(null); // Stores the ref for the floor grid
@@ -96,7 +99,7 @@ const ProjectSection = () => {
                 background-image: url(${project.image});
                 background-size: cover;
                 background-position: center;
-                background-color: #06060a;
+                background-color: ${isLight ? '#e6f7d9' : '#505255'};
             `;
         document.body.appendChild(clone);
 
@@ -184,7 +187,7 @@ const ProjectSection = () => {
                 background-image: ${bgImage};
                 background-size: cover;
                 background-position: center;
-                background-color: #06060a;
+                background-color: ${isLight ? '#e6f7d9' : '#505255'};
             `;
         document.body.appendChild(shrinkClone);
 
@@ -409,7 +412,7 @@ const ProjectSection = () => {
 
                     <div className="hallway-scene">
                         <div className="tunnel-grid" ref={gridRef}></div>
-                        <div className="tunnel-light" ref={lightRef}></div>
+                        <div className={`tunnel-light ${isLight ? 'tunnel-light-light' : 'tunnel-light-dark'}`} ref={lightRef}></div>
                         <div className="hallway-track" ref={trackRef}>
                             {projects.map((p, i) => (
                                 <div
@@ -425,7 +428,7 @@ const ProjectSection = () => {
                                         handleViewProject(p, e.currentTarget);
                                     }}
                                 >
-                                    <div className="h-card-face">
+                                    <div className={`h-card-face ${isLight ? 'h-card-face-light' : 'h-card-face-dark'}`}>
                                         <img className="h-card-image" src={p.image} alt={p.title} />
                                     </div>
                                     <div className="h-card-glow"></div>
@@ -451,7 +454,7 @@ const ProjectSection = () => {
                         </div>
                     </div>
                 </div>
-                <div className="whiteout-overlay" ref={whiteoutRef}></div>
+                <div className={`whiteout-overlay ${isLight ? 'whiteout-light' : 'whiteout-dark'}`} ref={whiteoutRef}></div>
             </section>
 
             {expandedProject && createPortal(

@@ -1,6 +1,9 @@
 import React, { useRef, useEffect, useMemo } from 'react';
+import useThemeStore from '../store/useThemeStore';
 
 const ParticleMesh = ({ mouseX, mouseY, isHovered }) => {
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
     const canvasRef = useRef(null);
     const particles = useRef([]);
     const animationFrameId = useRef(null);
@@ -84,10 +87,14 @@ const ParticleMesh = ({ mouseX, mouseY, isHovered }) => {
 
                 // Draw dot
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 1.2 * dpr, 0, Math.PI * 2);
-                ctx.fillStyle = isHovered && dist < forceRadius
-                    ? `rgba(200, 255, 62, ${0.4 + (1 - dist / forceRadius) * 0.6})`
-                    : 'rgba(255, 255, 255, 0.2)';
+                ctx.arc(p.x, p.y, (isLight ? 1.4 : 1.2) * dpr, 0, Math.PI * 2);
+                
+                if (isHovered && dist < forceRadius) {
+                    ctx.fillStyle = `rgba(200, 255, 62, ${0.4 + (1 - dist / forceRadius) * 0.6})`;
+                } else {
+                    // Darker dots for light theme as requested
+                    ctx.fillStyle = isLight ? 'rgba(0, 0, 0, 0.35)' : 'rgba(255, 255, 255, 0.2)';
+                }
                 ctx.fill();
             });
 
