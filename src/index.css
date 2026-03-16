@@ -1,3 +1,12 @@
+/* Overlay Project Theme Classes */
+.ep-inner-light {
+    background: #e6f7d9;
+    color: #232726;
+}
+.ep-inner-dark {
+    background: #232726;
+    color: #f2ede6;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
