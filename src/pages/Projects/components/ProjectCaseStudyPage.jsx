@@ -309,8 +309,8 @@ const ProjectCaseStudyPage = () => {
         }
     };
 
-    const handleAddField = (type) => {
-        const url = prompt(`Enter image URL for ${type}:`);
+    const handleAddField = (type, existingUrl = null) => {
+        const url = existingUrl || prompt(`Enter image URL for ${type}:`);
         if (!url) return;
 
         const newAdminData = { ...adminData };

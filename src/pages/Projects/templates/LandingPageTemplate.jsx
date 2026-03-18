@@ -24,10 +24,51 @@ const LandingPageTemplate = ({
     onAddField = null, // for adding images/assets
     onSave = null      // for the global save btn in admin
 }) => {
+    const fileInputRef = React.useRef(null);
+    const [uploading, setUploading] = React.useState(null); // 'mainImage' | 'galleryImage'
+
+    const triggerUpload = (type) => {
+        setUploading(type);
+        fileInputRef.current?.click();
+    };
+
+    const handleFileUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const res = await fetch(`/__upload-image?name=${encodeURIComponent(file.name)}&projectId=${project.id}`, {
+                method: 'POST',
+                body: file
+            });
+            const data = await res.json();
+            if (data.ok) {
+                // Update the project data using the same callback structure
+                onAddField?.(uploading, data.url);
+            }
+        } catch (err) {
+            console.error("Upload failed", err);
+        } finally {
+            setUploading(null);
+            e.target.value = '';
+        }
+    };
+
     return (
         <div className="relative min-h-screen">
             <ParticleBackground />
             <NavBar />
+
+            {/* Hidden File Input for Admin Uploads */}
+            {isAdminPreview && (
+                <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                />
+            )}
 
             <main className="cs-page relative z-10" ref={rootRef}>
                 {topQuickNav}
@@ -46,15 +87,16 @@ const LandingPageTemplate = ({
                                 <div className="p-4 rounded-full bg-white/5">
                                     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                 </div>
-                                <p className="text-sm font-medium">Hero Image Placeholder</p>
+                                <p className="text-sm font-medium">{uploading === 'mainImage' ? 'Uploading...' : 'Hero Image Placeholder'}</p>
                             </div>
                         )}
                         {isAdminPreview && (
                             <button 
-                                onClick={() => onAddField?.('mainImage')}
-                                className="absolute top-4 right-4 bg-[#c8ff3e] text-black px-3 py-1.5 rounded-lg text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                onClick={() => triggerUpload('mainImage')}
+                                disabled={!!uploading}
+                                className="absolute top-4 right-4 bg-[#c8ff3e] text-black px-3 py-1.5 rounded-lg text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity shadow-lg disabled:opacity-50"
                             >
-                                {heroMedia ? 'Change Hero' : 'Add Hero'}
+                                {uploading === 'mainImage' ? 'Syncing...' : (heroMedia ? 'Change Hero' : 'Add Hero')}
                             </button>
                         )}
                     </div>
@@ -67,11 +109,14 @@ const LandingPageTemplate = ({
                         ))}
                         {isAdminPreview && (
                             <button 
-                                onClick={() => onAddField?.('galleryImage')}
-                                className="cs-media-item aspect-video bg-white/5 border border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center gap-2 text-white/20 hover:border-[#c8ff3e] hover:text-[#c8ff3e] transition-all group"
+                                onClick={() => triggerUpload('galleryImage')}
+                                disabled={!!uploading}
+                                className="cs-media-item aspect-video bg-white/5 border border-dashed border-white/20 rounded-xl flex flex-col items-center justify-center gap-2 text-white/20 hover:border-[#c8ff3e] hover:text-[#c8ff3e] transition-all group disabled:opacity-50"
                             >
-                                <span className="text-2xl font-light group-hover:scale-110 transition-transform">+</span>
-                                <span className="text-[10px] uppercase tracking-widest font-bold">Add Gallery Image</span>
+                                <span className="text-2xl font-light group-hover:scale-110 transition-transform">{uploading === 'galleryImage' ? '...' : '+'}</span>
+                                <span className="text-[10px] uppercase tracking-widest font-bold">
+                                    {uploading === 'galleryImage' ? 'Uploading...' : 'Add Gallery Image'}
+                                </span>
                             </button>
                         )}
                     </div>
