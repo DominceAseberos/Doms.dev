@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
@@ -12,8 +12,6 @@ import LabPage from './pages/Lab/index';
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
 import useThemeStore from './store/useThemeStore';
-
-const LandingEditor = lazy(() => import('./pages/admin/LandingEditor'));
 
 function App() {
     const setLoading = useLoadingStore((state) => state.setLoading);
@@ -48,17 +46,14 @@ function App() {
             <div className="nav-hover-zone" aria-hidden="true" />
             <div id="smooth-wrapper" className="min-h-screen selection:bg-red-500/30">
                 <div id="smooth-content">
-                    <Suspense fallback={null}>
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/projects" element={<ProjectsPage />} />
-                            <Route path="/projects/:projectId" element={<ProjectCaseStudyPage />} />
-                            <Route path="/about" element={<AboutPage />} />
-                            <Route path="/contact" element={<ContactPage />} />
-                            <Route path="/lab" element={<LabPage />} />
-                            <Route path="/admin/landing" element={<LandingEditor />} />
-                        </Routes>
-                    </Suspense>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/projects" element={<ProjectsPage />} />
+                        <Route path="/projects/:projectId" element={<ProjectCaseStudyPage />} />
+                        <Route path="/about" element={<AboutPage />} />
+                        <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/lab" element={<LabPage />} />
+                    </Routes>
                 </div>
             </div>
         </Router>

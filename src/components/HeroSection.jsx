@@ -17,22 +17,42 @@ const getLandingData = () => {
     
     try {
         const parsed = JSON.parse(stored);
-        // Merge defaults with stored data to ensure new properties are picked up
+        
+        // Safely merge marquee from stored data
+        const marquee = (parsed.hero && parsed.hero.marquee && parsed.hero.marquee.length > 0) 
+            ? parsed.hero.marquee 
+            : landingDataDefault.hero.marquee;
+            
+        // Safely merge tags from stored data
+        const tags = (parsed.tags && parsed.tags.length > 0)
+            ? parsed.tags
+            : landingDataDefault.tags;
+            
+        // Safely merge metrics from stored data
+        const metrics = (parsed.metrics && parsed.metrics.length > 0)
+            ? parsed.metrics
+            : landingDataDefault.metrics;
+            
+        // Safely merge buttons
+        const buttons = (parsed.hero && parsed.hero.buttons && parsed.hero.buttons.length > 0)
+            ? parsed.hero.buttons
+            : landingDataDefault.hero.buttons;
+            
+        // Safely merge kicker and bio
+        const kicker = (parsed.hero && parsed.hero.kicker) || landingDataDefault.hero.kicker;
+        const bio = (parsed.hero && parsed.hero.bio) || landingDataDefault.hero.bio;
+        const displayKicker = (parsed.hero && parsed.hero.displayKicker) || landingDataDefault.hero.displayKicker;
+        
         return {
-            ...landingDataDefault,
-            ...parsed,
-            hero: { 
-                ...landingDataDefault.hero, 
-                ...parsed.hero,
-                buttons: landingDataDefault.hero.buttons.map((btn, i) => ({
-                    ...btn,
-                    ...(parsed.hero && parsed.hero.buttons && parsed.hero.buttons[i] ? parsed.hero.buttons[i] : {})
-                }))
+            hero: {
+                marquee,
+                kicker,
+                displayKicker,
+                bio,
+                buttons
             },
-            metrics: landingDataDefault.metrics.map((m, i) => ({
-                ...m,
-                ...(parsed.metrics && parsed.metrics[i] ? parsed.metrics[i] : {})
-            }))
+            tags,
+            metrics
         };
     } catch (e) {
         return landingDataDefault;
@@ -46,16 +66,26 @@ const HeroSection = () => {
     const theme = useThemeStore((state) => state.theme);
     const isLight = theme === 'light';
     const [landingData, setLandingData] = useState(() => getLandingData());
+    const [, forceUpdate] = useState(0);
 
     useEffect(() => {
-        const handleStorage = () => {
-            setLandingData(getLandingData());
+        const checkData = () => {
+            const newData = getLandingData();
+            setLandingData(newData);
         };
-        window.addEventListener('storage', handleStorage);
-        const interval = setInterval(() => setLandingData(getLandingData()), 1000);
+        
+        // Check immediately
+        checkData();
+        
+        // Check every 500ms for changes
+        const interval = setInterval(checkData, 500);
+        
+        // Listen for storage events (from other tabs)
+        window.addEventListener('storage', checkData);
+        
         return () => {
-            window.removeEventListener('storage', handleStorage);
             clearInterval(interval);
+            window.removeEventListener('storage', checkData);
         };
     }, []);
 
