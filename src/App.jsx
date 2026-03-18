@@ -56,9 +56,7 @@ function App() {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/lab" element={<LabPage />} />
                         <Route path="/admin/landing" element={<LandingEditor />} />
-                        <Route path="/admin/landingpage" element={<LandingEditor />} />
                         <Route path="/admin/projects" element={<ProjectEditor />} />
-                        <Route path="/admin/projects/:projectId" element={<ProjectCaseStudyPage />} />
                     </Routes>
                 </div>
             </div>

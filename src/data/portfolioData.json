@@ -33,7 +33,25 @@
             "galleryImages": [],
             "assets": {
                 "New Assets": []
-            }
+            },
+            "systemDesign": [
+                {
+                    "label": "Typography",
+                    "value": "Inter, Outfit"
+                },
+                {
+                    "label": "Grid",
+                    "value": "12-Column Responsive"
+                },
+                {
+                    "label": "Spacing",
+                    "value": "8px Base Grid"
+                },
+                {
+                    "label": "Heading",
+                    "value": "Syne Bold"
+                }
+            ]
         }
     ]
 }
