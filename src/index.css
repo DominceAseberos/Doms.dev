@@ -362,23 +362,28 @@ html[data-theme='light'] .cs-page {
 }
 
 .btn-primary {
-    background: var(--red);
-    color: var(--white);
+    display: inline-block;
+    background: var(--accent);
+    color: var(--on-accent);
     border: none;
     padding: 14px 32px;
     font-family: 'DM Mono', monospace;
     font-size: 24px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    transition: opacity 0.2s;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
 .btn-primary:hover {
-    opacity: 0.85;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 30%, transparent);
+    opacity: 0.95;
 }
 
 .btn-primary:active {
-    opacity: 0.8;
+    transform: translateY(0);
+    opacity: 0.85;
 }
 
 @media (max-width: 768px) {
@@ -389,6 +394,7 @@ html[data-theme='light'] .cs-page {
 
 /* ── UI SYSTEM CARDS ── */
 .btn-ghost {
+    display: inline-block;
     background: transparent;
     color: var(--gray-light);
     border: 1px solid var(--border);
@@ -397,12 +403,13 @@ html[data-theme='light'] .cs-page {
     font-size: 24px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
+    text-decoration: none;
     transition: color 0.2s, border-color 0.2s;
 }
 
 .btn-ghost:hover {
     color: var(--white);
-    border-color: rgba(255, 255, 255, 0.25);
+    border-color: color-mix(in srgb, var(--white) 25%, transparent);
 }
 
 /* right half */
@@ -410,9 +417,11 @@ html[data-theme='light'] .cs-page {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 0 48px 64px;
+    padding: 0 clamp(20px, 4vw, 48px) 64px;
     position: relative;
     z-index: 2;
+    overflow: hidden;
+    min-width: 0;
 }
 
 /* tags grid */
@@ -431,17 +440,20 @@ html[data-theme='light'] .cs-page {
 
 .tag-grid-item {
     font-family: 'DM Mono', monospace;
-    font-size: 18px;
+    font-size: clamp(9px, 1.1vw, 18px);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--gray-light);
-    padding: 16px 24px;
+    padding: clamp(10px, 1.2vw, 16px) clamp(10px, 1.6vw, 24px);
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     transition: color 0.2s, background-color 0.2s;
     position: relative;
     display: flex;
     align-items: center;
+    overflow: hidden;
+    word-break: break-word;
+    min-width: 0;
 }
 
 .tag-grid-item:hover {
@@ -465,7 +477,7 @@ html[data-theme='light'] .cs-page {
 /* metrics */
 .metrics {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
     border-top: 1px solid var(--border);
     opacity: 0;
     animation: fadeUp 0.7s 0.9s ease forwards;
@@ -477,40 +489,54 @@ html[data-theme='light'] .cs-page {
 .metric {
     display: flex;
     flex-direction: column;
-    padding: 32px 0 0 0;
+    padding: 24px 0;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .metric:not(:first-child) {
-    border-left: 1px solid var(--border);
-    padding-left: 32px;
+    border-top: 1px solid var(--border);
+    border-left: none;
+    padding-left: 0;
 }
 
 .metric-val {
     font-family: 'Syne', sans-serif;
-    font-size: 60px;
+    font-size: clamp(20px, 2.8vw, 52px);
     font-weight: 700;
     line-height: 1;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     display: flex;
     align-items: flex-start;
+    min-width: 0;
+    overflow: visible;
+    position: relative;
 }
 
 .metric-val sup {
     font-family: 'DM Mono', monospace;
-    font-size: 24px;
-    font-weight: 500;
+    font-size: clamp(11px, 1.1vw, 18px);
+    font-weight: 600;
     color: var(--red);
-    margin-left: 4px;
-    margin-top: 6px;
-    /* aligns superscript vertically */
+    margin-left: 6px;
+    margin-top: 2px;
+    align-self: flex-start;
+    line-height: 1;
+    vertical-align: baseline;
+    font-style: normal;
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
 }
 
 .metric-lbl {
     font-family: 'DM Mono', monospace;
-    font-size: 18px;
-    letter-spacing: 0.2em;
+    font-size: clamp(7px, 0.75vw, 14px);
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--gray);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* scrolling marquee at center */
@@ -745,31 +771,37 @@ html[data-theme='light'] .cs-page {
     }
 
     .tag-grid-item {
-        padding: 14px 4px;
-        font-size: 8px;
-        letter-spacing: 0.1em;
+        padding: 10px 6px;
+        font-size: clamp(7px, 2vw, 9px);
+        letter-spacing: 0.08em;
         justify-content: center;
     }
 
+    .metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .metric {
-        padding: 24px 0 0 0;
+        padding: 16px 0 0 0;
     }
 
     .metric:not(:first-child) {
-        padding-left: 12px;
+        border-top: none;
+        border-left: 1px solid var(--border);
+        padding-left: 10px;
     }
 
     .metric-val {
-        font-size: 32px;
+        font-size: clamp(22px, 6vw, 36px);
     }
 
     .metric-val sup {
-        font-size: 10px;
-        margin-left: 2px;
+        font-size: clamp(9px, 2.2vw, 13px);
+        margin-left: 3px;
     }
 
     .metric-lbl {
-        font-size: 8px;
+        font-size: clamp(7px, 1.8vw, 10px);
     }
 }
 
@@ -876,37 +908,42 @@ html[data-theme='light'] .cs-page {
     }
 
     .tags-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         margin-bottom: 0;
         padding: 0;
-        gap: 12px;
     }
 
     .tag-grid-item {
-        padding: 14px 4px;
-        font-size: 10px;
+        padding: 12px 8px;
+        font-size: clamp(8px, 1.4vw, 12px);
         letter-spacing: 0.1em;
         justify-content: center;
     }
 
+    .metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .metric {
-        padding: 24px 0 0 0;
+        padding: 20px 0 0 0;
     }
 
     .metric:not(:first-child) {
-        padding-left: 24px;
+        border-top: none;
+        border-left: 1px solid var(--border);
+        padding-left: 18px;
     }
 
     .metric-val {
-        font-size: 48px;
+        font-size: clamp(28px, 3.5vw, 44px);
     }
 
     .metric-val sup {
-        font-size: 14px;
-        margin-left: 2px;
+        font-size: clamp(11px, 1.4vw, 16px);
+        margin-left: 3px;
     }
 
     .metric-lbl {
-        font-size: 12px;
+        font-size: clamp(9px, 1vw, 13px);
     }
 }
