@@ -57,6 +57,7 @@ function App() {
                         <Route path="/lab" element={<LabPage />} />
                         <Route path="/admin/landing" element={<LandingEditor />} />
                         <Route path="/admin/projects" element={<ProjectEditor />} />
+                        <Route path="/admin/projects/:projectId" element={<ProjectCaseStudyPage isAdmin={true} />} />
                     </Routes>
                 </div>
             </div>

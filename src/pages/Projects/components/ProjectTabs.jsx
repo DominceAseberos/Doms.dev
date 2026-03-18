@@ -95,7 +95,7 @@ function detectProjectMeta(project, themeCat, mockSignalText = '') {
         project.title,
         project.projectType,
         project.shortDescription,
-        project.fullDocumentation,
+        project.about,
         (project.stacks || []).join(' '),
         mockSignalText,
     ]

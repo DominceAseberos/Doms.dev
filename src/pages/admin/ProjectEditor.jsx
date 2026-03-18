@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
+import { FiPlus, FiTrash2, FiImage, FiSave, FiList, FiGrid, FiArrowLeft, FiMoreVertical } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { savePortfolioData, fetchPortfolioData } from '../../shared/portfolioService';
 import portfolioDataDefault from '../../data/portfolioData.json';
-
-const STORAGE_KEY = 'portfolioData';
-
-const getStoredData = () => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : portfolioDataDefault;
-};
 
 const Section = ({ title, children, onFeedback }) => {
     const [showCheck, setShowCheck] = useState(false);
@@ -26,58 +22,74 @@ const Section = ({ title, children, onFeedback }) => {
 };
 
 const ProjectEditor = () => {
-    // Handle main image
+    const [data, setData] = useState({ projects: [] });
+    const [showNewProjectForm, setShowNewProjectForm] = useState(false);
+    const [newProject, setNewProject] = useState({
+        title: '',
+        shortDescription: '',
+        images: [],
+        projectType: '',
+        mainImage: '',
+        galleryImages: [],
+        assets: { desktop: '', tablet: '', mobile: '' }
+    });
+    const [toast, setToast] = useState(null);
+
+    React.useEffect(() => {
+        const loadData = async () => {
+            try {
+                const fetchedData = await fetchPortfolioData();
+                setData(fetchedData);
+            } catch (err) {
+                setData(portfolioDataDefault);
+                showToast('Using local fallback data');
+            }
+        };
+        loadData();
+    }, []);
+
+    const persistChanges = async (newData) => {
+        try {
+            setData(newData);
+            await savePortfolioData(newData);
+            showToast('Changes saved to disk');
+        } catch (err) {
+            showToast('Failed to save to disk!');
+        }
+    };
+
+    // New project handlers
     const handleMainImageChange = (url) => {
         setNewProject({ ...newProject, mainImage: url });
     };
-    // Handle gallery images
     const handleAddGalleryImage = (url) => {
         setNewProject({ ...newProject, galleryImages: [...newProject.galleryImages, url] });
     };
     const handleRemoveGalleryImage = (imgIdx) => {
         setNewProject({ ...newProject, galleryImages: newProject.galleryImages.filter((_, i) => i !== imgIdx) });
     };
-    // Handle asset ZIP uploads
     const handleAssetZipChange = (type, file) => {
         setNewProject({ ...newProject, assets: { ...newProject.assets, [type]: file } });
     };
-        // State for new project form
-        const [showNewProjectForm, setShowNewProjectForm] = useState(false);
-        const [newProject, setNewProject] = useState({
-            title: '',
-            shortDescription: '',
-            images: [],
-            projectType: '',
-        });
+    const handleAddNewProjectImage = (url) => {
+        setNewProject({ ...newProject, images: [...newProject.images, url] });
+    };
+    const handleRemoveNewProjectImage = (imgIdx) => {
+        setNewProject({ ...newProject, images: newProject.images.filter((_, i) => i !== imgIdx) });
+    };
 
-        // Add image to new project
-        const handleAddNewProjectImage = (url) => {
-            setNewProject({ ...newProject, images: [...newProject.images, url] });
+    const handleSaveNewProject = async (feedbackFn) => {
+        const project = {
+            id: `project-${Date.now()}`,
+            ...newProject,
         };
-        // Remove image from new project
-        const handleRemoveNewProjectImage = (imgIdx) => {
-            setNewProject({ ...newProject, images: newProject.images.filter((_, i) => i !== imgIdx) });
-        };
-        // Save new project
-        const handleSaveNewProject = (feedbackFn) => {
-            const project = {
-                id: `project-${Date.now()}`,
-                ...newProject,
-            };
-            const newData = { ...data, projects: [...data.projects, project] };
-            setData(newData);
-            setShowNewProjectForm(false);
-            setNewProject({ title: '', shortDescription: '', images: [], projectType: '' });
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-            } catch (e) {
-                showToast('Failed to save!');
-            }
-            if (feedbackFn) feedbackFn();
-            showToast('Project added!');
-        };
-    const [data, setData] = useState(getStoredData);
-    const [toast, setToast] = useState(null);
+        const newData = { ...data, projects: [...data.projects, project] };
+        await persistChanges(newData);
+        setShowNewProjectForm(false);
+        setNewProject({ title: '', shortDescription: '', images: [], projectType: '', mainImage: '', galleryImages: [], assets: { desktop: '', tablet: '', mobile: '' } });
+        if (feedbackFn) feedbackFn();
+        showToast('Project added!');
+    };
 
     const showToast = (message) => {
         setToast(message);
@@ -88,12 +100,7 @@ const ProjectEditor = () => {
     const handleProjectTitleChange = (index, value, feedbackFn) => {
         const newData = { ...data };
         newData.projects[index].title = value;
-        setData(newData);
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-        } catch (e) {
-            showToast('Failed to save!');
-        }
+        persistChanges(newData);
         if (feedbackFn) feedbackFn();
     };
 
@@ -101,12 +108,7 @@ const ProjectEditor = () => {
     const handleProjectDescChange = (index, value, feedbackFn) => {
         const newData = { ...data };
         newData.projects[index].shortDescription = value;
-        setData(newData);
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-        } catch (e) {
-            showToast('Failed to save!');
-        }
+        persistChanges(newData);
         if (feedbackFn) feedbackFn();
     };
 
@@ -120,24 +122,14 @@ const ProjectEditor = () => {
             projectType: 'uncategorized',
         };
         const newData = { ...data, projects: [...data.projects, newProject] };
-        setData(newData);
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-        } catch (e) {
-            showToast('Failed to save!');
-        }
+        persistChanges(newData);
         if (feedbackFn) feedbackFn();
     };
 
     // Remove project
     const handleRemoveProject = (index, feedbackFn) => {
         const newData = { ...data, projects: data.projects.filter((_, i) => i !== index) };
-        setData(newData);
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-        } catch (e) {
-            showToast('Failed to save!');
-        }
+        persistChanges(newData);
         if (feedbackFn) feedbackFn();
     };
 
@@ -145,12 +137,7 @@ const ProjectEditor = () => {
     const handleAddImage = (index, url, feedbackFn) => {
         const newData = { ...data };
         newData.projects[index].images = [...(newData.projects[index].images || []), url];
-        setData(newData);
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-        } catch (e) {
-            showToast('Failed to save!');
-        }
+        persistChanges(newData);
         if (feedbackFn) feedbackFn();
     };
 
@@ -158,12 +145,7 @@ const ProjectEditor = () => {
     const handleRemoveImage = (projIdx, imgIdx, feedbackFn) => {
         const newData = { ...data };
         newData.projects[projIdx].images = newData.projects[projIdx].images.filter((_, i) => i !== imgIdx);
-        setData(newData);
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-        } catch (e) {
-            showToast('Failed to save!');
-        }
+        persistChanges(newData);
         if (feedbackFn) feedbackFn();
     };
 
@@ -188,11 +170,14 @@ const ProjectEditor = () => {
                         Add Project
                     </button>
                 </div>
+                {/* Editor Content Wrapper */}
+                <>
                 {/* New Project Form */}
                 {showNewProjectForm && (
-                    <div>
-                        {/* Landing page template fields if selected */}
-                        {newProject.projectType === 'landing page' && (
+                    <Section title="Add New Project">
+                        {(triggerFeedback) => (
+                            <>
+                                {newProject.projectType === 'landing page' && (
                             <div className="mb-8 p-4 bg-[#222] rounded-lg">
                                 {/* Main Image */}
                                 <div className="mb-2">
@@ -276,137 +261,80 @@ const ProjectEditor = () => {
                                 </div>
                             </div>
                         )}
-                        {/* ...existing code for other project types or fields... */}
-                    </div>
-                                                        id="new-gallery-img-input"
-                                                    />
-                                                    <button
-                                                        onClick={() => {
-                                                            const input = document.getElementById('new-gallery-img-input');
-                                                            if (input.value.trim()) {
-                                                                handleAddGalleryImage(input.value.trim());
-                                                                input.value = '';
-                                                            }
-                                                        }}
-                                                        className="px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg hover:bg-white transition-colors"
-                                                    >Add Gallery Image</button>
-                                                </div>
-                                            </div>
-                                            {/* Asset ZIP Uploads */}
-                                            <div className="mb-2">
-                                                <label className="block text-sm mb-1">Assets (ZIP Upload)</label>
-                                                <div className="mb-2">
-                                                    <label>Desktop Assets ZIP</label>
-                                                    <input
-                                                        type="file"
-                                                        accept="application/zip"
-                                                        onChange={e => handleAssetZipChange('desktop', e.target.files[0])}
-                                                    />
-                                                    {newProject.assets.desktop && (
-                                                        <button className="ml-2 px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg">Download Desktop ZIP</button>
-                                                    )}
-                                                </div>
-                                                <div className="mb-2">
-                                                    <label>Tablet Assets ZIP</label>
-                                                    <input
-                                                        type="file"
-                                                        accept="application/zip"
-                                                        onChange={e => handleAssetZipChange('tablet', e.target.files[0])}
-                                                    />
-                                                    {newProject.assets.tablet && (
-                                                        <button className="ml-2 px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg">Download Tablet ZIP</button>
-                                                    )}
-                                                </div>
-                                                <div className="mb-2">
-                                                    <label>Mobile Assets ZIP</label>
-                                                    <input
-                                                        type="file"
-                                                        accept="application/zip"
-                                                        onChange={e => handleAssetZipChange('mobile', e.target.files[0])}
-                                                    />
-                                                    {newProject.assets.mobile && (
-                                                        <button className="ml-2 px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg">Download Mobile ZIP</button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                    <Section title="Add New Project">
-                        {(triggerFeedback) => (
-                            <div className="mb-8 p-4 bg-[#222] rounded-lg">
-                                <div className="mb-2">
-                                    <label className="block text-sm mb-1">Title</label>
-                                    <input
-                                        type="text"
-                                        value={newProject.title}
-                                        onChange={e => setNewProject({ ...newProject, title: e.target.value })}
-                                        className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-2"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm mb-1">Short Description</label>
-                                    <textarea
-                                        value={newProject.shortDescription}
-                                        onChange={e => setNewProject({ ...newProject, shortDescription: e.target.value })}
-                                        rows={2}
-                                        className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-2"
-                                    />
-                                </div>
-                                {/* Images */}
-                                <div className="mb-2">
-                                    <label className="block text-sm mb-1">Images</label>
-                                    <div className="flex flex-wrap gap-2 mb-2">
-                                        {newProject.images.map((img, imgIdx) => (
-                                            <div key={imgIdx} className="relative">
-                                                <img src={img} alt="Project" className="w-20 h-20 object-cover rounded-lg border border-gray-700" />
-                                                <button
-                                                    onClick={() => handleRemoveNewProjectImage(imgIdx)}
-                                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-                                                >×</button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="text"
-                                            placeholder="Image URL"
-                                            className="flex-1 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
-                                            id="new-project-img-input"
-                                        />
-                                        <button
-                                            onClick={() => {
-                                                const input = document.getElementById('new-project-img-input');
-                                                if (input.value.trim()) {
-                                                    handleAddNewProjectImage(input.value.trim());
-                                                    input.value = '';
-                                                }
-                                            }}
-                                            className="px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg hover:bg-white transition-colors"
-                                        >Add Image</button>
-                                    </div>
-                                </div>
-                                {/* Project Type (Category) */}
-                                <label className="block text-sm mb-1">Category</label>
+                        <div className="mb-8 p-4 bg-[#222] rounded-lg">
+                            <div className="mb-2">
+                                <label className="block text-sm mb-1">Title</label>
                                 <input
                                     type="text"
-                                    value={newProject.projectType}
-                                    onChange={e => setNewProject({ ...newProject, projectType: e.target.value })}
+                                    value={newProject.title}
+                                    onChange={e => setNewProject({ ...newProject, title: e.target.value })}
                                     className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-2"
                                 />
-                                <div className="flex gap-2 mt-4">
+                            </div>
+                            <div>
+                                <label className="block text-sm mb-1">Short Description</label>
+                                <textarea
+                                    value={newProject.shortDescription}
+                                    onChange={e => setNewProject({ ...newProject, shortDescription: e.target.value })}
+                                    rows={2}
+                                    className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-2"
+                                />
+                            </div>
+                            <div className="mb-2">
+                                <label className="block text-sm mb-1">Images</label>
+                                <div className="flex flex-wrap gap-2 mb-2">
+                                    {newProject.images.map((img, imgIdx) => (
+                                        <div key={imgIdx} className="relative">
+                                            <img src={img} alt="Project" className="w-20 h-20 object-cover rounded-lg border border-gray-700" />
+                                            <button
+                                                onClick={() => handleRemoveNewProjectImage(imgIdx)}
+                                                className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                                            >×</button>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Image URL"
+                                        className="flex-1 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
+                                        id="new-project-img-input"
+                                    />
                                     <button
-                                        onClick={() => handleSaveNewProject(triggerFeedback)}
+                                        onClick={() => {
+                                            const input = document.getElementById('new-project-img-input');
+                                            if (input.value.trim()) {
+                                                handleAddNewProjectImage(input.value.trim());
+                                                input.value = '';
+                                            }
+                                        }}
                                         className="px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg hover:bg-white transition-colors"
-                                    >Save Project</button>
-                                    <button
-                                        onClick={() => { setShowNewProjectForm(false); setNewProject({ title: '', shortDescription: '', images: [], projectType: '' }); }}
-                                        className="px-4 py-2 bg-[#333] text-gray-300 rounded-lg hover:bg-[#444] transition-colors"
-                                    >Cancel</button>
+                                    >Add Image</button>
                                 </div>
                             </div>
-                        )}
-                    </Section>
+                            <label className="block text-sm mb-1">Category</label>
+                            <input
+                                type="text"
+                                value={newProject.projectType}
+                                onChange={e => setNewProject({ ...newProject, projectType: e.target.value })}
+                                className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-2"
+                            />
+                            <div className="flex gap-2 mt-4">
+                                <button
+                                    onClick={() => handleSaveNewProject(triggerFeedback)}
+                                    className="px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg hover:bg-white transition-colors"
+                                >Save Project</button>
+                                <button
+                                    onClick={() => { setShowNewProjectForm(false); setNewProject({ title: '', shortDescription: '', images: [], projectType: '' }); }}
+                                    className="px-4 py-2 bg-[#333] text-gray-300 rounded-lg hover:bg-[#444] transition-colors"
+                                >Cancel</button>
+                            </div>
+                        </div>
+                    </>
                 )}
+            </Section>
+        )}
+
                 {/* Category Filter */}
                 <div className="flex gap-2 mb-6">
                     <button
@@ -482,27 +410,31 @@ const ProjectEditor = () => {
                                     </div>
                                     {/* Project Type (Category) */}
                                     <label className="block text-sm mb-1">Category</label>
-                                    <input
-                                        type="text"
-                                        value={project.projectType || ''}
-                                        onChange={e => {
-                                            const newData = { ...data };
-                                            newData.projects[i].projectType = e.target.value;
-                                            setData(newData);
-                                            try {
-                                                localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-                                            } catch (e) {
-                                                showToast('Failed to save!');
-                                            }
-                                            triggerFeedback();
-                                        }}
-                                        className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-2"
-                                    />
-                                </div>
+                                        <input
+                                            type="text"
+                                            value={project.projectType || ''}
+                                            onChange={e => {
+                                                const newData = { ...data };
+                                                newData.projects[i].projectType = e.target.value;
+                                                persistChanges(newData);
+                                                triggerFeedback();
+                                            }}
+                                            className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-4"
+                                        />
+                                        <div className="pt-2 border-t border-gray-700/50 flex justify-end">
+                                            <Link 
+                                                to={`/admin/projects/${project.id}`}
+                                                className="text-xs font-bold text-[#c8ff3e] hover:underline"
+                                            >
+                                                View Details ↗
+                                            </Link>
+                                        </div>
+                                    </div>
                             ))}
                         </div>
                     )}
                 </Section>
+                </>
             </div>
         </div>
     );

@@ -8,7 +8,7 @@
             "id": "banana-leaf-detection",
             "title": "Banana Leaf Disease Detectors",
             "projectType": "Landing Page",
-            "dateCreated": "2023-11-20",
+            "dateCreated": "NOVEMBER 2021",
             "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/banana-leaf.png",
             "images": [
                 "/assets/uploads/banana-leaf-detection/1773819835152-umtc.svg"
@@ -28,7 +28,7 @@
                     "path": "https://drive.google.com/drive/folders/1mng06d0Y_U4hC7WM5hnbBNbuC5ohulcq?usp=sharing"
                 }
             ],
-            "fullDocumentation": "## Project Overview\n\nThis project extracts texture and color-based features (using **GLCM**, **LBP**, and **HOG**) from banana leaf images, trains a **K-Nearest Neighbors (KNN)** classifier, and serves the prediction through a simple Flask web app.\n\n### Key Features\n\n- Trained KNN model for 3-class classification\n- Uses advanced image feature extraction (GLCM, LBP, HOG)\n- Visualizes feature importance and class balance\n- Flask web interface for uploading and detecting banana leaves\n- Dataset augmentation and scaling with MinMaxScaler",
+            "about": "## Project Overview\n\nThis project extracts texture and color-based features (using **GLCM**, **LBP**, and **HOG**) from banana leaf images, trains a **K-Nearest Neighbors (KNN)** classifier, and serves the prediction through a simple Flask web app.\n\n### Key Features\n\n- Trained KNN model for 3-class classification\n- Uses advanced image feature extraction (GLCM, LBP, HOG)\n- Visualizes feature importance and class balance\n- Flask web interface for uploading and detecting banana leaves\n- Dataset augmentation and scaling with MinMaxScaler",
             "mainImage": "",
             "galleryImages": [],
             "assets": {
@@ -36,7 +36,7 @@
             },
             "systemDesign": [
                 {
-                    "label": "Typography",
+                    "label": "TYPOGRAPHY",
                     "value": "Inter, Outfit"
                 },
                 {
@@ -51,7 +51,11 @@
                     "label": "Heading",
                     "value": "Syne Bold"
                 }
-            ]
+            ],
+            "credits": {
+                "design": "DA",
+                "code": "S"
+            }
         }
     ]
 }

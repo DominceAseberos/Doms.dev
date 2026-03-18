@@ -30,6 +30,11 @@ const ProjectCard = ({ project, onView }) => {
                 <span className="pg-num pg-label-lg">{project.num}</span>
                 <div className="pg-name pg-title-lg">{project.title}</div>
                 <span className="pg-type pg-label-lg">{project.displayType || t.displayType || project.projectType}</span>
+                {project.shortDescription && (
+                    <p className="pg-desc pg-subtitle-lg line-clamp-2 opacity-60">
+                        {project.shortDescription}
+                    </p>
+                )}
                 <div className="pg-pills">
                     {project.stacks?.map((s) => (
                         <span key={s} className="pg-pill pg-pill-lg">{s}</span>
@@ -42,7 +47,7 @@ const ProjectCard = ({ project, onView }) => {
             <div className="pg-overlay">
                 <span className="ov-tag pg-label-lg">{project.displayType || t.displayType || project.projectType} · {project.overlayDate}</span>
                 <div className="ov-title pg-title-lg">{project.title}</div>
-                <p className="ov-desc pg-subtitle-lg">{t.ovDesc || project.shortDescription}</p>
+                <p className="ov-desc pg-subtitle-lg">{project.shortDescription || t.ovDesc}</p>
                 <div className="ov-pills">
                     {project.stacks?.map((s) => (
                         <span key={s} className="ov-pill pg-pill-lg">{s}</span>

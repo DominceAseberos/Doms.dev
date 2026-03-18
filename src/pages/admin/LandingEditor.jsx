@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { fetchLandingData, saveLandingData } from '../../shared/landingService';
 import landingDataDefault from '../../data/landingData.json';
 
 const STORAGE_KEY = 'landingData';
@@ -44,20 +45,17 @@ const LandingEditor = () => {
     React.useEffect(() => {
         const syncFromDisk = async () => {
             try {
-                const res = await fetch('/src/data/landingData.json');
-                if (res.ok) {
-                    const diskData = await res.json();
-                    setDraft(prev => {
-                        const stored = localStorage.getItem(STORAGE_KEY);
-                        if (!stored) return diskData;
-                        const parsed = JSON.parse(stored);
-                        return {
-                            hero: { ...diskData.hero, ...parsed.hero },
-                            tags: parsed.tags || diskData.tags || [],
-                            metrics: parsed.metrics || diskData.metrics || []
-                        };
-                    });
-                }
+                const diskData = await fetchLandingData();
+                setDraft(prev => {
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    if (!stored) return diskData;
+                    const parsed = JSON.parse(stored);
+                    return {
+                        hero: { ...diskData.hero, ...parsed.hero },
+                        tags: parsed.tags || diskData.tags || [],
+                        metrics: parsed.metrics || diskData.metrics || []
+                    };
+                });
             } catch (e) {
                 console.error("Failed to fetch live landingData.json", e);
             } finally {
@@ -71,20 +69,11 @@ const LandingEditor = () => {
     const saveToDisk = async (data) => {
         try {
             setSaveStatus('saving');
-            const res = await fetch('/__write-json?file=landingData.json', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-            if (res.ok) {
-                setSaveStatus('saved');
-                localStorage.removeItem(STORAGE_KEY);
-                setTimeout(() => setSaveStatus(null), 2000);
-            } else {
-                setSaveStatus('error');
-            }
+            await saveLandingData(data);
+            setSaveStatus('saved');
+            localStorage.removeItem(STORAGE_KEY);
+            setTimeout(() => setSaveStatus(null), 2000);
         } catch (e) {
-            console.error(e);
             setSaveStatus('error');
         }
     };
