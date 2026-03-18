@@ -9,6 +9,7 @@ import ProjectCaseStudyPage from './pages/Projects/components/ProjectCaseStudyPa
 import AboutPage from './pages/About/index';
 import ContactPage from './pages/Contact/index';
 import LabPage from './pages/Lab/index';
+import LandingEditor from './pages/admin/LandingEditor';
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
 import useThemeStore from './store/useThemeStore';
@@ -53,6 +54,7 @@ function App() {
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/lab" element={<LabPage />} />
+                        <Route path="/admin/landing" element={<LandingEditor />} />
                     </Routes>
                 </div>
             </div>
