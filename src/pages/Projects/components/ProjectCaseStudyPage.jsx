@@ -6,7 +6,6 @@ import { FiMonitor, FiTablet, FiSmartphone, FiArrowLeft, FiLink2 } from 'react-i
 import useThemeStore from '../../../store/useThemeStore';
 import portfolioDataDefault from '../../../data/portfolioData.json';
 import LandingPageTemplate from '../templates/LandingPageTemplate';
-import CaseStudyTemplate from '../templates/CaseStudyTemplate';
 import './ProjectCaseStudyPage.css';
 
 const sectionLabels = [
@@ -88,6 +87,8 @@ const ProjectCaseStudyPage = () => {
     const isAdminPreview = pathname.startsWith('/admin/');
     const [adminData, setAdminData] = useState(null);
     const [loading, setLoading] = useState(isAdminPreview);
+    const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
+    const saveTimerRef = useRef(null);
     const theme = useThemeStore((state) => state.theme);
     
     // UPDATED: Sync from disk + localStorage in admin mode
@@ -123,11 +124,8 @@ const ProjectCaseStudyPage = () => {
         return sourceData.projects.find((item) => item.id === projectId);
     }, [projectId, adminData, isAdminPreview]);
 
-    const isLandingCaseStudy = useMemo(() => {
-        if (!project) return false;
-        // Map to "Landing Page" category or caseStudyKind
-        return project.projectType === 'Landing Page' || project.caseStudyKind === 'landing';
-    }, [project]);
+    // Consolidating everything to LandingPageTemplate per user request
+    const isLandingCaseStudy = true;
 
     const caseStudyConfig = isLandingCaseStudy ? landingCaseStudyConfig : defaultCaseStudyConfig;
 
@@ -145,16 +143,67 @@ const ProjectCaseStudyPage = () => {
         return unique.slice(0, 6);
     }, [coverImage, adminData, isAdminPreview]);
 
+    // Shared disk sync function
+    const autoSaveToDisk = async (data) => {
+        try {
+            setSaveStatus('saving');
+            const res = await fetch('/__write-json?file=portfolioData.json', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (res.ok) {
+                setSaveStatus('saved');
+                localStorage.removeItem('portfolioData');
+                setTimeout(() => setSaveStatus(null), 2000);
+            } else {
+                setSaveStatus('error');
+            }
+        } catch (e) {
+            console.error(e);
+            setSaveStatus('error');
+        }
+    };
+
+    const handleUpdateField = (pathStr, value) => {
+        if (!isAdminPreview || !adminData) return;
+        
+        setAdminData(prev => {
+            const next = { ...prev };
+            const pIdx = next.projects.findIndex(p => p.id === projectId);
+            if (pIdx === -1) return prev;
+
+            const project = { ...next.projects[pIdx] };
+            
+            if (pathStr.includes('.')) {
+                const [parent, child] = pathStr.split('.');
+                project[parent] = { ...project[parent], [child]: value };
+            } else {
+                project[pathStr] = value;
+            }
+
+            next.projects[pIdx] = project;
+            
+            // Sync to localStorage immediately (in case of nav away)
+            localStorage.setItem('portfolioData', JSON.stringify(next));
+
+            // Debounced auto-save to disk (800ms)
+            if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+            saveTimerRef.current = setTimeout(() => autoSaveToDisk(next), 800);
+
+            return next;
+        });
+    };
+
     useLayoutEffect(() => {
         if (!rootRef.current || !project) return;
         const ctx = gsap.context(() => {
             gsap.fromTo(
                 '.cs-animate',
-                { opacity: 0, y: 36, filter: 'blur(10px)' },
+                { opacity: 0, y: 36 },
                 {
                     opacity: 1,
                     y: 0,
-                    filter: 'blur(0px)',
                     duration: 0.8,
                     stagger: 0.1,
                     ease: 'power3.out',
@@ -293,24 +342,13 @@ const ProjectCaseStudyPage = () => {
         </section>
     );
 
-    const handleAdminSave = async () => {
+    const handleAdminSave = () => {
         if (!isAdminPreview || !adminData) return;
-        try {
-            const res = await fetch('/__write-json?file=portfolioData.json', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(adminData),
-            });
-            if (res.ok) alert("Project data synced to disk! 🚀");
-            else alert("Sync failed.");
-        } catch (e) {
-            console.error(e);
-            alert("Error syncing data.");
-        }
+        autoSaveToDisk(adminData);
     };
 
     const handleAddField = (type, existingUrl = null) => {
-        const url = existingUrl || prompt(`Enter image URL for ${type}:`);
+        const url = existingUrl;
         if (!url) return;
 
         const newAdminData = { ...adminData };
@@ -331,10 +369,20 @@ const ProjectCaseStudyPage = () => {
         localStorage.setItem('portfolioData', JSON.stringify(newAdminData));
     };
 
-    if (isLandingCaseStudy) {
+    if (true) {
         return (
             <LandingPageTemplate 
-                project={project}
+                project={{
+                    ...project,
+                    credits: project.credits || { design: 'Domince', code: 'Domince' },
+                    systemDesign: project.systemDesign || [
+                        { label: 'Typography', value: 'Inter, Outfit' },
+                        { label: 'Grid', value: '12-Column Responsive' },
+                        { label: 'Spacing', value: '8px Base Grid' },
+                        { label: 'Heading', value: 'Syne Bold' }
+                    ],
+                    assets: project.assets || { "Source Files": [], "Design Assets": [] }
+                }}
                 rootRef={rootRef}
                 topQuickNav={topQuickNav}
                 availableViews={availableViews}
@@ -345,35 +393,26 @@ const ProjectCaseStudyPage = () => {
                 heroMedia={heroMedia}
                 galleryMedia={galleryMedia}
                 formattedDate={formattedDate}
-                credits={credits}
-                systemDesignInfo={systemDesignInfo}
-                assetGroups={assetGroups}
+                credits={project.credits || { design: 'Domince', code: 'Domince' }}
+                systemDesignInfo={project.systemDesign || [
+                    { label: 'Typography', value: 'Inter, Outfit' },
+                    { label: 'Grid', value: '12-Column Responsive' },
+                    { label: 'Spacing', value: '8px Base Grid' },
+                    { label: 'Heading', value: 'Syne Bold' }
+                ]}
+                assetGroups={Object.entries(project.assets || { "Source Files": [], "Design Assets": [] }).map(([label, files]) => ({ label, files, view: label }))}
                 analytics={analytics}
                 caseStudyFooter={caseStudyFooter}
                 isAdminPreview={isAdminPreview}
                 onAddField={handleAddField}
+                onUpdateField={handleUpdateField}
                 onSave={handleAdminSave}
+                saveStatus={saveStatus}
             />
         );
     }
 
-    return (
-        <CaseStudyTemplate 
-            project={project}
-            rootRef={rootRef}
-            topQuickNav={topQuickNav}
-            formattedDate={formattedDate}
-            caseStudyConfig={caseStudyConfig}
-            coverImage={coverImage}
-            highlightImages={highlightImages}
-            sectionLabels={sectionLabels}
-            uiuxPoints={uiuxPoints}
-            systemDesignPoints={systemDesignPoints}
-            assetGroups={assetGroups}
-            scoreItems={scoreItems}
-            caseStudyFooter={caseStudyFooter}
-        />
-    );
+    return null; // Should not reach here
 };
 
 export default ProjectCaseStudyPage;

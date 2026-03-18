@@ -6,7 +6,7 @@
     "projects": [
         {
             "id": "banana-leaf-detection",
-            "title": "Banana Leaf Disease Detector",
+            "title": "Banana Leaf Disease Detectors",
             "projectType": "Landing Page",
             "dateCreated": "2023-11-20",
             "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/banana-leaf.png",
@@ -29,13 +29,11 @@
                 }
             ],
             "fullDocumentation": "## Project Overview\n\nThis project extracts texture and color-based features (using **GLCM**, **LBP**, and **HOG**) from banana leaf images, trains a **K-Nearest Neighbors (KNN)** classifier, and serves the prediction through a simple Flask web app.\n\n### Key Features\n\n- Trained KNN model for 3-class classification\n- Uses advanced image feature extraction (GLCM, LBP, HOG)\n- Visualizes feature importance and class balance\n- Flask web interface for uploading and detecting banana leaves\n- Dataset augmentation and scaling with MinMaxScaler",
-            "mainImage": "/assets/uploads/banana-leaf-detection/1773819835152-umtc.svg",
-            "galleryImages": [
-                "/assets/uploads/banana-leaf-detection/1773819858563-pineapple.png",
-                "/assets/uploads/banana-leaf-detection/1773820134680-image_2.png",
-                "/assets/uploads/banana-leaf-detection/1773820460800-banana.png"
-            ],
-            "assets": {}
+            "mainImage": "",
+            "galleryImages": [],
+            "assets": {
+                "New Assets": []
+            }
         }
     ]
 }
