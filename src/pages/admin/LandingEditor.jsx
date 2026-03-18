@@ -131,8 +131,8 @@ const LandingEditor = () => {
             <div className="max-w-4xl mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold mb-2">Landing Page Editor</h1>
-                        <p className="text-gray-400">Changes apply instantly to the site</p>
+                        <h1 className="text-3xl font-bold mb-2">Hero Section Editor</h1>
+                        <p className="text-gray-400">Edit only HeroSection fields</p>
                     </div>
                     <button
                         onClick={resetToDefault}
@@ -315,113 +315,6 @@ const LandingEditor = () => {
                         );
                     }}
                 </Section>
-
-                {/* Tags Grid */}
-                <Section title="Tags Grid">
-                    {(triggerFeedback) => (
-                        <>
-                            <div className="flex flex-wrap gap-2 mb-3">
-                                {data.tags.map((tag, i) => (
-                                    <span key={i} className="px-3 py-1 bg-[#333] border border-gray-600 rounded-full text-sm flex items-center gap-2">
-                                        {tag}
-                                        <button onClick={() => handleTagRemove('tags', i, triggerFeedback)} className="hover:text-red-500">×</button>
-                                    </span>
-                                ))}
-                            </div>
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    id="tags-input"
-                                    placeholder="Add tag"
-                                    className="flex-1 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' && e.target.value.trim()) {
-                                            if (handleTagAdd('tags', e.target.value.trim().toUpperCase(), triggerFeedback)) {
-                                                e.target.value = '';
-                                                showToast('Tag added!');
-                                            }
-                                        }
-                                    }}
-                                />
-                                <button
-                                    onClick={() => {
-                                        const input = document.getElementById('tags-input');
-                                        if (input.value.trim() && handleTagAdd('tags', input.value.trim().toUpperCase(), triggerFeedback)) {
-                                            input.value = '';
-                                            showToast('Tag added!');
-                                        }
-                                    }}
-                                    className="px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg hover:bg-white transition-colors"
-                                >
-                                    Add
-                                </button>
-                            </div>
-                        </>
-                    )}
-                </Section>
-
-                {/* Metrics */}
-                <Section title="Metrics">
-                    {(triggerFeedback) => {
-                        const [metricInputs, setMetricInputs] = useState(data.metrics.map(metric => ({ value: metric.value, unit: metric.unit, label: metric.label })));
-                        return (
-                            <>
-                                {metricInputs.map((metric, i) => (
-                                    <div key={i} className="flex gap-4 mb-4">
-                                        <input
-                                            type="text"
-                                            value={metric.value}
-                                            onChange={e => {
-                                                const updated = [...metricInputs];
-                                                updated[i].value = e.target.value;
-                                                setMetricInputs(updated);
-                                            }}
-                                            placeholder="Value"
-                                            className="w-24 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
-                                        />
-                                        <input
-                                            type="text"
-                                            value={metric.unit}
-                                            onChange={e => {
-                                                const updated = [...metricInputs];
-                                                updated[i].unit = e.target.value;
-                                                setMetricInputs(updated);
-                                            }}
-                                            placeholder="Unit"
-                                            className="w-24 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
-                                        />
-                                        <input
-                                            type="text"
-                                            value={metric.label}
-                                            onChange={e => {
-                                                const updated = [...metricInputs];
-                                                updated[i].label = e.target.value;
-                                                setMetricInputs(updated);
-                                            }}
-                                            placeholder="Label"
-                                            className="w-24 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
-                                        />
-                                        <button
-                                            onClick={() => {
-                                                handleArrayChange('metrics', i, 'value', metricInputs[i].value, triggerFeedback);
-                                                handleArrayChange('metrics', i, 'unit', metricInputs[i].unit, triggerFeedback);
-                                                handleArrayChange('metrics', i, 'label', metricInputs[i].label, triggerFeedback);
-                                                showToast('Metric updated!');
-                                            }}
-                                            className="px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg hover:bg-white transition-colors"
-                                        >
-                                            Update
-                                        </button>
-                                    </div>
-                                ))}
-                            </>
-                        );
-                    }}
-                </Section>
-
-                <p className="mt-8 text-gray-500 text-sm">
-                    Changes are saved automatically and applied instantly to the site.
-                </p>
             </div>
         </div>
     );

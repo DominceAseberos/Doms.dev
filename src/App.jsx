@@ -1,3 +1,4 @@
+import ProjectEditor from './pages/admin/ProjectEditor';
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
@@ -55,6 +56,7 @@ function App() {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/lab" element={<LabPage />} />
                         <Route path="/admin/landing" element={<LandingEditor />} />
+                        <Route path="/admin/projects" element={<ProjectEditor />} />
                     </Routes>
                 </div>
             </div>

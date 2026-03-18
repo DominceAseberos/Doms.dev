@@ -20,13 +20,13 @@ const projectThemes = [
     { colors: ["#081210", "#0c1c18"], glow: "rgba(40,200,160,.1)" }
 ];
 
-const projects = portfolioData.projects.map((p, index) => {
+const projects = (portfolioData?.projects || []).map((p, index) => {
     const theme = projectThemes[index % projectThemes.length];
     return {
         title: p.title,
         type: p.projectType,
         desc: `${p.shortDescription}\n\n${p.fullDocumentation || ''}`,
-        tech: p.stacks,
+        tech: p.stacks || [],
         colors: theme.colors,
         glow: theme.glow,
         image: p.image,
