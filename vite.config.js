@@ -12,12 +12,24 @@ const writeJsonPlugin = () => ({
         res.writeHead(405).end('Method Not Allowed');
         return;
       }
+
+      // Usage: /__write-json?file=filename.json
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const fileName = url.searchParams.get('file');
+
+      // Security: only allow specific files in src/data/
+      const allowedFiles = ['portfolioData.json'];
+      if (!fileName || !allowedFiles.includes(fileName)) {
+        res.writeHead(400).end('Invalid or missing file parameter');
+        return;
+      }
+
       let body = '';
       req.on('data', (chunk) => { body += chunk; });
       req.on('end', () => {
         try {
           const payload = JSON.parse(body);
-          const filePath = path.resolve(__dirname, 'src/data/portfolioData.json');
+          const filePath = path.resolve(__dirname, 'src/data', fileName);
           fs.writeFileSync(filePath, JSON.stringify(payload, null, 4), 'utf-8');
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ ok: true }));

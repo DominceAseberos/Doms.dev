@@ -1,18 +1,16 @@
 {
+    "categories": [
+        "Landing Page",
+        "Case Study"
+    ],
     "projects": [
         {
             "id": "banana-leaf-detection",
             "title": "Banana Leaf Disease Detector",
-            "projectType": "AI/Research",
+            "projectType": "Landing Page",
             "dateCreated": "2023-11-20",
             "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/banana-leaf.png",
-            "images": [
-                "/assets/projects/cover/BananaLeaf.png?desktop-main",
-                "/assets/projects/cover/FocusQuest.png?desktop-gallery-01",
-                "/assets/projects/cover/Baylora.png?desktop-gallery-02",
-                "/assets/projects/cover/Templyx.png?tablet-gallery-01",
-                "/assets/projects/cover/summarizer.png?mobile-gallery-01"
-            ],
+            "images": [],
             "stacks": [
                 "Python",
                 "OpenCV",
@@ -28,7 +26,10 @@
                     "path": "https://drive.google.com/drive/folders/1mng06d0Y_U4hC7WM5hnbBNbuC5ohulcq?usp=sharing"
                 }
             ],
-            "fullDocumentation": "## Project Overview\n\nThis project extracts texture and color-based features (using **GLCM**, **LBP**, and **HOG**) from banana leaf images, trains a **K-Nearest Neighbors (KNN)** classifier, and serves the prediction through a simple Flask web app.\n\n### Key Features\n\n- Trained KNN model for 3-class classification\n- Uses advanced image feature extraction (GLCM, LBP, HOG)\n- Visualizes feature importance and class balance\n- Flask web interface for uploading and detecting banana leaves\n- Dataset augmentation and scaling with MinMaxScaler"
+            "fullDocumentation": "## Project Overview\n\nThis project extracts texture and color-based features (using **GLCM**, **LBP**, and **HOG**) from banana leaf images, trains a **K-Nearest Neighbors (KNN)** classifier, and serves the prediction through a simple Flask web app.\n\n### Key Features\n\n- Trained KNN model for 3-class classification\n- Uses advanced image feature extraction (GLCM, LBP, HOG)\n- Visualizes feature importance and class balance\n- Flask web interface for uploading and detecting banana leaves\n- Dataset augmentation and scaling with MinMaxScaler",
+            "mainImage": "",
+            "galleryImages": [],
+            "assets": {}
         }
     ]
 }

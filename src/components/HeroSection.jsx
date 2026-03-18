@@ -13,46 +13,26 @@ const STORAGE_KEY = 'landingData';
 const getLandingData = () => {
     if (typeof window === 'undefined') return landingDataDefault;
     const stored = localStorage.getItem(STORAGE_KEY);
+    
+    // THE FIX: In development, with the Vite sync plugin, 
+    // the imported landingDataDefault is our source of truth.
+    // We only use localStorage as a fallback or for unsaved local-only state.
     if (!stored) return landingDataDefault;
     
     try {
         const parsed = JSON.parse(stored);
         
-        // Safely merge marquee from stored data
-        const marquee = (parsed.hero && parsed.hero.marquee && parsed.hero.marquee.length > 0) 
-            ? parsed.hero.marquee 
-            : landingDataDefault.hero.marquee;
-            
-        // Safely merge tags from stored data
-        const tags = (parsed.tags && parsed.tags.length > 0)
-            ? parsed.tags
-            : landingDataDefault.tags;
-            
-        // Safely merge metrics from stored data
-        const metrics = (parsed.metrics && parsed.metrics.length > 0)
-            ? parsed.metrics
-            : landingDataDefault.metrics;
-            
-        // Safely merge buttons
-        const buttons = (parsed.hero && parsed.hero.buttons && parsed.hero.buttons.length > 0)
-            ? parsed.hero.buttons
-            : landingDataDefault.hero.buttons;
-            
-        // Safely merge kicker and bio
-        const kicker = (parsed.hero && parsed.hero.kicker) || landingDataDefault.hero.kicker;
-        const bio = (parsed.hero && parsed.hero.bio) || landingDataDefault.hero.bio;
-        const displayKicker = (parsed.hero && parsed.hero.displayKicker) || landingDataDefault.hero.displayKicker;
+        // Merge strategy: Start with the file's data (landingDataDefault)
+        // and only overlay localStorage if it's explicitly newer or we want local persistence.
+        // For a seamless "Admin-Dev" experience, the file IS the truth after a save.
         
         return {
             hero: {
-                marquee,
-                kicker,
-                displayKicker,
-                bio,
-                buttons
+                ...landingDataDefault.hero,
+                ...(parsed.hero || {})
             },
-            tags,
-            metrics
+            tags: parsed.tags || landingDataDefault.tags || [],
+            metrics: parsed.metrics || landingDataDefault.metrics || []
         };
     } catch (e) {
         return landingDataDefault;

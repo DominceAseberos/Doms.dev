@@ -1,14 +1,12 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { FiMonitor, FiTablet, FiSmartphone, FiFolder, FiArrowLeft, FiLink2 } from 'react-icons/fi';
+import { FiMonitor, FiTablet, FiSmartphone, FiArrowLeft, FiLink2 } from 'react-icons/fi';
 
-import ParticleBackground from '../../../components/ParticleBackground';
-import NavBar from '../../../components/NavBar';
 import useThemeStore from '../../../store/useThemeStore';
-import portfolioData from '../../../data/portfolioData.json';
+import portfolioDataDefault from '../../../data/portfolioData.json';
+import LandingPageTemplate from '../templates/LandingPageTemplate';
+import CaseStudyTemplate from '../templates/CaseStudyTemplate';
 import './ProjectCaseStudyPage.css';
 
 const sectionLabels = [
@@ -84,28 +82,60 @@ const landingCaseStudyConfig = {
 
 const ProjectCaseStudyPage = () => {
     const { projectId } = useParams();
+    const { pathname } = useLocation();
     const rootRef = useRef(null);
     const [activeView, setActiveView] = useState('desktop');
+    const isAdminPreview = pathname.startsWith('/admin/');
+    const [adminData, setAdminData] = useState(null);
+    const [loading, setLoading] = useState(isAdminPreview);
     const theme = useThemeStore((state) => state.theme);
-    const isLight = theme === 'light';
+    
+    // UPDATED: Sync from disk + localStorage in admin mode
+    useEffect(() => {
+        if (!isAdminPreview) return;
+        
+        const syncData = async () => {
+            try {
+                // 1. Fetch from disk (Vite dev server handles this)
+                const res = await fetch('/src/data/portfolioData.json');
+                const diskData = await res.json();
+                
+                // 2. Merge with localStorage draft (if any)
+                const stored = localStorage.getItem('portfolioData');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    setAdminData(parsed);
+                } else {
+                    setAdminData(diskData);
+                }
+            } catch (e) {
+                console.error("Failed to sync admin data", e);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const project = useMemo(
-        () => portfolioData.projects.find((item) => item.id === projectId),
-        [projectId]
-    );
+        syncData();
+    }, [isAdminPreview, projectId]);
+
+    const project = useMemo(() => {
+        const sourceData = isAdminPreview && adminData ? adminData : portfolioDataDefault;
+        return sourceData.projects.find((item) => item.id === projectId);
+    }, [projectId, adminData, isAdminPreview]);
 
     const isLandingCaseStudy = useMemo(() => {
         if (!project) return false;
-        if (project.caseStudyKind) return project.caseStudyKind === 'landing';
-        return true;
+        // Map to "Landing Page" category or caseStudyKind
+        return project.projectType === 'Landing Page' || project.caseStudyKind === 'landing';
     }, [project]);
 
     const caseStudyConfig = isLandingCaseStudy ? landingCaseStudyConfig : defaultCaseStudyConfig;
 
-    const coverImage = project?.images?.[0] || '/assets/projects/cover/BananaLeaf.png';
+    const coverImage = project?.mainImage || project?.images?.[0] || '/assets/projects/cover/BananaLeaf.png';
 
     const highlightImages = useMemo(() => {
-        const allImages = portfolioData.projects
+        const sourceProjects = (isAdminPreview && adminData ? adminData : portfolioDataDefault).projects;
+        const allImages = sourceProjects
             .flatMap((item) => item.images || [])
             .filter(Boolean);
 
@@ -113,24 +143,11 @@ const ProjectCaseStudyPage = () => {
             .filter((value, index, array) => array.indexOf(value) === index);
 
         return unique.slice(0, 6);
-    }, [coverImage]);
+    }, [coverImage, adminData, isAdminPreview]);
 
     useLayoutEffect(() => {
-        if (!rootRef.current) return;
-        const transitionMode = sessionStorage.getItem('project-case-transition');
-        if (transitionMode) {
-            sessionStorage.removeItem('project-case-transition');
-        }
-
+        if (!rootRef.current || !project) return;
         const ctx = gsap.context(() => {
-            if (transitionMode === 'center-expand') {
-                gsap.fromTo(
-                    rootRef.current,
-                    { opacity: 0, scale: 0.965, transformOrigin: '50% 50%' },
-                    { opacity: 1, scale: 1, duration: 0.42, ease: 'power2.out' }
-                );
-            }
-
             gsap.fromTo(
                 '.cs-animate',
                 { opacity: 0, y: 36, filter: 'blur(10px)' },
@@ -144,37 +161,40 @@ const ProjectCaseStudyPage = () => {
                 }
             );
         }, rootRef);
-
         return () => ctx.revert();
-    }, [projectId]);
+    }, [project?.id]);
+
+    // Move state-sync effects and derived data hooks above early returns
+    // Images for landing vs standard
+    const imagesToClassify = useMemo(() => {
+        if (!project) return [];
+        return isLandingCaseStudy
+            ? [project.mainImage, ...(project.galleryImages || []), ...(Object.values(project.assets || {}))].filter(Boolean)
+            : (project.images || [coverImage]);
+    }, [project, isLandingCaseStudy, coverImage]);
+
+    const mediaByView = useMemo(() => classifyMediaByView(imagesToClassify), [imagesToClassify]);
+    const availableViews = useMemo(() => VIEW_ORDER.filter((view) => (mediaByView[view] || []).length > 0), [mediaByView]);
+
+    // Ensure activeView is valid - this MUST be above early returns
+    useEffect(() => {
+        if (project && availableViews.length > 0 && !availableViews.includes(activeView)) {
+            setActiveView(availableViews[0]);
+        }
+    }, [availableViews, activeView, project]);
+
+    if (loading) {
+        return <div className="p-20 text-white text-center">Loading live data...</div>;
+    }
 
     if (!project) {
-        // Redirect to first valid projectId
-        const firstProjectId = portfolioData.projects?.[0]?.id || 'banana-leaf-detection';
+        if (isAdminPreview) return <div className="p-20 text-white text-center">Project "{projectId}" not found in disk data or drafts.</div>;
+        const firstProjectId = portfolioDataDefault.projects?.[0]?.id || 'banana-leaf-detection';
         window.location.replace(`/projects/${firstProjectId}`);
         return null;
     }
 
-    {/* Decorative Inner Polygons (Sandbox style) */}
-    <div className="absolute inset-0 z-0 pointer-events-none">
-        <div
-            className="absolute top-0 left-0 w-[80%] h-full"
-            style={{
-                clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0 100%)',
-                backgroundColor: isLight ? '#e6f7d9' : '#494b4e'
-            }}
-        ></div>
-        <div
-            className="absolute top-[10%] left-0 w-[40%] h-[60%]"
-            style={{
-                clipPath: 'polygon(0 0, 100% 20%, 75% 100%, 0 100%)',
-                backgroundColor: isLight ? '#c8ff3e' : '#c8ff3e',
-                opacity: isLight ? 0.08 : 0.03
-            }}
-        ></div>
-    </div>
-
-    const formattedDate = new Date(project.dateCreated).toLocaleDateString('en-US', {
+    const formattedDate = new Date(project.dateCreated || Date.now()).toLocaleDateString('en-US', {
         month: 'long',
         day: 'numeric',
         year: 'numeric',
@@ -194,30 +214,21 @@ const ProjectCaseStudyPage = () => {
         'SEO-friendly semantic section structure',
     ];
 
-    const mediaByView = useMemo(
-        () => classifyMediaByView(project.images || [coverImage]),
-        [project.images, coverImage]
-    );
-
-    const availableViews = useMemo(
-        () => VIEW_ORDER.filter((view) => (mediaByView[view] || []).length > 0),
-        [mediaByView]
-    );
-
-    useEffect(() => {
-        if (!availableViews.includes(activeView)) {
-            setActiveView(availableViews[0] || 'desktop');
-        }
-    }, [activeView, availableViews]);
-
     const activeMedia = mediaByView[activeView] || [];
-    const heroMedia = activeMedia[0] || coverImage;
-    const galleryMedia = activeMedia.slice(1);
-    const assetGroups = availableViews.map((view) => ({
-        view,
-        label: VIEW_META[view].label,
-        files: mediaByView[view] || [],
-    })).filter((group) => group.files.length > 0);
+    const heroMedia = isLandingCaseStudy ? project.mainImage : (activeMedia[0] || coverImage);
+    const galleryMedia = isLandingCaseStudy ? (project.galleryImages || []) : activeMedia.slice(1);
+    
+    const assetGroups = isLandingCaseStudy && project.assets 
+        ? Object.entries(project.assets).map(([key, value]) => ({
+            view: key,
+            label: VIEW_META[key]?.label || key,
+            files: value ? [value] : []
+        })).filter(g => g.files.length > 0)
+        : availableViews.map((view) => ({
+            view,
+            label: VIEW_META[view].label,
+            files: mediaByView[view] || [],
+        })).filter((group) => group.files.length > 0);
 
     const credits = {
         design: project.credits?.design || 'Domince',
@@ -244,7 +255,6 @@ const ProjectCaseStudyPage = () => {
                 </video>
             );
         }
-
         return <img src={source} alt={alt} className={className} />;
     };
 
@@ -256,12 +266,7 @@ const ProjectCaseStudyPage = () => {
                     <div className="cs-bottom-footer__actions">
                         <Link to="/projects" className="cs-link-btn">Back to Projects ↗</Link>
                         {project.livePreviewLink && (
-                            <a
-                                href={project.livePreviewLink}
-                                className="cs-link-btn cs-link-btn--ghost"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
+                            <a href={project.livePreviewLink} className="cs-link-btn cs-link-btn--ghost" target="_blank" rel="noopener noreferrer">
                                 Live Site ↗
                             </a>
                         )}
@@ -274,18 +279,12 @@ const ProjectCaseStudyPage = () => {
     const topQuickNav = (
         <section className="cs-shell cs-top-nav cs-animate" aria-label="Quick navigation">
             <div className="cs-top-nav__inner">
-                <Link to="/projects" className="cs-top-link" aria-label="Back to projects">
+                <Link to={isAdminPreview ? "/admin/projects" : "/projects"} className="cs-top-link" aria-label="Back">
                     <FiArrowLeft size={16} />
-                    <span>Projects</span>
+                    <span>{isAdminPreview ? "Back to Admin" : "Projects"}</span>
                 </Link>
                 {project.livePreviewLink && (
-                    <a
-                        href={project.livePreviewLink}
-                        className="cs-top-link cs-top-link--ghost"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Open live site"
-                    >
+                    <a href={project.livePreviewLink} className="cs-top-link cs-top-link--ghost" target="_blank" rel="noopener noreferrer">
                         <FiLink2 size={15} />
                         <span>Live</span>
                     </a>
@@ -294,371 +293,86 @@ const ProjectCaseStudyPage = () => {
         </section>
     );
 
+    const handleAdminSave = async () => {
+        if (!isAdminPreview || !adminData) return;
+        try {
+            const res = await fetch('/__write-json?file=portfolioData.json', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(adminData),
+            });
+            if (res.ok) alert("Project data synced to disk! 🚀");
+            else alert("Sync failed.");
+        } catch (e) {
+            console.error(e);
+            alert("Error syncing data.");
+        }
+    };
+
+    const handleAddField = (type) => {
+        const url = prompt(`Enter image URL for ${type}:`);
+        if (!url) return;
+
+        const newAdminData = { ...adminData };
+        const pIdx = newAdminData.projects.findIndex(p => p.id === project.id);
+        if (pIdx === -1) return;
+
+        if (type === 'mainImage') {
+            newAdminData.projects[pIdx].mainImage = url;
+            // Also update the first item in images for legacy support
+            if (!newAdminData.projects[pIdx].images) newAdminData.projects[pIdx].images = [];
+            newAdminData.projects[pIdx].images[0] = url;
+        } else if (type === 'galleryImage') {
+            if (!newAdminData.projects[pIdx].galleryImages) newAdminData.projects[pIdx].galleryImages = [];
+            newAdminData.projects[pIdx].galleryImages.push(url);
+        }
+
+        setAdminData(newAdminData);
+        localStorage.setItem('portfolioData', JSON.stringify(newAdminData));
+    };
+
     if (isLandingCaseStudy) {
         return (
-            <div className="relative min-h-screen">
-                <ParticleBackground />
-                <NavBar />
-
-                <main className="cs-page relative z-10" ref={rootRef}>
-                    {topQuickNav}
-
-                    <section className="cs-shell cs-landing-top cs-animate">
-                        <h1 className="cs-title cs-title--center">{project.title}</h1>
-
-                        <div className="cs-device-tabs" role="tablist" aria-label="Preview viewport">
-                            {availableViews.map((view) => {
-                                const Icon = VIEW_META[view].Icon;
-                                const isActive = view === activeView;
-                                return (
-                                    <button
-                                        key={view}
-                                        type="button"
-                                        role="tab"
-                                        aria-selected={isActive}
-                                        className={`cs-device-tab ${isActive ? 'active' : ''}`}
-                                        onClick={() => setActiveView(view)}
-                                    >
-                                        <Icon size={16} />
-                                        <span>{VIEW_META[view].label}</span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </section>
-
-                    <section className="cs-shell cs-landing-media cs-animate">
-                        <div className="cs-frame">
-                            {renderMedia(heroMedia, `${project.title} hero`, 'cs-main-image cs-main-image--landing')}
-                        </div>
-
-                        {galleryMedia.length > 0 && (
-                            <div className="cs-media-grid">
-                                {galleryMedia.map((source, index) => (
-                                    <div className="cs-media-item" key={`${source}-${index}`}>
-                                        {renderMedia(source, `${project.title} media ${index + 2}`, 'cs-media-thumb')}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </section>
-
-                    <section className="cs-shell cs-details cs-animate">
-                        <div className="cs-details-grid">
-                            <article className="cs-detail-col">
-                                <p className="cs-overline">About</p>
-                                <p className="cs-detail-body">{project.shortDescription}</p>
-                            </article>
-
-                            <article className="cs-detail-col">
-                                <p className="cs-overline">Site Details</p>
-                                <div className="cs-detail-table">
-                                    <div className="cs-detail-row">
-                                        <span>Visit</span>
-                                        {project.livePreviewLink ? (
-                                            <a href={project.livePreviewLink} target="_blank" rel="noopener noreferrer">Live Site ↗</a>
-                                        ) : (
-                                            <span>N/A</span>
-                                        )}
-                                    </div>
-                                    <div className="cs-detail-row">
-                                        <span>Platform</span>
-                                        <span>{project.projectType || 'Web'}</span>
-                                    </div>
-                                    <div className="cs-detail-row">
-                                        <span>Year</span>
-                                        <span>{formattedDate}</span>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article className="cs-detail-col">
-                                <p className="cs-overline">Credits</p>
-                                <div className="cs-detail-table">
-                                    <div className="cs-detail-row">
-                                        <span>Design</span>
-                                        <span>{credits.design}</span>
-                                    </div>
-                                    <div className="cs-detail-row">
-                                        <span>Code</span>
-                                        <span>{credits.code}</span>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </section>
-
-                    <section className="cs-shell cs-landing-tools cs-animate">
-                        <p className="cs-overline">Tech Stack</p>
-                        <div className="cs-chip-wrap">
-                            {project.stacks.map((stack) => (
-                                <span key={stack} className="cs-chip">{stack}</span>
-                            ))}
-                        </div>
-                    </section>
-
-                    <section className="cs-shell cs-system-dynamic cs-animate">
-                        <p className="cs-overline">System Design</p>
-                        <div className="cs-system-dynamic-grid">
-                            {systemDesignInfo.map((item, index) => (
-                                <article key={`${item.label}-${index}`} className="cs-system-item">
-                                    <p className="cs-system-key">{item.label}</p>
-                                    <p className="cs-system-value">{item.value}</p>
-                                </article>
-                            ))}
-                        </div>
-                    </section>
-
-                    <section className="cs-shell cs-assets-list cs-animate">
-                        <p className="cs-overline">Assets</p>
-                        <div className="cs-assets-list-wrap">
-                            {assetGroups.map((group) => (
-                                <article key={group.view} className="cs-asset-folder">
-                                    <div className="cs-asset-folder__head">
-                                        <div className="cs-asset-meta">
-                                            <FiFolder size={16} />
-                                            <span>{group.label} Assets</span>
-                                        </div>
-                                        <span className="cs-asset-count">{group.files.length} files</span>
-                                    </div>
-
-                                    <div className="cs-asset-folder__list">
-                                        {group.files.map((source, index) => (
-                                            <div key={`${group.view}-${source}-${index}`} className="cs-asset-file-row">
-                                                <span className="cs-asset-file-name">{getAssetFileName(source)}</span>
-                                                <a href={source} download className="cs-asset-download">Download</a>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
-                    </section>
-
-                    <section className="cs-shell cs-analytics cs-animate">
-                        <p className="cs-overline">Analytics</p>
-                        <div className="cs-analytics-grid">
-                            <article className="cs-analytics-card">
-                                <p className="cs-score-label">Total Visits</p>
-                                <p className="cs-score-value">{analytics.visits.toLocaleString()}</p>
-                            </article>
-                            <article className="cs-analytics-card">
-                                <p className="cs-score-label">Rating</p>
-                                <p className="cs-score-value">{analytics.rating} / 10</p>
-                            </article>
-                        </div>
-                    </section>
-
-                    {caseStudyFooter}
-                </main>
-            </div>
+            <LandingPageTemplate 
+                project={project}
+                rootRef={rootRef}
+                topQuickNav={topQuickNav}
+                availableViews={availableViews}
+                activeView={activeView}
+                setActiveView={setActiveView}
+                VIEW_META={VIEW_META}
+                renderMedia={renderMedia}
+                heroMedia={heroMedia}
+                galleryMedia={galleryMedia}
+                formattedDate={formattedDate}
+                credits={credits}
+                systemDesignInfo={systemDesignInfo}
+                assetGroups={assetGroups}
+                analytics={analytics}
+                caseStudyFooter={caseStudyFooter}
+                isAdminPreview={isAdminPreview}
+                onAddField={handleAddField}
+                onSave={handleAdminSave}
+            />
         );
     }
 
     return (
-        <div className="relative min-h-screen">
-            <ParticleBackground />
-            <NavBar />
-
-            <main className="cs-page relative z-10" ref={rootRef}>
-                {topQuickNav}
-
-                <section className="cs-shell cs-intro cs-animate">
-                    <p className="cs-overline">Case Study • {formattedDate}</p>
-                    <h1 className="cs-title">{project.title}</h1>
-                    <p className="cs-subtitle">{caseStudyConfig.introSubtitle}</p>
-                    <div className="cs-links-row">
-                        <Link to="/projects" className="cs-link-btn">Back to Projects ↗</Link>
-                        {project.livePreviewLink && (
-                            <a href={project.livePreviewLink} className="cs-link-btn cs-link-btn--ghost" target="_blank" rel="noopener noreferrer">
-                                Live Preview ↗
-                            </a>
-                        )}
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-hero cs-animate">
-                    <div className="cs-frame">
-                        <img src={coverImage} alt={`${project.title} primary visual`} className="cs-main-image" />
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-highlights cs-animate">
-                    <p className="cs-overline">{caseStudyConfig.highlightsOverline}</p>
-                    <h2 className="cs-heading">{caseStudyConfig.highlightsHeading}</h2>
-                    <div className="cs-grid-2">
-                        {highlightImages.map((image, index) => (
-                            <article key={image} className="cs-highlight-card">
-                                <div className="cs-thumb-wrap">
-                                    <img src={image} alt={`${project.title} highlight ${index + 1}`} className="cs-thumb" />
-                                </div>
-                                <p className="cs-caption">{sectionLabels[index % sectionLabels.length]} • Layout</p>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-details cs-animate">
-                    <div className="cs-details-grid">
-                        <article className="cs-detail-col">
-                            <p className="cs-overline">About</p>
-                            <p className="cs-detail-body">{project.shortDescription}</p>
-                        </article>
-
-                        <article className="cs-detail-col">
-                            <p className="cs-overline">Site Details</p>
-                            <div className="cs-detail-table">
-                                <div className="cs-detail-row">
-                                    <span>Visit</span>
-                                    {project.livePreviewLink ? (
-                                        <a href={project.livePreviewLink} target="_blank" rel="noopener noreferrer">Live Site ↗</a>
-                                    ) : (
-                                        <span>N/A</span>
-                                    )}
-                                </div>
-                                <div className="cs-detail-row">
-                                    <span>Platform</span>
-                                    <span>{project.projectType || 'Web'}</span>
-                                </div>
-                                <div className="cs-detail-row">
-                                    <span>Year</span>
-                                    <span>{formattedDate}</span>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article className="cs-detail-col">
-                            <p className="cs-overline">Credits</p>
-                            <div className="cs-detail-table">
-                                <div className="cs-detail-row">
-                                    <span>UI/UX</span>
-                                    <span>Domince</span>
-                                </div>
-                                <div className="cs-detail-row">
-                                    <span>Code</span>
-                                    <span>Domince</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-landing-panels cs-animate">
-                    <div className="cs-grid-2 cs-grid-2--equal">
-                        <article className="cs-panel">
-                            <p className="cs-overline">UI/UX</p>
-                            <h3 className="cs-heading-sm">Interface & Experience Decisions</h3>
-                            <ul className="cs-list">
-                                {uiuxPoints.map((item) => (
-                                    <li key={item}>{item}</li>
-                                ))}
-                            </ul>
-                        </article>
-
-                        <article className="cs-panel">
-                            <p className="cs-overline">System Design</p>
-                            <h3 className="cs-heading-sm">Section Architecture & Flow</h3>
-                            <ul className="cs-list">
-                                {systemDesignPoints.map((item) => (
-                                    <li key={item}>{item}</li>
-                                ))}
-                            </ul>
-                        </article>
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-landing-tools cs-animate">
-                    <p className="cs-overline">Tools Used</p>
-                    <div className="cs-chip-wrap">
-                        {project.stacks.map((stack) => (
-                            <span key={stack} className="cs-chip">{stack}</span>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-assets cs-animate">
-                    <p className="cs-overline">Assets</p>
-                    <h3 className="cs-heading">Downloadable Asset Folders</h3>
-                    <div className="cs-assets-list-wrap">
-                        {assetGroups.map((group) => (
-                            <article key={`default-${group.view}`} className="cs-asset-folder">
-                                <div className="cs-asset-folder__head">
-                                    <div className="cs-asset-meta">
-                                        <FiFolder size={16} />
-                                        <span>{group.label} Assets</span>
-                                    </div>
-                                    <span className="cs-asset-count">{group.files.length} files</span>
-                                </div>
-
-                                <div className="cs-asset-folder__list">
-                                    {group.files.map((source, index) => (
-                                        <div key={`default-${group.view}-${source}-${index}`} className="cs-asset-file-row">
-                                            <span className="cs-asset-file-name">{getAssetFileName(source)}</span>
-                                            <a href={source} download className="cs-asset-download">Download</a>
-                                        </div>
-                                    ))}
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-library cs-animate">
-                    <div className="cs-frame cs-frame--wide">
-                        <img src={coverImage} alt={`${project.title} extended visual`} className="cs-main-image" />
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-system cs-animate">
-                    <div className="cs-system-panel">
-                        <div>
-                            <p className="cs-overline">Color System</p>
-                            <div className="cs-swatches">
-                                <span style={{ background: '#c8ff3e' }}></span>
-                                <span style={{ background: '#f2ede6' }}></span>
-                                <span style={{ background: '#0a0a08' }}></span>
-                                <span style={{ background: '#6b6560' }}></span>
-                            </div>
-                        </div>
-                        <div>
-                            <p className="cs-overline">Typography</p>
-                            <p className="cs-type-sample">Syne / DM Mono / Bebas Neue</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-tags cs-animate">
-                    <p className="cs-overline">{caseStudyConfig.stackOverline}</p>
-                    <div className="cs-chip-wrap">
-                        {project.stacks.map((stack) => (
-                            <span key={stack} className="cs-chip">{stack}</span>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-story cs-animate">
-                    <p className="cs-overline">{caseStudyConfig.storyOverline}</p>
-                    <p className="cs-desc">{caseStudyConfig.storyLeadPrefix} {project.shortDescription}</p>
-                    <div className="cs-markdown">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{project.fullDocumentation || ''}</ReactMarkdown>
-                    </div>
-                </section>
-
-                <section className="cs-shell cs-score cs-animate">
-                    <h2 className="cs-heading">{caseStudyConfig.scoreHeading}</h2>
-                    <div className="cs-score-grid">
-                        {scoreItems.map((item) => (
-                            <article key={item.label} className="cs-score-card">
-                                <p className="cs-score-label">{item.label}</p>
-                                <p className="cs-score-value">{item.value}</p>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-
-                {caseStudyFooter}
-            </main>
-        </div>
+        <CaseStudyTemplate 
+            project={project}
+            rootRef={rootRef}
+            topQuickNav={topQuickNav}
+            formattedDate={formattedDate}
+            caseStudyConfig={caseStudyConfig}
+            coverImage={coverImage}
+            highlightImages={highlightImages}
+            sectionLabels={sectionLabels}
+            uiuxPoints={uiuxPoints}
+            systemDesignPoints={systemDesignPoints}
+            assetGroups={assetGroups}
+            scoreItems={scoreItems}
+            caseStudyFooter={caseStudyFooter}
+        />
     );
 };
 

@@ -1,20 +1,53 @@
 {
-  "hero": {
-    "marquee": ["Motion", "Code", "Design"],
-    "kicker": "Developer × Motion Designer",
-    "displayKicker": "Portfolio — Selected Work",
-    "bio": "Crafting high-performance web experiences where code meets motion. GSAP · WebGL · React.",
-    "buttons": [
-      { "label": "View Work", "link": "/projects", "variant": "primary" },
-      { "label": "Get in Touch", "link": "/contact" }
+    "hero": {
+        "marquee": [
+            "Motion",
+            "Code",
+            "Design",
+            "3d"
+        ],
+        "kicker": "Developer × Motion Designer",
+        "displayKicker": "Portfolio - My Name is ",
+        "bio": "Crafting high-performance web experiences where code meets motion. GSAP · WebGL · React · Spline .",
+        "buttons": [
+            {
+                "label": "View Projects",
+                "link": "/projects",
+                "variant": "primary"
+            },
+            {
+                "label": "Get in Touch",
+                "link": "/contact"
+            }
+        ]
+    },
+    "tags": [
+        "GSAP",
+        "THREE.JS",
+        "GLSL",
+        "FRAMER",
+        "WEBGL",
+        "REACT",
+        "MOTION",
+        "NEXT.JS",
+        "LOTTINS",
+        "SPLINE"
+    ],
+    "metrics": [
+        {
+            "value": "60",
+            "unit": "fps",
+            "label": "Render"
+        },
+        {
+            "value": "10+",
+            "unit": "rep",
+            "label": "Projects"
+        },
+        {
+            "value": "1",
+            "unit": "yr",
+            "label": "Experience"
+        }
     ]
-  },
-  "tags": [
-    "GSAP", "THREE.JS", "GLSL", "FRAMER", "WEBGL", "REACT", "MOTION", "NEXT.JS", "LOTTINS"
-  ],
-  "metrics": [
-    { "value": "60", "unit": "fps", "label": "Render" },
-    { "value": "48+", "unit": "rep", "label": "Projects" },
-    { "value": "1", "unit": "yr", "label": "Experience" }
-  ]
 }

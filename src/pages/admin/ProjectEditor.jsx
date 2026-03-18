@@ -1,22 +1,46 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import portfolioDataDefault from '../../data/portfolioData.json';
 
 const STORAGE_KEY = 'portfolioData';
 
 const getStoredData = () => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : portfolioDataDefault;
+    if (!stored) return portfolioDataDefault;
+    
+    const parsed = JSON.parse(stored);
+    
+    // THE FIX: If projects were deleted from the JSON file manually, 
+    // we should respect that deletion instead of showing stale localStorage projects.
+    const fileProjectIds = new Set(portfolioDataDefault.projects.map(p => p.id));
+    const mergedProjects = portfolioDataDefault.projects.map(fp => {
+        const lp = parsed.projects?.find(p => p.id === fp.id);
+        return lp || fp; // Prefer local edits if ID matches, else use file version
+    });
+
+    return {
+        categories: parsed.categories || portfolioDataDefault.categories || [],
+        projects: mergedProjects
+    };
 };
 
-const emptyNewProject = {
-    title: '',
-    shortDescription: '',
-    images: [],
-    projectType: '',
-    mainImage: '',
-    galleryImages: [],
-    assets: { desktop: null, tablet: null, mobile: null },
+const PROJECT_TEMPLATES = {
+    'Landing Page': {
+        projectType: 'Landing Page',
+        images: [],
+        mainImage: '',
+        galleryImages: [],
+        assets: { desktop: '', tablet: '', mobile: '' },
+        stacks: ['React', 'Tailwind CSS', 'GSAP'],
+    },
+    'Default': {
+        projectType: '',
+        images: [],
+        stacks: [],
+    }
 };
+
+const emptyNewProject = PROJECT_TEMPLATES.Default;
 
 const inputCls = 'w-full px-3 py-1.5 text-sm bg-[#111] border border-white/10 rounded-lg focus:border-[#c8ff3e] outline-none';
 
@@ -61,7 +85,7 @@ const ImageAdder = ({ inputId, onAdd }) => (
 );
 
 // ── Project card — always fully expanded ─────────────────────────────────────
-const ProjectCard = ({ project, realIndex, onUpdate, onAddImage, onRemoveImage, onRemove }) => {
+const ProjectCard = ({ project, categories, realIndex, onUpdate, onAddImage, onRemoveImage, onRemove }) => {
     const [saved, setSaved] = useState(false);
     const descRef = React.useRef(null);
 
@@ -80,8 +104,12 @@ const ProjectCard = ({ project, realIndex, onUpdate, onAddImage, onRemoveImage, 
             shortDescription: project.shortDescription || '',
             projectType: project.projectType || '',
             images: [...(project.images || [])],
+            mainImage: project.mainImage || '',
+            galleryImages: [...(project.galleryImages || [])],
+            assets: { ...(project.assets || {}) },
+            stacks: [...(project.stacks || [])],
         });
-    }, [project.title, project.shortDescription, project.projectType, project.images]);
+    }, [project]);
 
     // Auto-size description textarea
     React.useEffect(() => {
@@ -95,7 +123,11 @@ const ProjectCard = ({ project, realIndex, onUpdate, onAddImage, onRemoveImage, 
         draft.title !== (project.title || '') ||
         draft.shortDescription !== (project.shortDescription || '') ||
         draft.projectType !== (project.projectType || '') ||
-        JSON.stringify(draft.images) !== JSON.stringify(project.images || []);
+        draft.mainImage !== (project.mainImage || '') ||
+        JSON.stringify(draft.images) !== JSON.stringify(project.images || []) ||
+        JSON.stringify(draft.galleryImages) !== JSON.stringify(project.galleryImages || []) ||
+        JSON.stringify(draft.assets) !== JSON.stringify(project.assets || {}) ||
+        JSON.stringify(draft.stacks) !== JSON.stringify(project.stacks || []);
 
     const handleUpdate = () => {
         onUpdate(realIndex, draft);
@@ -150,24 +182,26 @@ const ProjectCard = ({ project, realIndex, onUpdate, onAddImage, onRemoveImage, 
                     />
                 </Field>
                 <Field label="Category">
-                    <input
-                        type="text"
+                    <select
                         value={draft.projectType}
                         className={inputCls}
                         onChange={(e) => setDraft((d) => ({ ...d, projectType: e.target.value }))}
-                    />
+                    >
+                        <option value="">Select Category...</option>
+                        {categories.map(cat => (
+                            <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                    </select>
                 </Field>
-                <Field label={`Images (${draft.images?.length ?? 0})`}>
-                    <ImageStrip images={draft.images} onRemove={(i) => setDraft(d => ({ ...d, images: d.images.filter((_, idx) => idx !== i) }))} />
-                    <ImageAdder inputId={`img-${project.id}`} onAdd={(url) => setDraft(d => ({ ...d, images: [...d.images, url] }))} />
-                </Field>
+                {/* NOTE: Stacks, Assets, and Hero Images are now managed in the "Visual Editor" on the Project Details page. */}
+
 
                 {/* Action row */}
                 <div className="flex gap-2 mt-3">
                     <button
                         onClick={handleUpdate}
                         disabled={!hasChanges}
-                        className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold rounded-lg border transition-all duration-200
+                        className={`flex-[2] flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold rounded-lg border transition-all duration-200
                             ${hasChanges
                                 ? 'border-white/40 text-white hover:border-white hover:text-white bg-white/5'
                                 : 'border-white/10 text-gray-600 cursor-not-allowed bg-transparent'
@@ -176,6 +210,12 @@ const ProjectCard = ({ project, realIndex, onUpdate, onAddImage, onRemoveImage, 
                         {hasChanges && <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block shrink-0" />}
                         Update
                     </button>
+                    <Link
+                        to={`/admin/projects/${project.id}`}
+                        className="flex-1 flex items-center justify-center py-1.5 text-xs font-semibold rounded-lg border border-white/10 text-white/60 hover:border-white/40 hover:text-white transition-all"
+                    >
+                        View Details
+                    </Link>
                     <button
                         onClick={() => onRemove(realIndex)}
                         className="px-3 py-1.5 text-xs text-red-400 border border-red-500/20 rounded-lg hover:bg-red-500/10 transition-colors"
@@ -190,11 +230,47 @@ const ProjectCard = ({ project, realIndex, onUpdate, onAddImage, onRemoveImage, 
 // ── Main editor ───────────────────────────────────────────────────────────────
 const ProjectEditor = () => {
     const [data, setData] = useState(getStoredData);
+    const [loading, setLoading] = useState(true);
     const [toast, setToast] = useState(null);
     const [showNewForm, setShowNewForm] = useState(false);
     const [newProject, setNewProject] = useState(emptyNewProject);
     const [activeCategory, setActiveCategory] = useState('all');
     const [globalSaved, setGlobalSaved] = useState(false);
+    const [newCatName, setNewCatName] = useState('');
+
+    // UPDATED: Sync from disk on mount
+    React.useEffect(() => {
+        const syncFromDisk = async () => {
+            try {
+                const res = await fetch('/src/data/portfolioData.json');
+                if (res.ok) {
+                    const diskData = await res.json();
+                    
+                    // Logic: diskData is the "source of truth". 
+                    // We only want to use localStorage if it has data that isn't on disk yet.
+                    // For now, let's just use the merged getStoredData result as initial,
+                    // but update it with diskData if it's available.
+                    setData(prev => {
+                        const stored = localStorage.getItem(STORAGE_KEY);
+                        if (!stored) return diskData;
+                        
+                        const parsed = JSON.parse(stored);
+                        // Merge logic: prefer disk for structure, but keep local project edits if they match IDs
+                        const mergedProjects = diskData.projects.map(dp => {
+                            const lp = parsed.projects?.find(p => p.id === dp.id);
+                            return lp || dp;
+                        });
+                        return { ...diskData, projects: mergedProjects };
+                    });
+                }
+            } catch (e) {
+                console.error("Failed to fetch live portfolioData.json", e);
+            } finally {
+                setLoading(false);
+            }
+        };
+        syncFromDisk();
+    }, []);
 
     const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2000); };
 
@@ -203,18 +279,23 @@ const ProjectEditor = () => {
         setGlobalSaved(true);
         setTimeout(() => setGlobalSaved(false), 1200);
 
+        // Always update localStorage to keep the draft/preview in sync
+        try { 
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(nd)); 
+        } catch (e) {
+            console.error("Failed to sync to localStorage", e);
+        }
+
         // Try writing to disk via the Vite dev plugin (dev only)
         try {
-            const res = await fetch('/__write-json', {
+            const res = await fetch('/__write-json?file=portfolioData.json', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(nd),
             });
             if (!res.ok) throw new Error('write failed');
-        } catch {
-            // Fallback to localStorage (production or plugin unavailable)
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(nd)); }
-            catch { showToast('Failed to save!'); }
+        } catch (e) {
+            console.warn("Cloud/File write failed, but localStorage is updated.", e);
         }
     };
 
@@ -244,11 +325,32 @@ const ProjectEditor = () => {
         const project = { id: `project-${Date.now()}`, ...newProject };
         saveData({ ...data, projects: [...data.projects, project] });
         setShowNewForm(false);
-        setNewProject(emptyNewProject);
+        setNewProject(PROJECT_TEMPLATES.Default);
         showToast('Project added!');
     };
 
-    const categories = Array.from(new Set(data.projects.map((p) => p.projectType || 'uncategorized')));
+    const applyTemplate = (cat) => {
+        const template = PROJECT_TEMPLATES[cat] || PROJECT_TEMPLATES.Default;
+        setNewProject(prev => ({
+            ...prev,
+            ...template,
+            title: prev.title, // keep title
+            shortDescription: prev.shortDescription, // keep description
+            projectType: cat
+        }));
+    };
+
+    const handleAddCategory = () => {
+        const name = newCatName.trim();
+        if (!name) return;
+        if (data.categories?.includes(name)) { showToast('Already exists'); return; }
+        const nc = [...(data.categories || []), name];
+        saveData({ ...data, categories: nc });
+        setNewCatName('');
+        showToast('Category added!');
+    };
+
+    const categories = data.categories || [];
     const visibleProjects =
         activeCategory === 'all'
             ? data.projects
@@ -260,6 +362,15 @@ const ProjectEditor = () => {
             <div className={`fixed top-4 right-4 z-50 px-4 py-2 rounded-lg text-sm font-medium shadow-xl transition-all duration-300 ${toast ? 'opacity-100 translate-y-0 bg-green-600 text-white' : 'opacity-0 -translate-y-2 pointer-events-none bg-transparent'}`}>
                 ✓ {toast}
             </div>
+
+            {loading && (
+                <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="w-8 h-8 border-2 border-[#c8ff3e] border-t-transparent rounded-full animate-spin" />
+                        <p className="text-sm font-medium text-white/60 tracking-wider uppercase">Syncing with Disk...</p>
+                    </div>
+                </div>
+            )}
 
             {/* Sticky header */}
             <header className="sticky top-0 z-40 bg-[#0e0e0e]/95 backdrop-blur border-b border-white/5 px-6 py-3 flex items-center justify-between gap-4 shrink-0">
@@ -280,13 +391,35 @@ const ProjectEditor = () => {
                     ))}
                 </div>
 
-                <button
-                    onClick={() => setShowNewForm((v) => !v)}
-                    className="flex items-center gap-1.5 px-4 py-2 bg-[#c8ff3e] text-black text-sm font-bold rounded-lg hover:bg-white transition-colors shrink-0"
-                >
-                    <span className="text-base leading-none">{showNewForm ? '×' : '+'}</span>
-                    {showNewForm ? 'Cancel' : 'Add Project'}
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => { if(confirm('Reset all changes and sync with portfolioData.json?')) { localStorage.removeItem(STORAGE_KEY); window.location.reload(); } }}
+                        className="px-3 py-1.5 text-[10px] text-gray-500 hover:text-white transition-colors uppercase font-bold tracking-widest"
+                    >Reset</button>
+
+                    <div className="flex bg-[#161616] border border-white/10 rounded-lg p-0.5">
+                        <input
+                            type="text"
+                            value={newCatName}
+                            placeholder="New category..."
+                            onChange={(e) => setNewCatName(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
+                            className="bg-transparent px-3 py-1.5 text-xs outline-none w-32 focus:w-48 transition-all"
+                        />
+                        <button
+                            onClick={handleAddCategory}
+                            className="px-3 py-1 bg-white/5 hover:bg-white/10 text-white rounded-md text-xs font-bold transition-colors"
+                        >Add</button>
+                    </div>
+
+                    <button
+                        onClick={() => setShowNewForm((v) => !v)}
+                        className="flex items-center gap-1.5 px-4 py-2 bg-[#c8ff3e] text-black text-sm font-bold rounded-lg hover:bg-white transition-colors shrink-0"
+                    >
+                        <span className="text-base leading-none">{showNewForm ? '×' : '+'}</span>
+                        {showNewForm ? 'Cancel' : 'Add Project'}
+                    </button>
+                </div>
             </header>
 
             {/* Mobile category pills */}
@@ -310,8 +443,16 @@ const ProjectEditor = () => {
                                     onChange={(e) => setNewProject((p) => ({ ...p, title: e.target.value }))} />
                             </Field>
                             <Field label="Category">
-                                <input type="text" value={newProject.projectType} className={inputCls} placeholder="e.g. app, landing page"
-                                    onChange={(e) => setNewProject((p) => ({ ...p, projectType: e.target.value }))} />
+                                <select
+                                    value={newProject.projectType}
+                                    className={inputCls}
+                                    onChange={(e) => applyTemplate(e.target.value)}
+                                >
+                                    <option value="">Select Category...</option>
+                                    {categories.map(cat => (
+                                        <option key={cat} value={cat}>{cat}</option>
+                                    ))}
+                                </select>
                             </Field>
                             <div className="sm:col-span-2">
                                 <Field label="Short Description">
@@ -325,10 +466,15 @@ const ProjectEditor = () => {
                                     <ImageAdder inputId="new-proj-img" onAdd={(url) => setNewProject((p) => ({ ...p, images: [...p.images, url] }))} />
                                 </Field>
                             </div>
+                            <div className="sm:col-span-2 lg:col-span-4">
+                                <p className="text-[10px] text-gray-500 italic mt-2">
+                                    Additional details (Tech Stack, Assets, Gallery) can be edited via "View Details" after creation.
+                                </p>
+                            </div>
                         </div>
-                        <div className="flex gap-2 mt-1">
-                            <button onClick={handleSaveNewProject} className="px-4 py-2 bg-[#c8ff3e] text-black text-sm font-bold rounded-lg hover:bg-white transition-colors">Save Project</button>
-                            <button onClick={() => { setShowNewForm(false); setNewProject(emptyNewProject); }} className="px-4 py-2 bg-[#252525] text-gray-400 text-sm rounded-lg hover:bg-[#333] transition-colors">Discard</button>
+                        <div className="flex gap-2 mt-4">
+                            <button onClick={handleSaveNewProject} className="flex-1 bg-[#c8ff3e] text-black font-bold py-2 rounded-lg hover:bg-white transition-colors uppercase tracking-widest text-xs">Create Project</button>
+                            <button onClick={() => setShowNewForm(false)} className="px-6 py-2 bg-white/5 text-gray-400 font-bold rounded-lg hover:bg-white/10 transition-colors uppercase tracking-widest text-xs">Cancel</button>
                         </div>
                     </div>
                 )}
@@ -347,6 +493,7 @@ const ProjectEditor = () => {
                                 <ProjectCard
                                     key={project.id}
                                     project={project}
+                                    categories={categories}
                                     realIndex={realIndex}
                                     onUpdate={updateProject}
                                     onAddImage={handleAddImage}
