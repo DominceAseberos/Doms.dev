@@ -25,6 +25,7 @@ const projects = (portfolioData?.projects || [])
     .map((p, index) => {
     const theme = projectThemes[index % projectThemes.length];
     return {
+        ...p, // Spread all properties so new button logic works seamlessly
         title: p.title,
         type: p.projectType,
         desc: `${p.shortDescription}\n\n${p.fullDocumentation || ''}`,
@@ -32,8 +33,6 @@ const projects = (portfolioData?.projects || [])
         colors: theme.colors,
         glow: theme.glow,
         image: p.mainImage || p.image,
-        liveUrl: p.livePreviewLink,
-        githubUrl: p.githubLink
     };
 });
 

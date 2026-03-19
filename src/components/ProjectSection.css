@@ -783,3 +783,15 @@
         transform: translate(-50%, -50%) !important;
     }
 }
+
+/* ── Overlay Content Sections (Forcing Vertical Flow) ── */
+.ep-content-builder-wrap .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+}
+.ep-content-builder-wrap section {
+    padding: 0 !important;
+    margin-bottom: 2rem !important;
+    border: none !important;
+    background: transparent !important;
+}

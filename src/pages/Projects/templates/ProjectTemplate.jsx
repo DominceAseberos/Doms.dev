@@ -194,45 +194,40 @@ const ProjectTemplate = ({
                         </Link>
                         
                         <div className="flex items-center gap-4">
-                            {/* GitHub Link */}
-                            {isAdminPreview ? (
-                                <div className="cs-top-link cs-top-link--ghost flex items-center gap-3">
-                                    <FiLink2 size={14} className="opacity-40" />
-                                    <div className="flex flex-col">
-                                        <span className="text-[8px] opacity-40 uppercase tracking-widest font-bold">GitHub Link</span>
-                                        <input 
-                                            type="text"
-                                            value={project.githubLink || ''}
-                                            onChange={(e) => onUpdateField('githubLink', e.target.value)}
-                                            placeholder="Paste GitHub URL..."
-                                            className="bg-transparent border-none outline-none text-[11px] w-24 focus:w-48 transition-all"
-                                        />
-                                    </div>
-                                </div>
-                            ) : project.githubLink && (
-                                <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="cs-top-link cs-top-link--ghost flex items-center gap-2">
-                                    <span>GitHub</span>
+                            {/* Primary Button */}
+                            <a 
+                                href={isAdminPreview ? undefined : (project.primaryBtnUrl || `/projects/${project.id}`)} 
+                                target={isAdminPreview ? undefined : (project.primaryBtnUrl && project.primaryBtnUrl.startsWith('/') ? undefined : "_blank")} 
+                                rel="noopener noreferrer" 
+                                className="cs-top-link cs-top-link--ghost flex items-center gap-2"
+                                onClick={e => isAdminPreview && e.preventDefault()}
+                            >
+                                <span>{project.primaryBtnLabel || 'View Details'}</span>
+                            </a>
+
+                            {/* Secondary Button */}
+                            {(project.secondaryBtnUrl || project.liveUrl) && (
+                                <a 
+                                    href={isAdminPreview ? undefined : (project.secondaryBtnUrl || project.liveUrl)} 
+                                    target={isAdminPreview ? undefined : "_blank"} 
+                                    rel="noopener noreferrer" 
+                                    className="cs-top-link flex items-center gap-2"
+                                    onClick={e => isAdminPreview && e.preventDefault()}
+                                >
+                                    <span>{project.secondaryBtnLabel || 'Live View'}</span>
                                 </a>
                             )}
 
-                            {/* Live Site Link */}
-                            {isAdminPreview ? (
-                                <div className="cs-top-link flex items-center gap-3">
-                                    <FiLink2 size={14} className="opacity-60" />
-                                    <div className="flex flex-col">
-                                        <span className="text-[8px] opacity-60 uppercase tracking-widest font-bold">Live Preview Link</span>
-                                        <input 
-                                            type="text"
-                                            value={project.livePreviewLink || ''}
-                                            onChange={(e) => onUpdateField('livePreviewLink', e.target.value)}
-                                            placeholder="Paste Live URL..."
-                                            className="bg-transparent border-none outline-none text-[11px] w-24 focus:w-48 transition-all text-black"
-                                        />
-                                    </div>
-                                </div>
-                            ) : project.livePreviewLink && (
-                                <a href={project.livePreviewLink} target="_blank" rel="noopener noreferrer" className="cs-top-link flex items-center gap-2">
-                                    <span>Live Preview</span>
+                            {/* GitHub Button */}
+                            {(project.githubBtnUrl || project.githubUrl) && (
+                                <a 
+                                    href={isAdminPreview ? undefined : (project.githubBtnUrl || project.githubUrl)} 
+                                    target={isAdminPreview ? undefined : "_blank"} 
+                                    rel="noopener noreferrer" 
+                                    className="cs-top-link cs-top-link--ghost flex items-center gap-2"
+                                    onClick={e => isAdminPreview && e.preventDefault()}
+                                >
+                                    <span>{project.githubBtnLabel || 'GitHub'}</span>
                                 </a>
                             )}
                         </div>

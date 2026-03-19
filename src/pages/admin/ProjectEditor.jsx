@@ -456,6 +456,92 @@ const ProjectEditor = () => {
                                                 <option key={cat} value={cat}>{cat}</option>
                                             ))}
                                         </select>
+
+                                        <label className="block text-sm mb-1 mt-4">Main Image (Tunnel Thumbnail)</label>
+                                        <div className="mb-4">
+                                            {project.mainImage ? (
+                                                <div className="relative inline-block mb-2 group">
+                                                    <img src={project.mainImage} alt="Main" className="h-24 w-auto object-cover rounded-lg border border-gray-700" />
+                                                    <button
+                                                        onClick={async () => {
+                                                            const imageUrl = project.mainImage;
+                                                            if (imageUrl && imageUrl.includes('/assets/uploads/')) {
+                                                                try {
+                                                                    await fetch(`/__delete-upload?path=${encodeURIComponent(imageUrl)}`, { method: 'DELETE' });
+                                                                } catch (err) {
+                                                                    console.error("Failed to delete main image file from server", err);
+                                                                }
+                                                            }
+                                                            const newData = { ...data };
+                                                            newData.projects[i].mainImage = '';
+                                                            persistChanges(newData);
+                                                            triggerFeedback();
+                                                        }}
+                                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md"
+                                                        title="Remove Image"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="w-full">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={e => {
+                                                            const file = e.target.files?.[0];
+                                                            if (!file) return;
+                                                            const projectId = project.id;
+                                                            fetch(`/__upload-image?name=${encodeURIComponent(file.name)}&projectId=${projectId}&type=imgs`, { method: 'POST', body: file })
+                                                                .then(res => res.json())
+                                                                .then(resData => {
+                                                                    if (resData.ok) {
+                                                                        const newData = { ...data };
+                                                                        newData.projects[i].mainImage = resData.url;
+                                                                        persistChanges(newData);
+                                                                        triggerFeedback();
+                                                                    }
+                                                                })
+                                                                .catch(err => console.error("Upload failed", err));
+                                                        }}
+                                                        className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#333] file:text-[#c8ff3e] hover:file:bg-[#444] cursor-pointer"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                            <div>
+                                                <label className="block text-sm mb-1 text-gray-400">Live View (URL)</label>
+                                                <input
+                                                    type="text"
+                                                    value={project.liveUrl || ''}
+                                                    onChange={e => {
+                                                        const newData = { ...data };
+                                                        newData.projects[i].liveUrl = e.target.value;
+                                                        persistChanges(newData);
+                                                        triggerFeedback();
+                                                    }}
+                                                    placeholder="https://..."
+                                                    className="w-full px-3 py-2 bg-[#222] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none text-sm text-white"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm mb-1 text-gray-400">GitHub (URL)</label>
+                                                <input
+                                                    type="text"
+                                                    value={project.githubUrl || ''}
+                                                    onChange={e => {
+                                                        const newData = { ...data };
+                                                        newData.projects[i].githubUrl = e.target.value;
+                                                        persistChanges(newData);
+                                                        triggerFeedback();
+                                                    }}
+                                                    placeholder="https://github.com/..."
+                                                    className="w-full px-3 py-2 bg-[#222] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none text-sm text-white"
+                                                />
+                                            </div>
+                                        </div>
                                         
                                         <div className="mb-4 flex items-center gap-2">
                                             <input 

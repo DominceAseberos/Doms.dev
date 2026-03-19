@@ -7,6 +7,16 @@
     background: #232726;
     color: #f2ede6;
 }
+
+.ep-title-light, .ep-inner-light .ep-title { color: #111111 !important; }
+.ep-type-light, .ep-inner-light .ep-type { color: #444444 !important; }
+.ep-inner-light .ep-tag { color: #555555 !important; }
+.ep-inner-light .ep-desc-markdown, .ep-inner-light .ep-desc-markdown p, .ep-inner-light .ep-desc-markdown li { color: #333333 !important; }
+.ep-inner-light .ep-desc-markdown h2,
+.ep-inner-light .ep-desc-markdown h3 { color: #111111 !important; }
+.ep-inner-light .ep-desc-markdown blockquote { color: #555555 !important; border-left-color: #555555 !important; }
+.ep-inner-light .ep-divider { background: rgba(0,0,0,0.1) !important; }
+.ep-inner-light .ep-pill { border-color: rgba(0,0,0,0.2) !important; color: #222222 !important; }
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -9,7 +9,7 @@
             "title": "testing",
             "shortDescription": "testing featuer tunnel",
             "images": [],
-            "projectType": "Case Study",
+            "projectType": "CASE STUDY",
             "mainImage": "",
             "galleryImages": [],
             "assets": {
@@ -17,7 +17,41 @@
                 "tablet": "",
                 "mobile": ""
             },
-            "featuredInTunnel": true
+            "featuredInTunnel": true,
+            "desktopImage": "",
+            "contentSections": [
+                {
+                    "id": "id-jyf1gtxqb",
+                    "sectionTitle": "ABOUT",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "id-z45mlosvj",
+                            "columnTitle": "TESTING",
+                            "blocks": []
+                        }
+                    ]
+                },
+                {
+                    "id": "id-9xgwqaw72",
+                    "sectionTitle": "FULL DOCS",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "id-cdvzhqhjv",
+                            "columnTitle": "why",
+                            "blocks": []
+                        },
+                        {
+                            "id": "id-ifxlegaq1",
+                            "columnTitle": "how",
+                            "blocks": []
+                        }
+                    ]
+                }
+            ],
+            "githubUrl": "https://github.com/",
+            "liveUrl": "asdasd"
         }
     ],
     "customCategories": [
