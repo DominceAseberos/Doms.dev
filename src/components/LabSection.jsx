@@ -184,7 +184,7 @@ const LabSection = () => {
                             <div
                                 key={i}
                                 ref={el => tagsRef.current[i] = el}
-                                className={`floating-tag ${isLight ? 'text-[#222] bg-[#c8ff3e] border-none' : ''}`}
+                                className="floating-tag"
                                 style={{ top: '50%', left: '50%' }}
                             >
                                 {tag.label}
@@ -218,11 +218,11 @@ const LabSection = () => {
                             />
 
                             {/* Animated Abstract Preview Graphic */}
-                            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center ${isLight ? 'bg-[#e6f7d9]/60' : 'bg-black/20'} group-hover:bg-black/10 transition-colors duration-500`}>
-                                <div className="w-24 h-24 border border-[rgba(200,255,62,0.3)] rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(200,255,62,0.1)] group-hover:shadow-[0_0_50px_rgba(200,255,62,0.3)] transition-shadow duration-500">
-                                    <div className="w-10 h-10 bg-[#c8ff3e] rounded-full blur-sm opacity-80 animate-ping"></div>
+                            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center ${isLight ? 'bg-white/10' : 'bg-black/20'} group-hover:bg-black/10 transition-colors duration-500`}>
+                                <div className={`w-24 h-24 border ${isLight ? 'border-[var(--white)] opacity-20' : 'border-[rgba(200,255,62,0.3)]'} rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(200,255,62,0.1)] group-hover:shadow-[0_0_50px_rgba(200,255,62,0.3)] transition-shadow duration-500`}>
+                                    <div className={`w-10 h-10 ${isLight ? 'bg-[var(--white)]' : 'bg-[var(--accent)]'} rounded-full blur-sm opacity-80 animate-ping`}></div>
                                 </div>
-                                <span className={`ui-sub-label text-[10px] md:text-sm ${isLight ? 'text-[#222]' : ''}`}>Interactive Preview</span>
+                                <span className={`ui-sub-label text-[10px] md:text-sm font-bold uppercase tracking-widest ${isLight ? 'text-[var(--white)] bg-[var(--surface)] px-3 py-1 rounded-full border border-[var(--border)]' : ''}`}>Interactive Preview</span>
                             </div>
                         </div>
                     </div>

@@ -253,7 +253,7 @@ const MoreProjectsSection = () => {
                             return (
                                 <div 
                                     key={`${src || text}-${i}`}
-                                    className={`absolute transition-all duration-300 ${isCenter ? 'w-[75%] md:w-[65%] z-30' : 'w-[35%] md:w-[35%] z-10'}`}
+                                    className={`absolute transition-all duration-300 ${isCenter ? 'w-[75%] md:w-[65%] z-10' : 'w-[35%] md:w-[35%] z-20'}`}
                                     style={isCenter ? {} : { ...pos }}
                                 >
                                     <MagneticImage

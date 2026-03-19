@@ -1,15 +1,15 @@
 .light .floating-tag {
-    background: #c8ff3e !important;
-    color: #222 !important;
-    border: 1px solid #b6e97a !important;
-    box-shadow: 0 4px 15px rgba(200,255,62,0.15), 0 0 10px rgba(200,255,62,0.08);
+    background: var(--surface) !important;
+    color: var(--white) !important; /* Black in light mode */
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 .lab-section-bg {
-    background-color: #505255;
+    background-color: var(--bg);
     transition: background-color 0.3s ease;
 }
 .light .lab-section-bg {
-    background-color: #f6f7fa;
+    background-color: #f6f7fa; /* Slightly different from --bg to maintain the light green accent elsewhere */
 }
 /* Decorative Inner Polygons (add light theme override) */
  .light .lab-section-bg .polygon-overlay {
@@ -17,35 +17,35 @@
 }
 
 .lab-title {
-    color: #f2ede6;
+    color: var(--white);
 }
 
 .lab-subtitle {
-    color: #b8b2a8;
+    color: var(--muted-text);
 }
 
 .lab-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--surface);
+    border: 1px solid var(--border);
     backdrop-filter: blur(10px);
 }
 
 .lab-card:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(200, 255, 62, 0.2);
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .lab-card-title {
-    color: #f2ede6;
+    color: var(--white);
 }
 
 .lab-card-desc {
-    color: #9c9490;
+    color: var(--muted-text);
 }
 
 .lab-image-placeholder {
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
 }
 
 /* Floating Tags */
@@ -54,11 +54,11 @@
     pointer-events: none;
     z-index: 30;
     padding: 10px 18px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(200, 255, 62, 0.2);
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
     backdrop-filter: blur(8px);
     border-radius: 99px;
-    color: #c8ff3e;
+    color: var(--accent);
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 0.4em;
@@ -67,7 +67,7 @@
     white-space: nowrap;
     box-shadow:
         0 4px 15px rgba(0, 0, 0, 0.3),
-        0 0 10px rgba(200, 255, 62, 0.1);
+        0 0 10px color-mix(in srgb, var(--accent) 15%, transparent);
     opacity: 0;
     scale: 0.5;
     transform: translate(-50%, -50%);
