@@ -741,3 +741,94 @@
     font-size: 36px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   WINDOW GLOW — success state animation
+   Triggered by .cc-city-svg--lit added on form submit
+═══════════════════════════════════════════════════════ */
+
+/* Base window rect — invisible by default */
+.cc-win {
+  fill: var(--cc-lime);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* SVG brightness boost when lit */
+.cc-city-svg--lit {
+  filter: brightness(1.12);
+  transition: filter 1.2s ease;
+}
+
+/* When SVG gets --lit, all windows animate in */
+.cc-city-svg--lit .cc-win {
+  animation: cc-win-on 0.5s ease forwards, cc-win-pulse 3s ease-in-out 0.5s infinite;
+}
+
+/* Staggered delays — 7 tiers (d0–d6), each 120ms apart */
+/* Bottom floors light up first, rippling upward */
+.cc-city-svg--lit .cc-win--d0 {
+  animation-delay: 0s, 0.5s;
+}
+
+.cc-city-svg--lit .cc-win--d1 {
+  animation-delay: 0.12s, 0.62s;
+}
+
+.cc-city-svg--lit .cc-win--d2 {
+  animation-delay: 0.24s, 0.74s;
+}
+
+.cc-city-svg--lit .cc-win--d3 {
+  animation-delay: 0.36s, 0.86s;
+}
+
+.cc-city-svg--lit .cc-win--d4 {
+  animation-delay: 0.48s, 0.98s;
+}
+
+.cc-city-svg--lit .cc-win--d5 {
+  animation-delay: 0.60s, 1.10s;
+}
+
+.cc-city-svg--lit .cc-win--d6 {
+  animation-delay: 0.72s, 1.22s;
+}
+
+/* Fade in with a slight overshoot brightness */
+@keyframes cc-win-on {
+  0% {
+    opacity: 0;
+    fill: #ffffff;
+  }
+
+  40% {
+    opacity: 0.95;
+    fill: #e8ff90;
+  }
+
+  70% {
+    opacity: 1;
+    fill: var(--cc-lime);
+  }
+
+  100% {
+    opacity: 0.82;
+    fill: var(--cc-lime);
+  }
+}
+
+/* Gentle breathing pulse — keeps windows alive */
+@keyframes cc-win-pulse {
+
+  0%,
+  100% {
+    opacity: 0.82;
+    fill: var(--cc-lime);
+  }
+
+  50% {
+    opacity: 0.55;
+    fill: #c8ff60;
+  }
+}
