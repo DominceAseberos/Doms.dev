@@ -1,0 +1,743 @@
+/* ═══════════════════════════════════════════════════════
+   CityscapeContact.css
+   Companion styles for CityscapeContact.jsx
+   Fonts: Barlow Condensed (900), IBM Plex Mono (400/500)
+   Add to your index.html or _app:
+   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+═══════════════════════════════════════════════════════ */
+
+/* ── Variables ───────────────────────────────────────── */
+.cc-root {
+  --cc-lime: #a8ff3e;
+  --cc-dark: #111827;
+  --cc-card-bg: #111827;
+  --cc-text: #f0ece4;
+  --cc-sub: rgba(240, 236, 228, 0.35);
+  --cc-border: rgba(255, 255, 255, 0.08);
+  --cc-input-bg: rgba(255, 255, 255, 0.06);
+  --cc-input-text: #f0ece4;
+  --cc-placeholder: rgba(255, 255, 255, 0.2);
+  --cc-transition: 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Day mode overrides — driven by navbar useThemeStore */
+.cc-root.cc-day {
+  --cc-card-bg: #f5f3ef;
+  --cc-text: #111;
+  --cc-sub: #888;
+  --cc-border: rgba(0, 0, 0, 0.1);
+  --cc-input-bg: rgba(0, 0, 0, 0.04);
+  --cc-input-text: #111;
+  --cc-placeholder: #bbb;
+}
+
+/* ── Root container ──────────────────────────────────── */
+.cc-root {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PHASE A — Fullscreen cityscape stage
+═══════════════════════════════════════════════════════ */
+
+.cc-stage-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  /* no background — ParticleBackground from ContactPage shows through */
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: 10;
+}
+
+.cc-stage-wrap--exit {
+  opacity: 0;
+  transform: scale(0.94);
+  pointer-events: none;
+}
+
+/* Environment layer — transparent so ParticleBackground shows through */
+.cc-env-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Dot grid — day only */
+.cc-env-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #c8c2b8 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0;
+  transition: opacity var(--cc-transition);
+}
+
+.cc-root.cc-day .cc-env-layer::before {
+  opacity: 1;
+}
+
+/* Sun */
+.cc-sun {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #e8ff90, var(--cc-lime) 55%, #6ec800);
+  box-shadow:
+    0 0 0 8px rgba(168, 255, 62, 0.15),
+    0 0 50px 16px rgba(168, 255, 62, 0.25);
+  top: 10%;
+  right: 10%;
+  opacity: 0;
+  transform: scale(0.3) translateY(40px);
+  transition: opacity var(--cc-transition), transform var(--cc-transition);
+  z-index: 2;
+}
+
+.cc-root.cc-day .cc-sun {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.cc-sun::after {
+  content: '';
+  position: absolute;
+  inset: -32px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg,
+      transparent 0deg, rgba(168, 255, 62, 0.18) 7deg, transparent 14deg,
+      transparent 28deg, rgba(168, 255, 62, 0.18) 35deg, transparent 42deg,
+      transparent 56deg, rgba(168, 255, 62, 0.18) 63deg, transparent 70deg,
+      transparent 84deg, rgba(168, 255, 62, 0.18) 91deg, transparent 98deg,
+      transparent 112deg, rgba(168, 255, 62, 0.18) 119deg, transparent 126deg,
+      transparent 140deg, rgba(168, 255, 62, 0.18) 147deg, transparent 154deg,
+      transparent 168deg, rgba(168, 255, 62, 0.18) 175deg, transparent 182deg,
+      transparent 196deg, rgba(168, 255, 62, 0.18) 203deg, transparent 210deg,
+      transparent 224deg, rgba(168, 255, 62, 0.18) 231deg, transparent 238deg,
+      transparent 252deg, rgba(168, 255, 62, 0.18) 259deg, transparent 266deg,
+      transparent 280deg, rgba(168, 255, 62, 0.18) 287deg, transparent 294deg,
+      transparent 308deg, rgba(168, 255, 62, 0.18) 315deg, transparent 322deg,
+      transparent 336deg, rgba(168, 255, 62, 0.18) 343deg, transparent 350deg);
+  animation: cc-spin-rays 16s linear infinite;
+}
+
+@keyframes cc-spin-rays {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Sunbeam */
+.cc-sunbeam {
+  position: absolute;
+  top: 0;
+  right: 8%;
+  width: 2px;
+  height: 55%;
+  background: linear-gradient(to bottom, rgba(168, 255, 62, 0.2), transparent);
+  transform: rotate(8deg);
+  transform-origin: top center;
+  opacity: 0;
+  transition: opacity var(--cc-transition);
+  z-index: 2;
+  filter: blur(1px);
+}
+
+.cc-root.cc-day .cc-sunbeam {
+  opacity: 1;
+}
+
+/* Clouds */
+.cc-cloud {
+  position: absolute;
+  opacity: 0;
+  transition: opacity var(--cc-transition);
+  animation: cc-drift-cloud linear infinite;
+  z-index: 1;
+}
+
+.cc-root.cc-day .cc-cloud {
+  opacity: 1;
+}
+
+.cc-cloud-body {
+  background: rgba(255, 255, 252, 0.96);
+  border-radius: 50px;
+  position: relative;
+  filter: drop-shadow(0 3px 8px rgba(180, 175, 160, 0.25));
+}
+
+.cc-cloud-body::before,
+.cc-cloud-body::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 252, 0.98);
+  border-radius: 50%;
+}
+
+.cc-cloud--1 {
+  top: 7%;
+  left: -220px;
+  animation-duration: 40s;
+}
+
+.cc-cloud--1 .cc-cloud-body {
+  width: 180px;
+  height: 44px;
+}
+
+.cc-cloud--1 .cc-cloud-body::before {
+  width: 90px;
+  height: 72px;
+  top: -36px;
+  left: 24px;
+}
+
+.cc-cloud--1 .cc-cloud-body::after {
+  width: 62px;
+  height: 54px;
+  top: -26px;
+  left: 90px;
+}
+
+.cc-cloud--2 {
+  top: 17%;
+  left: -160px;
+  animation-duration: 55s;
+  animation-delay: -16s;
+}
+
+.cc-cloud--2 .cc-cloud-body {
+  width: 130px;
+  height: 32px;
+}
+
+.cc-cloud--2 .cc-cloud-body::before {
+  width: 64px;
+  height: 52px;
+  top: -26px;
+  left: 16px;
+}
+
+.cc-cloud--2 .cc-cloud-body::after {
+  width: 48px;
+  height: 40px;
+  top: -20px;
+  left: 66px;
+}
+
+.cc-cloud--3 {
+  top: 3%;
+  left: -300px;
+  animation-duration: 68s;
+  animation-delay: -32s;
+}
+
+.cc-cloud--3 .cc-cloud-body {
+  width: 220px;
+  height: 52px;
+}
+
+.cc-cloud--3 .cc-cloud-body::before {
+  width: 110px;
+  height: 88px;
+  top: -44px;
+  left: 30px;
+}
+
+.cc-cloud--3 .cc-cloud-body::after {
+  width: 78px;
+  height: 64px;
+  top: -32px;
+  left: 115px;
+}
+
+@keyframes cc-drift-cloud {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(1300px);
+  }
+}
+
+/* ── When env-layer is teleported into the form-right card ── */
+.cc-form-right .cc-env-layer {
+  display: block !important;
+  /* override any inline display:none */
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Clouds inside the card use a shorter drift distance */
+.cc-form-right .cc-cloud {
+  animation-name: cc-drift-cloud-card;
+}
+
+@keyframes cc-drift-cloud-card {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(700px);
+  }
+}
+
+/* Scale down clouds slightly so they fit the card proportions */
+.cc-form-right .cc-cloud--1 {
+  top: 8%;
+  animation-duration: 22s;
+}
+
+.cc-form-right .cc-cloud--2 {
+  top: 20%;
+  animation-duration: 30s;
+}
+
+.cc-form-right .cc-cloud--3 {
+  top: 4%;
+  animation-duration: 38s;
+}
+
+/* Sun stays top-right, already relative to nearest positioned parent */
+.cc-form-right .cc-sun {
+  top: 8%;
+  right: 8%;
+  width: 44px;
+  height: 44px;
+}
+
+/* Day overlay fills the card */
+.cc-form-right .cc-day-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Day overlay tint */
+.cc-day-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(200, 194, 180, 0.12) 100%);
+  opacity: 0;
+  transition: opacity var(--cc-transition);
+}
+
+.cc-root.cc-day .cc-day-overlay {
+  opacity: 1;
+}
+
+/* SVG */
+.cc-city-svg {
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 2;
+  transition: filter var(--cc-transition);
+}
+
+.cc-root.cc-day .cc-city-svg {
+  filter: brightness(1.06) saturate(0.9);
+}
+
+/* SVG inside the card (after teleport) */
+.cc-svg--card {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  inset: 0 !important;
+  max-width: none !important;
+  object-fit: cover;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BUILDING ANIMATION CLASSES
+   ┌─ TO MAKE BUILDINGS POP FASTER ──────────────────────┐
+   │  cc-expand-platform duration → lower = faster ground│
+   │  cc-pop-up duration          → lower = faster pop   │
+   │  Also tune JS constants in CityscapeContact.jsx:     │
+   │    PHASE_GAP, BIG_STAGGER, MID_STAGGER, SML_STAGGER │
+   └─────────────────────────────────────────────────────┘
+═══════════════════════════════════════════════════════ */
+
+.cc-platform-flat {
+  transform-origin: center bottom;
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+.cc-platform-flat.cc-animate {
+  animation: cc-expand-platform 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes cc-expand-platform {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+.cc-big-bldg,
+.cc-mid-bldg,
+.cc-small-bldg,
+.cc-shadow-group {
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.cc-big-bldg.cc-animate,
+.cc-mid-bldg.cc-animate,
+.cc-small-bldg.cc-animate {
+  animation: cc-pop-up 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.cc-shadow-group.cc-animate {
+  animation: cc-fade-in 0.6s ease forwards;
+}
+
+@keyframes cc-pop-up {
+  0% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes cc-fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   PHASE B — Two-column form layout
+═══════════════════════════════════════════════════════ */
+
+.cc-form-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.cc-form-shell {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 920px;
+  background: var(--cc-card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--cc-border);
+  min-height: 480px;
+  /* entry state */
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cc-form-shell--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+/* Left column */
+.cc-form-left {
+  flex: 0 0 46%;
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  /* staggered entry */
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s ease 0.25s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+}
+
+.cc-form-shell--visible .cc-form-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Tag chip */
+.cc-form-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--cc-lime);
+  background: #1a1a1a;
+  padding: 4px 10px;
+  border-radius: 2px;
+  display: inline-block;
+  align-self: flex-start;
+  text-transform: uppercase;
+}
+
+.cc-root.cc-day .cc-form-tag {
+  background: #111;
+}
+
+/* Title */
+.cc-form-title {
+  font-family: 'Barlow Condensed', 'Georgia', serif;
+  font-size: clamp(32px, 3.8vw, 52px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.5px;
+  color: var(--cc-text);
+  text-transform: uppercase;
+}
+
+.cc-form-title-accent {
+  color: var(--cc-lime);
+}
+
+/* Sub */
+.cc-form-sub {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--cc-sub);
+  text-transform: uppercase;
+}
+
+/* Form */
+.cc-build-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cc-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cc-field label {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: var(--cc-sub);
+  text-transform: uppercase;
+}
+
+.cc-field input,
+.cc-field textarea {
+  background: var(--cc-input-bg);
+  border: 1px solid var(--cc-border);
+  border-radius: 3px;
+  padding: 10px 12px;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--cc-input-text);
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.cc-field input::placeholder,
+.cc-field textarea::placeholder {
+  color: var(--cc-placeholder);
+}
+
+.cc-field input:focus,
+.cc-field textarea:focus {
+  border-color: var(--cc-lime);
+  box-shadow: 0 0 0 2px rgba(168, 255, 62, 0.12);
+  background: rgba(168, 255, 62, 0.04);
+}
+
+/* Submit button */
+.cc-submit-btn {
+  align-self: flex-start;
+  background: var(--cc-lime);
+  color: #111;
+  border: none;
+  border-radius: 2px;
+  padding: 12px 28px;
+  font-family: 'Barlow Condensed', 'Georgia', serif;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(168, 255, 62, 0.2);
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  margin-top: 4px;
+}
+
+.cc-submit-btn:hover {
+  background: #c0ff60;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(168, 255, 62, 0.35);
+}
+
+.cc-submit-btn:active {
+  transform: translateY(0);
+}
+
+.cc-submit-arrow {
+  transition: transform 0.2s;
+}
+
+.cc-submit-btn:hover .cc-submit-arrow {
+  transform: translateX(4px);
+}
+
+/* Success state */
+.cc-success {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cc-success-icon {
+  font-size: 28px;
+  color: var(--cc-lime);
+  line-height: 1;
+}
+
+.cc-success-title {
+  font-family: 'Barlow Condensed', serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cc-text);
+}
+
+.cc-success-sub {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--cc-sub);
+}
+
+/* Right column — live city card */
+.cc-form-right {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 380px;
+  /* sky gradient replaces the fullscreen env-layer atmosphere */
+  background: linear-gradient(180deg, #0a1628 0%, #1a2744 45%, #2d4a6e 75%, #3d6b8a 100%);
+}
+
+.cc-root.cc-day .cc-form-right {
+  background: linear-gradient(180deg, #b8e8fb 0%, #ddf4ff 55%, #f0eeea 100%);
+}
+
+/* Lime top accent */
+.cc-form-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--cc-lime);
+  z-index: 10;
+}
+
+/* Live preview label */
+.cc-preview-label {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.cc-root.cc-day .cc-preview-label {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.cc-preview-label::before {
+  content: '● ';
+  color: var(--cc-lime);
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .cc-form-shell {
+    flex-direction: column;
+  }
+
+  .cc-form-left {
+    flex: none;
+    padding: 32px 24px;
+  }
+
+  .cc-form-right {
+    min-height: 240px;
+    flex: 0 0 240px;
+  }
+
+  .cc-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cc-form-title {
+    font-size: 36px;
+  }
+}

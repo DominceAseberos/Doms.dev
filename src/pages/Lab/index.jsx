@@ -1,10 +1,10 @@
 import React from 'react';
-import './Lab.css';
 
 import ParticleBackground from '../../components/ParticleBackground';
 import NavBar from '../../components/NavBar';
-import LabSection from '../../components/LabSection';
-import ContactSection from '../../components/ContactSection';
+import LabHero from './components/LabHero.jsx';
+import LabSection from './components/LabSection.jsx';
+
 
 const LabPage = () => {
     return (
@@ -12,10 +12,10 @@ const LabPage = () => {
             <ParticleBackground />
             <NavBar />
 
-            <div className="relative z-10">
+            <main className="relative z-10 pt-20">
+                <LabHero />
                 <LabSection />
-                <ContactSection />
-            </div>
+            </main>
         </div>
     );
 };

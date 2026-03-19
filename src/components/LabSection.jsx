@@ -2,7 +2,7 @@ import React, { useRef, useState, useLayoutEffect } from 'react';
 import useThemeStore from '../store/useThemeStore';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import ParticleMesh from './ParticleMesh';
+import InteractiveCard from './Lab/InteractiveCard';
 import './LabSection.css';
 
 if (typeof window !== "undefined") {
@@ -12,10 +12,7 @@ if (typeof window !== "undefined") {
 const LabSection = () => {
     const sectionRef = useRef(null);
     const rightColRef = useRef(null);
-    const previewRef = useRef(null);
     const tagsRef = useRef([]);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const [isHovered, setIsHovered] = useState(false);
 
     const tags = [
         { label: "UI Components", x: "10%", y: "20%" },
@@ -105,33 +102,9 @@ const LabSection = () => {
         return () => ctx.revert();
     }, []);
 
-    const handleMouseMove = (e) => {
-        if (!previewRef.current) return;
-        const rect = previewRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        setMousePos({ x, y });
-    };
+    // Rotation logic moved to InteractiveCard component
 
-    const handleMouseEnter = () => setIsHovered(true);
-    const handleMouseLeave = () => {
-        setIsHovered(false);
-        setMousePos({ x: 0, y: 0 });
-    };
-
-    // Calculate rotation for Magnetic Tilt
-    let rotateX = 0;
-    let rotateY = 0;
-
-    if (isHovered && previewRef.current) {
-        const rect = previewRef.current.getBoundingClientRect();
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        // Gentle rotation
-        rotateX = -((mousePos.y - centerY) / centerY) * 4;
-        rotateY = ((mousePos.x - centerX) / centerX) * 4;
-    }
+    // Rotation variables moved to InteractiveCard
 
     // Use theme from store
     const theme = useThemeStore((state) => state.theme);
@@ -191,32 +164,9 @@ const LabSection = () => {
                             </div>
                         ))}
 
-                        <div
-                            ref={previewRef}
-                            className={`relative w-full max-w-[500px] aspect-[4/3] rounded-3xl lab-card shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer z-10 ${isLight ? 'bg-[#f6f7fa]' : ''}`}
-                            style={{
-                                transform: isHovered
-                                    ? `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`
-                                    : 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)'
-                            }}
-                            onMouseMove={handleMouseMove}
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
+                        <InteractiveCard 
+                            className="max-w-[500px]"
                         >
-                            {/* Particle Mesh Background */}
-                            <ParticleMesh mouseX={mousePos.x} mouseY={mousePos.y} isHovered={isHovered} />
-
-                            {/* Hover Backlight */}
-                            <div
-                                className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
-                                style={{
-                                    opacity: isHovered ? 1 : 0,
-                                    background: isLight
-                                        ? `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, rgba(34,34,34,0.12), transparent 80%)`
-                                        : `radial-gradient(circle 350px at ${mousePos.x}px ${mousePos.y}px, rgba(200,255,62,0.15), transparent 80%)`
-                                }}
-                            />
-
                             {/* Animated Abstract Preview Graphic */}
                             <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center ${isLight ? 'bg-white/10' : 'bg-black/20'} group-hover:bg-black/10 transition-colors duration-500`}>
                                 <div className={`w-24 h-24 border ${isLight ? 'border-[var(--white)] opacity-20' : 'border-[rgba(200,255,62,0.3)]'} rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(200,255,62,0.1)] group-hover:shadow-[0_0_50px_rgba(200,255,62,0.3)] transition-shadow duration-500`}>
@@ -224,7 +174,7 @@ const LabSection = () => {
                                 </div>
                                 <span className={`ui-sub-label text-[10px] md:text-sm font-bold uppercase tracking-widest ${isLight ? 'text-[var(--white)] bg-[var(--surface)] px-3 py-1 rounded-full border border-[var(--border)]' : ''}`}>Interactive Preview</span>
                             </div>
-                        </div>
+                        </InteractiveCard>
                     </div>
 
                 </div>

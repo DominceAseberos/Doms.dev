@@ -79,7 +79,12 @@ button,
 .tag,
 [role="button"],
 input[type="submit"],
-input[type="button"] {
+input[type="button"],
+.ls-card,
+.ls-btn,
+.ls-tag,
+.ls-win-dot,
+.ls-card-preview {
     cursor: url('./assets/cursor-hover.svg') 12 12, pointer !important;
 }
 
