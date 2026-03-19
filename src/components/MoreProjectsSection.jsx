@@ -1,7 +1,8 @@
-import React, { useRef, useState, useLayoutEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect, useEffect } from 'react';
 import useThemeStore from '../store/useThemeStore';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import landingDataDefault from '../data/landingData.json';
 import './MoreProjectsSection.css';
 
 // Register ScrollTrigger
@@ -9,7 +10,25 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const MagneticImage = ({ rotateMultiplier = 2, offsetClass, placeholderText, fwdRef }) => {
+const STORAGE_KEY = 'landingData';
+
+const getLandingData = () => {
+    if (typeof window === 'undefined') return landingDataDefault;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return landingDataDefault;
+    try {
+        const parsed = JSON.parse(stored);
+        return {
+            ...landingDataDefault,
+            ...(parsed || {}),
+            moreProjectsImages: parsed.moreProjectsImages || landingDataDefault.moreProjectsImages || []
+        };
+    } catch (e) {
+        return landingDataDefault;
+    }
+};
+
+const MagneticImage = ({ src, rotateMultiplier = 2, offsetClass, placeholderText, fwdRef }) => {
     const imgRef = useRef(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
@@ -56,31 +75,52 @@ const MagneticImage = ({ rotateMultiplier = 2, offsetClass, placeholderText, fwd
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
+            {/* Real Image */}
+            {src && (
+                <img src={src} alt="Project Preview" className="absolute inset-0 w-full h-full object-cover z-0 opacity-80 group-hover:opacity-100 transition-opacity" />
+            )}
+
             {/* Hover Backlight */}
             <div
-                className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0 bg-transparent flex items-center justify-center"
+                className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-10 bg-transparent flex items-center justify-center"
                 style={{
                     opacity: isHovered ? 1 : 0,
                     background: `radial-gradient(circle 200px at ${mousePos.x}px ${mousePos.y}px, rgba(200,255,62,0.1), transparent 80%)`
                 }}
             />
 
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center p-4">
-                <span className="ui-sub-label text-sm opacity-80 bg-black/50 px-3 py-1 rounded-full group-hover:text-[#c8ff3e] transition-colors">{placeholderText}</span>
-            </div>
+            {!src && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-4">
+                    <span className="ui-sub-label text-sm opacity-80 bg-black/50 px-3 py-1 rounded-full group-hover:text-[#c8ff3e] transition-colors">{placeholderText}</span>
+                </div>
+            )}
         </div>
     );
 };
 
 const MoreProjectsSection = () => {
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
     const sectionRef = useRef(null);
     const textRef1 = useRef(null);
     const textRef2 = useRef(null);
     const btnRef = useRef(null);
     const imgRefs = useRef([]);
+    const [landingData, setLandingData] = useState(() => getLandingData());
+
+    useEffect(() => {
+        const checkData = () => setLandingData(getLandingData());
+        const interval = setInterval(checkData, 500);
+        window.addEventListener('storage', checkData);
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('storage', checkData);
+        };
+    }, []);
 
     useLayoutEffect(() => {
         let ctx = gsap.context(() => {
+            if (!sectionRef.current) return;
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
@@ -98,10 +138,11 @@ const MoreProjectsSection = () => {
             });
 
             gsap.set(imgRefs.current, {
-                scale: 0.8,
+                scale: (i) => i === 0 ? 0.8 : 0,
                 opacity: 0,
-                x: (i) => i === 0 ? 100 : (i === 1 ? -100 : 100),
-                y: (i) => i === 0 ? 0 : 100
+                x: (i) => i === 0 ? 0 : (i % 2 === 0 ? 150 : -150),
+                y: (i) => i === 0 ? 100 : (i % 3 === 0 ? 150 : -150),
+                rotation: (i) => i === 0 ? 0 : (i % 2 === 0 ? 15 : -15)
             });
 
             // Sequence
@@ -116,7 +157,8 @@ const MoreProjectsSection = () => {
                     opacity: 1,
                     x: 0,
                     y: 0,
-                    stagger: 0.1,
+                    rotation: 0,
+                    stagger: 0.05,
                     ease: "back.out(1.7)"
                 }, 0.2); // Start slightly after text starts
 
@@ -131,8 +173,16 @@ const MoreProjectsSection = () => {
         }
     };
 
-    const theme = useThemeStore((state) => state.theme);
-    const isLight = theme === 'light';
+    const fallbackPreviews = [
+        { text: "Project Preview 1", offsetClass: "col-span-2 row-span-1", rotateMultiplier: 2 },
+        { text: "Project Preview 2", offsetClass: "col-span-1 row-span-1", rotateMultiplier: 6 },
+        { text: "Project Preview 3", offsetClass: "col-span-1 row-span-1", rotateMultiplier: 6 }
+    ];
+
+    const displayImages = landingData.moreProjectsImages && landingData.moreProjectsImages.length > 0 
+        ? landingData.moreProjectsImages 
+        : fallbackPreviews;
+
     return (
         <section ref={sectionRef} className={`relative min-h-[100vh] flex items-center pt-24 pb-24 z-20 overflow-hidden ${isLight ? 'bg-[#e6f7d9]' : 'bg-[#505255]'}`}> 
             {/* Decorative Inner Polygons */}
@@ -175,28 +225,47 @@ const MoreProjectsSection = () => {
                         </div>
                     </div>
 
-                    {/* Right Side: 3 Image Previews — order 2 on mobile, natural on desktop */}
-                    <div className="w-full lg:w-1/2 relative order-2 lg:order-none">
-                        {/* We use a creative grid to display 3 preview images */}
-                        <div className="grid grid-cols-2 gap-4 auto-rows-[160px] md:auto-rows-[200px]">
-                            <MagneticImage
-                                fwdRef={addToImgRefs}
-                                placeholderText="Project Preview 1"
-                                offsetClass="col-span-2 row-span-1"
-                            />
-                            <MagneticImage
-                                fwdRef={addToImgRefs}
-                                placeholderText="Project Preview 2"
-                                offsetClass="col-span-1 row-span-1"
-                                rotateMultiplier={6}
-                            />
-                            <MagneticImage
-                                fwdRef={addToImgRefs}
-                                placeholderText="Project Preview 3"
-                                offsetClass="col-span-1 row-span-1"
-                                rotateMultiplier={6}
-                            />
-                        </div>
+                    {/* Right Side: Scattered Collage Image Previews */}
+                    <div className="w-full lg:w-1/2 relative order-2 lg:order-none h-[400px] md:h-[600px] flex items-center justify-center">
+                        {displayImages.map((img, i) => {
+                            const isString = typeof img === 'string';
+                            const src = isString ? img : null;
+                            const text = !isString ? img.text : "";
+
+                            // Logic: 1 center big img, others scattered around
+                            const isCenter = i === 0;
+                            
+                            // Predefined scatter offsets (top/left/right/bottom %)
+                            const scatterPos = [
+                                { top: '5%', left: '0%' },     // 1: top-left
+                                { bottom: '5%', right: '0%' }, // 2: bottom-right
+                                { top: '10%', right: '0%' },    // 3: top-right
+                                { bottom: '10%', left: '5%' },  // 4: bottom-left
+                                { top: '40%', left: '-10%' },  // 5: mid-left
+                                { top: '50%', right: '-10%' }, // 6: mid-right
+                                { top: '-5%', left: '30%' },   // 7: top-center
+                                { bottom: '-5%', right: '30%' }// 8: bottom-center
+                            ];
+                            
+                            // Safe index for positions
+                            const pos = isCenter ? {} : scatterPos[(i - 1) % scatterPos.length];
+
+                            return (
+                                <div 
+                                    key={`${src || text}-${i}`}
+                                    className={`absolute transition-all duration-300 ${isCenter ? 'w-[75%] md:w-[65%] z-30' : 'w-[35%] md:w-[35%] z-10'}`}
+                                    style={isCenter ? {} : { ...pos }}
+                                >
+                                    <MagneticImage
+                                        fwdRef={addToImgRefs}
+                                        src={src}
+                                        placeholderText={text}
+                                        rotateMultiplier={isCenter ? 1 : 6}
+                                        offsetClass="rounded-xl overflow-hidden shadow-2xl"
+                                    />
+                                </div>
+                            );
+                        })}
                     </div>
 
                 </div>

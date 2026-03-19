@@ -18,11 +18,10 @@ const LabSection = () => {
     const [isHovered, setIsHovered] = useState(false);
 
     const tags = [
-        { label: "UI components", x: "10%", y: "15%" },
-        { label: "Prototypes", x: "85%", y: "20%" },
-        { label: "Experiments", x: "15%", y: "85%" },
-        { label: "AI", x: "80%", y: "80%" },
-        { label: "Fun", x: "50%", y: "10%" }
+        { label: "UI Components", x: "10%", y: "20%" },
+        { label: "Prototypes", x: "85%", y: "15%" },
+        { label: "Interactive Tools", x: "15%", y: "75%" },
+        { label: "Design Systems", x: "80%", y: "80%" }
     ];
 
     useLayoutEffect(() => {
@@ -164,9 +163,9 @@ const LabSection = () => {
 
                         {/* Left Side: Explanatory Text & CTA */}
                         <div className="w-full lg:w-1/2">
-                            <h2 className={`text-5xl md:text-7xl font-bold tracking-tight mb-8 ${isLight ? 'text-[#222]' : 'text-[#f2ede6]'}`}>The Sandbox</h2>
+                            <h2 className={`text-5xl md:text-7xl font-bold tracking-tight mb-8 ${isLight ? 'text-[#222]' : 'text-[#f2ede6]'}`}>The Sandbox.</h2>
                             <p className={`ui-body-copy text-base md:text-lg mb-10 max-w-lg ${isLight ? 'text-[#333]' : ''}`}> 
-                                Throwing code at the wall to see what sticks. Experimental concepts, personal prototypes, and passion projects built for the joy of creation.
+                                Where I experiment with cutting-edge UI components, creative coding, and interactive design patterns. This is my playground for pushing technical boundaries.
                             </p>
                             <a
                                 href="/lab"

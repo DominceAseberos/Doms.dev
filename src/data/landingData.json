@@ -49,5 +49,13 @@
             "unit": "yr",
             "label": "Experience"
         }
+    ],
+    "moreProjectsImages": [
+        "/assets/uploads/project-1773894133919/imgs/1773899211199-store.jpg",
+        "/assets/uploads/landing/moreProjects/1773899547313-party.jpg",
+        "/assets/uploads/landing/moreProjects/1773899551650-shield.svg",
+        "/assets/uploads/landing/moreProjects/1773899555787-menu.svg",
+        "/assets/uploads/landing/moreProjects/1773899559073-snowfest-new-tqgmcs3u.jpg",
+        "/assets/uploads/landing/moreProjects/1773899562394-store.jpg"
     ]
 }

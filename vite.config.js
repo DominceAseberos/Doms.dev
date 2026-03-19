@@ -98,7 +98,41 @@ const writeJsonPlugin = () => ({
       }
     });
 
-    // 4. Delete uploaded project folder
+    // 4. List all uploaded images (recursive)
+    // Usage: GET /__list-uploads
+    server.middlewares.use('/__list-uploads', (req, res, next) => {
+      if (req.method !== 'GET') return next();
+      const baseDir = path.resolve(__dirname, 'public/assets/uploads');
+      
+      if (!fs.existsSync(baseDir)) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          return res.end(JSON.stringify({ ok: true, images: [] }));
+      }
+
+      const images = [];
+      const scanDir = (dir) => {
+          const files = fs.readdirSync(dir);
+          for (const file of files) {
+              const fullPath = path.join(dir, file);
+              if (fs.statSync(fullPath).isDirectory()) {
+                  scanDir(fullPath);
+              } else if (file.match(/\.(jpg|jpeg|png|gif|webp|avif)$/i)) {
+                  const relativePath = path.relative(path.resolve(__dirname, 'public'), fullPath);
+                  images.push('/' + relativePath.split(path.sep).join('/'));
+              }
+          }
+      };
+      
+      try {
+          scanDir(baseDir);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: true, images }));
+      } catch (err) {
+          res.writeHead(500).end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+
+    // 5. Delete uploaded project folder
     // Usage: DELETE /__delete-folder?projectId=banana-leaf
     server.middlewares.use('/__delete-folder', (req, res, next) => {
       if (req.method !== 'DELETE') return next();

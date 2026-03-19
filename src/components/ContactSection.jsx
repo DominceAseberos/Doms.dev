@@ -16,13 +16,13 @@ const ContactSection = () => {
     useLayoutEffect(() => {
         let ctx = gsap.context(() => {
             // Simple fade and float up for the final footer elements
-            gsap.fromTo(contentRef.current.children,
+            gsap.fromTo(contentRef.current.children, 
                 { opacity: 0, y: 50 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    stagger: 0.2,
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1, 
+                    stagger: 0.2, 
                     ease: "power3.out",
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -38,7 +38,7 @@ const ContactSection = () => {
 
     return (
         <section ref={sectionRef} className="relative w-full min-h-[60vh] bg-transparent flex items-center justify-center z-10 py-32">
-
+            
             {/* The Black Contact Section Content */}
             <div ref={contentRef} className="relative z-10 text-center text-white px-6">
                 <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 text-[var(--accent)] drop-shadow-[0_0_20px_rgba(200,255,62,0.1)]">
@@ -48,7 +48,7 @@ const ContactSection = () => {
                     Transforming complex code into high-performance digital magic that captivates, converts, and defies the ordinary.
                 </p>
 
-                <a
+                <a 
                     href="/contact"
                     target="_blank"
                     rel="noopener noreferrer"

@@ -19,7 +19,8 @@ const getStoredData = () => {
         return {
             hero: { ...landingDataDefault.hero, ...parsed.hero },
             tags: parsed.tags || landingDataDefault.tags || [],
-            metrics: parsed.metrics || landingDataDefault.metrics || []
+            metrics: parsed.metrics || landingDataDefault.metrics || [],
+            moreProjectsImages: parsed.moreProjectsImages || landingDataDefault.moreProjectsImages || []
         };
     } catch {
         return landingDataDefault;
@@ -39,6 +40,8 @@ const LandingEditor = () => {
     const [draft, setDraft] = useState(getStoredData);
     const [loading, setLoading] = useState(true);
     const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
+    const [showImagePicker, setShowImagePicker] = useState(false);
+    const [pickerImages, setPickerImages] = useState(null); // null means loading, array means loaded
     const saveTimerRef = useRef(null);
 
     // Sync from disk on mount
@@ -53,7 +56,8 @@ const LandingEditor = () => {
                     return {
                         hero: { ...diskData.hero, ...parsed.hero },
                         tags: parsed.tags || diskData.tags || [],
-                        metrics: parsed.metrics || diskData.metrics || []
+                        metrics: parsed.metrics || diskData.metrics || [],
+                        moreProjectsImages: parsed.moreProjectsImages || diskData.moreProjectsImages || []
                     };
                 });
             } catch (e) {
@@ -142,6 +146,96 @@ const LandingEditor = () => {
                 
                 {/* Left Col: Hero Section */}
                 <div className="lg:col-span-7 space-y-6">
+                    {/* More Projects Image Gallery */}
+                    <div className="bg-[#161616] border border-white/5 rounded-2xl p-6">
+                        <h2 className="text-xs font-bold text-[#c8ff3e] uppercase tracking-[0.2em] mb-6 flex items-center justify-between">
+                            More Projects Gallery
+                            More Projects Gallery
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={async () => {
+                                        setShowImagePicker(true);
+                                        setPickerImages(null);
+                                        try {
+                                            const res = await fetch('/__list-uploads');
+                                            const data = await res.json();
+                                            if (data.ok) setPickerImages(data.images || []);
+                                            else setPickerImages([]);
+                                        } catch (e) {
+                                            setPickerImages([]);
+                                        }
+                                    }}
+                                    className="px-3 py-1.5 text-xs bg-white/5 text-white font-bold rounded-lg hover:bg-white hover:text-black transition-colors"
+                                >
+                                    Browse Library
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        const input = document.createElement('input');
+                                        input.type = 'file';
+                                        input.accept = 'image/*';
+                                        input.onchange = async (e) => {
+                                            const file = e.target.files?.[0];
+                                            if (!file) return;
+                                            setSaveStatus('saving');
+                                            try {
+                                                const res = await fetch(`/__upload-image?name=${encodeURIComponent(file.name)}&projectId=landing&type=moreProjects`, {
+                                                    method: 'POST', body: file
+                                                });
+                                                const data = await res.json();
+                                                if (data.ok) {
+                                                    updateDraft(prev => ({
+                                                        ...prev,
+                                                        moreProjectsImages: [...(prev.moreProjectsImages || []), data.url]
+                                                    }));
+                                                    setSaveStatus('saved');
+                                                    setTimeout(() => setSaveStatus(null), 2000);
+                                                }
+                                            } catch(err) {
+                                                setSaveStatus('error');
+                                            }
+                                        };
+                                        input.click();
+                                    }}
+                                    className="px-3 py-1.5 text-xs bg-[#c8ff3e]/10 text-[#c8ff3e] font-bold rounded-lg hover:bg-[#c8ff3e] hover:text-black transition-colors"
+                                >
+                                    Upload New
+                                </button>
+                            </div>
+                        </h2>
+                        
+                        {(draft.moreProjectsImages || []).length === 0 ? (
+                            <div className="p-8 text-center rounded-xl border border-dashed border-white/10 text-white/30 text-sm">
+                                No preview images added yet.
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                {draft.moreProjectsImages.map((src, i) => (
+                                    <div key={i} className="relative group aspect-video rounded-xl overflow-hidden border border-white/10 bg-black/40">
+                                        <img src={src} alt="Preview" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                                        <button 
+                                            onClick={async () => {
+                                                try {
+                                                    await fetch(`/__delete-upload?path=${encodeURIComponent(src)}`, { method: 'DELETE' });
+                                                } catch(e) {}
+                                                updateDraft(prev => ({
+                                                    ...prev,
+                                                    moreProjectsImages: prev.moreProjectsImages.filter((_, idx) => idx !== i)
+                                                }));
+                                            }}
+                                            className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                        >
+                                            ×
+                                        </button>
+                                        <span className="absolute bottom-2 left-2 text-[9px] font-bold bg-black/60 px-2 py-0.5 rounded text-white/70">
+                                            #{i + 1}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
                     <div className="bg-[#161616] border border-white/5 rounded-2xl p-6">
                         <h2 className="text-xs font-bold text-[#c8ff3e] uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
                              Hero Configuration
@@ -231,27 +325,81 @@ const LandingEditor = () => {
                     </div>
 
                     {/* Experience Metrics */}
-                    <div className="bg-[#161616] border border-white/5 rounded-2xl p-6">
-                        <h2 className="text-xs font-bold text-[#c8ff3e] uppercase tracking-[0.2em] mb-6">Experience Metrics</h2>
-                        {draft.metrics.map((m, i) => (
-                            <div key={i} className="grid grid-cols-12 gap-2 mb-4 last:mb-0 p-3 bg-white/5 rounded-xl border border-white/5">
-                                <div className="col-span-4">
-                                    <label className="text-[9px] text-gray-600 block mb-1">Value</label>
-                                    <input type="text" value={m.value} onChange={e => setMetricProp(i, 'value', e.target.value)} className={inputCls} />
+                        <div className="bg-[#161616] border border-white/5 rounded-2xl p-6">
+                            <h2 className="text-xs font-bold text-[#c8ff3e] uppercase tracking-[0.2em] mb-6">Experience Metrics</h2>
+                            {draft.metrics.map((m, i) => (
+                                <div key={i} className="grid grid-cols-12 gap-2 mb-4 last:mb-0 p-3 bg-white/5 rounded-xl border border-white/5">
+                                    <div className="col-span-4">
+                                        <label className="text-[9px] text-gray-600 block mb-1">Value</label>
+                                        <input type="text" value={m.value} onChange={e => setMetricProp(i, 'value', e.target.value)} className={inputCls} />
+                                    </div>
+                                    <div className="col-span-3">
+                                        <label className="text-[9px] text-gray-600 block mb-1">Unit</label>
+                                        <input type="text" value={m.unit} onChange={e => setMetricProp(i, 'unit', e.target.value)} className={inputCls} />
+                                    </div>
+                                    <div className="col-span-5">
+                                        <label className="text-[9px] text-gray-600 block mb-1">Label</label>
+                                        <input type="text" value={m.label} onChange={e => setMetricProp(i, 'label', e.target.value)} className={inputCls} />
+                                    </div>
                                 </div>
-                                <div className="col-span-3">
-                                    <label className="text-[9px] text-gray-600 block mb-1">Unit</label>
-                                    <input type="text" value={m.unit} onChange={e => setMetricProp(i, 'unit', e.target.value)} className={inputCls} />
-                                </div>
-                                <div className="col-span-5">
-                                    <label className="text-[9px] text-gray-600 block mb-1">Label</label>
-                                    <input type="text" value={m.label} onChange={e => setMetricProp(i, 'label', e.target.value)} className={inputCls} />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
                 </div>
             </main>
+
+            {/* Image Picker Modal */}
+            {showImagePicker && (
+                <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6 backdrop-blur-sm">
+                    <div className="bg-[#161616] border border-white/10 rounded-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
+                        <div className="flex items-center justify-between p-6 border-b border-white/10 bg-black/20">
+                            <div>
+                                <h3 className="text-lg font-bold text-white tracking-tight">Image Library</h3>
+                                <p className="text-xs text-white/50 mt-1">Select an existing image to add to the More Projects gallery.</p>
+                            </div>
+                            <button 
+                                onClick={() => setShowImagePicker(false)}
+                                className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-white/20 rounded-full text-white/70 hover:text-white transition-colors"
+                            >
+                                ×
+                            </button>
+                        </div>
+                        
+                        <div className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                            {!pickerImages ? (
+                                <div className="flex items-center justify-center h-48 text-white/40 text-sm font-mono tracking-widest uppercase">
+                                    Loading Library...
+                                </div>
+                            ) : pickerImages.length === 0 ? (
+                                <div className="flex items-center justify-center h-48 text-white/40 text-sm font-mono tracking-widest uppercase">
+                                    No images found in uploads folder.
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                                    {pickerImages.map((src, i) => (
+                                        <button 
+                                            key={i}
+                                            onClick={() => {
+                                                updateDraft(prev => ({
+                                                    ...prev,
+                                                    moreProjectsImages: [...(prev.moreProjectsImages || []), src]
+                                                }));
+                                                setShowImagePicker(false);
+                                            }}
+                                            className="group relative aspect-video rounded-xl overflow-hidden border border-white/5 bg-black/40 text-left hover:border-[#c8ff3e]/50 focus:outline-none focus:ring-2 focus:ring-[#c8ff3e] transition-all"
+                                        >
+                                            <img src={src} alt="Library Item" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300" loading="lazy" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                            <div className="absolute top-2 right-2 text-[9px] bg-[#c8ff3e] text-black font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                                                SELECT
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

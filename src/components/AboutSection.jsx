@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, forwardRef } from 'react';
+import React, { useRef, useLayoutEffect, forwardRef, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -185,10 +185,11 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                 className={`font-black uppercase tracking-tighter leading-[1] text-center ${isLight ? 'text-[#121212]' : 'text-white'}`}
                                 style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
                             >
-                                Built with{' '}
+                                Built with 
                                 <span className={`drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] ${isLight ? 'text-[var(--accent)]' : 'text-[#c8ff3e]'}`}>
-                                    Motion + Code.
+                                    {' '}Motion{' '}
                                 </span>
+                                + Code.
                             </h2>
                         </div>
                         <div ref={textRef} className="w-full max-w-3xl flex flex-col items-center">
