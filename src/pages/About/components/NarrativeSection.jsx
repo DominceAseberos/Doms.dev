@@ -27,7 +27,7 @@ const NarrativeSection = forwardRef((props, ref) => {
 
     return (
         <section ref={ref} className="narrative-section relative z-10 pt-8 md:pt-16 pb-24 px-6 md:px-12 max-w-[1400px] mx-auto text-white">
-            <h2 
+            <h2
                 className="font-black uppercase tracking-tight mb-12 lg:mb-16 text-left leading-[1.1] text-[#f2ede6]"
                 style={{ fontSize: 'clamp(2.5rem, 8vw, 8rem)', fontFamily: "'Bebas Neue', sans-serif" }}
             >
@@ -80,7 +80,7 @@ const NarrativeSection = forwardRef((props, ref) => {
 
                         <div className="flex flex-col sm:flex-row lg:flex-col gap-8 lg:gap-12">
                             <div className="space-y-4">
-                                <p className="ns-sidebar-label ui-sub-label text-base uppercase tracking-widest">Visitor Time</p>
+                                <p className="ns-sidebar-label ui-sub-label text-base uppercase tracking-widest">Current Time</p>
                                 <p className="ns-sidebar-text text-xl lg:text-3xl ui-body-copy font-mono tabular-nums">{formatTime(time)}</p>
                             </div>
 
@@ -98,9 +98,9 @@ const NarrativeSection = forwardRef((props, ref) => {
                                     { name: 'Twitter (X)', url: '#' },
                                     { name: 'LinkedIn', url: '#' }
                                 ].map((link) => (
-                                    <a 
+                                    <a
                                         key={link.name}
-                                        href={link.url} 
+                                        href={link.url}
                                         className="ns-social-link text-lg lg:text-3xl transition-all duration-300 flex items-center group"
                                     >
                                         {link.name}
@@ -122,7 +122,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         <div className="space-y-4">
                             <p className="ns-sidebar-label ui-sub-label text-base uppercase tracking-widest">AI-Augmented Stack</p>
                             <div className="flex flex-wrap gap-2 text-xs lg:text-base">
-                                {['GPT-4o', 'Claude 3.7', 'Gemini', 'Cursor', 'Perplexity'].map(tool => (
+                                {['GPT', 'Claude', 'Gemini', 'Cursor', 'Perplexity'].map(tool => (
                                     <span key={tool} className="ns-ai-pill px-3 lg:px-5 py-1.5 lg:py-2.5 rounded-full flex items-center gap-2 cursor-default font-medium">
                                         <SparkleIcon size={12} className="lg:w-4 lg:h-4" />
                                         {tool}

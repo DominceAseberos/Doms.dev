@@ -39,7 +39,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
 }
 
@@ -532,7 +533,7 @@
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: -0.5px;
-  color: var(--cc-text);
+  color: var(--white);
   text-transform: uppercase;
 }
 
@@ -718,19 +719,37 @@
 }
 
 /* ── Responsive ──────────────────────────────────────── */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .cc-root {
+    padding-top: 0 !important;
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .cc-form-wrap {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    padding-top: 140px !important; /* This will now work as it's relative */
+  }
+
   .cc-form-shell {
     flex-direction: column;
+    width: 94%;
+    max-width: 440px;
+    margin: 0 auto 100px !important;
   }
 
   .cc-form-left {
     flex: none;
-    padding: 32px 24px;
+    padding: 32px 20px;
   }
 
   .cc-form-right {
-    min-height: 240px;
-    flex: 0 0 240px;
+    min-height: 200px;
+    flex: 0 0 200px;
   }
 
   .cc-field-row {
@@ -738,7 +757,18 @@
   }
 
   .cc-form-title {
-    font-size: 36px;
+    font-size: 28px;
+    line-height: 1.1;
+    margin-bottom: 15px;
+  }
+
+  .cc-form-sub {
+    font-size: 8px;
+  }
+
+  .cc-submit-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
