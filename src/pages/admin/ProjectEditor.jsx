@@ -148,7 +148,15 @@ const ProjectEditor = () => {
     };
 
     // Remove project
-    const handleRemoveProject = (index, feedbackFn) => {
+    const handleRemoveProject = async (index, feedbackFn) => {
+        const projectId = data.projects[index].id;
+        
+        try {
+            await fetch(`/__delete-folder?projectId=${encodeURIComponent(projectId)}`, { method: 'DELETE' });
+        } catch (e) {
+            console.error('Failed to delete project folder', e);
+        }
+
         const newData = { ...data, projects: data.projects.filter((_, i) => i !== index) };
         persistChanges(newData);
         if (feedbackFn) feedbackFn();
@@ -448,6 +456,28 @@ const ProjectEditor = () => {
                                                 <option key={cat} value={cat}>{cat}</option>
                                             ))}
                                         </select>
+                                        
+                                        <div className="mb-4 flex items-center gap-2">
+                                            <input 
+                                                type="checkbox"
+                                                id={`featured-${project.id}`}
+                                                checked={!!project.featuredInTunnel}
+                                                onChange={(e) => {
+                                                    const newData = { ...data };
+                                                    const targetIdx = newData.projects.findIndex(p => p.id === project.id);
+                                                    if (targetIdx !== -1) {
+                                                        newData.projects[targetIdx].featuredInTunnel = e.target.checked;
+                                                        persistChanges(newData);
+                                                        triggerFeedback();
+                                                    }
+                                                }}
+                                                className="w-4 h-4 accent-[#c8ff3e] cursor-pointer"
+                                            />
+                                            <label htmlFor={`featured-${project.id}`} className="text-sm text-gray-300 cursor-pointer select-none">
+                                                Display in "Selected Work" Tunnel
+                                            </label>
+                                        </div>
+
                                         <div className="pt-2 border-t border-gray-700/50 flex justify-end">
                                             <Link 
                                                 to={`/admin/projects/${project.id}`}

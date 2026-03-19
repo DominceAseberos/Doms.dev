@@ -171,8 +171,8 @@ const ProjectTabs = ({ onView }) => {
 
     const filteredProjects = useMemo(() => {
         if (activeFilter === 'all') return projects;
-        return projects.filter((project) => 
-            project.projectType === activeFilter || 
+        return projects.filter((project) =>
+            project.projectType === activeFilter ||
             project.categories?.includes(activeFilter)
         );
     }, [activeFilter]);
@@ -225,7 +225,7 @@ const ProjectTabs = ({ onView }) => {
                         <div className="ph-title">Pro<em>jects</em></div>
                     </div>
                     <div className="ph-right pg-subtitle-lg">
-                        <strong>{projects.length} Case Studies — 2023–2024</strong>
+                        <strong>{projects.length} Projects — 2023–2024</strong>
                         Browse a curated set of work. Each one built with intention, shipped without compromise.
                     </div>
                 </div>
@@ -264,24 +264,24 @@ const ProjectTabs = ({ onView }) => {
 
                 {/* Stat cell */}
                 {filteredProjects.length > 0 && (
-                <div className="pg-card pg-half" data-cat="all" style={{ opacity: 1, transform: 'none' }}>
-                    <div className="pg-stat">
-                        <div>
-                            <div className="pg-stat-num">{projects.length}</div>
-                            <div className="pg-stat-label pg-label-lg">Projects Shipped</div>
-                        </div>
-                        <div className="pg-stat-div"></div>
-                        <div>
-                            <div className="pg-stat-year">2023–24</div>
-                            <div className="pg-stat-label pg-label-lg">Active Period</div>
-                        </div>
-                        <div className="pg-stat-div"></div>
-                        <div>
-                            <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '40px', color: 'var(--paper)', lineHeight: 1 }}>4+</div>
-                            <div className="pg-stat-label pg-label-lg">Tech Stacks</div>
+                    <div className="pg-card pg-half" data-cat="all" style={{ opacity: 1, transform: 'none' }}>
+                        <div className="pg-stat">
+                            <div>
+                                <div className="pg-stat-num">{projects.length}</div>
+                                <div className="pg-stat-label pg-label-lg">Projects Shipped</div>
+                            </div>
+                            <div className="pg-stat-div"></div>
+                            <div>
+                                <div className="pg-stat-year">2023–24</div>
+                                <div className="pg-stat-label pg-label-lg">Active Period</div>
+                            </div>
+                            <div className="pg-stat-div"></div>
+                            <div>
+                                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '40px', color: 'var(--paper)', lineHeight: 1 }}>4+</div>
+                                <div className="pg-stat-label pg-label-lg">Tech Stacks</div>
+                            </div>
                         </div>
                     </div>
-                </div>
                 )}
             </div>
         </div>

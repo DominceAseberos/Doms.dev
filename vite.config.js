@@ -97,6 +97,34 @@ const writeJsonPlugin = () => ({
         res.writeHead(500).end(JSON.stringify({ ok: false, error: err.message }));
       }
     });
+
+    // 4. Delete uploaded project folder
+    // Usage: DELETE /__delete-folder?projectId=banana-leaf
+    server.middlewares.use('/__delete-folder', (req, res, next) => {
+      if (req.method !== 'DELETE') return next();
+
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const projectId = url.searchParams.get('projectId');
+
+      if (!projectId || projectId.includes('..') || projectId === 'general') {
+        res.writeHead(400).end(JSON.stringify({ ok: false, error: 'Invalid or missing projectId' }));
+        return;
+      }
+
+      const folderPath = path.resolve(__dirname, 'public/assets/uploads', projectId);
+      try {
+        if (fs.existsSync(folderPath)) {
+          fs.rmSync(folderPath, { recursive: true, force: true });
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: true, deleted: projectId }));
+        } else {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: true, note: 'Folder not found' }));
+        }
+      } catch (err) {
+        res.writeHead(500).end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
   },
 });
 

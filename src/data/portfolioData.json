@@ -5,58 +5,22 @@
     ],
     "projects": [
         {
-            "id": "banana-leaf-detection",
-            "title": "Banana Leaf Disease Detectors",
-            "projectType": "Landing Page",
-            "dateCreated": "NOVEMBER 2021",
-            "image": "https://ywughwblapbknrrdumeq.supabase.co/storage/v1/object/public/project-images/banana-leaf.png",
-            "images": [
-                "/assets/uploads/banana-leaf-detection/1773819835152-umtc.svg"
-            ],
-            "stacks": [
-                "Python",
-                "OpenCV",
-                "Flask",
-                "scikit-learn"
-            ],
-            "shortDescription": "A machine learning web application built with Python, OpenCV, scikit-learn, and Flask to detect whether a banana leaf is Healthy, Unhealthy, or Not a Leaf using image processing and KNN classification.",
-            "livePreviewLink": "https://banana-leaf-detector.onrender.com/",
-            "githubLink": "https://github.com/Domincee/Banana-Leaf-Detector",
-            "documentationFiles": [
-                {
-                    "label": "Project Dataset",
-                    "path": "https://drive.google.com/drive/folders/1mng06d0Y_U4hC7WM5hnbBNbuC5ohulcq?usp=sharing"
-                }
-            ],
-            "about": "## Project Overview\n\nThis project extracts texture and color-based features (using **GLCM**, **LBP**, and **HOG**) from banana leaf images, trains a **K-Nearest Neighbors (KNN)** classifier, and serves the prediction through a simple Flask web app.\n\n### Key Features\n\n- Trained KNN model for 3-class classification\n- Uses advanced image feature extraction (GLCM, LBP, HOG)\n- Visualizes feature importance and class balance\n- Flask web interface for uploading and detecting banana leaves\n- Dataset augmentation and scaling with MinMaxScaler",
+            "id": "project-1773894133919",
+            "title": "testing",
+            "shortDescription": "testing featuer tunnel",
+            "images": [],
+            "projectType": "Case Study",
             "mainImage": "",
             "galleryImages": [],
             "assets": {
-                "New Assets": []
+                "desktop": "",
+                "tablet": "",
+                "mobile": ""
             },
-            "systemDesign": [
-                {
-                    "label": "TYPOGRAPHY",
-                    "value": "Inter, Outfit"
-                },
-                {
-                    "label": "Grid",
-                    "value": "12-Column Responsive"
-                },
-                {
-                    "label": "Spacing",
-                    "value": "8px Base Grid"
-                },
-                {
-                    "label": "Heading",
-                    "value": "Syne Bold"
-                }
-            ],
-            "credits": {
-                "design": "DA",
-                "code": "S"
-            }
+            "featuredInTunnel": true
         }
     ],
-    "customCategories": []
+    "customCategories": [
+        "Case Study"
+    ]
 }

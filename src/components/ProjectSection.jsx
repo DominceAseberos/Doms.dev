@@ -20,7 +20,9 @@ const projectThemes = [
     { colors: ["#081210", "#0c1c18"], glow: "rgba(40,200,160,.1)" }
 ];
 
-const projects = (portfolioData?.projects || []).map((p, index) => {
+const projects = (portfolioData?.projects || [])
+    .filter(p => p.featuredInTunnel)
+    .map((p, index) => {
     const theme = projectThemes[index % projectThemes.length];
     return {
         title: p.title,
@@ -29,7 +31,7 @@ const projects = (portfolioData?.projects || []).map((p, index) => {
         tech: p.stacks || [],
         colors: theme.colors,
         glow: theme.glow,
-        image: p.image,
+        image: p.mainImage || p.image,
         liveUrl: p.livePreviewLink,
         githubUrl: p.githubLink
     };
@@ -429,7 +431,13 @@ const ProjectSection = () => {
                                     }}
                                 >
                                     <div className={`h-card-face ${isLight ? 'h-card-face-light' : 'h-card-face-dark'}`}>
-                                        <img className="h-card-image" src={p.image} alt={p.title} />
+                                        {p.image ? (
+                                            <img className="h-card-image w-full h-full object-cover" src={p.image} alt={p.title} />
+                                        ) : (
+                                            <div className="w-full h-full flex flex-col items-center justify-center font-mono text-xs tracking-[0.2em] opacity-40 select-none relative z-10 text-[#f2ede6]">
+                                                NO PREVIEW
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="h-card-glow"></div>
                                     <div className="h-card-vignette"></div>

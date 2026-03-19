@@ -190,7 +190,7 @@
 }
 
 .h-card-face-light {
-    background: #e6f7d9 !important;
+    background: transparent;
 }
 .h-card-face-dark {
     background: radial-gradient(circle at 50% 50%, #232726 0%, #505255 100%);
@@ -779,7 +779,6 @@
     .portfolio-timeline .image-wrapper {
         width: 100% !important;
         height: 100vh !important;
-        aspect-ratio: auto !important;
         border-radius: 0 !important;
         transform: translate(-50%, -50%) !important;
     }

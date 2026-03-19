@@ -5,7 +5,7 @@ import { FiMonitor, FiTablet, FiSmartphone } from 'react-icons/fi';
 
 import useThemeStore from '../../../store/useThemeStore';
 import portfolioDataImport from '../../../data/portfolioData.json';
-import LandingPageTemplate from '../templates/LandingPageTemplate';
+import ProjectTemplate from '../templates/ProjectTemplate';
 import { saveProjectContent, fetchPortfolioData } from '../../../shared/portfolioService';
 import './ProjectDetailsPage.css';
 
@@ -95,43 +95,17 @@ const ProjectDetailsPage = ({ isAdmin = false }) => {
         );
     }
 
-    const projectCategory = (projectDraft.projectType || '').toLowerCase();
-
-    if (projectCategory === 'landing page') {
-        return (
-            <LandingPageTemplate 
-                project={projectDraft}
-                rootRef={rootRef}
-                isAdminPreview={isAdmin}
-                onAddField={onAddField}
-                onUpdateField={onUpdateField}
-                onSave={onSave}
-                saveStatus={saveStatus}
-            />
-        );
-    }
-
-    // Default fallback for other categories
+    // Render universal template
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#121212] text-white p-8">
-            <div className="max-w-2xl text-center">
-                <h1 className="text-4xl font-bold mb-4">{projectDraft.title}</h1>
-                <p className="text-gray-400 mb-8">
-                    This project is categorized as <strong className="text-white">"{projectDraft.projectType}"</strong>. 
-                    <br />Currently, there is no specific template designed for this category.
-                </p>
-                <div className="flex gap-4 justify-center">
-                    <Link to="/projects" className="px-6 py-3 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-colors">
-                        Back to Projects
-                    </Link>
-                    {isAdmin && (
-                        <Link to="/admin/projects" className="px-6 py-3 bg-[#c8ff3e] text-black font-bold rounded-lg hover:bg-white transition-colors">
-                            Admin Dashboard
-                        </Link>
-                    )}
-                </div>
-            </div>
-        </div>
+        <ProjectTemplate 
+            project={projectDraft}
+            rootRef={rootRef}
+            isAdminPreview={isAdmin}
+            onAddField={onAddField}
+            onUpdateField={onUpdateField}
+            onSave={onSave}
+            saveStatus={saveStatus}
+        />
     );
 };
 
