@@ -69,8 +69,14 @@ const PROJECT_THEMES = {
     },
 };
 
+const dynamicCategories = Array.from(new Set([
+    ...(portfolioData.customCategories || []),
+    ...portfolioData.projects.map(p => p.projectType)
+])).filter(Boolean);
+
 const FILTERS = [
-    { id: 'landing',   label: 'Landing Page' },
+    { id: 'all', label: 'All Projects' },
+    ...dynamicCategories.map(cat => ({ id: cat, label: cat }))
 ];
 
 // Mock data for category testing: landing-page only for now.
@@ -158,13 +164,17 @@ const projects = portfolioData.projects.map((p, i) => {
 // ── Component ─────────────────────────────────────────────────────────────
 const ProjectTabs = ({ onView }) => {
     const navigate = useNavigate();
-    const [activeFilter, setActiveFilter] = useState('landing');
+    const [activeFilter, setActiveFilter] = useState('all');
     const [scrollPct, setScrollPct] = useState(0);
     const gridRef = useRef(null);
     const breathFillRef = useRef(null);
 
     const filteredProjects = useMemo(() => {
-        return projects.filter((project) => project.categories?.includes(activeFilter));
+        if (activeFilter === 'all') return projects;
+        return projects.filter((project) => 
+            project.projectType === activeFilter || 
+            project.categories?.includes(activeFilter)
+        );
     }, [activeFilter]);
 
     const handleProjectView = (project) => {

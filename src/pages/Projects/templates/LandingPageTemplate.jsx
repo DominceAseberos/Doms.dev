@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { FiFolder, FiArrowLeft, FiLink2 } from 'react-icons/fi';
+import { FiMonitor, FiTablet, FiSmartphone, FiFolder, FiArrowLeft, FiLink2 } from 'react-icons/fi';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ParticleBackground from '../../../components/ParticleBackground';
@@ -10,28 +10,97 @@ import useThemeStore from '../../../store/useThemeStore';
 const LandingPageTemplate = ({
     project,
     rootRef,
-    topQuickNav,
-    availableViews,
-    activeView,
-    setActiveView,
-    VIEW_META,
-    renderMedia,
-    heroMedia,
-    galleryMedia,
-    formattedDate,
-    credits,
-    systemDesignInfo,
-    assetGroups,
-    analytics,
-    caseStudyFooter,
     isAdminPreview = false,
     onAddField = null,
     onUpdateField = null,
     onSave = null,
-    saveStatus = null,  // null | 'saving' | 'saved' | 'error'
+    saveStatus = null,
 }) => {
     const { theme } = useThemeStore();
     const isLight = theme === 'light';
+
+    const [activeView, setActiveView] = useState('desktop');
+
+    const VIEW_META = {
+        desktop: { icon: <FiMonitor size={14} />, label: 'Desktop' },
+        tablet: { icon: <FiTablet size={14} />, label: 'Tablet' },
+        mobile: { icon: <FiSmartphone size={14} />, label: 'Mobile' }
+    };
+
+    const activeMedia = useMemo(() => {
+        if (!project) return [];
+        // Treat project.images as the absolute source of truth if it exists, otherwise use main and gallery separately
+        if (project.images && project.images.length > 0) return project.images;
+        return project.mainImage ? [project.mainImage, ...(project.galleryImages || [])] : (project.galleryImages || []);
+    }, [project]);
+
+    // Use specifically defined properties if available, fallback to the merged array
+    const heroMedia = useMemo(() => {
+        // If mainImage is explicitly defined (even if empty), respect it over legacy array
+        if (project.hasOwnProperty('mainImage')) return project.mainImage || '';
+        return project.images?.[0] || '';
+    }, [project]);
+    const galleryMedia = useMemo(() => {
+        // If galleryImages is explicitly defined (even if empty after deletion), respect it.
+        // Otherwise fallback to legacy images array.
+        if (project.hasOwnProperty('galleryImages')) return project.galleryImages || [];
+        return project.images?.slice(1) || [];
+    }, [project]);
+
+    const coverImage = useMemo(() => {
+        if (!project) return '';
+        return project.mainImage || project.images?.[0] || '';
+    }, [project]);
+
+    const formattedDate = useMemo(() => {
+        if (!project) return '---';
+        return new Date(project.dateCreated).toLocaleDateString('en-US', {
+            month: 'long',
+            year: 'numeric'
+        });
+    }, [project]);
+
+    const renderMedia = (source, alt, className) => {
+        if (!source || source === '') return null;
+        const isVideo = source.match(/\.(mp4|webm|ogg)$/i);
+        if (isVideo) {
+            return (
+                <video 
+                    src={source} 
+                    className={className} 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline
+                    poster={coverImage}
+                />
+            );
+        }
+        return <img src={source} alt={alt} className={className} loading="lazy" />;
+    };
+
+    const analytics = {
+        visits: 1240, 
+        rating: 9.8    
+    };
+
+    const caseStudyFooter = (
+        <section className="cs-shell cs-bottom-footer cs-animate">
+            <div className="cs-bottom-footer__inner">
+                <div className="cs-bottom-footer__left">
+                    <p className="cs-overline">Next Phase</p>
+                    <h2 className="cs-heading">Interested in the process?</h2>
+                    <p className="cs-desc">
+                        Every project has a story of challenges and breakthroughs. Let's discuss how we can build something impactful together.
+                    </p>
+                </div>
+                <div className="cs-bottom-footer__actions">
+                    <Link to="/contact" className="cs-link-btn">Initiate Collaboration</Link>
+                    <Link to="/projects" className="cs-link-btn cs-link-btn--ghost">Explore Full Archive</Link>
+                </div>
+            </div>
+        </section>
+    );
 
     const fileInputRef = React.useRef(null);
     const assetInputRef = React.useRef(null);
@@ -89,6 +158,16 @@ const LandingPageTemplate = ({
         } else {
             fileInputRef.current?.click();
         }
+        
+        // Comprehensive fallback: if 'onCancel' isn't supported, 
+        // reset state after window focus returns (with a small delay)
+        const onFocus = () => {
+            setTimeout(() => {
+                setUploading(null);
+                window.removeEventListener('focus', onFocus);
+            }, 500);
+        };
+        window.addEventListener('focus', onFocus);
     };
 
     const handleFileUpload = async (e) => {
@@ -107,7 +186,7 @@ const LandingPageTemplate = ({
             if (data.ok) {
                 if (isAsset) {
                     const groupName = uploading.split(':')[1];
-                    const currentAssets = { ...project.assets };
+                    const currentAssets = { ...(project.assets || {}) };
                     if (!currentAssets[groupName]) currentAssets[groupName] = [];
                     currentAssets[groupName] = [...currentAssets[groupName], data.url];
                     onUpdateField('assets', currentAssets);
@@ -155,8 +234,21 @@ const LandingPageTemplate = ({
             {/* Hidden File Inputs for Admin Uploads */}
             {isAdminPreview && (
                 <>
-                    <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileUpload} />
-                    <input type="file" ref={assetInputRef} className="hidden" onChange={handleFileUpload} />
+                    <input 
+                        type="file" 
+                        ref={fileInputRef} 
+                        className="hidden" 
+                        accept="image/*" 
+                        onChange={handleFileUpload} 
+                        onCancel={() => setUploading(null)}
+                    />
+                    <input 
+                        type="file" 
+                        ref={assetInputRef} 
+                        className="hidden" 
+                        onChange={handleFileUpload} 
+                        onCancel={() => setUploading(null)}
+                    />
                 </>
             )}
 
@@ -382,11 +474,11 @@ const LandingPageTemplate = ({
                                 <div className="cs-detail-table">
                                     <div className="cs-detail-row">
                                         <span>Design</span>
-                                        <span><EditableText value={project.credits?.design} onSave={(val) => onUpdateField('credits.design', val)} /></span>
+                                        <span><EditableText value={project.credits?.design || 'Domince'} onSave={(val) => onUpdateField('credits.design', val)} /></span>
                                     </div>
                                     <div className="cs-detail-row">
                                         <span>Code</span>
-                                        <span><EditableText value={project.credits?.code} onSave={(val) => onUpdateField('credits.code', val)} /></span>
+                                        <span><EditableText value={project.credits?.code || 'Domince'} onSave={(val) => onUpdateField('credits.code', val)} /></span>
                                     </div>
                                 </div>
                             </article>
