@@ -161,7 +161,7 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                         href="https://github.com/Domince07"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="btn-ghost !p-0 inline-flex items-center justify-center w-[58px] h-[58px]"
+                                        className="btn-ghost !p-0 !flex items-center justify-center w-[58px] h-[58px]"
                                         aria-label="GitHub Profile"
                                     >
                                         <FiGithub size={24} />
