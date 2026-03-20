@@ -7,27 +7,21 @@
 
 /* ── Variables ───────────────────────────────────────── */
 .cc-root {
-  --cc-lime: #a8ff3e;
-  --cc-dark: #111827;
-  --cc-card-bg: #111827;
-  --cc-text: #f0ece4;
-  --cc-sub: rgba(240, 236, 228, 0.35);
-  --cc-border: rgba(255, 255, 255, 0.08);
-  --cc-input-bg: rgba(255, 255, 255, 0.06);
-  --cc-input-text: #f0ece4;
-  --cc-placeholder: rgba(255, 255, 255, 0.2);
-  --cc-transition: 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+  --cc-lime: var(--accent); /* Now dynamic! */
+  --cc-dark: var(--bg);
+  --cc-card-bg: var(--bg);
+  --cc-text: var(--white);
+  --cc-sub: var(--muted-text);
+  --cc-border: var(--border);
+  --cc-input-bg: var(--surface);
+  --cc-input-text: var(--white);
+  --cc-placeholder: var(--muted-text);
+  --cc-transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Day mode overrides — driven by navbar useThemeStore */
+/* Day mode overrides — simplified as variables handle movement */
 .cc-root.cc-day {
-  --cc-card-bg: #f5f3ef;
-  --cc-text: #111;
-  --cc-sub: #888;
-  --cc-border: rgba(0, 0, 0, 0.1);
-  --cc-input-bg: rgba(0, 0, 0, 0.04);
-  --cc-input-text: #111;
-  --cc-placeholder: #bbb;
+  /* Dynamic themes handled by global CSS variables */
 }
 
 /* ── Root container ──────────────────────────────────── */
@@ -527,13 +521,14 @@
 
 /* Title */
 .cc-form-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(28px, 3.2vw, 44px);
-  font-weight: 900;
-  line-height: 0.92;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 4vw, 54px);
+  font-weight: 400;
+  line-height: 0.85;
   letter-spacing: -0.5px;
   color: var(--white);
   text-transform: uppercase;
+  margin-bottom: 5px;
 }
 
 .cc-form-title-accent {
@@ -604,23 +599,23 @@
 /* Submit button */
 .cc-submit-btn {
   align-self: flex-start;
-  background: var(--cc-lime);
-  color: #111;
+  background: var(--accent);
+  color: var(--on-accent);
   border: none;
-  border-radius: 2px;
-  padding: 12px 28px;
-  font-family: 'Syne', sans-serif;
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 3px;
+  border-radius: 4px;
+  padding: 14px 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
   text-transform: uppercase;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 16px rgba(168, 255, 62, 0.2);
-  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
-  margin-top: 4px;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  margin-top: 8px;
 }
 
 .cc-submit-btn:hover {
@@ -796,6 +791,13 @@
 
 /* Staggered delays — 7 tiers (d0–d6), each 120ms apart */
 /* Bottom floors light up first, rippling upward */
+.cc-city-svg--lit .cc-win--d0,
+.cc-win--manual-lit {
+  opacity: 1 !important;
+  box-shadow: 0 0 8px var(--cc-lime);
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
 .cc-city-svg--lit .cc-win--d0 {
   animation-delay: 0s, 0.5s;
 }
