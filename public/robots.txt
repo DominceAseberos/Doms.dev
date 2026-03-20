@@ -1,5 +1,5 @@
-# robots.txt — doms.dev
-# https://www.doms.dev/robots.txt
+# robots.txt — dominceaseberos.vercel.app
+# https://dominceaseberos.vercel.app/robots.txt
 
 User-agent: *
 Allow: /
@@ -8,4 +8,4 @@ Allow: /
 Disallow: /admin/
 
 # Sitemap
-Sitemap: https://www.doms.dev/sitemap.xml
+Sitemap: https://dominceaseberos.vercel.app/sitemap.xml
