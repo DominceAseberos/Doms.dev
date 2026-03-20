@@ -1,0 +1,11 @@
+# robots.txt — doms.dev
+# https://www.doms.dev/robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow admin routes (dev only, not served in production)
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://www.doms.dev/sitemap.xml

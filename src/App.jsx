@@ -1,5 +1,5 @@
-import ProjectEditor from './pages/admin/ProjectEditor';
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
@@ -10,8 +10,10 @@ import ProjectDetailsPage from './pages/Projects/components/ProjectDetailsPage';
 import AboutPage from './pages/About/index';
 import ContactPage from './pages/Contact/index';
 import LabPage from './pages/Lab/index';
-import LandingEditor from './pages/admin/LandingEditor';
-import AboutEditor from './pages/admin/AboutEditor';
+// Admin pages — dev only, excluded from production bundle
+const LandingEditor  = import.meta.env.DEV ? lazy(() => import('./pages/admin/LandingEditor'))  : null;
+const AboutEditor    = import.meta.env.DEV ? lazy(() => import('./pages/admin/AboutEditor'))    : null;
+const ProjectEditor  = import.meta.env.DEV ? lazy(() => import('./pages/admin/ProjectEditor'))  : null;
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
 import useThemeStore from './store/useThemeStore';
@@ -56,10 +58,18 @@ function App() {
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/lab" element={<LabPage />} />
-                        <Route path="/admin/landing" element={<LandingEditor />} />
-                        <Route path="/admin/about" element={<AboutEditor />} />
-                        <Route path="/admin/projects" element={<ProjectEditor />} />
-                        <Route path="/admin/projects/:projectId" element={<ProjectDetailsPage isAdmin={true} />} />
+                        {import.meta.env.DEV && LandingEditor && (
+                            <Route path="/admin/landing" element={<Suspense fallback={null}><LandingEditor /></Suspense>} />
+                        )}
+                        {import.meta.env.DEV && AboutEditor && (
+                            <Route path="/admin/about" element={<Suspense fallback={null}><AboutEditor /></Suspense>} />
+                        )}
+                        {import.meta.env.DEV && ProjectEditor && (
+                            <Route path="/admin/projects" element={<Suspense fallback={null}><ProjectEditor /></Suspense>} />
+                        )}
+                        {import.meta.env.DEV && ProjectEditor && (
+                            <Route path="/admin/projects/:projectId" element={<ProjectDetailsPage isAdmin={true} />} />
+                        )}
                     </Routes>
                 </div>
             </div>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Disaster Simulator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            color: #eee;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        #controls {
+            width: 100%;
+            max-width: 1000px;
+            padding: 10px 14px;
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            align-items: center;
+            background: #2a2a2a;
+            border-radius: 0 0 10px 10px;
+            border-top: 1px solid #444;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border: 1px solid #555;
+            border-radius: 8px;
+            background: #333;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #ddd;
+            transition: background .15s, transform .1s;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        .btn:active {
+            transform: scale(.97);
+        }
+
+        .btn.active {
+            background: #c0392b;
+            color: #fff;
+            border-color: #922b21;
+        }
+
+        #status {
+            font-size: 13px;
+            color: #aaa;
+            flex: 1;
+            padding: 0 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="c"></canvas>
+    <div id="controls">
+        <button class="btn" id="btn-meteor" onclick="go('meteor')">☄️ Meteor</button>
+        <button class="btn" id="btn-earthquake" onclick="go('earthquake')">🌋 Earthquake</button>
+        <button class="btn" id="btn-alien" onclick="go('alien')">👽 Alien</button>
+        <button class="btn" id="btn-dino" onclick="go('dino')">🦕 Dino</button>
+        <button class="btn" id="btn-sunraze" onclick="go('sunraze')">☀️ Sun Blaze</button>
+        <button class="btn" onclick="reset()" style="margin-left:auto">↺ Reset</button>
+        <span id="status">Choose a disaster!</span>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('c');
+        const ctx = canvas.getContext('2d');
+        const W = 1000, H = 520, GROUND = 452;
+        canvas.width = W;
+        canvas.height = H;
+
+        let animId = null, frame = 0, mode = null;
+        let buildings = [], debris = [], dusts = [];
+        let skyColor = '#87CEEB', shakeX = 0, shakeY = 0;
+
+        /* ─── BUILDING DEFINITIONS ─────────────────────────────────────────── */
+        const BLDG_DEFS = [
+            { x: 843, y: 351, w: 53, h: 101, col: '#56807B' }, { x: 873, y: 355, w: 35, h: 97, col: '#A0BCBA' },
+            { x: 772, y: 316, w: 55, h: 136, col: '#929292' }, { x: 749, y: 368, w: 28, h: 84, col: '#7CE8E0' },
+            { x: 724, y: 407, w: 40, h: 45, col: '#7CE8E0' }, { x: 656, y: 359, w: 69, h: 93, col: '#70AEAA' },
+            { x: 595, y: 299, w: 48, h: 153, col: '#658280' }, { x: 581, y: 382, w: 57, h: 70, col: '#70BFBA' },
+            { x: 523, y: 289, w: 62, h: 163, col: '#324E4C' }, { x: 462, y: 410, w: 45, h: 42, col: '#70BFBA' },
+            { x: 422, y: 375, w: 29, h: 78, col: '#BDCCCA' }, { x: 386, y: 413, w: 45, h: 40, col: '#50BDB5' },
+            { x: 356, y: 375, w: 37, h: 78, col: '#556B69' }, { x: 304, y: 340, w: 52, h: 113, col: '#59918B' },
+            { x: 266, y: 314, w: 21, h: 138, col: '#3F4E4D' }, { x: 251, y: 376, w: 37, h: 76, col: '#CBD0D0' },
+            { x: 222, y: 376, w: 34, h: 76, col: '#CBD0D0' }, { x: 198, y: 356, w: 31, h: 96, col: '#658280' },
+            { x: 148, y: 330, w: 70, h: 122, col: '#2D403E' }, { x: 163, y: 373, w: 31, h: 79, col: '#658280' },
+            { x: 133, y: 373, w: 31, h: 79, col: '#658280' }, { x: 137, y: 350, w: 35, h: 103, col: '#4C3C3C' },
+            { x: 107, y: 412, w: 40, h: 40, col: '#CBD0D0' }, { x: 84, y: 406, w: 30, h: 46, col: '#B1B1B1' },
+            { x: 84, y: 437, w: 58, h: 15, col: '#B5F6F2' }, { x: 42, y: 432, w: 30, h: 20, col: '#CBD0D0' },
+            { x: 906, y: 392, w: 52, h: 60, col: '#A7FEF8' }, { x: 819, y: 395, w: 25, h: 57, col: '#7AD0CA' },
+            { x: 835, y: 427, w: 61, h: 25, col: '#69F0E7' }, { x: 255, y: 300, w: 20, h: 152, col: '#9CB2B0' },
+            { x: 104, y: 274, w: 18, h: 178, col: '#7F8383' }, { x: 84, y: 375, w: 30, h: 77, col: '#7F8383' },
+            { x: 118, y: 320, w: 37, h: 132, col: '#7F8383' }
+        ];
+
+        /* ─── INIT ──────────────────────────────────────────────────────────── */
+        function initBuildings() {
+            buildings = BLDG_DEFS.map(b => ({
+                ...b, cx: b.x + b.w / 2,
+                alive: true, collapsing: false, segments: []
+            }));
+        }
+
+        /* ─── PARTICLES ─────────────────────────────────────────────────────── */
+        function spawnDebris(x, y, col, n = 12) {
+            for (let i = 0; i < n; i++) {
+                const a = Math.random() * Math.PI * 2, spd = 2 + Math.random() * 8;
+                debris.push({
+                    x, y, vx: Math.cos(a) * spd, vy: Math.sin(a) * spd - 4,
+                    w: 3 + Math.random() * 10, h: 3 + Math.random() * 8, col,
+                    angle: Math.random() * Math.PI, av: (Math.random() - .5) * .3,
+                    life: 120, age: 0, grounded: false
+                });
+            }
+        }
+
+        function spawnDust(x, y, n = 18) {
+            for (let i = 0; i < n; i++)
+                dusts.push({
+                    x: x + (Math.random() - .5) * 40, y,
+                    vx: (Math.random() - .5) * 3, vy: -1 - Math.random() * 3,
+                    r: 8 + Math.random() * 20, alpha: .7, life: 90, age: 0
+                });
+        }
+
+        /* ─── COLLAPSE ──────────────────────────────────────────────────────── */
+        function collapseBuilding(b, dir = 1) {
+            if (!b.alive && !b.collapsing) return;
+            b.collapsing = true; b.alive = false;
+            const segs = Math.max(3, Math.floor(b.h / 28)), segH = b.h / segs;
+            b.segments = [];
+            for (let i = 0; i < segs; i++)
+                b.segments.push({
+                    x: b.x, y: b.y + b.h - (i + 1) * segH, w: b.w, h: segH,
+                    vx: (Math.random() - .5) * 2 + dir * i * .9, vy: -Math.random() * 2,
+                    angle: 0, av: (Math.random() - .5) * .07 + dir * .03,
+                    delay: i * 5, age: 0, grounded: false
+                });
+        }
+
+        /* ─── DRAW HELPERS ──────────────────────────────────────────────────── */
+        function drawScene() {
+            ctx.fillStyle = skyColor; ctx.fillRect(0, 0, W, H);
+            ctx.fillStyle = '#556B2F'; ctx.fillRect(0, GROUND, W, H - GROUND);
+            ctx.fillStyle = '#2F3635'; ctx.fillRect(0, GROUND, W, 10);
+        }
+
+        function drawBuilding(b) {
+            if (!b.alive && !b.collapsing) return;
+            if (!b.collapsing) {
+                ctx.fillStyle = b.col; ctx.fillRect(b.x, b.y, b.w, b.h);
+                ctx.fillStyle = 'rgba(0,0,0,0.13)';
+                for (let wy = b.y + 6; wy < b.y + b.h - 6; wy += 16)
+                    for (let wx = b.x + 4; wx < b.x + b.w - 4; wx += 12)
+                        ctx.fillRect(wx, wy, 7, 10);
+                return;
+            }
+            let allDone = true;
+            b.segments.forEach(s => {
+                if (s.age < s.delay) { s.age++; allDone = false; return; }
+                s.age++;
+                if (!s.grounded) {
+                    allDone = false; s.vy += .55; s.x += s.vx; s.y += s.vy; s.angle += s.av;
+                    if (s.y + s.h >= GROUND) { s.y = GROUND - s.h; s.grounded = true; s.vx *= .25; spawnDust(s.x + s.w / 2, GROUND, 5); }
+                }
+                ctx.save(); ctx.translate(s.x + s.w / 2, s.y + s.h / 2); ctx.rotate(s.angle);
+                ctx.fillStyle = b.col; ctx.fillRect(-s.w / 2, -s.h / 2, s.w, s.h);
+                ctx.fillStyle = 'rgba(0,0,0,0.15)';
+                for (let wy = -s.h / 2 + 3; wy < s.h / 2 - 3; wy += 13)
+                    for (let wx = -s.w / 2 + 3; wx < s.w / 2 - 3; wx += 10)
+                        ctx.fillRect(wx, wy, 6, 8);
+                ctx.restore();
+            });
+            if (allDone) b.collapsing = false;
+        }
+
+        function drawDebris() {
+            debris.forEach(d => {
+                d.age++;
+                if (!d.grounded) { d.vx *= .98; d.vy += .45; d.x += d.vx; d.y += d.vy; d.angle += d.av; }
+                if (d.y + d.h >= GROUND) { d.y = GROUND - d.h; d.grounded = true; }
+                const a = 1 - d.age / d.life; if (a <= 0) return;
+                ctx.save(); ctx.globalAlpha = Math.min(1, a * 2);
+                ctx.translate(d.x + d.w / 2, d.y + d.h / 2); ctx.rotate(d.angle);
+                ctx.fillStyle = d.col; ctx.fillRect(-d.w / 2, -d.h / 2, d.w, d.h);
+                ctx.restore();
+            });
+            debris = debris.filter(d => d.age < d.life);
+        }
+
+        function drawDust() {
+            dusts.forEach(d => {
+                d.age++; d.x += d.vx; d.y += d.vy; d.r += .4;
+                const a = (1 - d.age / d.life) * .45; if (a <= 0) return;
+                ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(200,190,170,${a})`; ctx.fill();
+            });
+            dusts = dusts.filter(d => d.age < d.life);
+        }
+
+        /* ─── T-REX ─────────────────────────────────────────────────────────── */
+        function drawTRex(x, floorY, step, size, facingRight) {
+            ctx.save();
+            ctx.translate(x, floorY);
+            if (!facingRight) ctx.scale(-1, 1);
+            ctx.scale(size, size);
+
+            const walk = Math.sin(step * .22);
+            const bob = Math.abs(Math.sin(step * .22)) * 3;
+
+            // tail
+            ctx.fillStyle = '#2d7a1f';
+            ctx.beginPath();
+            ctx.moveTo(-20, -38 + bob); ctx.quadraticCurveTo(-90, -18 + bob, -110, -8 + bob);
+            ctx.quadraticCurveTo(-90, -28 + bob, -20, -52 + bob); ctx.closePath(); ctx.fill();
+
+            // body
+            ctx.fillStyle = '#3a9e28';
+            ctx.beginPath(); ctx.ellipse(0, -42 + bob, 42, 30, -.15, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#5abb3e';
+            ctx.beginPath(); ctx.ellipse(8, -36 + bob, 26, 18, -.1, 0, Math.PI * 2); ctx.fill();
+
+            // neck
+            ctx.fillStyle = '#3a9e28';
+            ctx.beginPath();
+            ctx.moveTo(25, -55 + bob); ctx.quadraticCurveTo(50, -65 + bob, 45, -80 + bob);
+            ctx.quadraticCurveTo(30, -78 + bob, 20, -60 + bob); ctx.closePath(); ctx.fill();
+
+            // head
+            ctx.fillStyle = '#3a9e28';
+            ctx.beginPath(); ctx.ellipse(52, -88 + bob, 28, 18, .2, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(28, -80 + bob); ctx.lineTo(82, -82 + bob); ctx.lineTo(78, -90 + bob); ctx.lineTo(28, -88 + bob);
+            ctx.closePath(); ctx.fill();
+            ctx.fillStyle = '#2d7a1f';
+            ctx.beginPath();
+            ctx.moveTo(30, -82 + bob); ctx.lineTo(80, -78 + bob); ctx.lineTo(76, -70 + bob); ctx.lineTo(30, -76 + bob);
+            ctx.closePath(); ctx.fill();
+            // teeth
+            ctx.fillStyle = '#fff';
+            for (let t = 0; t < 4; t++) {
+                ctx.beginPath(); ctx.moveTo(38 + t * 9, -82 + bob); ctx.lineTo(41 + t * 9, -76 + bob); ctx.lineTo(44 + t * 9, -82 + bob);
+                ctx.closePath(); ctx.fill();
+            }
+            // tongue
+            ctx.fillStyle = '#ff7070';
+            ctx.beginPath(); ctx.ellipse(62, -74 + bob, 8, 4, .1, 0, Math.PI * 2); ctx.fill();
+            // nostril
+            ctx.fillStyle = '#1a5c10';
+            ctx.beginPath(); ctx.arc(70, -90 + bob, 3, 0, Math.PI * 2); ctx.fill();
+            // eye
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(46, -94 + bob, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(48, -93 + bob, 3.5, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(50, -94 + bob, 1.2, 0, Math.PI * 2); ctx.fill();
+            // brow
+            ctx.strokeStyle = '#1a5c10'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(40, -99 + bob); ctx.lineTo(52, -96 + bob); ctx.stroke();
+            // tiny arms
+            ctx.fillStyle = '#2d7a1f';
+            ctx.beginPath();
+            ctx.moveTo(28, -55 + bob); ctx.lineTo(42, -48 + bob); ctx.lineTo(38, -40 + bob); ctx.lineTo(22, -46 + bob);
+            ctx.closePath(); ctx.fill();
+            ctx.strokeStyle = '#1a5c10'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(38, -40 + bob); ctx.lineTo(44, -36 + bob); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(38, -40 + bob); ctx.lineTo(40, -33 + bob); ctx.stroke();
+
+            // legs (feet at y=0 = floorY)
+            const l1 = walk * 18, l2 = -walk * 18;
+
+            ctx.fillStyle = '#2d7a1f';
+            ctx.beginPath();
+            ctx.moveTo(-8, -20 + bob); ctx.quadraticCurveTo(-10 + l2 * .5, 0 + bob, -12 + l2, 0);
+            ctx.lineTo(-2 + l2, 0); ctx.quadraticCurveTo(0, 0 + bob, 2, -18 + bob); ctx.closePath(); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(-7 + l2, 0, 13, 5, .1, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#1a5c10'; ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.moveTo(-15 + l2, 0); ctx.lineTo(-21 + l2, 7); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(-7 + l2, 2); ctx.lineTo(-7 + l2, 9); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(1 + l2, 0); ctx.lineTo(6 + l2, 7); ctx.stroke();
+
+            ctx.fillStyle = '#3a9e28';
+            ctx.beginPath();
+            ctx.moveTo(12, -20 + bob); ctx.quadraticCurveTo(14 + l1 * .5, 0 + bob, 16 + l1, 0);
+            ctx.lineTo(26 + l1, 0); ctx.quadraticCurveTo(22, 0 + bob, 18, -18 + bob); ctx.closePath(); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(21 + l1, 0, 14, 5, .1, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#1a5c10'; ctx.lineWidth = 2.5;
+            ctx.beginPath(); ctx.moveTo(12 + l1, 0); ctx.lineTo(7 + l1, 7); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(21 + l1, 2); ctx.lineTo(21 + l1, 9); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(30 + l1, 0); ctx.lineTo(35 + l1, 7); ctx.stroke();
+
+            ctx.restore();
+        }
+
+        /* ─── RESET ─────────────────────────────────────────────────────────── */
+        function reset() {
+            cancelAnimationFrame(animId);
+            frame = 0; mode = null; debris = []; dusts = [];
+            skyColor = '#87CEEB'; shakeX = 0; shakeY = 0;
+            initBuildings();
+            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('status').textContent = 'Choose a disaster!';
+            ctx.clearRect(0, 0, W, H);
+            drawScene(); buildings.forEach(drawBuilding);
+        }
+
+        function go(type) {
+            reset(); mode = type;
+            document.getElementById('btn-' + type).classList.add('active');
+            const fns = { meteor: runMeteor, earthquake: runEarthquake, alien: runAlien, dino: runDino, sunraze: runSunraze };
+            fns[type]();
+        }
+
+        /* ─── ☄️ METEOR ─────────────────────────────────────────────────────── */
+        function runMeteor() {
+            document.getElementById('status').textContent = 'Meteors incoming!';
+            const meteors = buildings.map((b, i) => {
+                const mx = b.cx - 60 + Math.random() * 120, my = -60 - i * 16;
+                const dx = b.cx - mx, dy = GROUND - my, dist = Math.hypot(dx, dy), spd = 10 + Math.random() * 5;
+                return {
+                    x: mx, y: my, vx: dx / dist * spd, vy: dy / dist * spd,
+                    r: 8 + Math.random() * 14, trail: [], hit: false, boom: 0, delay: i * 22, target: b
+                };
+            });
+            function loop() {
+                ctx.clearRect(0, 0, W, H); ctx.save(); ctx.translate(shakeX, shakeY);
+                drawScene(); buildings.forEach(drawBuilding);
+                meteors.forEach(m => {
+                    if (frame < m.delay) return;
+                    if (m.hit) {
+                        m.boom++; const a = 1 - m.boom / 35;
+                        if (a > 0) { ctx.beginPath(); ctx.arc(m.tx, GROUND, m.r * 3 * (m.boom / 18), 0, Math.PI * 2); ctx.fillStyle = `rgba(255,100,0,${a * .8})`; ctx.fill(); }
+                        return;
+                    }
+                    m.trail.push({ x: m.x, y: m.y }); if (m.trail.length > 14) m.trail.shift();
+                    m.trail.forEach((p, i) => {
+                        ctx.beginPath(); ctx.arc(p.x, p.y, m.r * (i / m.trail.length) * .7, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255,140,20,${(i / m.trail.length) * .5})`; ctx.fill();
+                    });
+                    ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2); ctx.fillStyle = '#ff4500'; ctx.fill();
+                    ctx.beginPath(); ctx.arc(m.x, m.y, m.r * .4, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
+                    m.x += m.vx; m.y += m.vy;
+                    if (m.y >= GROUND - m.r) {
+                        m.hit = true; m.tx = m.x;
+                        spawnDebris(m.x, GROUND, m.target.col, 20); spawnDust(m.x, GROUND, 25);
+                        collapseBuilding(m.target, m.vx > 0 ? 1 : -1);
+                        shakeX = (Math.random() - .5) * 10; shakeY = (Math.random() - .5) * 6;
+                        setTimeout(() => { shakeX = 0; shakeY = 0; }, 180);
+                    }
+                });
+                drawDust(); drawDebris(); ctx.restore();
+                frame++; animId = requestAnimationFrame(loop);
+            }
+            animId = requestAnimationFrame(loop);
+        }
+
+        /* ─── 🌋 EARTHQUAKE ─────────────────────────────────────────────────── */
+        function runEarthquake() {
+            document.getElementById('status').textContent = 'Magnitude 9.5 — run!';
+            const cracks = [], colQ = [...buildings].sort(() => Math.random() - .5);
+            let rumble = 0, cIdx = 0, nextC = 0;
+            function loop() {
+                ctx.clearRect(0, 0, W, H); rumble++;
+                if (rumble < 300) { const s = Math.sin(rumble * .5) * 7 * (1 - rumble / 300); shakeX = (Math.random() - .5) * s * 2.5; shakeY = (Math.random() - .5) * s; }
+                else { shakeX = 0; shakeY = 0; }
+                if (cIdx < colQ.length && rumble > nextC) {
+                    collapseBuilding(colQ[cIdx], Math.random() > .5 ? 1 : -1);
+                    spawnDust(colQ[cIdx].cx, GROUND, 12);
+                    cIdx++; nextC = rumble + 8 + Math.floor(Math.random() * 18);
+                }
+                if (rumble % 6 === 0 && rumble < 100)
+                    cracks.push({
+                        x: 100 + Math.random() * 800, y: GROUND + 10, segs: [], len: 0,
+                        maxLen: 80 + Math.random() * 140, angle: (Math.random() - .5) * 0.6
+                    });
+                ctx.save(); ctx.translate(shakeX, shakeY); drawScene();
+                cracks.forEach(c => {
+                    if (c.len < c.maxLen) {
+                        c.angle += (Math.random() - .3) * .4;
+                        c.angle = Math.max(-0.10, Math.min(0.2, c.angle));
+                        const l = c.segs.length ? c.segs[c.segs.length - 1] : { x: c.x, y: c.y };
+                        c.segs.push({ x: l.x + Math.cos(c.angle) * 2, y: l.y + Math.sin(c.angle) * 10 }); c.len += 3;
+                    }
+                    if (c.segs.length > 1) {
+                        ctx.beginPath(); ctx.moveTo(c.segs[0].x, c.segs[0].y);
+                        c.segs.forEach(p => ctx.lineTo(p.x, p.y));
+                        ctx.strokeStyle = 'rgba(0,0,0,.9)';
+                        ctx.lineWidth = 3; ctx.stroke();
+                    }
+                });
+                buildings.forEach(drawBuilding); drawDust(); drawDebris(); ctx.restore();
+                frame++; animId = requestAnimationFrame(loop);
+            }
+            animId = requestAnimationFrame(loop);
+        }
+
+        /* ─── 👽 ALIEN ──────────────────────────────────────────────────────── */
+        function runAlien() {
+            document.getElementById('status').textContent = 'They came from space...';
+            const stars = Array.from({ length: 50 }, () => ({
+                x: Math.random() * W, y: Math.random() * GROUND, r: 1 + Math.random() * 2, t: Math.random() * 6
+            }));
+            const ships = Array.from({ length: 5 }, (_, i) => ({
+                x: -150 - i * 80, y: 50 + Math.random() * 80, vx: 2 + Math.random(),
+                w: 80 + Math.random() * 40, phase: Math.random() * 6,
+                fireTimer: 60 + i * 35, beamAlpha: 0, beamX: 0, beamTarget: null, firing: false
+            }));
+            const bQ = [...buildings].sort(() => Math.random() - .5);
+            let bIdx = 0, purple = 0;
+            function loop() {
+                ctx.clearRect(0, 0, W, H); purple = Math.min(1, frame / 120);
+                const r = Math.floor(135 - purple * 100), g = Math.floor(206 - purple * 190), b = Math.floor(235 - purple * 55);
+                skyColor = `rgb(${r},${g},${b})`; drawScene();
+                stars.forEach(s => {
+                    s.t += .04; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,200,${purple * (.4 + .5 * Math.abs(Math.sin(s.t)))})`; ctx.fill();
+                });
+                ships.forEach(s => {
+                    s.x += s.vx; if (s.x > W + 200) s.x = -200;
+                    const by = s.y + Math.sin(frame * .04 + s.phase) * 8;
+                    ctx.save(); ctx.translate(s.x, by);
+                    ctx.beginPath(); ctx.ellipse(0, 8, s.w / 2, 10, 0, 0, Math.PI * 2); ctx.fillStyle = '#6622aa'; ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(0, 0, s.w / 3, 20, 0, 0, Math.PI * 2); ctx.fillStyle = '#9944dd'; ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(0, -2, s.w / 7, 10, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(140,255,100,.95)'; ctx.fill();
+                    const pulse = .3 + .7 * Math.abs(Math.sin(frame * .1 + s.phase));
+                    for (let d = -s.w / 2 + 7; d < s.w / 2; d += 14) {
+                        ctx.beginPath(); ctx.arc(d, 10, 3, 0, Math.PI * 2); ctx.fillStyle = `rgba(100,255,200,${pulse})`; ctx.fill();
+                    }
+                    ctx.restore();
+                    s.fireTimer--;
+                    if (s.fireTimer <= 0 && s.x > 0 && s.x < W && bIdx < bQ.length) {
+                        const tgt = bQ[bIdx++];
+                        s.fireTimer = 70 + Math.random() * 50; s.firing = true; s.beamAlpha = 1; s.beamX = s.x; s.beamTarget = tgt;
+                        setTimeout(() => { collapseBuilding(tgt, 1); spawnDust(tgt.cx, GROUND, 15); }, 800);
+                    }
+                    if (s.firing) {
+                        s.beamAlpha -= .016; if (s.beamAlpha <= 0) { s.firing = false; return; }
+                        const bx = s.beamX, bw = 28 * s.beamAlpha, tx = s.beamTarget.cx;
+                        ctx.beginPath(); ctx.moveTo(bx - bw / 2, s.y + 8); ctx.lineTo(bx + bw / 2, s.y + 8);
+                        ctx.lineTo(tx + 5, GROUND); ctx.lineTo(tx - 5, GROUND); ctx.closePath();
+                        ctx.fillStyle = `rgba(100,255,80,${s.beamAlpha * .45})`; ctx.fill();
+                        ctx.beginPath(); ctx.moveTo(bx, s.y + 8); ctx.lineTo(tx, GROUND);
+                        ctx.strokeStyle = `rgba(180,255,100,${s.beamAlpha})`; ctx.lineWidth = 3; ctx.stroke();
+                    }
+                });
+                buildings.forEach(drawBuilding); drawDust(); drawDebris();
+                frame++; animId = requestAnimationFrame(loop);
+            }
+            animId = requestAnimationFrame(loop);
+        }
+
+        /* ─── 🦕 DINO ───────────────────────────────────────────────────────── */
+        function runDino() {
+            document.getElementById('status').textContent = 'RAWR! T-Rex attack!';
+            const dinoList = Array.from({ length: 3 }, (_, i) => ({
+                x: -120 - i * 280, step: 0, size: 1.1 + Math.random() * .4,
+                vx: 2.8 + Math.random() * 1.8, stomps: [], lastStomp: 0, destroyed: [], facingRight: true
+            }));
+            function loop() {
+                ctx.clearRect(0, 0, W, H); drawScene();
+                dinoList.forEach(d => {
+                    d.x += d.vx; d.step++; d.facingRight = d.vx > 0;
+                    if (d.x > W + 300) d.x = -300;
+                    d.lastStomp++;
+                    if (d.lastStomp > 22) {
+                        d.lastStomp = 0;
+                        d.stomps.push({ x: d.x, y: GROUND, r: 6, alpha: .75 });
+                        spawnDust(d.x, GROUND, 3);
+                        buildings.forEach(b => {
+                            if (!b.alive && !b.collapsing) return;
+                            if (Math.abs(b.cx - d.x) < 65 * d.size && !d.destroyed.includes(b)) {
+                                d.destroyed.push(b);
+                                collapseBuilding(b, d.vx > 0 ? 1 : -1);
+                                spawnDust(b.cx, b.y + b.h * .5, 20);
+                                spawnDebris(b.cx, b.y + b.h * .3, b.col, 18);
+                            }
+                        });
+                    }
+                    d.stomps.forEach(s => {
+                        s.r += 3; s.alpha -= .045; if (s.alpha <= 0) return;
+                        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(60,30,5,${s.alpha})`; ctx.lineWidth = 4; ctx.stroke();
+                        ctx.beginPath(); ctx.arc(s.x, s.y, s.r * .6, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(60,30,5,${s.alpha * .5})`; ctx.lineWidth = 2; ctx.stroke();
+                    });
+                    d.stomps = d.stomps.filter(s => s.alpha > 0);
+                    drawTRex(d.x, GROUND, d.step, d.size, d.facingRight);
+                });
+                buildings.forEach(drawBuilding); drawDust(); drawDebris();
+                frame++; animId = requestAnimationFrame(loop);
+            }
+            animId = requestAnimationFrame(loop);
+        }
+
+        /* ─── ☀️ SUN BLAZE ──────────────────────────────────────────────────── */
+        function runSunraze() {
+            document.getElementById('status').textContent = 'Solar flare overload!';
+            const flares = Array.from({ length: 8 }, (_, i) => ({
+                angle: i * (Math.PI * 2 / 8), len: 60, phase: Math.random() * 6
+            }));
+            const sparks = [], bQ = [...buildings].sort((a, b) => a.x - b.x);
+            let heat = 0, burnIdx = 0, burnTimer = 0;
+            function loop() {
+                ctx.clearRect(0, 0, W, H); heat = Math.min(1, frame / 180);
+                const r = Math.floor(135 + heat * 120), g = Math.floor(206 - heat * 160), b = Math.floor(235 - heat * 235);
+                skyColor = `rgb(${r},${Math.max(0, g - 40)},${Math.max(0, b)})`; drawScene();
+                const sx = W / 2, sy = 70, sr = 55 + heat * 50;
+                flares.forEach(f => {
+                    f.phase += .03; f.len = 55 + Math.sin(f.phase) * 30 + heat * 100; f.angle += .01;
+                    const ex = sx + Math.cos(f.angle) * f.len, ey = sy + Math.sin(f.angle) * f.len;
+                    ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey);
+                    ctx.strokeStyle = `rgba(255,190,0,${.45 + heat * .45})`; ctx.lineWidth = 3 + heat * 6; ctx.stroke();
+                });
+                ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+                ctx.fillStyle = `rgb(255,${Math.floor(225 - heat * 130)},${Math.floor(40 - heat * 40)})`; ctx.fill();
+                ctx.beginPath(); ctx.arc(sx - sr * .22, sy - sr * .22, sr * .25, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,200,.65)'; ctx.fill();
+                if (Math.random() < heat * .4)
+                    sparks.push({ x: Math.random() * W, y: 0, vy: 2 + Math.random() * 5, vx: (Math.random() - .5) * 2, alpha: 1, r: 2 + Math.random() * 5 });
+                sparks.forEach(s => {
+                    s.y += s.vy; s.x += s.vx; s.alpha -= .009;
+                    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,140,0,${s.alpha})`; ctx.fill();
+                });
+                sparks.length = sparks.filter(s => s.alpha > 0).length;
+                if (heat > .4) {
+                    burnTimer++;
+                    if (burnTimer > 18 && burnIdx < bQ.length) {
+                        const b = bQ[burnIdx++]; burnTimer = 0;
+                        collapseBuilding(b, 1); spawnDust(b.cx, GROUND, 16); spawnDebris(b.cx, b.y, b.col, 14);
+                    }
+                }
+                if (heat > .5) { ctx.fillStyle = `rgba(255,60,0,${(heat - .5) * .3})`; ctx.fillRect(0, 0, W, H); }
+                buildings.forEach(drawBuilding); drawDust(); drawDebris();
+                if (heat >= 1) document.getElementById('status').textContent = 'Everything is ash! 🔥';
+                frame++; animId = requestAnimationFrame(loop);
+            }
+            animId = requestAnimationFrame(loop);
+        }
+
+        /* ─── BOOT ──────────────────────────────────────────────────────────── */
+        initBuildings();
+        drawScene();
+        buildings.forEach(drawBuilding);
+    </script>
+</body>
+
+</html>

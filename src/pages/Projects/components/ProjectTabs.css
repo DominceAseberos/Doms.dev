@@ -182,55 +182,7 @@ html[data-theme='light'] .proj-page {
     color: var(--on-accent, var(--ink));
 }
 
-/* Breathing bar */
-.breath-wrap {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-.breath-label {
-    font-size: 11px;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--about-label);
-}
-.breath-track {
-    width: 160px;
-    height: 1px;
-    background: var(--subtle-track);
-    position: relative;
-}
-.breath-fill {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 1px;
-    width: 0%;
-    background: linear-gradient(90deg, transparent, var(--acid) 50%, transparent);
-}
-.breath-dot {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--acid);
-    box-shadow: 0 0 10px 3px rgba(200,255,62,.45);
-    animation: pg-pulse 2.2s ease-in-out infinite;
-}
-@keyframes pg-pulse {
-    0%, 100% { box-shadow: 0 0 8px 2px rgba(200,255,62,.4); transform: translate(-50%,-50%) scale(1); }
-    50%       { box-shadow: 0 0 18px 5px rgba(200,255,62,.15); transform: translate(-50%,-50%) scale(1.6); }
-}
-.breath-pct {
-    font-size: 11px;
-    letter-spacing: .16em;
-    color: var(--acid);
-    min-width: 28px;
-}
+/* Breathing bar removed per user request */
 
 /* ─────────────────────────────────
    THE GRID

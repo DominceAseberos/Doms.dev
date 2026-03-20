@@ -4,8 +4,7 @@ import './GithubContributionSection.css';
 
 const USERNAME = import.meta.env.VITE_GITHUB_USERNAME;
 const TOKEN    = import.meta.env.VITE_GITHUB_TOKEN;
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
 const CACHE_TTL = 15 * 60 * 1000;
 const MAX_REPOS = 100;
 const SNAPSHOT_KEY = 'gsc_snapshot_repos';

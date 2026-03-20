@@ -165,9 +165,7 @@ const projects = portfolioData.projects.map((p, i) => {
 const ProjectTabs = ({ onView }) => {
     const navigate = useNavigate();
     const [activeFilter, setActiveFilter] = useState('all');
-    const [scrollPct, setScrollPct] = useState(0);
     const gridRef = useRef(null);
-    const breathFillRef = useRef(null);
 
     const filteredProjects = useMemo(() => {
         if (activeFilter === 'all') return projects;
@@ -184,17 +182,6 @@ const ProjectTabs = ({ onView }) => {
         }
         navigate(`/projects/${project.id}`);
     };
-
-    // Scroll → breathing bar
-    useEffect(() => {
-        const onScroll = () => {
-            const p = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
-            setScrollPct(Math.round(p * 100));
-            if (breathFillRef.current) breathFillRef.current.style.width = (p * 100) + '%';
-        };
-        window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
-    }, []);
 
     // GSAP card reveal on scroll
     useGSAP(() => {
@@ -244,14 +231,6 @@ const ProjectTabs = ({ onView }) => {
                                 {f.label}
                             </button>
                         ))}
-                    </div>
-                    <div className="breath-wrap">
-                        <span className="breath-label pg-label-lg">Scroll</span>
-                        <div className="breath-track">
-                            <div className="breath-fill" ref={breathFillRef}></div>
-                            <div className="breath-dot"></div>
-                        </div>
-                        <span className="breath-pct pg-label-lg">{scrollPct}%</span>
                     </div>
                 </div>
             </div>

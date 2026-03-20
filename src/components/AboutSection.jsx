@@ -51,13 +51,13 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
             gsap.set(headerRef.current, { opacity: 0, scale: 0.8, filter: "blur(10px)" });
             gsap.set(textRef.current, { opacity: 0, y: 30 });
             if (cardRef.current) gsap.set(cardRef.current, { opacity: 0, y: 50, scale: 0.92 });
-            
+
             if (isAboutPage && narrativeRef && narrativeRef.current) {
                 gsap.set(narrativeRef.current, { opacity: 0, y: 40 });
             }
 
-            const tlConfig = isAboutPage 
-                ? { delay: 0.2 } 
+            const tlConfig = isAboutPage
+                ? { delay: 0.2 }
                 : {
                     scrollTrigger: {
                         trigger: sectionRef.current,
@@ -66,7 +66,7 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                         pin: true,
                         scrub: 1,
                     }
-                  };
+                };
 
             const tl = gsap.timeline(tlConfig);
 
@@ -133,7 +133,7 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                         key={i}
                         ref={addToStripes}
                         className="w-full"
-                        style={{ height: `${100 / stripeCount}%`, backgroundColor: isLight ? (i % 2 === 0 ? '#e6f7d9' : '#f2ede6') : '#505255' }}
+                        style={{ height: `${100 / stripeCount}%`, backgroundColor: isLight ? '#d5f1b1ff' : '#505255' }}
                     />
                 ))}
             </div>
@@ -201,7 +201,7 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                 className={`font-black uppercase tracking-tighter leading-[1] text-center ${isLight ? 'text-[#121212]' : 'text-white'}`}
                                 style={{ fontSize: 'clamp(1.5rem, 5.5vw, 6rem)' }}
                             >
-                                Built with 
+                                Built with
                                 <span className={`drop-shadow-[0_0_20px_rgba(200,255,62,0.3)] ${isLight ? 'text-[var(--accent)]' : 'text-[#c8ff3e]'}`}>
                                     {' '}Motion{' '}
                                 </span>

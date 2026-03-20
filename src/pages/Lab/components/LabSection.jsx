@@ -27,6 +27,21 @@ const EXPERIMENTS = [
     file: '/experiments/02-rdiffusion.html',
     lightBg: false,
   },
+  {
+    id: 'citysimulation',
+    num: '03',
+    badge: 'live',
+    title: ['City', 'Disaster'],
+    desc: 'A real-time city destruction simulator. Meteors, earthquakes, alien invasions, T-Rex stampedes and solar flares collapse buildings with physics-based debris and dust.',
+    tags: ['Canvas 2D', 'Physics', 'Generative', 'Simulation'],
+    stats: [{ v: '33', l: 'Buildings' },
+    { v: '5', l: 'Disasters' },
+    { v: '60fps', l: 'Render' },
+    { v: 'live', l: 'Physics' }],
+    info: 'Gray-Scott model: two chemicals A and B react and diffuse. Feed rate replenishes A, kill rate removes B. The balance between them determines pattern topology.',
+    file: '/experiments/03-disastersimulation.html',
+    lightBg: false,
+  }
 
 ];
 
