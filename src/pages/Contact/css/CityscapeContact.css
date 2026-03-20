@@ -1,9 +1,8 @@
 /* ═══════════════════════════════════════════════════════
    CityscapeContact.css
    Companion styles for CityscapeContact.jsx
-   Fonts: Barlow Condensed (900), IBM Plex Mono (400/500)
-   Add to your index.html or _app:
-   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+   Fonts: Syne (Standard Heading/Body), DM Mono (Standard Monospace)
+   These fonts are already loaded in index.html
 ═══════════════════════════════════════════════════════ */
 
 /* ── Variables ───────────────────────────────────────── */
@@ -41,7 +40,7 @@
   justify-content: center;
   overflow-x: hidden;
   overflow-y: auto;
-  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-family: 'Syne', sans-serif;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -528,8 +527,8 @@
 
 /* Title */
 .cc-form-title {
-  font-family: 'Barlow Condensed', 'Georgia', serif;
-  font-size: clamp(32px, 3.8vw, 52px);
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 3.2vw, 44px);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: -0.5px;
@@ -582,8 +581,8 @@
   border: 1px solid var(--cc-border);
   border-radius: 3px;
   padding: 10px 12px;
-  font-family: 'IBM Plex Mono', 'Courier New', monospace;
-  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
   color: var(--cc-input-text);
   outline: none;
   resize: none;
@@ -610,8 +609,8 @@
   border: none;
   border-radius: 2px;
   padding: 12px 28px;
-  font-family: 'Barlow Condensed', 'Georgia', serif;
-  font-size: 15px;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
   font-weight: 900;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -656,8 +655,8 @@
 }
 
 .cc-success-title {
-  font-family: 'Barlow Condensed', serif;
-  font-size: 22px;
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
   font-weight: 900;
   letter-spacing: 2px;
   text-transform: uppercase;
