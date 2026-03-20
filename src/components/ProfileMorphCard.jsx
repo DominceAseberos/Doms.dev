@@ -81,7 +81,7 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
         };
 
         const onTouch = (e) => {
-            e.preventDefault();
+            if (e.cancelable) e.preventDefault();
             const touch = e.touches[0];
             if (!touch) return;
             const rect = stage.getBoundingClientRect();

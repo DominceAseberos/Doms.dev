@@ -1,11 +1,24 @@
 import React, { forwardRef, useState, useEffect } from 'react';
+import { fetchAboutData } from '../../../shared/aboutService';
 import './NarrativeSection.css';
 
 const NarrativeSection = forwardRef((props, ref) => {
     const [time, setTime] = useState(new Date());
+    const [socialLinks, setSocialLinks] = useState([]);
 
     useEffect(() => {
         const timer = setInterval(() => setTime(new Date()), 1000);
+        
+        const loadSocials = async () => {
+            try {
+                const data = await fetchAboutData();
+                setSocialLinks(data.socials || []);
+            } catch (err) {
+                console.error("Failed to fetch social links for NarrativeSection", err);
+            }
+        };
+        loadSocials();
+
         return () => clearInterval(timer);
     }, []);
 
@@ -93,17 +106,15 @@ const NarrativeSection = forwardRef((props, ref) => {
                         <div className="space-y-4">
                             <p className="ns-sidebar-label ui-sub-label text-base uppercase tracking-widest">Social</p>
                             <div className="flex flex-row flex-wrap gap-x-6 gap-y-3">
-                                {[
-                                    { name: 'Instagram', url: '#' },
-                                    { name: 'Twitter (X)', url: '#' },
-                                    { name: 'LinkedIn', url: '#' }
-                                ].map((link) => (
+                                {socialLinks.map((link) => (
                                     <a
-                                        key={link.name}
-                                        href={link.url}
+                                        key={link.label}
+                                        href={link.href}
+                                        target={link.external ? "_blank" : "_self"}
+                                        rel={link.external ? "noopener noreferrer" : ""}
                                         className="ns-social-link text-lg lg:text-3xl transition-all duration-300 flex items-center group"
                                     >
-                                        {link.name}
+                                        {link.label}
                                         <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">↗</span>
                                     </a>
                                 ))}

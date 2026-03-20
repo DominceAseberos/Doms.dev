@@ -1,36 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchAboutData } from '../../../shared/aboutService';
 import './AboutSocialFooter.css';
 
-const socialItems = [
-    {
-        label: 'Facebook',
-        href: 'https://facebook.com',
-        external: true
-    },
-    {
-        label: 'Instagram',
-        href: 'https://instagram.com',
-        external: true
-    },
-    {
-        label: 'LinkedIn',
-        href: 'https://linkedin.com',
-        external: true
-    },
-    {
-        label: 'X',
-        href: 'https://x.com',
-        external: true
-    },
-    {
-        label: 'Telegram',
-        href: 'https://telegram.org',
-        external: true
-    }
-];
-
 const AboutSocialFooter = () => {
+    const [socialItems, setSocialItems] = useState([]);
+
+    useEffect(() => {
+        const loadSocials = async () => {
+            try {
+                const data = await fetchAboutData();
+                setSocialItems(data.socials || []);
+            } catch (err) {
+                console.error("Failed to fetch social links for footer", err);
+            }
+        };
+        loadSocials();
+    }, []);
     return (
         <footer className="about-social-footer">
                 <div className="about-social-footer-inner">

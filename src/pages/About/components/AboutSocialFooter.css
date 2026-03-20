@@ -111,17 +111,32 @@
     .about-social-footer-inner {
         align-items: flex-start;
         flex-direction: column;
+        gap: 2rem;
     }
 
     .about-social-footer-actions {
         width: 100%;
-        align-items: flex-start;
+        align-items: stretch;
         justify-content: flex-start;
         flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .about-social-footer-cta {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        font-size: 0.72rem;
     }
 
     .about-social-footer-links {
         width: 100%;
+        justify-content: flex-start;
+        gap: 0.6rem;
+    }
+
+    .about-social-footer-link {
+        font-size: 0.65rem;
+        padding: 0.5rem 0.8rem;
     }
 }
 

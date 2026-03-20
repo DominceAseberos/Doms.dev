@@ -226,99 +226,64 @@ async function fetchRepos() {
     return loaded;
 }
 
-async function fetchLatestCommit() {
-    const cacheKey = `/functions/latest-commit/${USERNAME || 'me'}`;
+async function fetchRecentCommits() {
+    const cacheKey = `/functions/recent-commits/${USERNAME || 'me'}`;
     const cached = cacheGet(cacheKey);
     if (cached) return cached;
 
-    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-        try {
-            const res = await fetch(`${SUPABASE_URL}/functions/v1/latest-commit`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                },
-            });
-
-            if (res.ok) {
-                const data = await res.json();
-                if (data?.latestCommit) {
-                    cacheSet(cacheKey, data.latestCommit);
-                    return data.latestCommit;
-                }
-            }
-        } catch (_) {}
-    }
+    let allCommits = [];
 
     if (TOKEN) {
         const ownedRepos = await ghFetch('/user/repos?visibility=all&affiliation=owner&sort=pushed&per_page=20');
-        if (!Array.isArray(ownedRepos) || !ownedRepos.length) return null;
+        if (Array.isArray(ownedRepos) && ownedRepos.length) {
+            const ownLogin = String(USERNAME || '').toLowerCase();
+            const repos = ownedRepos
+                .filter(repo => !repo?.fork)
+                .filter(repo => (repo?.owner?.login || '').toLowerCase() === ownLogin)
+                .slice(0, 8);
 
-        const ownLogin = String(USERNAME || '').toLowerCase();
-        const repos = ownedRepos
-            .filter(repo => !repo?.fork)
-            .filter(repo => (repo?.owner?.login || '').toLowerCase() === ownLogin)
-            .slice(0, 12);
-
-        const commitsByRepo = await Promise.all(
-            repos.map(async repo => {
-                try {
-                    const rows = await ghFetch(
-                        `/repos/${repo.full_name}/commits?per_page=1`
-                    );
-                    if (!Array.isArray(rows) || !rows.length) return null;
-                    const item = rows[0];
-                    const date = item?.commit?.author?.date || item?.commit?.committer?.date;
-                    if (!item?.sha || !date) return null;
-                    return {
-                        message: item?.commit?.message || 'No commit message',
-                        repo: repo.full_name,
-                        sha: item.sha,
-                        time: date,
-                        url: item?.html_url || `https://github.com/${repo.full_name}/commit/${item.sha}`,
-                    };
-                } catch (_) {
-                    return null;
+            const commitsByRepo = await Promise.all(
+                repos.map(async repo => {
+                    try {
+                        const rows = await ghFetch(`/repos/${repo.full_name}/commits?per_page=3`);
+                        if (!Array.isArray(rows)) return [];
+                        return rows.map(item => ({
+                            message: item?.commit?.message || 'No commit message',
+                            repo: repo.full_name,
+                            sha: item.sha,
+                            time: item?.commit?.author?.date || item?.commit?.committer?.date,
+                            url: item?.html_url || `https://github.com/${repo.full_name}/commit/${item.sha}`,
+                        }));
+                    } catch (_) { return []; }
+                })
+            );
+            allCommits = commitsByRepo.flat().filter(Boolean);
+        }
+    } else {
+        const events = await ghFetch(`/users/${USERNAME}/events/public?per_page=30`);
+        if (Array.isArray(events)) {
+            events.forEach(event => {
+                if (event?.type === 'PushEvent' && event?.payload?.commits && event?.repo?.name) {
+                    event.payload.commits.forEach(c => {
+                        allCommits.push({
+                            message: c.message || 'No commit message',
+                            repo: event.repo.name,
+                            sha: c.sha,
+                            time: event.created_at,
+                            url: `https://github.com/${event.repo.name}/commit/${c.sha}`,
+                        });
+                    });
                 }
-            })
-        );
-
-        const latest = commitsByRepo
-            .filter(Boolean)
-            .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())[0] || null;
-
-        if (latest) cacheSet(cacheKey, latest);
-        return latest;
+            });
+        }
     }
 
-    const events = await ghFetch(`/users/${USERNAME}/events/public?per_page=30`);
-    if (!Array.isArray(events)) return null;
+    const sorted = allCommits
+        .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+        .slice(0, 3);
 
-    const pushEvent = events.find(event => (
-        event?.type === 'PushEvent' &&
-        event?.payload?.commits &&
-        event.payload.commits.length > 0 &&
-        event?.repo?.name
-    ));
-
-    if (!pushEvent) return null;
-
-    const commits = pushEvent.payload.commits;
-    const latest = commits[commits.length - 1];
-    if (!latest?.sha) return null;
-
-    const commitData = {
-        message: latest.message || 'No commit message',
-        repo: pushEvent.repo.name,
-        sha: latest.sha,
-        time: pushEvent.created_at,
-        url: `https://github.com/${pushEvent.repo.name}/commit/${latest.sha}`,
-    };
-
-    cacheSet(cacheKey, commitData);
-    return commitData;
+    if (sorted.length) cacheSet(cacheKey, sorted);
+    return sorted;
 }
 
 const GithubContributionSection = () => {
@@ -327,13 +292,7 @@ const GithubContributionSection = () => {
     const iframeReadyRef = useRef(false);
     const [status, setStatus] = useState('Loading your constellation…');
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const [latestCommit, setLatestCommit] = useState(null);
-
-    const latestRepoUrl = latestCommit?.repo ? `https://github.com/${latestCommit.repo}` : '';
-    const latestCommitUrl = latestCommit?.url
-        || (latestCommit?.repo && latestCommit?.sha
-            ? `https://github.com/${latestCommit.repo}/commit/${latestCommit.sha}`
-            : '');
+    const [recentCommits, setRecentCommits] = useState([]);
 
     function postDataToIframe() {
         if (!iframeReadyRef.current) return;
@@ -353,18 +312,18 @@ const GithubContributionSection = () => {
         setIsRefreshing(true);
 
         try {
-            const [repos, latest] = await Promise.all([
+            const [repos, commits] = await Promise.all([
                 fetchRepos(),
-                fetchLatestCommit().catch(() => null),
+                fetchRecentCommits().catch(() => []),
             ]);
             reposRef.current = repos;
-            setLatestCommit(latest);
+            setRecentCommits(commits);
             saveSnapshot(repos);
             setStatus('');
             postDataToIframe();
         } catch (err) {
             reposRef.current = [];
-            setLatestCommit(null);
+            setRecentCommits([]);
             setStatus('Could not load live data: ' + err.message);
             postDataToIframe();
         } finally {
@@ -379,9 +338,9 @@ const GithubContributionSection = () => {
             reposRef.current = snapshot;
             setStatus('');
             postDataToIframe();
-            fetchLatestCommit()
-                .then((latest) => setLatestCommit(latest))
-                .catch(() => setLatestCommit(null));
+            fetchRecentCommits()
+                .then((commits) => setRecentCommits(commits))
+                .catch(() => setRecentCommits([]));
             return;
         }
 
@@ -463,33 +422,37 @@ const GithubContributionSection = () => {
 
                 <div className="gc-commit-card">
                     <div className="gc-card-eyebrow">Live Activity</div>
-                    <h3 className="gc-card-title">Latest Commit</h3>
-                    {latestCommit ? (
-                        <>
-                            <div className="gc-commit-repo">
-                                <span className="gc-commit-dot" />
-                                <a
-                                    href={latestRepoUrl}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="gc-commit-repo-link"
-                                >
-                                    {latestCommit.repo}
-                                </a>
-                            </div>
-                            <p className="gc-commit-message">{latestCommit.message.split('\n')[0]}</p>
-                            <a
-                                href={latestCommitUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="gc-card-cta"
-                            >
-                                View Commit <span className="gc-cta-arrow">↗</span>
-                            </a>
-                        </>
-                    ) : (
-                        <p className="gc-commit-unavailable">Fetching latest activity…</p>
-                    )}
+                    <h3 className="gc-card-title">Recent Commits</h3>
+                    <div className="gc-commits-list">
+                        {recentCommits.length > 0 ? (
+                            recentCommits.map((commit, idx) => (
+                                <div key={commit.sha || idx} className="gc-commit-item">
+                                    <div className="gc-commit-repo">
+                                        <span className="gc-commit-dot" />
+                                        <a
+                                            href={`https://github.com/${commit.repo}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="gc-commit-repo-link"
+                                        >
+                                            {commit.repo}
+                                        </a>
+                                    </div>
+                                    <p className="gc-commit-message">{commit.message.split('\n')[0]}</p>
+                                    <a
+                                        href={commit.url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="gc-card-cta"
+                                    >
+                                        View Commit <span className="gc-cta-arrow">↗</span>
+                                    </a>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="gc-commit-unavailable">Fetching latest activity…</p>
+                        )}
+                    </div>
                 </div>
             </div>
         </section>

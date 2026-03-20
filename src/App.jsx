@@ -11,6 +11,7 @@ import AboutPage from './pages/About/index';
 import ContactPage from './pages/Contact/index';
 import LabPage from './pages/Lab/index';
 import LandingEditor from './pages/admin/LandingEditor';
+import AboutEditor from './pages/admin/AboutEditor';
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
 import useThemeStore from './store/useThemeStore';
@@ -56,6 +57,7 @@ function App() {
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/lab" element={<LabPage />} />
                         <Route path="/admin/landing" element={<LandingEditor />} />
+                        <Route path="/admin/about" element={<AboutEditor />} />
                         <Route path="/admin/projects" element={<ProjectEditor />} />
                         <Route path="/admin/projects/:projectId" element={<ProjectDetailsPage isAdmin={true} />} />
                     </Routes>

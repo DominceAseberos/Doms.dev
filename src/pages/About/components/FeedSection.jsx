@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import posts from '../../../data/feedPosts.json';
+import { fetchFeedPosts } from '../../../shared/feedService';
 import './FeedSection.css';
 
 const MOBILE_LIST_LIMIT = 4;
@@ -19,13 +19,27 @@ const formatDate = (value) => {
 };
 
 const FeedSection = () => {
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        const loadPosts = async () => {
+            try {
+                const data = await fetchFeedPosts();
+                setPosts(data || []);
+            } catch (err) {
+                console.error("Failed to fetch feed posts", err);
+            }
+        };
+        loadPosts();
+    }, []);
+
     const sortedPosts = useMemo(() => {
         if (!Array.isArray(posts)) {
             return [];
         }
 
         return [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    }, []);
+    }, [posts]);
 
     const hasPosts = sortedPosts.length > 0;
     const recentPost = hasPosts ? sortedPosts[0] : null;

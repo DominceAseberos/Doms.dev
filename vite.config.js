@@ -13,7 +13,7 @@ const writeJsonPlugin = () => ({
 
       const url = new URL(req.url, `http://${req.headers.host}`);
       const fileName = url.searchParams.get('file');
-      const allowedFiles = ['portfolioData.json', 'landingData.json'];
+      const allowedFiles = ['portfolioData.json', 'landingData.json', 'aboutData.json', 'feedPosts.json'];
 
       if (!fileName || !allowedFiles.includes(fileName)) {
         res.writeHead(400).end('Invalid or missing file parameter');

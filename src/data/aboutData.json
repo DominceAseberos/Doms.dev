@@ -1,0 +1,36 @@
+{
+    "resume": "",
+    "cv": "/resume.pdf",
+    "socials": [
+        {
+            "label": "Facebook",
+            "href": "https://facebook.com",
+            "external": true
+        },
+        {
+            "label": "Instagram",
+            "href": "https://instagram.com",
+            "external": true
+        },
+        {
+            "label": "LinkedIn",
+            "href": "https://linkedin.com",
+            "external": true
+        },
+        {
+            "label": "X",
+            "href": "https://x.com",
+            "external": true
+        },
+        {
+            "label": "Telegram",
+            "href": "https://telegram.org",
+            "external": true
+        },
+        {
+            "label": "EMAIL",
+            "href": "",
+            "external": true
+        }
+    ]
+}

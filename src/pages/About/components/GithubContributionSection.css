@@ -210,11 +210,30 @@
 }
 
 /* Commit card */
+.gc-commits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 0.2rem;
+}
+
+.gc-commit-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid rgba(120, 180, 255, 0.08);
+}
+
+.gc-commit-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
 .gc-commit-repo {
     display: flex;
     align-items: center;
     gap: 0.45rem;
-    margin-top: 0.1rem;
 }
 
 .gc-commit-dot {
@@ -227,7 +246,7 @@
 }
 
 .gc-commit-repo-link {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: rgba(160, 210, 255, 0.95);
@@ -237,13 +256,15 @@
 
 .gc-commit-message {
     margin: 0;
-    font-size: 0.92rem;
-    line-height: 1.6;
+    font-size: 0.88rem;
+    line-height: 1.5;
     color: var(--gc-message-color);
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    letter-spacing: 0.01em;
 }
 
 .gc-commit-unavailable {

@@ -84,6 +84,25 @@ const EducationSection = () => {
                             <p className="es-degree-text text-sm md:text-base uppercase tracking-[0.12em] font-medium">
                                 Bachelor of Science in Computer Science
                             </p>
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                {[
+                                    'SOLID Principles',
+                                    'Software Engineering',
+                                    'Machine Learning',
+                                    'NLP',
+                                    'Mobile Development',
+                                    'Data Structures & Algorithms',
+                                    'OOP',
+                                    'Distributed Systems',
+                                    'Software Architecture',
+                                    'Web Development',
+                                    'Java Fundamentals'
+                                ].map((skill) => (
+                                    <span key={skill} className="ui-pill px-3 py-1 rounded-full text-[10px] md:text-xs">
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>

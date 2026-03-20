@@ -5,10 +5,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import DisplayName from './DisplayName';
 import ProfileMorphCard from './ProfileMorphCard';
 import { FiGithub } from 'react-icons/fi';
+import { fetchAboutData } from '../shared/aboutService';
 import useLoadingStore from '../store/useLoadingStore';
 import useThemeStore from '../store/useThemeStore';
 import humanPortrait from '../assets/human-cutout.png';
 import animePortrait from '../assets/anime-cutout.png';
+import './AboutSection.css';
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -27,6 +29,20 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
     const isLoading = useLoadingStore((state) => state.isLoading);
     const theme = useThemeStore((state) => state.theme);
     const isLight = theme === 'light';
+
+    const [aboutData, setAboutData] = useState({ resume: '/resume.pdf', cv: '/resume.pdf' });
+
+    useEffect(() => {
+        const loadAbout = async () => {
+            try {
+                const data = await fetchAboutData();
+                setAboutData(data);
+            } catch (err) {
+                console.error("Failed to fetch about data for AboutSection", err);
+            }
+        };
+        loadAbout();
+    }, []);
 
     useLayoutEffect(() => {
         if (isLoading) return;
@@ -141,16 +157,16 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                         </span>
                                     ))}
                                 </div>
-                                <div className="pt-2 flex flex-wrap gap-4">
+                                <div className="about-hero-actions pt-2">
                                     <a
-                                        href="/resume.pdf"
+                                        href={aboutData.resume}
                                         download
                                         className="btn-primary"
                                     >
                                         Download Resume
                                     </a>
                                     <a
-                                        href="/resume.pdf"
+                                        href={aboutData.cv}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="btn-ghost"
@@ -161,10 +177,10 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                                         href="https://github.com/Domince07"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="btn-ghost !p-0 !flex items-center justify-center w-[58px] h-[58px]"
+                                        className="btn-ghost btn-github"
                                         aria-label="GitHub Profile"
                                     >
-                                        <FiGithub size={24} />
+                                        <FiGithub size={20} />
                                     </a>
                                 </div>
                             </div>
