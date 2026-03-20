@@ -10,6 +10,7 @@ import ProjectDetailsPage from './pages/Projects/components/ProjectDetailsPage';
 import AboutPage from './pages/About/index';
 import ContactPage from './pages/Contact/index';
 import LabPage from './pages/Lab/index';
+import NotFoundPage from './pages/NotFound/index';
 // Admin pages — dev only, excluded from production bundle
 const LandingEditor  = import.meta.env.DEV ? lazy(() => import('./pages/admin/LandingEditor'))  : null;
 const AboutEditor    = import.meta.env.DEV ? lazy(() => import('./pages/admin/AboutEditor'))    : null;
@@ -58,6 +59,8 @@ function App() {
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/lab" element={<LabPage />} />
+                        {/* Catch-all 404 route */}
+                        <Route path="*" element={<NotFoundPage />} />
                         {import.meta.env.DEV && LandingEditor && (
                             <Route path="/admin/landing" element={<Suspense fallback={null}><LandingEditor /></Suspense>} />
                         )}
