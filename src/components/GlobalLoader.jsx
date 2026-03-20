@@ -25,7 +25,7 @@ const GlobalLoader = () => {
 
     return (
         <div
-            className={`flex items-center justify-center min-h-screen bg-[#0a0f1a] transition-opacity duration-500 z-50 fixed inset-0 ${fade ? 'opacity-0' : 'opacity-100'}`}
+            className={`flex items-center justify-center min-h-screen bg-[var(--bg)] transition-opacity duration-500 z-50 fixed inset-0 ${fade ? 'opacity-0' : 'opacity-100'}`}
         >
             <AnimatedLogo />
         </div>
