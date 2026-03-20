@@ -7,6 +7,7 @@ import useThemeStore from '../../../store/useThemeStore';
 import portfolioDataImport from '../../../data/portfolioData.json';
 import ProjectTemplate from '../templates/ProjectTemplate';
 import { saveProjectContent, fetchPortfolioData } from '../../../shared/portfolioService';
+import NotFoundPage from '../../NotFound/index';
 import './ProjectDetailsPage.css';
 
 const ProjectDetailsPage = ({ isAdmin = false }) => {
@@ -17,11 +18,13 @@ const ProjectDetailsPage = ({ isAdmin = false }) => {
 
     // Initial project state from the JSON import
     const [projectDraft, setProjectDraft] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
 
     // Sync from disk on mount to ensure we have the most up-to-date content
     useEffect(() => {
         const fetchProject = async () => {
+            setLoading(true);
             try {
                 const data = await fetchPortfolioData();
                 const found = data.projects.find(p => p.id === projectId);
@@ -30,6 +33,8 @@ const ProjectDetailsPage = ({ isAdmin = false }) => {
                 // Fallback to import if fetch fails
                 const found = portfolioDataImport.projects.find(p => p.id === projectId);
                 if (found) setProjectDraft(found);
+            } finally {
+                setLoading(false);
             }
         };
         fetchProject();
@@ -86,13 +91,12 @@ const ProjectDetailsPage = ({ isAdmin = false }) => {
         return () => ctx.revert();
     }, [projectId]);
 
+    if (loading) {
+        return null; // Let GlobalLoader handle the initial wait if necessary
+    }
+
     if (!projectDraft) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-screen text-white">
-                <h2>Project Loading or Not Found</h2>
-                <Link to="/projects" className="mt-4 text-[#c8ff3e] underline">Back to Projects</Link>
-            </div>
-        );
+        return <NotFoundPage />;
     }
 
     // Render universal template
