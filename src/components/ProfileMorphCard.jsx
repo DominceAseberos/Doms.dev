@@ -1,9 +1,12 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
 import gsap from 'gsap';
+import useThemeStore from '../store/useThemeStore';
 
 const DEBRIS_COUNT = 4;
 
 const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime.png', alt = 'Profile portrait' }) => {
+    const theme = useThemeStore((state) => state.theme);
+    const isLight = theme === 'light';
     const stageRef = useRef(null);
     const dotRef = useRef(null);
     const maskCircleRef = useRef(null);
@@ -106,7 +109,11 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
     }, []);
 
     return (
-        <div ref={stageRef} className="relative w-full h-full overflow-hidden rounded-2xl border border-[#d4f53c]/30 bg-black/50 backdrop-blur-sm" style={{ cursor: 'none' }}>
+        <div 
+            ref={stageRef} 
+            className={`relative w-full h-full overflow-hidden rounded-2xl border ${isLight ? 'border-[rgba(0,0,0,0.08)] bg-[#E6F7D9]' : 'border-[#d4f53c]/30 bg-black/50 backdrop-blur-sm'}`} 
+            style={{ cursor: 'none' }}
+        >
             <div className="absolute inset-0 z-[1]">
                 <img
                     src={realSrc}
