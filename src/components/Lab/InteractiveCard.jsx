@@ -38,10 +38,10 @@ const InteractiveCard = ({ children, className = "", containerClassName = "" }) 
     }
 
     return (
-        <div className={`relative ${containerClassName}`}>
+        <div className={`relative w-full ${containerClassName}`}>
             <div
                 ref={cardRef}
-                className={`relative w-full aspect-[4/3] rounded-3xl shadow-lg transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer ${isLight ? 'bg-[#f6f7fa]' : 'bg-[var(--surface)]'} ${className}`}
+                className={`relative w-full aspect-[4/3] rounded-3xl transition-transform duration-200 ease-out flex items-center justify-center overflow-hidden group cursor-pointer ${isLight ? 'bg-[#f8fafc] border border-[rgba(0,0,0,0.05)] shadow-2xl' : 'bg-[#1a1c1e] border border-[rgba(255,255,255,0.08)] shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_rgba(200,255,62,0.02)]'} ${className}`}
                 style={{
                     transform: isHovered
                         ? `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`

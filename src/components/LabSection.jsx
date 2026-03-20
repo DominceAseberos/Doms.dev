@@ -15,10 +15,10 @@ const LabSection = () => {
     const tagsRef = useRef([]);
 
     const tags = [
-        { label: "UI Components", x: "10%", y: "20%" },
-        { label: "Prototypes", x: "85%", y: "15%" },
-        { label: "Interactive Tools", x: "15%", y: "75%" },
-        { label: "Design Systems", x: "80%", y: "80%" }
+        { label: "UI Components", x: "12%", y: "22%" },
+        { label: "Prototypes", x: "78%", y: "18%" },
+        { label: "Interactive Tools", x: "18%", y: "72%" },
+        { label: "Design Systems", x: "75%", y: "78%" }
     ];
 
     useLayoutEffect(() => {
@@ -42,14 +42,22 @@ const LabSection = () => {
                             scrub: 1,
                             anticipatePin: 1,
                             onRefresh: self => {
-                                if (self.spacer) self.spacer.style.backgroundColor = "#505255";
+                                if (self.spacer) self.spacer.style.backgroundColor = isLight ? "#e6f7d9" : "#505255";
                             }
                         }
                     });
 
-                    // Animate tags one by one
+                    // Animate tags one by one - starting from their individual positions
                     tagsRef.current.forEach((tag, i) => {
                         const targetPos = tags[i];
+                        // Set initial spread-out positions before animation starts
+                        gsap.set(tag, {
+                            left: i % 2 === 0 ? "0%" : "100%",
+                            top: i < 2 ? "0%" : "100%",
+                            opacity: 0,
+                            scale: 0.5
+                        });
+
                         tl.to(tag, {
                             opacity: 1,
                             scale: 1,
@@ -57,7 +65,7 @@ const LabSection = () => {
                             top: targetPos.y,
                             duration: 0.5,
                             ease: "back.out(1.7)"
-                        }, i / tags.length); // Spaced out along the scrub
+                        }, i / tags.length);
                     });
 
                 } else if (isMobileOrTablet && rightColRef.current) {
@@ -71,7 +79,7 @@ const LabSection = () => {
                             scrub: 1,
                             anticipatePin: 1,
                             onRefresh: self => {
-                                if (self.spacer) self.spacer.style.backgroundColor = "#505255";
+                                if (self.spacer) self.spacer.style.backgroundColor = isLight ? "#e6f7d9" : "#505255";
                             }
                         }
                     });
@@ -151,7 +159,7 @@ const LabSection = () => {
                         </div>
 
                     {/* Right Side: Magnetic Preview Card */}
-                    <div ref={rightColRef} className="w-full lg:w-1/2 flex justify-center lg:justify-end relative">
+                    <div ref={rightColRef} className="w-full lg:w-1/2 flex justify-center relative min-h-[400px]">
                         {/* Floating Tags */}
                         {tags.map((tag, i) => (
                             <div
@@ -165,7 +173,8 @@ const LabSection = () => {
                         ))}
 
                         <InteractiveCard 
-                            className="max-w-[500px]"
+                            containerClassName="max-w-[500px]"
+                            className="w-full"
                         >
                             {/* Animated Abstract Preview Graphic */}
                             <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center ${isLight ? 'bg-white/10' : 'bg-black/20'} group-hover:bg-black/10 transition-colors duration-500`}>

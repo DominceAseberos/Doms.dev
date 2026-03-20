@@ -152,11 +152,19 @@ const CityscapeContact = () => {
   // ── Auto-start animation when loading finishes ──────────────────────────
   useEffect(() => {
     if (!isAppLoading && !hasStartedRef.current) {
-      hasStartedRef.current = true;
-      const id = setTimeout(() => triggerBuild(), 300);
+      const checkAndRun = () => {
+        if (svgRef.current) {
+          hasStartedRef.current = true;
+          triggerBuild();
+        } else {
+          const timeoutId = setTimeout(checkAndRun, 100);
+          timersRef.current.push(timeoutId);
+        }
+      };
+      
+      const id = setTimeout(checkAndRun, 300);
       timersRef.current.push(id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAppLoading, triggerBuild]);
 
 
@@ -198,7 +206,6 @@ const CityscapeContact = () => {
 
           {/* Left: form fields */}
           <div className="cc-form-left">
-            <span className="cc-form-tag">01 &nbsp;READY</span>
             <h2 className="cc-form-title">
               Let's Build<br />
               <span className="cc-form-title-accent">&amp;</span> Launch
