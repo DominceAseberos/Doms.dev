@@ -483,6 +483,7 @@
     top: 0;
     height: 100vh;
     overflow: hidden;
+    order: 2; /* Ensure it stays on the right in the grid */
 }
 
 .ep-image::after {
@@ -496,11 +497,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 80px 72px;
+    padding: 100px 80px;
     gap: 0;
     position: relative;
     z-index: 1;
     min-height: 100vh;
+    order: 1; /* Details on the left */
 }
 
 .ep-tag {

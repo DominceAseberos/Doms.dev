@@ -28,7 +28,7 @@ const projects = (portfolioData?.projects || [])
         ...p, // Spread all properties so new button logic works seamlessly
         title: p.title,
         type: p.projectType,
-        desc: `${p.shortDescription}\n\n${p.fullDocumentation || ''}`,
+        desc: p.shortDescription || '',
         tech: p.stacks || [],
         colors: theme.colors,
         glow: theme.glow,

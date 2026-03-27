@@ -19,9 +19,8 @@ const ExpandedProjectOverlay = ({ project, onClose }) => {
         <>
             <button className="ep-close" onClick={onClose}>✕</button>
             <div className={`ep-inner ${isLight ? 'ep-inner-light' : 'ep-inner-dark'}`}> 
-                <span className="ep-tag">Project</span>
+                <span className="ep-tag">{project.projectType || 'Project'}</span>
                 <h2 className={`ep-title ${isLight ? 'ep-title-light' : ''}`}>{project.title}</h2>
-                <p className={`ep-type ${isLight ? 'ep-type-light' : ''}`}>{project.type}</p>
                 <div className="ep-divider" />
                 <div className="ep-desc-markdown">
                     <ReactMarkdown>{project.desc || ''}</ReactMarkdown>
@@ -32,18 +31,12 @@ const ExpandedProjectOverlay = ({ project, onClose }) => {
                     ))}
                 </div>
                 <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                    {/* Primary Button */}
-                    {primaryUrl.startsWith('/') ? (
-                        <Link to={primaryUrl} className="ep-cta" onClick={onClose}>
-                            <FiExternalLink size={16} /> {primaryLabel}
-                        </Link>
-                    ) : (
-                        <a href={primaryUrl} target="_blank" rel="noopener noreferrer" className="ep-cta">
-                            <FiExternalLink size={16} /> {primaryLabel}
-                        </a>
-                    )}
-                    
-                    {/* Secondary Button */}
+                    {/* Full Case Study Link */}
+                    <Link to={`/projects/${project.id}`} className="ep-cta" onClick={onClose}>
+                        <FiExternalLink size={16} /> View Full Case Study
+                    </Link>
+
+                    {/* Secondary Link (Live) */}
                     {secondaryUrl && (
                         secondaryUrl.startsWith('/') ? (
                             <Link to={secondaryUrl} className={`ep-cta ep-cta-secondary${isLight ? ' ep-cta-secondary-light' : ''}`} style={isLight ? { background: 'transparent', border: '1px solid #232726', color: '#232726' } : { background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} onClick={onClose}>
@@ -52,19 +45,6 @@ const ExpandedProjectOverlay = ({ project, onClose }) => {
                         ) : (
                             <a href={secondaryUrl} target="_blank" rel="noopener noreferrer" className={`ep-cta ep-cta-secondary${isLight ? ' ep-cta-secondary-light' : ''}`} style={isLight ? { background: 'transparent', border: '1px solid #232726', color: '#232726' } : { background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
                                 <FiExternalLink size={16} /> {secondaryLabel}
-                            </a>
-                        )
-                    )}
-
-                    {/* GitHub Button */}
-                    {githubUrl && (
-                        githubUrl.startsWith('/') ? (
-                            <Link to={githubUrl} className={`ep-cta ep-cta-secondary${isLight ? ' ep-cta-secondary-light' : ''}`} style={isLight ? { background: 'transparent', border: '1px solid #232726', color: '#232726' } : { background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }} onClick={onClose}>
-                                <FiGithub size={16} /> {githubLabel}
-                            </Link>
-                        ) : (
-                            <a href={githubUrl} target="_blank" rel="noopener noreferrer" className={`ep-cta ep-cta-secondary${isLight ? ' ep-cta-secondary-light' : ''}`} style={isLight ? { background: 'transparent', border: '1px solid #232726', color: '#232726' } : { background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff' }}>
-                                <FiGithub size={16} /> {githubLabel}
                             </a>
                         )
                     )}
@@ -77,7 +57,7 @@ const ExpandedProjectOverlay = ({ project, onClose }) => {
                         style={{ borderTop: isLight ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)' }}
                     >
                         <ContentBuilder 
-                            sections={project.contentSections.slice(0, 2)}
+                            sections={project.contentSections.slice(0, 3)}
                             onUpdateSections={() => {}}
                             isAdminPreview={false}
                             projectId={project.id}
