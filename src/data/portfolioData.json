@@ -5,53 +5,80 @@
     ],
     "projects": [
         {
-            "id": "project-1773894133919",
-            "title": "testing",
-            "shortDescription": "testing featuer tunnel",
+            "id": "project-1774573315239",
+            "title": "Kernel",
+            "shortDescription": "A sophisticated React-based framework designed for immersive, scroll-driven storytelling. KERNEL blends a \"Terminal-Glass\" aesthetic with elite performance, featuring seamless GSAP orchestration and a signature boot-sequence entry.",
             "images": [],
-            "projectType": "CASE STUDY",
-            "mainImage": "/assets/uploads/project-1773894133919/imgs/1773899211199-store.jpg",
+            "projectType": "LANDING PAGE",
+            "mainImage": "/assets/uploads/project-1774573315239/imgs/1774575777662-kerne-hero.webp",
             "galleryImages": [],
             "assets": {
                 "desktop": "",
                 "tablet": "",
                 "mobile": ""
             },
-            "featuredInTunnel": true,
-            "desktopImage": "",
+            "liveUrl": "https://kernelprism.vercel.app/",
+            "githubUrl": "https://github.com/DominceAseberos/Kernel",
+            "desktopImage": "/assets/uploads/project-1774573315239/imgs/1774573363416-kerne-hero.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-1774573315239/imgs/1774573376029-about.webp",
+                "/assets/uploads/project-1774573315239/imgs/1774573381445-project.webp",
+                "/assets/uploads/project-1774573315239/imgs/1774573386213-footer.webp"
+            ],
             "contentSections": [
                 {
-                    "id": "id-jyf1gtxqb",
-                    "sectionTitle": "ABOUT",
+                    "id": "id-nsx7imqne",
+                    "sectionTitle": "Project Identity",
                     "layout": "full",
                     "columns": [
                         {
-                            "id": "id-z45mlosvj",
-                            "columnTitle": "TESTING",
+                            "id": "id-3rlde2rm5",
+                            "columnTitle": "KERNEL is a high-end digital manifestation of the \"Prism & Glass\" aesthetic. It is designed as a sophisticated React-baed framework for immersive, scroll-driven storytelling, blending technical precision with cinematic fluid motion.",
                             "blocks": []
                         }
                     ]
                 },
                 {
-                    "id": "id-9xgwqaw72",
-                    "sectionTitle": "FULL DOCS",
-                    "layout": "2-equal",
+                    "id": "id-slporih55",
+                    "sectionTitle": "Design System",
+                    "layout": "full",
                     "columns": [
                         {
-                            "id": "id-cdvzhqhjv",
-                            "columnTitle": "why",
+                            "id": "id-89s2d65f8",
+                            "columnTitle": "Typography",
                             "blocks": []
+                        }
+                    ]
+                },
+                {
+                    "id": "id-105sypump",
+                    "sectionTitle": "New Section",
+                    "layout": "2-stack",
+                    "columns": [
+                        {
+                            "id": "id-s6q347zm2",
+                            "columnTitle": "Column 1",
+                            "blocks": [
+                                {
+                                    "id": "id-4qlz6unr9",
+                                    "type": "text"
+                                },
+                                {
+                                    "id": "id-hqreoic7a",
+                                    "type": "heading",
+                                    "color": "#ff0000",
+                                    "content": "sadadasdasdas"
+                                }
+                            ]
                         },
                         {
-                            "id": "id-ifxlegaq1",
-                            "columnTitle": "how",
+                            "id": "id-cv5y8m136",
+                            "columnTitle": "Column 2",
                             "blocks": []
                         }
                     ]
                 }
-            ],
-            "githubUrl": "https://github.com/",
-            "liveUrl": "asdasd"
+            ]
         }
     ],
     "customCategories": [

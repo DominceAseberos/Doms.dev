@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FiPlus, FiTrash2, FiArrowUp, FiArrowDown, FiImage } from 'react-icons/fi';
 import { EditableText } from '../EditableText';
 import { LayoutPicker } from './LayoutPicker';
@@ -13,7 +13,8 @@ const BLOCK_TYPES = [
     { type: 'image', label: 'Local Image' },
     { type: 'chips', label: 'Tech Stack/Chips' },
     { type: 'metric', label: 'Metric/Stat' },
-    { type: 'link', label: 'Button/Link' }
+    { type: 'link', label: 'Button/Link' },
+    { type: 'color-palette', label: 'Color Palette' }
 ];
 
 const getGridClass = (layout) => {
@@ -37,38 +38,135 @@ const getInitialColumns = (layout) => {
     }));
 };
 
-const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId }) => {
-    const { theme } = useThemeStore();
-    const isLight = theme === 'light';
+const getFontStyle = (b) => {
+    const styles = {};
+    if (!b) return styles;
+    if (b.fontSize) {
+        const sizes = {
+            'xs': '0.75rem',
+            'sm': '0.875rem',
+            'base': '1rem',
+            'lg': '1.125rem',
+            'xl': '1.25rem',
+            '2xl': '1.5rem',
+            '3xl': '1.875rem'
+        };
+        styles.fontSize = sizes[b.fontSize] || b.fontSize;
+    }
+    if (b.fontWeight) styles.fontWeight = b.fontWeight;
+    if (b.fontStyle) styles.fontStyle = b.fontStyle;
+    if (b.color) styles.color = b.color;
+    return styles;
+};
 
-    const Wrapper = ({ children }) => (
-        <div className="relative group/block mb-4 last:mb-0">
+const ToolbarWrapper = ({ children, block, onChange, onDelete, isAdminPreview, isLight, activeBlockId, id }) => {
+    const [localColor, setLocalColor] = useState(block.color || (isLight ? '#000000' : '#ffffff'));
+    const timeoutRef = useRef(null);
+
+    useEffect(() => {
+        setLocalColor(block.color || (isLight ? '#000000' : '#ffffff'));
+    }, [block.color, isLight]);
+
+    const handleColorChange = (e) => {
+        const newColor = e.target.value;
+        setLocalColor(newColor);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+            onChange({ color: newColor });
+        }, 150);
+    };
+
+    return (
+        <div className="relative mb-4 last:mb-0 group/blockwrapper">
             {children}
             {isAdminPreview && (
-                <button 
-                    onClick={onDelete}
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover/block:opacity-100 transition-opacity z-10 shadow-lg"
-                    title="Delete Block"
-                >
-                    ×
-                </button>
+                <>
+                    <div className={`absolute -top-10 -right-2 flex items-center gap-1 transition-all z-20 ${activeBlockId === id ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}>
+                        {(block.type === 'heading' || block.type === 'text' || block.type === 'section-title' || block.type === 'column-title' || block.type === 'list') && (
+                            <div className={`p-1 rounded-lg shadow-xl flex items-center gap-1 border ${isLight ? 'bg-white border-black/10' : 'bg-[#1a1a1a] border-white/10'}`}>
+                                <select 
+                                    value={block.fontSize || 'base'}
+                                    onChange={(e) => onChange({ fontSize: e.target.value })}
+                                    className="bg-transparent text-[10px] font-bold outline-none cursor-pointer px-1"
+                                >
+                                    <option value="xs">XS</option>
+                                    <option value="sm">SM</option>
+                                    <option value="base">BASE</option>
+                                    <option value="lg">LG</option>
+                                    <option value="xl">XL</option>
+                                    <option value="2xl">2XL</option>
+                                    <option value="3xl">3XL</option>
+                                </select>
+                                <div className={`w-px h-3 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                                <button 
+                                    onClick={() => onChange({ fontWeight: block.fontWeight === 'bold' ? 'normal' : 'bold' })}
+                                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold transition-colors ${block.fontWeight === 'bold' ? (isLight ? 'bg-black text-white' : 'bg-[#c8ff3e] text-black') : 'hover:bg-black/5'}`}
+                                >
+                                    B
+                                </button>
+                                <button 
+                                    onClick={() => onChange({ fontStyle: block.fontStyle === 'italic' ? 'normal' : 'italic' })}
+                                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] italic transition-colors ${block.fontStyle === 'italic' ? (isLight ? 'bg-black text-white' : 'bg-[#c8ff3e] text-black') : 'hover:bg-black/5'}`}
+                                >
+                                    I
+                                </button>
+                                <div className={`w-px h-3 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
+                                <div className="relative w-6 h-6 flex items-center justify-center overflow-hidden">
+                                    <input 
+                                        type="color" 
+                                        value={localColor}
+                                        onChange={handleColorChange}
+                                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                                    />
+                                    <div 
+                                        className="w-4 h-4 rounded shadow-sm border border-black/10 pointer-events-none" 
+                                        style={{ backgroundColor: localColor }}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    {id && !id.includes('title') && (
+                        <button 
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onClick={(e) => { e.stopPropagation(); if (onDelete) onDelete(); }}
+                            className="absolute right-0 top-0 -mt-3 -mr-3 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-600 transition-colors z-[25]"
+                            title="Delete Block"
+                        >
+                            <FiTrash2 size={14} />
+                        </button>
+                    )}
+                </>
             )}
         </div>
     );
+};
+
+const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, activeBlockId, onFocus, onBlur }) => {
+    const { theme } = useThemeStore();
+    const isLight = theme === 'light';
 
     if (block.type === 'heading') {
         return (
-            <Wrapper>
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
                 <h3 className="cs-heading-sm">
-                    <EditableText value={block.content || ''} onSave={v => onChange({ content: v })} isAdminPreview={isAdminPreview} placeholder="Heading text..." />
+                    <EditableText 
+                        value={block.content || ''} 
+                        onSave={v => onChange({ content: v })} 
+                        isAdminPreview={isAdminPreview} 
+                        placeholder="Heading text..." 
+                        style={getFontStyle(block)}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                    />
                 </h3>
-            </Wrapper>
+            </ToolbarWrapper>
         );
     }
     
     if (block.type === 'text') {
         return (
-            <Wrapper>
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
                 <EditableText 
                     className="cs-detail-body block w-full" 
                     value={block.content || ''} 
@@ -76,16 +174,19 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId })
                     isAdminPreview={isAdminPreview} 
                     multiline={true} 
                     placeholder="Type markdown or text here..." 
+                    style={getFontStyle(block)}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
                 />
-            </Wrapper>
+            </ToolbarWrapper>
         );
     }
 
     if (block.type === 'list') {
         const items = block.items || [];
         return (
-            <Wrapper>
-                <ul className={`list-disc pl-4 space-y-1 text-sm ${isLight ? 'text-black/70' : 'text-white/60'}`}>
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
+                <ul className={`list-disc pl-4 space-y-1 text-sm ${isLight ? 'text-black/70' : 'text-white/60'}`} style={getFontStyle(block)}>
                     {items.map((item, i) => (
                         <li key={i} className="group/item relative">
                             <EditableText 
@@ -94,8 +195,10 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId })
                                     const next = [...items]; 
                                     next[i] = v; 
                                     onChange({ items: next }); 
-                                }} 
+                                 }} 
                                 isAdminPreview={isAdminPreview} 
+                                onFocus={onFocus}
+                                onBlur={onBlur}
                             />
                             {isAdminPreview && (
                                 <button onClick={() => onChange({ items: items.filter((_, idx) => idx !== i) })} className="absolute -left-6 top-1 text-red-500 opacity-0 group-hover/item:opacity-100">×</button>
@@ -108,14 +211,14 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId })
                         </li>
                     )}
                 </ul>
-            </Wrapper>
+            </ToolbarWrapper>
         );
     }
 
     if (block.type === 'chips') {
         const items = block.items || [];
         return (
-            <Wrapper>
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
                 <div className="cs-chip-wrap">
                     {items.map((item, i) => (
                         <div key={i} className="relative group/chip">
@@ -131,13 +234,13 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId })
                         <button onClick={() => onChange({ items: [...items, "New Tag"] })} className="cs-chip border-dashed opacity-50 hover:opacity-100">+ Add</button>
                     )}
                 </div>
-            </Wrapper>
+            </ToolbarWrapper>
         );
     }
 
     if (block.type === 'metric') {
         return (
-            <Wrapper>
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
                 <div className="flex flex-col">
                     <p className="cs-score-label mb-1">
                         <EditableText value={block.label || 'Label'} onSave={v => onChange({ label: v })} isAdminPreview={isAdminPreview} placeholder="Metric Label" />
@@ -146,13 +249,13 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId })
                         <EditableText value={block.value || '0'} onSave={v => onChange({ value: v })} isAdminPreview={isAdminPreview} placeholder="Value" />
                     </p>
                 </div>
-            </Wrapper>
+            </ToolbarWrapper>
         );
     }
 
     if (block.type === 'link') {
         return (
-            <Wrapper>
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
                 <div className="flex flex-col gap-3 items-start">
                     <a 
                         href={isAdminPreview ? undefined : (block.url || '#')} 
@@ -178,7 +281,62 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId })
                         />
                     )}
                 </div>
-            </Wrapper>
+            </ToolbarWrapper>
+        );
+    }
+
+    if (block.type === 'color-palette') {
+        const colors = block.colors || [];
+        return (
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
+                <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        {colors.map((color, i) => (
+                            <div key={i} className="flex flex-col gap-2 group/color relative">
+                                <div 
+                                    className="aspect-square rounded-xl shadow-inner border border-black/5 overflow-hidden active:scale-95 transition-transform cursor-pointer"
+                                    style={{ backgroundColor: color }}
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(color);
+                                        // Optional: Visual feedback could be added here
+                                    }}
+                                    title="Click to copy color"
+                                />
+                                <div className="flex flex-col">
+                                    <EditableText 
+                                        className="text-[10px] font-mono uppercase tracking-wider opacity-60"
+                                        value={color}
+                                        onSave={v => {
+                                            const next = [...colors];
+                                            next[i] = v;
+                                            onChange({ colors: next });
+                                        }}
+                                        isAdminPreview={isAdminPreview}
+                                    />
+                                </div>
+                                {isAdminPreview && (
+                                    <button 
+                                        onClick={() => onChange({ colors: colors.filter((_, idx) => idx !== i) })}
+                                        className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover/color:opacity-100 transition-opacity"
+                                    >
+                                        ×
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                        {isAdminPreview && (
+                            <button 
+                                onClick={() => onChange({ colors: [...colors, "#000000"] })}
+                                className={`aspect-square rounded-xl border-2 border-dashed flex items-center justify-center text-xl transition-all ${
+                                    isLight ? 'bg-black/5 border-black/10 text-black/20 hover:text-black/40 hover:border-black/30' : 'bg-white/5 border-white/10 text-white/20 hover:text-white/40 hover:border-white/30'
+                                }`}
+                            >
+                                +
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </ToolbarWrapper>
         );
     }
 
@@ -207,7 +365,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId })
         };
 
         return (
-            <Wrapper>
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
                 {block.src ? (
                     <img src={block.src} alt="Block media" className="cs-media-thumb w-full rounded-xl" />
                 ) : (
@@ -248,7 +406,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId })
                         )}
                     </div>
                 )}
-            </Wrapper>
+            </ToolbarWrapper>
         );
     }
 
@@ -259,6 +417,7 @@ export const ContentBuilder = ({ sections = [], onUpdateSections, isAdminPreview
     const { theme } = useThemeStore();
     const isLight = theme === 'light';
     const [showPicker, setShowPicker] = useState(false);
+    const [activeBlockId, setActiveBlockId] = useState(null);
 
     const updateSection = (sIdx, updater) => {
         const next = [...sections];
@@ -345,7 +504,7 @@ export const ContentBuilder = ({ sections = [], onUpdateSections, isAdminPreview
                     
                     {/* Admin Section Controls */}
                     {isAdminPreview && (
-                        <div className="absolute -left-12 top-0 flex flex-col gap-1 opacity-0 group-hover/section:opacity-100 transition-opacity">
+                        <div className="absolute -left-12 top-0 flex flex-col gap-1 opacity-0 group-hover/section:opacity-100 transition-opacity z-10">
                             <button onClick={() => moveSection(sIdx, -1)} disabled={sIdx === 0} className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/10 text-black hover:bg-black/20 disabled:opacity-30"><FiArrowUp size={14}/></button>
                             <button onClick={() => moveSection(sIdx, 1)} disabled={sIdx === sections.length - 1} className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/10 text-black hover:bg-black/20 disabled:opacity-30"><FiArrowDown size={14}/></button>
                             <div className="h-4" />
@@ -354,27 +513,59 @@ export const ContentBuilder = ({ sections = [], onUpdateSections, isAdminPreview
                     )}
 
                     {/* Section Title */}
-                    <h2 className="cs-heading mb-6">
-                        <EditableText 
-                            value={section.sectionTitle} 
-                            onSave={v => updateSection(sIdx, { sectionTitle: v })} 
-                            isAdminPreview={isAdminPreview} 
-                            placeholder="Section Title"
-                        />
-                    </h2>
+                    <ToolbarWrapper 
+                        id={`section-title-${section.id}`}
+                        block={{ type: 'section-title', ...section.sectionTitleStyle }}
+                        onChange={updater => updateSection(sIdx, { sectionTitleStyle: { ...(section.sectionTitleStyle || {}), ...updater } })}
+                        isAdminPreview={isAdminPreview}
+                        isLight={isLight}
+                        activeBlockId={activeBlockId}
+                    >
+                        <h2 className="cs-heading mb-6">
+                            <EditableText 
+                                value={section.sectionTitle} 
+                                onSave={v => updateSection(sIdx, { sectionTitle: v })} 
+                                isAdminPreview={isAdminPreview} 
+                                placeholder="Section Title"
+                                onFocus={() => setActiveBlockId(`section-title-${section.id}`)}
+                                onBlur={() => {
+                                    setTimeout(() => {
+                                        setActiveBlockId(prev => prev === `section-title-${section.id}` ? null : prev);
+                                    }, 200);
+                                }}
+                                style={getFontStyle(section.sectionTitleStyle || {})}
+                            />
+                        </h2>
+                    </ToolbarWrapper>
 
                     <div className={getGridClass(section.layout)}>
                         {(section.columns || []).map((col, cIdx) => (
                             <div key={col.id} className="cs-detail-col flex-1 flex flex-col">
                                 {col.columnTitle && (
-                                    <h3 className="cs-heading-sm mb-4">
-                                        <EditableText 
-                                            value={col.columnTitle} 
-                                            onSave={v => updateColumn(sIdx, cIdx, { columnTitle: v })} 
-                                            isAdminPreview={isAdminPreview} 
-                                            placeholder="Column Title"
-                                        />
-                                    </h3>
+                                    <ToolbarWrapper
+                                        id={`column-title-${col.id}`}
+                                        block={{ type: 'column-title', ...col.columnTitleStyle }}
+                                        onChange={updater => updateColumn(sIdx, cIdx, { columnTitleStyle: { ...(col.columnTitleStyle || {}), ...updater } })}
+                                        isAdminPreview={isAdminPreview}
+                                        isLight={isLight}
+                                        activeBlockId={activeBlockId}
+                                    >
+                                        <h3 className="cs-heading-sm mb-4">
+                                            <EditableText 
+                                                value={col.columnTitle} 
+                                                onSave={v => updateColumn(sIdx, cIdx, { columnTitle: v })} 
+                                                isAdminPreview={isAdminPreview} 
+                                                placeholder="Column Title"
+                                                onFocus={() => setActiveBlockId(`column-title-${col.id}`)}
+                                                onBlur={() => {
+                                                    setTimeout(() => {
+                                                        setActiveBlockId(prev => prev === `column-title-${col.id}` ? null : prev);
+                                                    }, 200);
+                                                }}
+                                                style={getFontStyle(col.columnTitleStyle || {})}
+                                            />
+                                        </h3>
+                                    </ToolbarWrapper>
                                 )}
                                 
                                 <div className="flex flex-col gap-4">
@@ -386,6 +577,13 @@ export const ContentBuilder = ({ sections = [], onUpdateSections, isAdminPreview
                                             onDelete={() => removeBlock(sIdx, cIdx, bIdx)}
                                             isAdminPreview={isAdminPreview} 
                                             projectId={projectId}
+                                            activeBlockId={activeBlockId}
+                                            onFocus={() => setActiveBlockId(block.id)}
+                                            onBlur={() => {
+                                                setTimeout(() => {
+                                                    setActiveBlockId(prev => prev === block.id ? null : prev);
+                                                }, 200);
+                                            }}
                                         />
                                     ))}
                                 </div>
