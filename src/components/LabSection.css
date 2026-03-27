@@ -9,11 +9,11 @@
     transition: background-color 0.3s ease;
 }
 .light .lab-section-bg {
-    background-color: #f6f7fa; /* Slightly different from --bg to maintain the light green accent elsewhere */
+    background-color: #f2ede6; /* Matches the warm off-white of the About section */
 }
 /* Decorative Inner Polygons (add light theme override) */
  .light .lab-section-bg .polygon-overlay {
-    background-color: #e6f7d9 !important;
+    background-color: #d0d7c8 !important;
 }
 
 .lab-title {

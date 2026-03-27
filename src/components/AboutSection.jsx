@@ -133,7 +133,7 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                         key={i}
                         ref={addToStripes}
                         className="w-full"
-                        style={{ height: `${100 / stripeCount}%`, backgroundColor: isLight ? '#d5f1b1ff' : '#505255' }}
+                        style={{ height: `${100 / stripeCount}%`, backgroundColor: isLight ? '#d0d7c8ff' : '#505255' }}
                     />
                 ))}
             </div>

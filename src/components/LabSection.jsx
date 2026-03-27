@@ -42,7 +42,7 @@ const LabSection = () => {
                             scrub: 1,
                             anticipatePin: 1,
                             onRefresh: self => {
-                                if (self.spacer) self.spacer.style.backgroundColor = isLight ? "#e6f7d9" : "#505255";
+                                if (self.spacer) self.spacer.style.backgroundColor = isLight ? "#d0d7c8" : "#0b0b0b";
                             }
                         }
                     });
@@ -79,7 +79,7 @@ const LabSection = () => {
                             scrub: 1,
                             anticipatePin: 1,
                             onRefresh: self => {
-                                if (self.spacer) self.spacer.style.backgroundColor = isLight ? "#e6f7d9" : "#505255";
+                                if (self.spacer) self.spacer.style.backgroundColor = isLight ? "#d0d7c8" : "#0b0b0b";
                             }
                         }
                     });
@@ -119,14 +119,14 @@ const LabSection = () => {
     const isLight = theme === 'light';
 
     return (
-        <section ref={sectionRef} className={`relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20 overflow-hidden ${isLight ? 'bg-[#e6f7d9]' : ''}`}> 
+        <section ref={sectionRef} className={`relative min-h-screen lab-section-bg flex items-center justify-center pt-32 pb-32 z-20 overflow-hidden ${isLight ? 'bg-[#d0d7c8]' : ''}`}> 
             {/* Decorative Inner Polygons */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div
                     className="absolute top-0 left-0 w-[80%] h-full"
                     style={{
                         clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0 100%)',
-                        backgroundColor: isLight ? '#e6f7d9' : '#494b4e'
+                        backgroundColor: isLight ? '#d0d7c8' : '#0b0b0b'
                     }}
                 ></div>
                 <div

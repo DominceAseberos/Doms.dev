@@ -136,12 +136,12 @@
     transform: translate(-50%, -50%) scale(0);
 }
 .tunnel-light-light {
-    background: #e6f7d9;
-    box-shadow: 0 0 120px 60px #e6f7d9, 0 0 240px 120px rgba(200, 255, 62, 0.15);
+    background: #d0d7c8;
+    box-shadow: 0 0 120px 60px #d0d7c8, 0 0 240px 120px rgba(200, 255, 62, 0.15);
 }
 .tunnel-light-dark {
-    background: #505255;
-    box-shadow: 0 0 120px 60px #505255, 0 0 240px 120px rgba(200, 255, 62, 0.4);
+    background: #0b0b0b;
+    box-shadow: 0 0 120px 60px #0b0b0b, 0 0 240px 120px rgba(200, 255, 62, 0.4);
     z-index: 10;
     pointer-events: none;
     opacity: 0;
@@ -156,10 +156,10 @@
 }
 
 .whiteout-light {
-    background: #e6f7d9;
+    background: #d0d7c8;
 }
 .whiteout-dark {
-    background: #505255;
+    background: #0b0b0b;
 }
 
 .hallway-track {
@@ -193,7 +193,7 @@
     background: transparent;
 }
 .h-card-face-dark {
-    background: radial-gradient(circle at 50% 50%, #232726 0%, #505255 100%);
+    background: radial-gradient(circle at 50% 50%, #232726 0%, #0b0b0b 100%);
 }
 
 .h-card-image {

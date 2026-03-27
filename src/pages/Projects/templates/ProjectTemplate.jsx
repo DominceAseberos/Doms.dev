@@ -245,22 +245,22 @@ const ProjectTemplate = ({
                     </div>
 
                     <div className="text-center">
-                        <p className="cs-overline">
+                        <div className="cs-overline">
                             <EditableText 
                                 value={project.projectType} 
                                 onSave={(val) => onUpdateField('projectType', val)} 
                                 isAdminPreview={isAdminPreview}
                                 placeholder="Platform Type"
                             />
-                        </p>
-                        <h1 className="cs-title cs-title--center">
+                        </div>
+                        <div className="cs-title cs-title--center">
                             <EditableText 
                                 value={project.title} 
                                 onSave={(val) => onUpdateField('title', val)} 
                                 isAdminPreview={isAdminPreview}
                                 placeholder="Project Title"
                             />
-                        </h1>
+                        </div>
 
                         <div className="cs-date mt-2 opacity-60 font-mono text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2">
                             {isAdminPreview ? (

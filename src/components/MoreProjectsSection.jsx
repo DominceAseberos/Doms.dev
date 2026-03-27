@@ -179,19 +179,19 @@ const MoreProjectsSection = () => {
         { text: "Project Preview 3", offsetClass: "col-span-1 row-span-1", rotateMultiplier: 6 }
     ];
 
-    const displayImages = landingData.moreProjectsImages && landingData.moreProjectsImages.length > 0 
-        ? landingData.moreProjectsImages 
+    const displayImages = landingData.moreProjectsImages && landingData.moreProjectsImages.length > 0
+        ? landingData.moreProjectsImages
         : fallbackPreviews;
 
     return (
-        <section ref={sectionRef} className={`relative min-h-[100vh] flex items-center pt-24 pb-24 z-20 overflow-hidden ${isLight ? 'bg-[#e6f7d9]' : 'bg-[#505255]'}`}> 
+        <section ref={sectionRef} className={`relative min-h-[100vh] flex items-center pt-24 pb-24 z-20 overflow-hidden ${isLight ? 'bg-[#d0d7c8]' : 'bg-[#0b0b0b]'}`}>
             {/* Decorative Inner Polygons */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div
                     className="absolute top-0 right-0 w-[85%] h-full"
                     style={{
                         clipPath: 'polygon(25% 0, 100% 0, 100% 100%, 0 100%)',
-                        backgroundColor: isLight ? '#e6f7d9' : '#494b4e'
+                        backgroundColor: isLight ? '#d0d7c8' : '#0b0b0b'
                     }}
                 ></div>
                 <div
@@ -210,7 +210,7 @@ const MoreProjectsSection = () => {
                     {/* Left Side: Explanatory Text & CTA — order 3 on mobile, natural on desktop */}
                     <div className="w-full lg:w-1/2 order-3 lg:order-none">
                         <h2 ref={textRef1} className={`text-5xl md:text-7xl font-bold tracking-tight mb-8 ${isLight ? 'text-[#222]' : 'text-[#f2ede6]'}`}>More Projects</h2>
-                        <p ref={textRef2} className={`ui-body-copy text-base md:text-lg mb-10 max-w-lg ${isLight ? 'text-[#333]' : ''}`}> 
+                        <p ref={textRef2} className={`ui-body-copy text-base md:text-lg mb-10 max-w-lg ${isLight ? 'text-[#333]' : ''}`}>
                             Beyond the highlighted case studies, I have an archive of work and side ventures. Explore the full catalog to see the breadth of my capabilities.
                         </p>
                         <div ref={btnRef}>
@@ -234,7 +234,7 @@ const MoreProjectsSection = () => {
 
                             // Logic: 1 center big img, others scattered around
                             const isCenter = i === 0;
-                            
+
                             // Predefined scatter offsets (top/left/right/bottom %)
                             const scatterPos = [
                                 { top: '5%', left: '0%' },     // 1: top-left
@@ -246,12 +246,12 @@ const MoreProjectsSection = () => {
                                 { top: '-5%', left: '30%' },   // 7: top-center
                                 { bottom: '-5%', right: '30%' }// 8: bottom-center
                             ];
-                            
+
                             // Safe index for positions
                             const pos = isCenter ? {} : scatterPos[(i - 1) % scatterPos.length];
 
                             return (
-                                <div 
+                                <div
                                     key={`${src || text}-${i}`}
                                     className={`absolute transition-all duration-300 ${isCenter ? 'w-[75%] md:w-[65%] z-10' : 'w-[35%] md:w-[35%] z-20'}`}
                                     style={isCenter ? {} : { ...pos }}
