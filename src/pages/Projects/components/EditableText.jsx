@@ -129,8 +129,8 @@ export const EditableText = ({
                     }
                 }}
                 autoFocus
-                className={`${className} cursor-text bg-transparent border-none outline-none resize-none w-full whitespace-pre-wrap outline focus:outline-2 ${isLight ? 'focus:outline-black/20 focus:bg-black/5' : 'focus:outline-white/20 focus:bg-white/5'} px-2 -mx-2 min-h-[1.5rem] rounded`}
-                style={{ ...style, minHeight: '50px' }}
+                className={`${className} cursor-text bg-transparent border-none outline-none resize-none w-full whitespace-pre-wrap outline focus:outline-2 ${isLight ? 'focus:outline-black/20 focus:bg-black/5' : 'focus:outline-white/20 focus:bg-white/5'} px-2 -mx-2 min-h-[1.5rem] rounded overflow-hidden`}
+                style={style}
                 value={localValue}
                 onChange={(e) => {
                     setLocalValue(e.target.value);

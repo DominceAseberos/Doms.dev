@@ -18,11 +18,11 @@ const BLOCK_TYPES = [
 ];
 
 const getGridClass = (layout) => {
-    switch(layout) {
+    switch (layout) {
         case 'full': return 'grid grid-cols-1';
-        case '2-equal': 
+        case '2-equal':
         case '2-stack': return 'grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-[clamp(24px,5vw,80px)] items-start';
-        case 'left-big': 
+        case 'left-big':
         case 'left-stack': return 'grid grid-cols-1 lg:grid-cols-2 cs-grid-left-big gap-y-12 gap-x-[clamp(24px,5vw,80px)] items-start';
         case 'right-big': return 'grid grid-cols-1 lg:grid-cols-2 cs-grid-right-big gap-y-12 gap-x-[clamp(24px,5vw,80px)] items-start';
         default: return 'grid grid-cols-1';
@@ -139,16 +139,16 @@ const ToolbarWrapper = ({ children, block, onChange, onDelete, isAdminPreview, i
                             </div>
                         )}
                     </div>
-                        {onDelete && (
-                            <button 
-                                onMouseDown={(e) => e.stopPropagation()}
-                                onClick={(e) => { e.stopPropagation(); onDelete(); }}
-                                className="absolute right-0 top-0 -mt-4 -mr-4 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-red-600 hover:scale-110 transition-all z-[35] border-2 border-white/20"
-                                title="Delete Block Entirely"
-                            >
-                                <FiTrash2 size={18} />
-                            </button>
-                        )}
+                    {onDelete && (
+                        <button 
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onClick={(e) => { e.stopPropagation(); onDelete(); }}
+                            className="absolute right-0 top-0 -mt-4 -mr-4 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-red-600 hover:scale-110 transition-all z-[35] border-2 border-white/20"
+                            title="Delete Block Entirely"
+                        >
+                            <FiTrash2 size={18} />
+                        </button>
+                    )}
                 </>
             )}
         </div>
@@ -313,11 +313,11 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                         />
                     </a>
                     {isAdminPreview && (
-                        <input
-                            type="text"
-                            value={block.url || ''}
-                            onChange={e => onChange({ url: e.target.value })}
-                            placeholder="Enter URL (https://...)"
+                        <input 
+                            type="text" 
+                            value={block.url || ''} 
+                            onChange={e => onChange({ url: e.target.value })} 
+                            placeholder="Enter URL (https://...)" 
                             className={`w-full max-w-sm px-3 py-1.5 text-xs rounded border ${isLight ? 'bg-black/5 border-black/10 text-black' : 'bg-white/5 border-white/10 text-white'}`}
                         />
                     )}
@@ -348,10 +348,10 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                                         className="text-[10px] font-mono uppercase tracking-wider opacity-60"
                                         value={color}
                                         onSave={v => {
-                                            const next = [...colors];
-                                            next[i] = v;
-                                            onChange({ colors: next });
-                                        }}
+                                            const next = [...colors]; 
+                                            next[i] = v; 
+                                            onChange({ colors: next }); 
+                                         }} 
                                         isAdminPreview={isAdminPreview}
                                     />
                                 </div>
@@ -369,7 +369,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                         ))}
                         {isAdminPreview && (
                             <button 
-                                onClick={() => onChange({ colors: [...colors, "#000000"] })}
+                                onClick={() => onChange({ colors: [...colors, "#000000"] })} 
                                 className={`aspect-square rounded-xl border-2 border-dashed flex items-center justify-center text-xl transition-all ${
                                     isLight ? 'bg-black/5 border-black/10 text-black/20 hover:text-black/40 hover:border-black/30' : 'bg-white/5 border-white/10 text-white/20 hover:text-white/40 hover:border-white/30'
                                 }`}
@@ -585,7 +585,7 @@ export const ContentBuilder = ({ sections = [], onUpdateSections, isAdminPreview
                         {(section.columns || []).map((col, cIdx) => (
                             <div key={col.id} className="cs-detail-col flex-1 flex flex-col">
                                 {col.columnTitle && (
-                                    <ToolbarWrapper
+                                    <ToolbarWrapper 
                                         id={`column-title-${col.id}`}
                                         block={{ type: 'column-title', ...col.columnTitleStyle }}
                                         onChange={updater => updateColumn(sIdx, cIdx, { columnTitleStyle: { ...(col.columnTitleStyle || {}), ...updater } })}
