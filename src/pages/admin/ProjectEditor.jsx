@@ -50,6 +50,7 @@ const ProjectEditor = () => {
         images: [],
         projectType: '',
         mainImage: '',
+        dateCreated: new Date().toISOString().split('T')[0],
         galleryImages: [],
         assets: { desktop: '', tablet: '', mobile: '' }
     });
@@ -107,7 +108,7 @@ const ProjectEditor = () => {
         const newData = { ...data, projects: [...data.projects, project] };
         await persistChanges(newData);
         setShowNewProjectForm(false);
-        setNewProject({ title: '', shortDescription: '', images: [], projectType: '', mainImage: '', galleryImages: [], assets: { desktop: '', tablet: '', mobile: '' } });
+        setNewProject({ title: '', shortDescription: '', images: [], projectType: '', mainImage: '', dateCreated: new Date().toISOString().split('T')[0], galleryImages: [], assets: { desktop: '', tablet: '', mobile: '' } });
         if (feedbackFn) feedbackFn();
         showToast('Project added!');
     };
@@ -141,6 +142,7 @@ const ProjectEditor = () => {
             shortDescription: '',
             images: [],
             projectType: 'uncategorized',
+            dateCreated: new Date().toISOString().split('T')[0],
         };
         const newData = { ...data, projects: [...data.projects, newProject] };
         persistChanges(newData);
@@ -333,39 +335,52 @@ const ProjectEditor = () => {
                                 />
                             </div>
 
-                            <label className="block text-sm mb-1">Category</label>
-                            <div className="flex gap-2 mb-4">
-                                <select
-                                    value={newProject.projectType}
-                                    onChange={e => setNewProject({ ...newProject, projectType: e.target.value })}
-                                    className="flex-1 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none appearance-none"
-                                >
-                                    <option value="" disabled>Select a category</option>
-                                    {categories.map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
-                                    ))}
-                                </select>
-                                <input
-                                    type="text"
-                                    placeholder="New Category..."
-                                    value={newCategoryName}
-                                    onChange={e => setNewCategoryName(e.target.value)}
-                                    className="flex-1 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
-                                />
-                                <button
-                                    onClick={() => {
-                                        if (newCategoryName.trim()) {
-                                            const newCat = newCategoryName.trim();
-                                            const newData = { ...data, customCategories: [...(data.customCategories || []), newCat] };
-                                            persistChanges(newData);
-                                            setNewProject({ ...newProject, projectType: newCat });
-                                            setNewCategoryName('');
-                                            triggerFeedback();
-                                            showToast('Category added!');
-                                        }
-                                    }}
-                                    className="px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg hover:bg-white transition-colors"
-                                >Add</button>
+                            <div className="flex gap-4 mb-4">
+                                <div className="flex-1">
+                                    <label className="block text-sm mb-1">Category</label>
+                                    <div className="flex gap-2">
+                                        <select
+                                            value={newProject.projectType}
+                                            onChange={e => setNewProject({ ...newProject, projectType: e.target.value })}
+                                            className="flex-1 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none appearance-none"
+                                        >
+                                            <option value="" disabled>Select a category</option>
+                                            {categories.map(cat => (
+                                                <option key={cat} value={cat}>{cat}</option>
+                                            ))}
+                                        </select>
+                                        <input
+                                            type="text"
+                                            placeholder="New Category..."
+                                            value={newCategoryName}
+                                            onChange={e => setNewCategoryName(e.target.value)}
+                                            className="flex-1 px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
+                                        />
+                                        <button
+                                            onClick={() => {
+                                                if (newCategoryName.trim()) {
+                                                    const newCat = newCategoryName.trim();
+                                                    const newData = { ...data, customCategories: [...(data.customCategories || []), newCat] };
+                                                    persistChanges(newData);
+                                                    setNewProject({ ...newProject, projectType: newCat });
+                                                    setNewCategoryName('');
+                                                    triggerFeedback();
+                                                    showToast('Category added!');
+                                                }
+                                            }}
+                                            className="px-4 py-2 bg-[#c8ff3e] text-black font-semibold rounded-lg hover:bg-white transition-colors"
+                                        >Add</button>
+                                    </div>
+                                </div>
+                                <div className="w-48">
+                                    <label className="block text-sm mb-1">Project Date</label>
+                                    <input
+                                        type="date"
+                                        value={newProject.dateCreated || ''}
+                                        onChange={e => setNewProject({ ...newProject, dateCreated: e.target.value })}
+                                        className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
+                                    />
+                                </div>
                             </div>
                             <div className="flex gap-2 mt-4">
                                 <button
@@ -439,23 +454,40 @@ const ProjectEditor = () => {
                                         className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-2"
                                     />
 
-                                    {/* Project Type (Category) */}
-                                    <label className="block text-sm mb-1">Category</label>
-                                        <select
-                                            value={project.projectType || ''}
-                                            onChange={e => {
-                                                const newData = { ...data };
-                                                newData.projects[i].projectType = e.target.value;
-                                                persistChanges(newData);
-                                                triggerFeedback();
-                                            }}
-                                            className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none mb-4 appearance-none"
-                                        >
-                                            <option value="" disabled>Select a category</option>
-                                            {categories.map(cat => (
-                                                <option key={cat} value={cat}>{cat}</option>
-                                            ))}
-                                        </select>
+                                    <div className="flex gap-4 mb-4">
+                                        <div className="flex-1">
+                                            <label className="block text-sm mb-1">Category</label>
+                                            <select
+                                                value={project.projectType || ''}
+                                                onChange={e => {
+                                                    const newData = { ...data };
+                                                    newData.projects[i].projectType = e.target.value;
+                                                    persistChanges(newData);
+                                                    triggerFeedback();
+                                                }}
+                                                className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none appearance-none"
+                                            >
+                                                <option value="" disabled>Select a category</option>
+                                                {categories.map(cat => (
+                                                    <option key={cat} value={cat}>{cat}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="w-40">
+                                            <label className="block text-sm mb-1">Project Date</label>
+                                            <input
+                                                type="date"
+                                                value={project.dateCreated ? project.dateCreated.split('T')[0] : ''}
+                                                onChange={e => {
+                                                    const newData = { ...data };
+                                                    newData.projects[i].dateCreated = e.target.value;
+                                                    persistChanges(newData);
+                                                    triggerFeedback();
+                                                }}
+                                                className="w-full px-4 py-2 bg-[#252525] border border-gray-700 rounded-lg focus:border-[#c8ff3e] outline-none"
+                                            />
+                                        </div>
+                                    </div>
 
                                         <label className="block text-sm mb-1 mt-4">Main Image (Tunnel Thumbnail)</label>
                                         <div className="mb-4">

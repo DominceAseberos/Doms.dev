@@ -217,6 +217,14 @@
                         }
                     ]
                 }
+            ],
+            "featuredInTunnel": true,
+            "dateCreated": "2026-03-02",
+            "mobileImage": "/assets/uploads/project-1774573315239/imgs/1774599621399-hero-mobile.webp",
+            "mobileGallery": [
+                "/assets/uploads/project-1774573315239/imgs/1774599626258-about-mobile.webp",
+                "/assets/uploads/project-1774573315239/imgs/1774599633824-project-mobile.webp",
+                "/assets/uploads/project-1774573315239/imgs/1774599636874-footer-mobile.webp"
             ]
         }
     ],

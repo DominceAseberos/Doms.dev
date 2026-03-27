@@ -3,7 +3,7 @@ import './ProjectCard.css';
 
 const ProjectCard = ({ project, onView }) => {
     const t = project.theme || {};
-    const cardImage = project.images?.[0] || project.image || '/assets/projects/cover/BananaLeaf.png';
+    const cardImage = project.mainImage || project.images?.[0] || project.image || '/assets/projects/cover/BananaLeaf.png';
 
     return (
         <div

@@ -134,11 +134,15 @@ function detectProjectMeta(project, themeCat, mockSignalText = '') {
 
 // ── Format date → "NOV 2023" ──────────────────────────────────────────────
 function fmtDate(dateStr) {
+    if (!dateStr) return 'TBA';
     const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
     return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
 }
 function fmtOverlayDate(dateStr) {
+    if (!dateStr) return 'Coming Soon';
     const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
     return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 }
 

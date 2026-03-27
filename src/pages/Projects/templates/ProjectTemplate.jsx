@@ -59,6 +59,17 @@ const ProjectTemplate = ({
         return project.desktopImage || project.mainImage || project.images?.[0] || '';
     }, [project]);
 
+    const fmtFullDate = (dateStr) => {
+        if (!dateStr) return 'TBA';
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return dateStr;
+        return d.toLocaleDateString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric' 
+        });
+    };
+
     const renderMedia = (source, alt, className) => {
         if (!source || source === '') return null;
         const isVideo = source.match(/\.(mp4|webm|ogg)$/i);
@@ -250,6 +261,19 @@ const ProjectTemplate = ({
                                 placeholder="Project Title"
                             />
                         </h1>
+
+                        <div className="cs-date mt-2 opacity-60 font-mono text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+                            {isAdminPreview ? (
+                                <input 
+                                    type="date"
+                                    value={project.dateCreated ? project.dateCreated.split('T')[0] : ''}
+                                    onChange={(e) => onUpdateField('dateCreated', e.target.value)}
+                                    className={`bg-transparent border-none outline-none focus:ring-1 focus:ring-[#c8ff3e] rounded px-2 ${isLight ? 'text-black' : 'text-white'}`}
+                                />
+                            ) : (
+                                <span>{fmtFullDate(project.dateCreated)}</span>
+                            )}
+                        </div>
 
                         <div className="flex items-center justify-center gap-1 mt-6">
                             {Object.entries(VIEW_META).map(([view, meta]) => {
