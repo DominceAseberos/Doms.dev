@@ -36,6 +36,7 @@
     --nav-scrolled-bg: rgba(5, 8, 20, 0.16);
     --nav-scrolled-border: rgba(255, 255, 255, 0.05);
     --title-outline: rgba(242, 240, 237, 0.4);
+    --cursor-hover: url('./assets/cursor-hover.svg');
 }
 
 html[data-theme='light'] {
@@ -53,6 +54,7 @@ html[data-theme='light'] {
     --nav-scrolled-bg: rgba(245, 241, 234, 0.74);
     --nav-scrolled-border: rgba(18, 18, 18, 0.08);
     --title-outline: rgba(18, 18, 18, 0.35);
+    --cursor-hover: url('./assets/cursor-hover-dark.svg');
 }
 
 html,
@@ -85,7 +87,7 @@ input[type="button"],
 .ls-tag,
 .ls-win-dot,
 .ls-card-preview {
-    cursor: url('./assets/cursor-hover.svg') 12 12, pointer !important;
+    cursor: var(--cursor-hover) 12 12, pointer !important;
 }
 
 .ui-body-copy {

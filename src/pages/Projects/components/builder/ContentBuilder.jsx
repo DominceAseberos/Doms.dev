@@ -76,14 +76,27 @@ const ToolbarWrapper = ({ children, block, onChange, onDelete, isAdminPreview, i
         }, 150);
     };
 
+    const handleFormat = (type) => {
+        if (window.__activeEditable && window.__activeEditable.formatSelection) {
+            window.__activeEditable.formatSelection(type);
+        } else {
+            // Fallback to block-level styling
+            if (type === 'bold') {
+                onChange({ fontWeight: block.fontWeight === 'bold' ? 'normal' : 'bold' });
+            } else if (type === 'italic') {
+                onChange({ fontStyle: block.fontStyle === 'italic' ? 'normal' : 'italic' });
+            }
+        }
+    };
+
     return (
         <div className="relative mb-4 last:mb-0 group/blockwrapper">
             {children}
             {isAdminPreview && (
                 <>
-                    <div className={`absolute -top-10 -right-2 flex items-center gap-1 transition-all z-20 ${activeBlockId === id ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}`}>
+                    <div className={`absolute -top-12 -right-2 flex items-center gap-1 transition-all z-30 ${activeBlockId === id ? 'opacity-100 scale-100 pointer-events-auto translate-y-0' : 'opacity-0 scale-95 pointer-events-none translate-y-2'}`}>
                         {(block.type === 'heading' || block.type === 'text' || block.type === 'section-title' || block.type === 'column-title' || block.type === 'list') && (
-                            <div className={`p-1 rounded-lg shadow-xl flex items-center gap-1 border ${isLight ? 'bg-white border-black/10' : 'bg-[#1a1a1a] border-white/10'}`}>
+                            <div className={`p-1.5 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-1.5 border-2 backdrop-blur-md ${isLight ? 'bg-white/90 border-black/10' : 'bg-[#1a1a1a]/90 border-white/20'}`}>
                                 <select 
                                     value={block.fontSize || 'base'}
                                     onChange={(e) => onChange({ fontSize: e.target.value })}
@@ -99,13 +112,13 @@ const ToolbarWrapper = ({ children, block, onChange, onDelete, isAdminPreview, i
                                 </select>
                                 <div className={`w-px h-3 ${isLight ? 'bg-black/10' : 'bg-white/10'}`} />
                                 <button 
-                                    onClick={() => onChange({ fontWeight: block.fontWeight === 'bold' ? 'normal' : 'bold' })}
+                                    onMouseDown={(e) => { e.preventDefault(); handleFormat('bold'); }}
                                     className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold transition-colors ${block.fontWeight === 'bold' ? (isLight ? 'bg-black text-white' : 'bg-[#c8ff3e] text-black') : 'hover:bg-black/5'}`}
                                 >
                                     B
                                 </button>
                                 <button 
-                                    onClick={() => onChange({ fontStyle: block.fontStyle === 'italic' ? 'normal' : 'italic' })}
+                                    onMouseDown={(e) => { e.preventDefault(); handleFormat('italic'); }}
                                     className={`w-6 h-6 flex items-center justify-center rounded text-[10px] italic transition-colors ${block.fontStyle === 'italic' ? (isLight ? 'bg-black text-white' : 'bg-[#c8ff3e] text-black') : 'hover:bg-black/5'}`}
                                 >
                                     I
@@ -126,16 +139,16 @@ const ToolbarWrapper = ({ children, block, onChange, onDelete, isAdminPreview, i
                             </div>
                         )}
                     </div>
-                    {id && !id.includes('title') && (
-                        <button 
-                            onMouseDown={(e) => e.stopPropagation()}
-                            onClick={(e) => { e.stopPropagation(); if (onDelete) onDelete(); }}
-                            className="absolute right-0 top-0 -mt-3 -mr-3 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-600 transition-colors z-[25]"
-                            title="Delete Block"
-                        >
-                            <FiTrash2 size={14} />
-                        </button>
-                    )}
+                        {onDelete && (
+                            <button 
+                                onMouseDown={(e) => e.stopPropagation()}
+                                onClick={(e) => { e.stopPropagation(); onDelete(); }}
+                                className="absolute right-0 top-0 -mt-4 -mr-4 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-red-600 hover:scale-110 transition-all z-[35] border-2 border-white/20"
+                                title="Delete Block Entirely"
+                            >
+                                <FiTrash2 size={18} />
+                            </button>
+                        )}
                 </>
             )}
         </div>
@@ -186,7 +199,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
         const items = block.items || [];
         return (
             <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
-                <ul className={`list-disc pl-4 space-y-1 text-sm ${isLight ? 'text-black/70' : 'text-white/60'}`} style={getFontStyle(block)}>
+                <ul className={`list-disc pl-5 space-y-2 text-sm ${isLight ? 'text-black/70' : 'text-white/60'}`} style={getFontStyle(block)}>
                     {items.map((item, i) => (
                         <li key={i} className="group/item relative">
                             <EditableText 
@@ -201,13 +214,27 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                                 onBlur={onBlur}
                             />
                             {isAdminPreview && (
-                                <button onClick={() => onChange({ items: items.filter((_, idx) => idx !== i) })} className="absolute -left-6 top-1 text-red-500 opacity-0 group-hover/item:opacity-100">×</button>
+                                <button 
+                                    onMouseDown={(e) => e.stopPropagation()}
+                                    onClick={(e) => { e.stopPropagation(); onChange({ items: items.filter((_, idx) => idx !== i) }); }} 
+                                    className="absolute -left-10 top-1/2 -translate-y-1/2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white opacity-20 group-hover/item:opacity-100 hover:scale-110 transition-all shadow-md z-[30]"
+                                    title="Delete Item"
+                                >
+                                    <FiTrash2 size={12} />
+                                </button>
                             )}
                         </li>
                     ))}
                     {isAdminPreview && (
-                        <li className="list-none -ml-4 mt-2">
-                            <button onClick={() => onChange({ items: [...items, "New Item"] })} className="text-xs opacity-50 hover:opacity-100">+ Add Item</button>
+                        <li className="list-none pt-2">
+                            <button 
+                                onClick={() => onChange({ items: [...items, "New Item"] })} 
+                                className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg border-2 border-dashed transition-all ${
+                                    isLight ? 'border-black/10 text-black/40 hover:border-black/30 hover:text-black/60' : 'border-white/10 text-white/40 hover:border-white/30 hover:text-white/60'
+                                }`}
+                            >
+                                + Add Point
+                            </button>
                         </li>
                     )}
                 </ul>
@@ -222,16 +249,30 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                 <div className="cs-chip-wrap">
                     {items.map((item, i) => (
                         <div key={i} className="relative group/chip">
-                            <span className="cs-chip">
+                            <span className="cs-chip px-4 py-2">
                                 <EditableText value={item} onSave={v => { const next = [...items]; next[i] = v; onChange({ items: next }); }} isAdminPreview={isAdminPreview} />
                             </span>
                             {isAdminPreview && (
-                                <button onClick={() => onChange({ items: items.filter((_, idx) => idx !== i) })} className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover/chip:opacity-100 transition-opacity">×</button>
+                                <button 
+                                    onMouseDown={(e) => e.stopPropagation()}
+                                    onClick={(e) => { e.stopPropagation(); onChange({ items: items.filter((_, idx) => idx !== i) }); }} 
+                                    className="absolute -top-3 -right-3 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg opacity-40 group-hover/chip:opacity-100 hover:scale-110 transition-all z-[30]"
+                                    title="Remove Chip"
+                                >
+                                    <FiTrash2 size={14} />
+                                </button>
                             )}
                         </div>
                     ))}
                     {isAdminPreview && (
-                        <button onClick={() => onChange({ items: [...items, "New Tag"] })} className="cs-chip border-dashed opacity-50 hover:opacity-100">+ Add</button>
+                        <button 
+                            onClick={() => onChange({ items: [...items, "New Tag"] })} 
+                            className={`cs-chip px-4 py-2 border-2 border-dashed transition-all ${
+                                isLight ? 'border-black/10 text-black/40 hover:border-black/30 hover:text-black/60' : 'border-white/10 text-white/30 hover:border-white/30 hover:text-white/60'
+                            }`}
+                        >
+                            + Add Tech
+                        </button>
                     )}
                 </div>
             </ToolbarWrapper>
@@ -316,10 +357,12 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                                 </div>
                                 {isAdminPreview && (
                                     <button 
-                                        onClick={() => onChange({ colors: colors.filter((_, idx) => idx !== i) })}
-                                        className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover/color:opacity-100 transition-opacity"
+                                        onMouseDown={(e) => e.stopPropagation()}
+                                        onClick={(e) => { e.stopPropagation(); onChange({ colors: colors.filter((_, idx) => idx !== i) }); }}
+                                        className="absolute -top-3 -right-3 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg opacity-40 group-hover/color:opacity-100 hover:scale-110 transition-all z-[30]"
+                                        title="Remove Color"
                                     >
-                                        ×
+                                        <FiTrash2 size={14} />
                                     </button>
                                 )}
                             </div>
@@ -331,7 +374,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                                     isLight ? 'bg-black/5 border-black/10 text-black/20 hover:text-black/40 hover:border-black/30' : 'bg-white/5 border-white/10 text-white/20 hover:text-white/40 hover:border-white/30'
                                 }`}
                             >
-                                +
+                                <FiPlus size={20} />
                             </button>
                         )}
                     </div>
