@@ -42,7 +42,7 @@ const NarrativeSection = forwardRef((props, ref) => {
         <section ref={ref} className="narrative-section relative z-10 pt-8 md:pt-16 pb-24 px-6 md:px-12 max-w-[1400px] mx-auto text-white">
             <h2
                 className="font-black uppercase tracking-tight mb-12 lg:mb-16 text-left leading-[1.1] text-[#f2ede6]"
-                style={{ fontSize: 'clamp(2.5rem, 8vw, 8rem)', fontFamily: "'Bebas Neue', sans-serif" }}
+                style={{ fontSize: 'clamp(2.5rem, 8vw, 8rem)' }}
             >
                 Engineering <span className="text-[var(--accent)] font-bold">Digital Poetry</span>
             </h2>

@@ -26,7 +26,6 @@
 
 .github-contrib-title {
     font-size: clamp(2rem, 4vw, 3rem);
-    font-family: 'Bebas Neue', sans-serif;
     line-height: 1.1;
     letter-spacing: 0;
     color: var(--gc-title-color);

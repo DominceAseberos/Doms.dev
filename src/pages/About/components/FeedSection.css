@@ -48,7 +48,6 @@
     margin: 0;
     color: rgba(255, 255, 255, 0.96);
     font-size: clamp(2rem, 5vw, 4.5rem);
-    font-family: 'Bebas Neue', sans-serif;
     line-height: 1.1;
     letter-spacing: -0.02em;
 }

@@ -27,7 +27,7 @@ const AboutPage = () => {
     }, [isLoading]);
 
     return (
-        <div className="relative min-h-screen">
+        <div className="about-home relative min-h-screen">
             <Helmet>
                 <title>About - Domince Aseberos</title>
                 <meta name="description" content="Learn more about Domince Aseberos, a creative developer with a passion for web animation, design systems, and frontend architecture." />
