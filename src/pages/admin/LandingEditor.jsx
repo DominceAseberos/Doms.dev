@@ -8,7 +8,6 @@ const AVAILABLE_LINKS = [
     { value: '/projects', label: 'Projects Page' },
     { value: '/about', label: 'About Page' },
     { value: '/contact', label: 'Contact Page' },
-    { value: '/lab', label: 'Lab Page' },
 ];
 
 const getStoredData = () => {

@@ -26,7 +26,6 @@ const NavBar = () => {
     const navItems = [
         { label: 'Projects', to: '/projects' },
         { label: 'About', to: '/about' },
-        { label: 'Lab', to: '/lab' },
         { label: 'Contact', to: '/contact' }
     ];
 
