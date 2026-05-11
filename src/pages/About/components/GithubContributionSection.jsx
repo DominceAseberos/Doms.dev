@@ -1,232 +1,57 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import GitHubCalendar from 'react-github-calendar';
 import './GithubContributionSection.css';
 
-const USERNAME = import.meta.env.VITE_GITHUB_USERNAME;
-const TOKEN    = import.meta.env.VITE_GITHUB_TOKEN;
+const USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'DominceAseberos';
+const TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
 const CACHE_TTL = 15 * 60 * 1000;
-const MAX_REPOS = 100;
-const SNAPSHOT_KEY = 'gsc_snapshot_repos';
-const SNAPSHOT_TTL = 24 * 60 * 60 * 1000;
 
 function buildHeaders() {
-    const headers = { 'Accept': 'application/vnd.github+json' };
-    if (TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+    const headers = { Accept: 'application/vnd.github+json' };
+    if (TOKEN) headers.Authorization = 'Bearer ' + TOKEN;
     return headers;
 }
 
 function cacheSet(k, d) {
-    try { localStorage.setItem('gsc_' + k, JSON.stringify({ d, t: Date.now() })); } catch (_) {}
+    try {
+        localStorage.setItem('gac_' + k, JSON.stringify({ d, t: Date.now() }));
+    } catch (_) {}
 }
+
 function cacheGet(k) {
     try {
-        const r = JSON.parse(localStorage.getItem('gsc_' + k) || 'null');
+        const r = JSON.parse(localStorage.getItem('gac_' + k) || 'null');
         if (r && Date.now() - r.t < CACHE_TTL) return r.d;
     } catch (_) {}
     return null;
 }
 
-function saveSnapshot(repos) {
-    try {
-        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ repos, t: Date.now() }));
-    } catch (_) {}
-}
-
-function loadSnapshot() {
-    try {
-        const raw = localStorage.getItem(SNAPSHOT_KEY);
-        if (!raw) return null;
-        const parsed = JSON.parse(raw);
-        if (!parsed || !Array.isArray(parsed.repos) || !parsed.t) return null;
-        if (Date.now() - parsed.t > SNAPSHOT_TTL) return null;
-        return parsed.repos;
-    } catch (_) {
-        return null;
-    }
-}
-
-function clearGitHubLocalCache() {
+function clearGitHubActivityCache() {
     try {
         const keysToRemove = [];
         for (let index = 0; index < localStorage.length; index++) {
             const key = localStorage.key(index);
-            if (!key) continue;
-            if (key === SNAPSHOT_KEY || key.startsWith('gsc_')) {
-                keysToRemove.push(key);
-            }
+            if (key?.startsWith('gac_')) keysToRemove.push(key);
         }
-        keysToRemove.forEach(key => localStorage.removeItem(key));
+        keysToRemove.forEach((key) => localStorage.removeItem(key));
     } catch (_) {}
-}
-
-function nameToHex(name) {
-    let h = 0;
-    for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
-    const hue = Math.abs(h) % 360;
-    const s = 0.7, l = 0.62;
-    const c = (1 - Math.abs(2 * l - 1)) * s;
-    const x = c * (1 - Math.abs(((hue / 60) % 2) - 1));
-    const m = l - c / 2;
-    let r = 0, g = 0, b = 0;
-    if      (hue < 60)  { r = c; g = x; }
-    else if (hue < 120) { r = x; g = c; }
-    else if (hue < 180) { g = c; b = x; }
-    else if (hue < 240) { g = x; b = c; }
-    else if (hue < 300) { r = x; b = c; }
-    else                { r = c; b = x; }
-    const toH = v => Math.round((v + m) * 255).toString(16).padStart(2, '0');
-    return '#' + toH(r) + toH(g) + toH(b);
 }
 
 async function ghFetch(path) {
     const cached = cacheGet(path);
     if (cached) return cached;
-    const headers = buildHeaders();
-    const res = await fetch('https://api.github.com' + path, { headers });
+
+    const res = await fetch('https://api.github.com' + path, { headers: buildHeaders() });
     if (!res.ok) throw new Error('GitHub API error ' + res.status);
+
     const data = await res.json();
     cacheSet(path, data);
     return data;
 }
 
-async function ghFetchAllPages(basePath, maxPages = 10) {
-    const cacheKey = `${basePath}::all-pages`;
-    const cached = cacheGet(cacheKey);
-    if (cached) return cached;
-
-    const headers = buildHeaders();
-    const rows = [];
-
-    for (let page = 1; page <= maxPages; page++) {
-        const joiner = basePath.includes('?') ? '&' : '?';
-        const url = `https://api.github.com${basePath}${joiner}page=${page}`;
-        const res = await fetch(url, { headers });
-        if (!res.ok) throw new Error('GitHub API error ' + res.status);
-        const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) break;
-        rows.push(...data);
-        if (data.length < 100) break;
-    }
-
-    cacheSet(cacheKey, rows);
-    return rows;
-}
-
-async function getCommitCountFromStats(repoName) {
-    const cacheKey = `/repos/${USERNAME}/${repoName}/stats/contributors/count`;
-    const cached = cacheGet(cacheKey);
-    if (typeof cached === 'number') return cached;
-
-    const headers = buildHeaders();
-    const path = `/repos/${USERNAME}/${repoName}/stats/contributors`;
-
-    for (let attempt = 0; attempt < 4; attempt++) {
-        const res = await fetch('https://api.github.com' + path, { headers });
-
-        if (res.status === 202) {
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            continue;
-        }
-
-        if (res.status === 409 || res.status === 404) {
-            cacheSet(cacheKey, 0);
-            return 0;
-        }
-
-        if (!res.ok) throw new Error('GitHub stats API error ' + res.status);
-
-        const data = await res.json();
-        const count = Array.isArray(data)
-            ? data.reduce((sum, contributor) => sum + (contributor.total || 0), 0)
-            : 0;
-        cacheSet(cacheKey, count);
-        return count;
-    }
-
-    throw new Error('GitHub stats API still processing');
-}
-
-async function getCommitCount(repoName) {
-    const cacheKey = `/repos/${USERNAME}/${repoName}/commits/count`;
-    const cached = cacheGet(cacheKey);
-    if (typeof cached === 'number') return cached;
-
-    try {
-        const statsCount = await getCommitCountFromStats(repoName);
-        cacheSet(cacheKey, statsCount);
-        return statsCount;
-    } catch (_) {
-        const headers = buildHeaders();
-        const res = await fetch(`https://api.github.com/repos/${USERNAME}/${repoName}/commits?per_page=1`, { headers });
-
-        if (res.status === 409 || res.status === 404) {
-            cacheSet(cacheKey, 0);
-            return 0;
-        }
-
-        if (!res.ok) throw new Error('GitHub commits API error ' + res.status);
-
-        const link = res.headers.get('link') || '';
-        const lastPageMatch = link.match(/[?&]page=(\d+)>;\s*rel="last"/);
-        if (lastPageMatch) {
-            const count = parseInt(lastPageMatch[1], 10) || 0;
-            cacheSet(cacheKey, count);
-            return count;
-        }
-
-        const data = await res.json();
-        const count = Array.isArray(data) ? data.length : 0;
-        cacheSet(cacheKey, count);
-        return count;
-    }
-}
-
-async function fetchRepos() {
-    let repoList = [];
-    if (TOKEN) {
-        repoList = await ghFetchAllPages('/user/repos?visibility=all&affiliation=owner&sort=pushed&per_page=100');
-        repoList = repoList.filter(r => (r?.owner?.login || '').toLowerCase() === String(USERNAME || '').toLowerCase());
-    } else {
-        repoList = await ghFetchAllPages('/users/' + USERNAME + '/repos?sort=pushed&per_page=100');
-    }
-
-    const filtered = repoList
-        .filter(r => !r.fork)
-        .slice(0, MAX_REPOS);
-    const loaded = [];
-
-    for (const r of filtered) {
-        let contribs = [];
-        try {
-            const cs = await ghFetch(`/repos/${USERNAME}/${r.name}/contributors?per_page=5`);
-            if (Array.isArray(cs)) {
-                contribs = cs.slice(0, 4).map(c => ({ name: c.login, color: nameToHex(c.login) }));
-            }
-        } catch (_) {}
-        if (!contribs.length) contribs = [{ name: USERNAME, color: nameToHex(USERNAME) }];
-
-        let commits = 0;
-        try {
-            commits = await getCommitCount(r.name);
-        } catch (_) {}
-
-        const pushed = r.pushed_at ? Math.floor((Date.now() - new Date(r.pushed_at)) / 86400000) : 0;
-        loaded.push({
-            name: r.name,
-            lang: r.language || 'Unknown',
-            commits,
-            stars: r.stargazers_count || 0,
-            desc: r.description || '',
-            lastActive: Math.max(0, pushed),
-            contribs,
-        });
-    }
-    return loaded;
-}
-
 async function fetchRecentCommits() {
-    const cacheKey = `/functions/recent-commits/${USERNAME || 'me'}`;
+    const cacheKey = `/recent-commits/${USERNAME}`;
     const cached = cacheGet(cacheKey);
     if (cached) return cached;
 
@@ -234,194 +59,142 @@ async function fetchRecentCommits() {
 
     if (TOKEN) {
         const ownedRepos = await ghFetch('/user/repos?visibility=all&affiliation=owner&sort=pushed&per_page=20');
-        if (Array.isArray(ownedRepos) && ownedRepos.length) {
-            const ownLogin = String(USERNAME || '').toLowerCase();
-            const repos = ownedRepos
-                .filter(repo => !repo?.fork)
-                .filter(repo => (repo?.owner?.login || '').toLowerCase() === ownLogin)
-                .slice(0, 8);
+        const ownLogin = USERNAME.toLowerCase();
+        const repos = Array.isArray(ownedRepos)
+            ? ownedRepos
+                .filter((repo) => !repo?.fork)
+                .filter((repo) => (repo?.owner?.login || '').toLowerCase() === ownLogin)
+                .slice(0, 8)
+            : [];
 
-            const commitsByRepo = await Promise.all(
-                repos.map(async repo => {
-                    try {
-                        const rows = await ghFetch(`/repos/${repo.full_name}/commits?per_page=3`);
-                        if (!Array.isArray(rows)) return [];
-                        return rows.map(item => ({
-                            message: item?.commit?.message || 'No commit message',
-                            repo: repo.full_name,
-                            sha: item.sha,
-                            time: item?.commit?.author?.date || item?.commit?.committer?.date,
-                            url: item?.html_url || `https://github.com/${repo.full_name}/commit/${item.sha}`,
-                        }));
-                    } catch (_) { return []; }
-                })
-            );
-            allCommits = commitsByRepo.flat().filter(Boolean);
-        }
-    } else {
-        const events = await ghFetch(`/users/${USERNAME}/events/public?per_page=30`);
-        if (Array.isArray(events)) {
-            events.forEach(event => {
-                if (event?.type === 'PushEvent' && event?.payload?.commits && event?.repo?.name) {
-                    event.payload.commits.forEach(c => {
-                        allCommits.push({
-                            message: c.message || 'No commit message',
-                            repo: event.repo.name,
-                            sha: c.sha,
-                            time: event.created_at,
-                            url: `https://github.com/${event.repo.name}/commit/${c.sha}`,
-                        });
-                    });
+        const commitsByRepo = await Promise.all(
+            repos.map(async (repo) => {
+                try {
+                    const rows = await ghFetch(`/repos/${repo.full_name}/commits?per_page=3`);
+                    if (!Array.isArray(rows)) return [];
+                    return rows.map((item) => ({
+                        message: item?.commit?.message || 'No commit message',
+                        repo: repo.full_name,
+                        sha: item.sha,
+                        time: item?.commit?.author?.date || item?.commit?.committer?.date,
+                        url: item?.html_url || `https://github.com/${repo.full_name}/commit/${item.sha}`,
+                    }));
+                } catch (_) {
+                    return [];
                 }
+            })
+        );
+
+        allCommits = commitsByRepo.flat().filter(Boolean);
+    } else {
+        const events = await ghFetch(`/users/${USERNAME}/events/public?per_page=40`);
+        if (Array.isArray(events)) {
+            events.forEach((event) => {
+                if (event?.type !== 'PushEvent' || !event?.payload?.commits || !event?.repo?.name) return;
+                event.payload.commits.forEach((commit) => {
+                    allCommits.push({
+                        message: commit.message || 'No commit message',
+                        repo: event.repo.name,
+                        sha: commit.sha,
+                        time: event.created_at,
+                        url: `https://github.com/${event.repo.name}/commit/${commit.sha}`,
+                    });
+                });
             });
         }
     }
 
     const sorted = allCommits
         .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
-        .slice(0, 3);
+        .slice(0, 5);
 
-    if (sorted.length) cacheSet(cacheKey, sorted);
+    cacheSet(cacheKey, sorted);
     return sorted;
 }
 
+function formatCommitTime(value) {
+    if (!value) return '';
+    try {
+        return new Intl.DateTimeFormat('en', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        }).format(new Date(value));
+    } catch (_) {
+        return '';
+    }
+}
+
+const calendarTheme = {
+    dark: ['rgba(255,255,255,0.08)', '#375a32', '#5f8f3f', '#9acd5a', '#c8ff3e'],
+    light: ['rgba(18,18,18,0.08)', '#d8e8c4', '#a8ca70', '#76a83f', '#3f7c22'],
+};
+
 const GithubContributionSection = () => {
-    const iframeRef = useRef(null);
-    const reposRef  = useRef(null);
-    const iframeReadyRef = useRef(false);
-    const [status, setStatus] = useState('Loading your constellation…');
+    const [status, setStatus] = useState('Loading GitHub activity...');
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [recentCommits, setRecentCommits] = useState([]);
 
-    function postDataToIframe() {
-        if (!iframeReadyRef.current) return;
-        if (!reposRef.current) return;
-        iframeRef.current?.contentWindow?.postMessage(
-            { type: 'REPOS_DATA', repos: reposRef.current },
-            '*'
-        );
-    }
-
     async function loadLiveData(forceRefresh = false) {
-        if (forceRefresh) {
-            clearGitHubLocalCache();
-        }
+        if (forceRefresh) clearGitHubActivityCache();
 
-        setStatus(forceRefresh ? 'Refreshing GitHub data…' : 'Loading your constellation…');
+        setStatus(forceRefresh ? 'Refreshing GitHub activity...' : 'Loading GitHub activity...');
         setIsRefreshing(true);
 
         try {
-            const [repos, commits] = await Promise.all([
-                fetchRepos(),
-                fetchRecentCommits().catch(() => []),
-            ]);
-            reposRef.current = repos;
+            const commits = await fetchRecentCommits();
             setRecentCommits(commits);
-            saveSnapshot(repos);
             setStatus('');
-            postDataToIframe();
         } catch (err) {
-            reposRef.current = [];
             setRecentCommits([]);
-            setStatus('Could not load live data: ' + err.message);
-            postDataToIframe();
+            setStatus('Could not load GitHub activity: ' + err.message);
         } finally {
             setIsRefreshing(false);
         }
     }
 
-    // Fetch repos once
     useEffect(() => {
-        const snapshot = loadSnapshot();
-        if (snapshot && snapshot.length) {
-            reposRef.current = snapshot;
-            setStatus('');
-            postDataToIframe();
-            fetchRecentCommits()
-                .then((commits) => setRecentCommits(commits))
-                .catch(() => setRecentCommits([]));
-            return;
-        }
-
         loadLiveData(false);
-    }, []);
-
-    // Listen for iframe "ready" signal
-    useEffect(() => {
-        function onMsg(e) {
-            if (e.data?.type === 'CONSTELLATION_READY') {
-                iframeReadyRef.current = true;
-                postDataToIframe();
-            }
-        }
-        window.addEventListener('message', onMsg);
-        return () => window.removeEventListener('message', onMsg);
     }, []);
 
     return (
         <section className="github-contrib-wrap">
             <div className="github-contrib-head">
-                <h2 className="github-contrib-title">Interactive GitHub Constellation</h2>
+                <h2 className="github-contrib-title">GitHub Activity</h2>
                 <p className="github-contrib-subtitle">
-                    Live repository activity mapped as a navigable star system.
+                    Contribution heat map and latest commits pulled from GitHub.
                 </p>
             </div>
+
             <div className="github-contrib-actions">
                 {status ? <p className="github-contrib-status">{status}</p> : <span />}
-                <div className="github-contrib-buttons">
-                    <button
-                        type="button"
-                        className="github-contrib-refresh"
-                        onClick={() => loadLiveData(true)}
-                        disabled={isRefreshing}
-                    >
-                        {isRefreshing ? 'Refreshing…' : 'Refresh Data'}
-                    </button>
-                    <Link to="/lab" className="github-contrib-lab-btn">
-                        Open Lab
-                    </Link>
-                </div>
+                <button
+                    type="button"
+                    className="github-contrib-refresh"
+                    onClick={() => loadLiveData(true)}
+                    disabled={isRefreshing}
+                >
+                    {isRefreshing ? 'Refreshing...' : 'Refresh Data'}
+                </button>
             </div>
-            <div className="github-contrib-card">
-                <iframe
-                    ref={iframeRef}
-                    className="github-contrib-frame"
-                    src="/github-constellation.html"
-                    title="Commit Constellation"
-                    loading="lazy"
-                />
-            </div>
-            <div className="gc-side-cards">
-                <div className="gc-universe-card">
-                    <div className="gc-card-eyebrow">Side Project</div>
-                    <h3 className="gc-card-title">GitHub Population Universe</h3>
-                    <p className="gc-card-desc">
-                        Mapping the entire GitHub ecosystem as a living universe —
-                        countries become galaxies, cities become planets, users become
-                        inhabitants, and repositories become individual stars.
-                    </p>
-                    <div className="gc-universe-legend">
-                        <div className="gc-legend-item"><span className="gc-legend-icon">🌌</span><span>Country</span><span className="gc-legend-arrow">→</span><span className="gc-legend-val">Universe</span></div>
-                        <div className="gc-legend-item"><span className="gc-legend-icon">🪐</span><span>City</span><span className="gc-legend-arrow">→</span><span className="gc-legend-val">Planet</span></div>
-                        <div className="gc-legend-item"><span className="gc-legend-icon">👥</span><span>Users</span><span className="gc-legend-arrow">→</span><span className="gc-legend-val">Population</span></div>
-                        <div className="gc-legend-item"><span className="gc-legend-icon">⭐</span><span>Repo</span><span className="gc-legend-arrow">→</span><span className="gc-legend-val">Star</span></div>
-                    </div>
-                    <a
-                        href="https://gremote-universe.vercel.app/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="gc-card-cta"
-                    >
-                        Visit GRemote Universe <span className="gc-cta-arrow">↗</span>
-                    </a>
-                    <Link to="/lab" className="gc-card-cta gc-card-cta-secondary">
-                        View Complete Lab <span className="gc-cta-arrow">↗</span>
-                    </Link>
+
+            <div className="github-activity-grid">
+                <div className="gc-heatmap-card">
+                    <div className="gc-card-eyebrow">Contribution Heat Map</div>
+                    <GitHubCalendar
+                        username={USERNAME}
+                        colorScheme="dark"
+                        theme={calendarTheme}
+                        blockSize={12}
+                        blockMargin={4}
+                        fontSize={12}
+                        showWeekdayLabels
+                    />
                 </div>
 
                 <div className="gc-commit-card">
-                    <div className="gc-card-eyebrow">Live Activity</div>
-                    <h3 className="gc-card-title">Recent Commits</h3>
+                    <div className="gc-card-eyebrow">Latest Commits</div>
+                    <h3 className="gc-card-title">@{USERNAME}</h3>
                     <div className="gc-commits-list">
                         {recentCommits.length > 0 ? (
                             recentCommits.map((commit, idx) => (
@@ -438,18 +211,21 @@ const GithubContributionSection = () => {
                                         </a>
                                     </div>
                                     <p className="gc-commit-message">{commit.message.split('\n')[0]}</p>
-                                    <a
-                                        href={commit.url}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="gc-card-cta"
-                                    >
-                                        View Commit <span className="gc-cta-arrow">↗</span>
-                                    </a>
+                                    <div className="gc-commit-footer">
+                                        <span>{formatCommitTime(commit.time)}</span>
+                                        <a
+                                            href={commit.url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="gc-card-cta"
+                                        >
+                                            View Commit <span className="gc-cta-arrow">↗</span>
+                                        </a>
+                                    </div>
                                 </div>
                             ))
                         ) : (
-                            <p className="gc-commit-unavailable">Fetching latest activity…</p>
+                            <p className="gc-commit-unavailable">No recent public commits found.</p>
                         )}
                     </div>
                 </div>

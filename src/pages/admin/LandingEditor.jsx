@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { fetchLandingData, saveLandingData } from '../../shared/landingService';
 import landingDataDefault from '../../data/landingData.json';
+import { normalizeLandingData } from '../../lib/mergeLandingData';
 
 const STORAGE_KEY = 'landingData';
 
@@ -13,16 +14,10 @@ const AVAILABLE_LINKS = [
 const getStoredData = () => {
     try {
         const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) return landingDataDefault;
-        const parsed = JSON.parse(stored);
-        return {
-            hero: { ...landingDataDefault.hero, ...parsed.hero },
-            tags: parsed.tags || landingDataDefault.tags || [],
-            metrics: parsed.metrics || landingDataDefault.metrics || [],
-            moreProjectsImages: parsed.moreProjectsImages || landingDataDefault.moreProjectsImages || []
-        };
+        if (!stored) return normalizeLandingData(landingDataDefault);
+        return normalizeLandingData(JSON.parse(stored));
     } catch {
-        return landingDataDefault;
+        return normalizeLandingData(landingDataDefault);
     }
 };
 
@@ -48,16 +43,15 @@ const LandingEditor = () => {
         const syncFromDisk = async () => {
             try {
                 const diskData = await fetchLandingData();
-                setDraft(prev => {
+                setDraft(() => {
                     const stored = localStorage.getItem(STORAGE_KEY);
-                    if (!stored) return diskData;
+                    if (!stored) return normalizeLandingData(diskData);
                     const parsed = JSON.parse(stored);
-                    return {
-                        hero: { ...diskData.hero, ...parsed.hero },
-                        tags: parsed.tags || diskData.tags || [],
-                        metrics: parsed.metrics || diskData.metrics || [],
-                        moreProjectsImages: parsed.moreProjectsImages || diskData.moreProjectsImages || []
-                    };
+                    return normalizeLandingData({
+                        ...diskData,
+                        ...parsed,
+                        hero: { ...diskData.hero, ...(parsed.hero || {}) },
+                    });
                 });
             } catch (e) {
                 console.error("Failed to fetch live landingData.json", e);
@@ -109,6 +103,96 @@ const LandingEditor = () => {
         return { ...prev, metrics };
     });
 
+    const story = draft.story;
+
+    const setStoryHero = (patch) => updateDraft(prev => ({
+        ...prev,
+        story: { ...prev.story, hero: { ...prev.story.hero, ...patch } },
+    }));
+    const setStoryOrigin = (patch) => updateDraft(prev => ({
+        ...prev,
+        story: { ...prev.story, origin: { ...prev.story.origin, ...patch } },
+    }));
+    const setOriginParagraph = (i, text) => updateDraft(prev => {
+        const paragraphs = [...prev.story.origin.paragraphs];
+        paragraphs[i] = text;
+        return { ...prev, story: { ...prev.story, origin: { ...prev.story.origin, paragraphs } } };
+    });
+    const setStoryArsenal = (patch) => updateDraft(prev => ({
+        ...prev,
+        story: { ...prev.story, arsenal: { ...prev.story.arsenal, ...patch } },
+    }));
+    const setStrength = (i, patch) => updateDraft(prev => {
+        const strengths = [...prev.story.arsenal.strengths];
+        strengths[i] = { ...strengths[i], ...patch };
+        return {
+            ...prev,
+            story: {
+                ...prev.story,
+                arsenal: { ...prev.story.arsenal, strengths },
+            },
+        };
+    });
+    const setMarqueeItem = (i, val) => updateDraft(prev => {
+        const marqueeItems = [...prev.story.arsenal.marqueeItems];
+        marqueeItems[i] = val;
+        return {
+            ...prev,
+            story: {
+                ...prev.story,
+                arsenal: { ...prev.story.arsenal, marqueeItems },
+            },
+        };
+    });
+    const addMarqueeTech = () => updateDraft(prev => ({
+        ...prev,
+        story: {
+            ...prev.story,
+            arsenal: {
+                ...prev.story.arsenal,
+                marqueeItems: [...prev.story.arsenal.marqueeItems, 'New'],
+            },
+        },
+    }));
+    const removeMarqueeTech = (i) => updateDraft(prev => ({
+        ...prev,
+        story: {
+            ...prev.story,
+            arsenal: {
+                ...prev.story.arsenal,
+                marqueeItems: prev.story.arsenal.marqueeItems.filter((_, idx) => idx !== i),
+            },
+        },
+    }));
+    const setStoryWork = (patch) => updateDraft(prev => ({
+        ...prev,
+        story: { ...prev.story, work: { ...prev.story.work, ...patch } },
+    }));
+    const setFeaturedProject = (i, patch) => updateDraft(prev => {
+        const projects = [...prev.story.work.projects];
+        projects[i] = { ...projects[i], ...patch };
+        return {
+            ...prev,
+            story: {
+                ...prev.story,
+                work: { ...prev.story.work, projects },
+            },
+        };
+    });
+    const setStoryHuman = (patch) => updateDraft(prev => ({
+        ...prev,
+        story: { ...prev.story, human: { ...prev.story.human, ...patch } },
+    }));
+    const setHumanFact = (i, text) => updateDraft(prev => {
+        const facts = [...prev.story.human.facts];
+        facts[i] = text;
+        return { ...prev, story: { ...prev.story, human: { ...prev.story.human, facts } } };
+    });
+    const setStoryConnect = (patch) => updateDraft(prev => ({
+        ...prev,
+        story: { ...prev.story, connect: { ...prev.story.connect, ...patch } },
+    }));
+
     if (loading) return <div className="min-h-screen bg-[#0e0e0e] text-white flex items-center justify-center">Loading Landing Data...</div>;
 
     return (
@@ -142,13 +226,156 @@ const LandingEditor = () => {
             </header>
 
             <main className="flex-1 max-w-5xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                <div className="lg:col-span-12 space-y-6">
+                    <div className="bg-[#121a16] border border-[#3d5a80]/35 rounded-2xl p-6">
+                        <h2 className="text-xs font-bold text-[#98c1d9] uppercase tracking-[0.2em] mb-6">Scrollytelling homepage (/)</h2>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <Field label="Hero — Full name">
+                                <input type="text" value={story.hero.fullName} onChange={e => setStoryHero({ fullName: e.target.value })} className={inputCls} />
+                            </Field>
+                            <Field label="Hero — Role">
+                                <input type="text" value={story.hero.role} onChange={e => setStoryHero({ role: e.target.value })} className={inputCls} />
+                            </Field>
+                            <Field label="Hero — Tagline">
+                                <textarea value={story.hero.tagline} onChange={e => setStoryHero({ tagline: e.target.value })} rows={2} className={inputCls + ' resize-none'} />
+                            </Field>
+                            <Field label="Hero — Scroll hint">
+                                <input type="text" value={story.hero.scrollHint} onChange={e => setStoryHero({ scrollHint: e.target.value })} className={inputCls} />
+                            </Field>
+                        </div>
+
+                        <div className="border-t border-white/10 pt-6 mb-6">
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Chapter — Origin</h3>
+                            <Field label="Headline">
+                                <input type="text" value={story.origin.headline} onChange={e => setStoryOrigin({ headline: e.target.value })} className={inputCls} />
+                            </Field>
+                            {story.origin.paragraphs.map((para, i) => (
+                                <Field key={i} label={`Paragraph ${i + 1}`}>
+                                    <textarea value={para} onChange={e => setOriginParagraph(i, e.target.value)} rows={3} className={inputCls + ' resize-none'} />
+                                </Field>
+                            ))}
+                        </div>
+
+                        <div className="border-t border-white/10 pt-6 mb-6">
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Chapter — Arsenal</h3>
+                            <Field label="Headline">
+                                <input type="text" value={story.arsenal.headline} onChange={e => setStoryArsenal({ headline: e.target.value })} className={inputCls} />
+                            </Field>
+                            <div className="flex flex-wrap gap-2 mb-3">
+                                {story.arsenal.marqueeItems.map((item, i) => (
+                                    <div key={i} className="flex items-center gap-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
+                                        <input value={item} onChange={e => setMarqueeItem(i, e.target.value)} className="bg-transparent outline-none text-white w-28" />
+                                        <button type="button" onClick={() => removeMarqueeTech(i)} className="text-red-400">×</button>
+                                    </div>
+                                ))}
+                                <button type="button" onClick={addMarqueeTech} className="px-2 py-1 text-[10px] bg-[#3d5a80]/40 rounded border border-white/10">+ Item</button>
+                            </div>
+                            {story.arsenal.strengths.map((s, i) => (
+                                <div key={i} className="grid grid-cols-12 gap-2 mb-3 p-3 bg-white/5 rounded-xl border border-white/5">
+                                    <div className="col-span-2">
+                                        <label className="text-[9px] text-gray-600 block mb-1">Symbol</label>
+                                        <input value={s.symbol} onChange={e => setStrength(i, { symbol: e.target.value })} className={inputCls} />
+                                    </div>
+                                    <div className="col-span-4">
+                                        <label className="text-[9px] text-gray-600 block mb-1">Title</label>
+                                        <input value={s.title} onChange={e => setStrength(i, { title: e.target.value })} className={inputCls} />
+                                    </div>
+                                    <div className="col-span-6">
+                                        <label className="text-[9px] text-gray-600 block mb-1">Description</label>
+                                        <input value={s.description} onChange={e => setStrength(i, { description: e.target.value })} className={inputCls} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="border-t border-white/10 pt-6 mb-6">
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Chapter — Work</h3>
+                            <Field label="Section headline">
+                                <input type="text" value={story.work.headline} onChange={e => setStoryWork({ headline: e.target.value })} className={inputCls} />
+                            </Field>
+                            {[0, 1].map((idx) => (
+                                <div key={idx} className="mt-4 p-4 rounded-xl border border-white/10 bg-black/20">
+                                    <p className="text-[10px] font-bold text-[#98c1d9] uppercase mb-3">Featured project {idx + 1}</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <Field label="Title">
+                                            <input type="text" value={story.work.projects[idx].title} onChange={e => setFeaturedProject(idx, { title: e.target.value })} className={inputCls} />
+                                        </Field>
+                                        <Field label="Link (path or URL)">
+                                            <input type="text" value={story.work.projects[idx].href} onChange={e => setFeaturedProject(idx, { href: e.target.value })} className={inputCls} />
+                                        </Field>
+                                        <Field label="Description">
+                                            <textarea value={story.work.projects[idx].description} onChange={e => setFeaturedProject(idx, { description: e.target.value })} rows={2} className={inputCls + ' resize-none md:col-span-2'} />
+                                        </Field>
+                                        <Field label="Tags (comma-separated)">
+                                            <input
+                                                type="text"
+                                                value={story.work.projects[idx].tags.join(', ')}
+                                                onChange={e => setFeaturedProject(idx, { tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean) })}
+                                                className={inputCls + ' md:col-span-2'}
+                                            />
+                                        </Field>
+                                        <Field label="Gradient">
+                                            <select value={story.work.projects[idx].gradient} onChange={e => setFeaturedProject(idx, { gradient: e.target.value })} className={inputCls}>
+                                                <option value="alpha">Alpha (slate → sky)</option>
+                                                <option value="beta">Beta (beige)</option>
+                                            </select>
+                                        </Field>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="border-t border-white/10 pt-6 mb-6">
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Chapter — Human</h3>
+                            <Field label="Quote">
+                                <textarea value={story.human.quote} onChange={e => setStoryHuman({ quote: e.target.value })} rows={3} className={inputCls + ' resize-none'} />
+                            </Field>
+                            {story.human.facts.map((fact, i) => (
+                                <Field key={i} label={`Fact ${i + 1}`}>
+                                    <input type="text" value={fact} onChange={e => setHumanFact(i, e.target.value)} className={inputCls} />
+                                </Field>
+                            ))}
+                        </div>
+
+                        <div className="border-t border-white/10 pt-6">
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Chapter — Connect</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <Field label="Headline">
+                                    <input type="text" value={story.connect.headline} onChange={e => setStoryConnect({ headline: e.target.value })} className={inputCls} />
+                                </Field>
+                                <Field label="Email">
+                                    <input type="text" value={story.connect.email} onChange={e => setStoryConnect({ email: e.target.value })} className={inputCls} />
+                                </Field>
+                                <Field label="Subtext">
+                                    <textarea value={story.connect.subtext} onChange={e => setStoryConnect({ subtext: e.target.value })} rows={2} className={inputCls + ' resize-none md:col-span-2'} />
+                                </Field>
+                                <Field label="GitHub URL">
+                                    <input type="text" value={story.connect.githubUrl} onChange={e => setStoryConnect({ githubUrl: e.target.value })} className={inputCls} />
+                                </Field>
+                                <Field label="LinkedIn URL">
+                                    <input type="text" value={story.connect.linkedinUrl} onChange={e => setStoryConnect({ linkedinUrl: e.target.value })} className={inputCls} />
+                                </Field>
+                                <Field label="Portfolio URL">
+                                    <input type="text" value={story.connect.portfolioUrl} onChange={e => setStoryConnect({ portfolioUrl: e.target.value })} className={inputCls} />
+                                </Field>
+                                <Field label="Portfolio link label">
+                                    <input type="text" value={story.connect.portfolioLinkLabel} onChange={e => setStoryConnect({ portfolioLinkLabel: e.target.value })} className={inputCls} />
+                                </Field>
+                                <Field label="Footer line">
+                                    <input type="text" value={story.connect.footerCopyright} onChange={e => setStoryConnect({ footerCopyright: e.target.value })} className={inputCls + ' md:col-span-2'} />
+                                </Field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 {/* Left Col: Hero Section */}
                 <div className="lg:col-span-7 space-y-6">
                     {/* More Projects Image Gallery */}
                     <div className="bg-[#161616] border border-white/5 rounded-2xl p-6">
                         <h2 className="text-xs font-bold text-[#c8ff3e] uppercase tracking-[0.2em] mb-6 flex items-center justify-between">
-                            More Projects Gallery
                             More Projects Gallery
                             <div className="flex items-center gap-2">
                                 <button

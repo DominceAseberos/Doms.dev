@@ -1,11 +1,5 @@
-# robots.txt — dominceaseberos.vercel.app
-# https://dominceaseberos.vercel.app/robots.txt
-
 User-agent: *
+Disallow: /admin/
 Allow: /
 
-# Disallow admin routes (dev only, not served in production)
-Disallow: /admin/
-
-# Sitemap
-Sitemap: https://dominceaseberos.vercel.app/sitemap.xml
+Sitemap: https://doms.dev/sitemap.xml

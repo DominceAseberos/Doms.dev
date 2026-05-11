@@ -101,16 +101,17 @@ html[data-theme='light'] .cs-page {
 }
 
 .cs-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2rem, 4vw, 4rem);
-    line-height: 1.04;
-    letter-spacing: -0.02em;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 3.8vw, 3.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
     color: var(--cs-ink);
     margin: 0;
 }
 
 .cs-subtitle {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-size: clamp(1rem, 0.96rem + 0.16vw, 1.12rem);
     color: var(--cs-body);
     line-height: 1.7;

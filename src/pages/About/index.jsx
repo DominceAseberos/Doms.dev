@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import './css/About.css';
+import { Helmet } from 'react-helmet-async';
 
 import ParticleBackground from '../../components/ParticleBackground';
 import NavBar from '../../components/NavBar';
@@ -27,6 +28,10 @@ const AboutPage = () => {
 
     return (
         <div className="relative min-h-screen">
+            <Helmet>
+                <title>About - Domince Aseberos</title>
+                <meta name="description" content="Learn more about Domince Aseberos, a creative developer with a passion for web animation, design systems, and frontend architecture." />
+            </Helmet>
             <ParticleBackground />
             <NavBar />
 

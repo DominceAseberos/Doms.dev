@@ -1,58 +1,114 @@
 {
     "hero": {
-        "marquee": [
-            "Motion",
-            "Code",
-            "Design",
-            "3d"
-        ],
-        "kicker": "Developer × Motion Designer",
+        "marquee": ["Motion", "Code", "Design", "3d"],
+        "kicker": "Developer × Motion Designer - ",
         "displayKicker": "Portfolio - My Name is ",
         "bio": "Crafting high-performance web experiences where code meets motion. GSAP · WebGL · React · Spline .",
         "buttons": [
-            {
-                "label": "View Projects",
-                "link": "/projects",
-                "variant": "primary"
-            },
-            {
-                "label": "Get in Touch",
-                "link": "/contact"
-            }
+            { "label": "View Projects", "link": "/projects", "variant": "primary" },
+            { "label": "Get in Touch", "link": "/contact" }
         ]
     },
-    "tags": [
-        "GSAP",
-        "THREE.JS",
-        "GLSL",
-        "FRAMER",
-        "WEBGL",
-        "REACT",
-        "MOTION",
-        "NEXT.JS",
-        "LOTTINS",
-        "SPLINE"
-    ],
+    "tags": ["GSAP", "THREE.JS", "GLSL", "FRAMER", "WEBGL", "REACT", "MOTION", "NEXT.JS", "LOTTINS", "SPLINE"],
     "metrics": [
-        {
-            "value": "60",
-            "unit": "fps",
-            "label": "Render"
-        },
-        {
-            "value": "10+",
-            "unit": "rep",
-            "label": "Projects"
-        },
-        {
-            "value": "1",
-            "unit": "yr",
-            "label": "Experience"
-        }
+        { "value": "60", "unit": "fps", "label": "Render" },
+        { "value": "10+", "unit": "rep", "label": "Projects" },
+        { "value": "1", "unit": "yr", "label": "Experience" }
     ],
     "moreProjectsImages": [
         "/assets/uploads/landing/moreProjects/1773989230081-screenshot_from_2026-03-20_14-42-01.png",
         "/assets/uploads/landing/moreProjects/1773989243503-screenshot_from_2026-03-20_13-38-15.png",
         "/assets/uploads/landing/moreProjects/1773989245971-screenshot_from_2026-03-20_09-02-14.png"
-    ]
+    ],
+    "story": {
+        "chapters": [
+            { "id": "hero", "stickyLabel": "00 — Intro" },
+            { "id": "origin", "stickyLabel": "01 — Origin" },
+            { "id": "arsenal", "stickyLabel": "02 — Arsenal" },
+            { "id": "work", "stickyLabel": "03 — Work" },
+            { "id": "human", "stickyLabel": "04 — Human" },
+            { "id": "connect", "stickyLabel": "05 — Connect" }
+        ],
+        "hero": {
+            "fullName": "Domince Aseberos",
+            "role": "Creative Full Stack Developer",
+            "tagline": "I don't just build websites. I build experiences.",
+            "scrollHint": "Scroll"
+        },
+        "origin": {
+            "headline": "It started with curiosity.",
+            "paragraphs": [
+                "I discovered code out of curiosity—how a few lines could change what people see on a screen.",
+                "Then I realized I could turn ideas into real things on the internet: interfaces, flows, and stories people actually use.",
+                "I never looked back. I kept building—one project, one lesson, one iteration at a time."
+            ]
+        },
+        "arsenal": {
+            "headline": "What I work with.",
+            "marqueeItems": [
+                "React",
+                "Next.js",
+                "Node.js",
+                "PostgreSQL",
+                "REST APIs",
+                "Tailwind CSS",
+                "Git",
+                "TypeScript",
+                "Figma",
+                "Vercel",
+                "MongoDB",
+                "Express"
+            ],
+            "strengths": [
+                {
+                    "symbol": "🧩",
+                    "title": "Frontend",
+                    "description": "Pixel-perfect UIs that users love"
+                },
+                {
+                    "symbol": "⚙️",
+                    "title": "Backend",
+                    "description": "Scalable APIs and clean server logic"
+                },
+                {
+                    "symbol": "🎨",
+                    "title": "Design Sense",
+                    "description": "Purposeful aesthetics, not decoration"
+                }
+            ]
+        },
+        "work": {
+            "headline": "Things I've built.",
+            "projects": [
+                {
+                    "title": "Project Alpha",
+                    "description": "Immersive scroll-driven experience with editorial typography and motion.",
+                    "tags": ["React", "TypeScript", "Vite"],
+                    "href": "/projects/project-1774573315239",
+                    "gradient": "alpha"
+                },
+                {
+                    "title": "Project Beta",
+                    "description": "Full-stack product flow with auth, data, and a calm interface.",
+                    "tags": ["Next.js", "Node.js", "PostgreSQL"],
+                    "href": "/projects",
+                    "gradient": "beta"
+                }
+            ]
+        },
+        "human": {
+            "quote": "I'm a developer from Davao who believes great software should feel as good as it works.",
+            "facts": ["📍 Davao, Philippines", "💻 Full Stack Dev", "🌱 Always Learning"]
+        },
+        "connect": {
+            "headline": "Let's build something.",
+            "subtext": "Open to freelance projects, collaborations, and full-time opportunities.",
+            "email": "hello@domince.dev",
+            "githubUrl": "https://github.com/DominceAseberos",
+            "linkedinUrl": "https://www.linkedin.com/in/domincee/",
+            "portfolioUrl": "https://dominceaseberos.vercel.app",
+            "portfolioLinkLabel": "See my full portfolio →",
+            "footerCopyright": "© 2026 Domince Aseberos · Davao, Philippines"
+        }
+    }
 }

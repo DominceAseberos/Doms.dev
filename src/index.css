@@ -57,6 +57,12 @@ html[data-theme='light'] {
     --cursor-hover: url('./assets/cursor-hover-dark.svg');
 }
 
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
 html,
 body {
     background: var(--bg);

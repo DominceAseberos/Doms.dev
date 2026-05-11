@@ -76,12 +76,12 @@ html[data-theme='light'] .proj-page {
     padding-right: 64px;
 }
 .proj-header .proj-inner {
-    padding-top: 80px;
-    padding-bottom: 48px;
+    padding-top: 96px;
+    padding-bottom: 56px;
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: end;
-    gap: 40px;
+    gap: clamp(28px, 5vw, 56px);
 }
 
 /* ─────────────────────────────────
@@ -122,22 +122,24 @@ html[data-theme='light'] .proj-page {
     background: var(--about-label);
 }
 .ph-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(64px, 10vw, 140px);
-    line-height: .88;
-    letter-spacing: .01em;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.35rem, 4.8vw, 3.85rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-weight: 700;
     color: var(--about-title);
 }
 .ph-title em {
-    color: transparent;
-    -webkit-text-stroke: 1px var(--title-stroke);
-    font-style: normal;
+    color: #3d5a80;
+    -webkit-text-stroke: 0;
+    font-style: italic;
+    font-weight: 600;
 }
 .ph-right {
-    max-width: 260px;
-    font-size: 12px;
-    line-height: 1.8;
-    color: var(--about-label);
+    max-width: min(420px, 38vw);
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--about-body);
     padding-bottom: 8px;
 }
 .ph-right strong {
@@ -193,10 +195,10 @@ html[data-theme='light'] .proj-page {
     margin-right: auto;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 18px;
+    gap: 22px;
     background: transparent;
     border-bottom: 1px solid var(--line);
-    padding: 18px 64px;
+    padding: 28px 64px 48px;
 }
 
 /* ─────────────────────────────────
