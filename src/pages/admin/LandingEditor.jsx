@@ -7,7 +7,6 @@ const STORAGE_KEY = 'landingData';
 
 const AVAILABLE_LINKS = [
     { value: '/projects', label: 'Projects Page' },
-    { value: '/about', label: 'About Page' },
     { value: '/contact', label: 'Contact Page' },
 ];
 

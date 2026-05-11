@@ -18,7 +18,7 @@ if (typeof window !== "undefined") {
 
 const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
     const location = useLocation();
-    const isAboutPage = location.pathname === '/about';
+    const isAboutPage = location.pathname === '/';
     const sectionRef = useRef(null);
     const stripesRef = useRef([]);
     const headerRef = useRef(null);
@@ -226,12 +226,12 @@ const AboutSection = forwardRef(({ narrativeRef, ...props }, ref) => {
                             </div>
                             <div className="pt-12 sm:pt-16">
                                 <a
-                                    href="/about"
+                                    href="/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={`inline-flex items-center justify-center font-bold text-sm uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 ${isLight ? 'text-white bg-[#121212] hover:bg-[var(--accent)] hover:text-black' : 'text-[#505255] bg-[#c8ff3e] hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(200,255,62,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]'}`}
                                 >
-                                    More about me ↗
+                                    Home ↗
                                 </a>
                             </div>
                         </div>

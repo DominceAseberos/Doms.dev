@@ -1,7 +1,6 @@
 import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 
-import Home from './pages/Home/index';
 import ProjectsPage from './pages/Projects/index';
 import ProjectDetailsPage from './pages/Projects/components/ProjectDetailsPage';
 import AboutPage from './pages/About/index';
@@ -51,10 +50,9 @@ function App() {
         <div id="smooth-wrapper" className="min-h-screen selection:bg-red-500/30">
           <div id="smooth-content">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<AboutPage />} />
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
-              <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="*" element={<NotFoundPage />} />
               {import.meta.env.DEV && AdminLayout && (
