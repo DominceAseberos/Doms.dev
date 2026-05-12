@@ -1,20 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    FiUser, FiLayout, FiCheckSquare, FiMessageCircle,
-    FiPlus, FiTrash2, FiUpload, FiLink, FiGlobe,
-    FiFileText, FiCode, FiBriefcase, FiMail, FiSave,
+    FiUser, FiCheckSquare, FiMessageCircle,
+    FiPlus, FiTrash2, FiUpload, FiGlobe,
+    FiFileText, FiCode, FiBriefcase, FiMail,
     FiExternalLink, FiImage, FiChevronDown, FiChevronUp,
 } from 'react-icons/fi';
 
 import { fetchAboutData, saveAboutData } from '../../shared/aboutService';
-import { fetchLandingData, saveLandingData } from '../../shared/landingService';
 import { fetchPortfolioData, savePortfolioData } from '../../shared/portfolioService';
 import { fetchFeedPosts, saveFeedPosts } from '../../shared/feedService';
-import { normalizeLandingData } from '../../lib/mergeLandingData';
 
 import aboutDataDefault from '../../data/aboutData.json';
-import landingDataDefault from '../../data/landingData.json';
 import portfolioDataDefault from '../../data/portfolioData.json';
 
 // ── Shared UI ─────────────────────────────────────────────────────────────
@@ -82,7 +79,6 @@ const SaveBadge = ({ status }) => {
 // ── TABS ──────────────────────────────────────────────────────────────────
 const TABS = [
     { id: 'profile',  label: 'Profile',   icon: <FiUser /> },
-    { id: 'landing',  label: 'Landing',   icon: <FiLayout /> },
     { id: 'projects', label: 'Projects',  icon: <FiCheckSquare /> },
     { id: 'feed',     label: 'Feed',      icon: <FiMessageCircle /> },
 ];
@@ -731,7 +727,6 @@ const AdminCMS = () => {
 
     const tabContent = {
         profile:  <ProfileTab />,
-        landing:  <LandingTab />,
         projects: <ProjectsTab />,
         feed:     <FeedTab />,
     };
