@@ -139,6 +139,10 @@ const ProfileTab = () => {
     const setSocial = (i, p) => update(prev => { const a=[...(prev.socials||[])]; a[i]={...a[i],...p}; return {...prev,socials:a}; });
     const delSocial = (i) => update(prev => ({ ...prev, socials: prev.socials.filter((_,idx)=>idx!==i) }));
 
+    // Education CRUD
+    const addEdu = () => update(prev => ({ ...prev, education: [...(prev.education||[]), { institution:'', degree:'', period:'', skills:[] }] }));
+    const setEdu = (i, p) => update(prev => { const a=[...(prev.education||[])]; a[i]={...a[i],...p}; return {...prev,education:a}; });
+    const delEdu = (i) => update(prev => ({ ...prev, education: prev.education.filter((_,idx)=>idx!==i) }));
     const hero   = d.hero   || {};
     const about  = d.about  || {};
     const contact= d.contact|| {};
@@ -251,6 +255,34 @@ const ProfileTab = () => {
                         <TagInput items={d.techStackExtra||[]} onChange={v=>update({techStackExtra:v})} placeholder="Add tool..." />
                     </Field>
                 </div>
+            </Card>
+
+            {/* ── EDUCATION ── */}
+            <Card title="Academic Background" icon={<FiFileText />}>
+                <div className="flex justify-end mb-3">
+                    <button onClick={addEdu} className="flex items-center gap-1 px-3 py-1.5 text-[10px] bg-[#c8ff3e]/10 text-[#c8ff3e] hover:bg-[#c8ff3e] hover:text-black rounded-lg font-bold transition-all"><FiPlus size={10}/> Add Entry</button>
+                </div>
+                {(d.education||[]).map((e,i)=>(
+                    <div key={i} className="mb-3 p-4 bg-black/30 rounded-xl border border-white/5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+                            <Field label="Institution" className="md:col-span-2">
+                                <input value={e.institution||''} onChange={ev=>setEdu(i,{institution:ev.target.value})} className={inputCls} placeholder="University name" />
+                            </Field>
+                            <Field label="Degree">
+                                <input value={e.degree||''} onChange={ev=>setEdu(i,{degree:ev.target.value})} className={inputCls} placeholder="BS Computer Science" />
+                            </Field>
+                            <Field label="Period">
+                                <input value={e.period||''} onChange={ev=>setEdu(i,{period:ev.target.value})} className={inputCls} placeholder="2021 — Present" />
+                            </Field>
+                        </div>
+                        <Field label="Skills / Subjects (pills)">
+                            <TagInput items={e.skills||[]} onChange={v=>setEdu(i,{skills:v})} placeholder="Add skill..." />
+                        </Field>
+                        <div className="flex justify-end mt-2">
+                            <button onClick={()=>delEdu(i)} className="flex items-center gap-1 px-3 py-1.5 text-xs bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-lg font-bold transition-all"><FiTrash2 size={12}/> Remove</button>
+                        </div>
+                    </div>
+                ))}
             </Card>
 
             {/* ── CONTACT ── */}

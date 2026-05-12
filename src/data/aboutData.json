@@ -2,25 +2,67 @@
     "resume": "",
     "cv": "/resume.pdf",
     "socials": [
-        { "label": "Facebook",  "href": "https://facebook.com",                    "external": true },
-        { "label": "Instagram", "href": "https://instagram.com",                   "external": true },
-        { "label": "LinkedIn",  "href": "https://www.linkedin.com/in/domincee/",   "external": true },
-        { "label": "X",         "href": "https://x.com",                           "external": true },
-        { "label": "Telegram",  "href": "https://telegram.org",                    "external": true },
-        { "label": "EMAIL",     "href": "",                                         "external": true }
+        {
+            "label": "Facebook",
+            "href": "https://facebook.com",
+            "external": true
+        },
+        {
+            "label": "Instagram",
+            "href": "https://instagram.com",
+            "external": true
+        },
+        {
+            "label": "LinkedIn",
+            "href": "https://www.linkedin.com/in/domincee/",
+            "external": true
+        },
+        {
+            "label": "X",
+            "href": "https://x.com",
+            "external": true
+        },
+        {
+            "label": "Telegram",
+            "href": "https://telegram.org",
+            "external": true
+        },
+        {
+            "label": "EMAIL",
+            "href": "",
+            "external": true
+        }
     ],
     "hero": {
-        "location": "📍 Davao, Philippines",
+        "location": "📍 Tagum City, Philippines",
         "fullName": "Domince\nAseberos",
         "role": "Creative Full Stack Developer",
         "bio": "Building high-performance web experiences where code meets motion. GSAP · WebGL · React · Spline.",
-        "badges": ["React", "GSAP", "Next.js", "TypeScript", "Motion Design"],
+        "badges": [
+            "React",
+            "GSAP",
+            "Next.js",
+            "TypeScript",
+            "Motion Design"
+        ],
         "githubUrl": "https://github.com/DominceAseberos",
         "linkedinUrl": "https://www.linkedin.com/in/domincee/",
         "metrics": [
-            { "value": "60",  "unit": "fps", "label": "Render"     },
-            { "value": "10+", "unit": "rep", "label": "Projects"   },
-            { "value": "1",   "unit": "yr",  "label": "Experience" }
+            {
+                "value": "60",
+                "unit": "fps",
+                "label": "Render"
+            },
+            {
+                "value": "10+",
+                "unit": "rep",
+                "label": "Projects"
+            },
+            {
+                "value": "1",
+                "unit": "yr",
+                "label": "Experience"
+            }
         ]
     },
     "about": {
@@ -42,8 +84,22 @@
             }
         ],
         "location": "Worldwide / Remote",
-        "capabilities": ["Creative Development", "Interaction Design", "Technical Architecture", "Custom Animation", "Full-stack"],
-        "aiTools": ["GPT", "Claude", "Gemini", "Cursor", "Perplexity"]
+        "capabilities": [
+            "Creative Development",
+            "Interaction Design",
+            "Technical Architecture",
+            "Custom Animation",
+            "Full-stack"
+        ],
+        "aiTools": [
+            "GPT",
+            "Claude",
+            "Gemini",
+            "Cursor",
+            "Perplexity",
+            "Hugging Face",
+            "OpenRouter"
+        ]
     },
     "experience": [
         {
@@ -72,15 +128,91 @@
         }
     ],
     "techStack": [
-        { "group": "Frontend",      "items": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Vite"] },
-        { "group": "Backend",       "items": ["Node.js", "Express", "PostgreSQL", "MongoDB", "REST APIs"] },
-        { "group": "Motion & 3D",   "items": ["GSAP", "Framer Motion", "Three.js", "Spline", "Lenis"] },
-        { "group": "Tools & Design","items": ["Figma", "Git", "Vercel", "Supabase", "AWS"] },
-        { "group": "No-Code & CMS", "items": ["WordPress", "Webflow", "Framer Sites", "Elementor", "WooCommerce"] }
+        {
+            "group": "Frontend",
+            "items": [
+                "React",
+                "Next.js",
+                "TypeScript",
+                "Tailwind CSS",
+                "Vite",
+                "HTML",
+                "Javascript"
+            ]
+        },
+        {
+            "group": "Backend",
+            "items": [
+                "Node.js",
+                "Express",
+                "PostgreSQL",
+                "MongoDB",
+                "Fast API"
+            ]
+        },
+        {
+            "group": "Motion & 3D",
+            "items": [
+                "GSAP",
+                "Framer Motion",
+                "Three.js",
+                "Spline",
+                "Lenis"
+            ]
+        },
+        {
+            "group": "Tools & Design",
+            "items": [
+                "Figma",
+                "Git",
+                "Vercel",
+                "Supabase",
+                "AWS",
+                "Firebase",
+                "Render"
+            ]
+        },
+        {
+            "group": "No-Code & CMS",
+            "items": [
+                "WordPress",
+                "Framer Sites",
+                "Elementor"
+            ]
+        }
     ],
-    "techStackExtra": ["Figma", "Spline", "LottieFiles", "Framer", "SVG Animation", "Docker", "GitHub Actions", "Prisma"],
+    "techStackExtra": [
+        "Figma",
+        "Spline",
+        "LottieFiles",
+        "Framer",
+        "SVG Animation",
+        "Docker",
+        "GitHub Actions",
+        "Prisma"
+    ],
     "contact": {
         "heading": "Let's build something.",
         "subtext": "Open to freelance projects, collaborations, and full-time opportunities."
-    }
+    },
+    "education": [
+        {
+            "institution": "University of Mindanao Tagum City",
+            "degree": "Bachelor of Science in Computer Science",
+            "period": "2021 — Present",
+            "skills": [
+                "SOLID Principles",
+                "Software Engineering",
+                "Machine Learning",
+                "NLP",
+                "Mobile Development",
+                "Data Structures & Algorithms",
+                "OOP",
+                "Distributed Systems",
+                "Software Architecture",
+                "Web Development",
+                "Java Fundamentals"
+            ]
+        }
+    ]
 }
