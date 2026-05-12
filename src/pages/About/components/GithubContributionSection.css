@@ -25,16 +25,16 @@
 }
 
 .github-contrib-title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.1;
-    letter-spacing: 0;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
     color: var(--gc-title-color);
 }
 
 .github-contrib-subtitle {
-    margin-top: 0.4rem;
-    font-size: 0.83rem;
-    letter-spacing: 0.08em;
+    margin-top: 0.3rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--gc-subtitle-color);
 }
@@ -50,7 +50,7 @@
 
 .github-contrib-status {
     text-align: left;
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     letter-spacing: 0.1em;
     color: var(--gc-status-color);
     margin: 0;
@@ -62,8 +62,8 @@
     background: var(--gc-refresh-bg);
     color: var(--gc-refresh-color);
     border-radius: 9999px;
-    padding: 0.4rem 0.85rem;
-    font-size: 0.7rem;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.65rem;
     letter-spacing: 0.09em;
     text-transform: uppercase;
     cursor: pointer;
@@ -110,8 +110,8 @@
 }
 
 .gc-card-eyebrow {
-    margin-bottom: 0.8rem;
-    font-size: 0.72rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.65rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--gc-eyebrow-color);
@@ -119,7 +119,7 @@
 
 .gc-card-title {
     margin: 0;
-    font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
     font-weight: 700;
     letter-spacing: 0.03em;
     color: var(--gc-card-title-color);
@@ -161,7 +161,7 @@
 }
 
 .gc-commit-repo-link {
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: rgba(160, 210, 255, 0.95);
@@ -171,7 +171,7 @@
 
 .gc-commit-message {
     margin: 0;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     line-height: 1.5;
     color: var(--gc-message-color);
     display: -webkit-box;
@@ -187,13 +187,13 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--gc-muted-color);
 }
 
 .gc-commit-unavailable {
     margin: 0;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--gc-muted-color);
     letter-spacing: 0.06em;
 }
@@ -202,7 +202,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;

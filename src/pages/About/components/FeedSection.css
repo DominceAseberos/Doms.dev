@@ -47,15 +47,15 @@
 .feed-title {
     margin: 0;
     color: rgba(255, 255, 255, 0.96);
-    font-size: clamp(2rem, 5vw, 4.5rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
 }
 
 .feed-intro {
     max-width: 46rem;
     margin: 0;
-    font-size: 1rem;
+    font-size: 0.85rem;
 }
 
 .feed-layout {
@@ -107,15 +107,15 @@
 .feed-card-title {
     margin: 0;
     color: var(--feed-card-title-color);
-    font-size: clamp(1.2rem, 2vw, 1.7rem);
+    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
     font-weight: 700;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.01em;
 }
 
 .feed-card-body {
     margin: 0;
-    line-height: 1.75;
-    font-size: 1rem;
+    line-height: 1.7;
+    font-size: 0.85rem;
     white-space: pre-line;
 }
 
@@ -273,7 +273,7 @@
 
 .feed-list-title {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--feed-list-title-color);
     letter-spacing: 0.01em;
@@ -282,7 +282,7 @@
 .feed-list-empty {
     margin: 0.2rem 0 0;
     color: var(--feed-list-empty-color);
-    font-size: 0.9rem;
+    font-size: 0.82rem;
 }
 
 .feed-list-toggle {

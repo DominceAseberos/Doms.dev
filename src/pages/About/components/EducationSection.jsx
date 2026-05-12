@@ -59,7 +59,7 @@ const EducationSection = () => {
                 <h2
                     ref={headingRef}
                     className="font-bold uppercase tracking-tight text-[var(--accent)]"
-                    style={{ fontSize: "clamp(2rem, 8vw, 8rem)", lineHeight: 1.1 }}
+                    style={{ fontSize: "clamp(1.2rem, 2vw, 1.6rem)", lineHeight: 1.15 }}
                 >
                     <span className="es-heading-name">Educational</span> Background
                 </h2>
@@ -78,10 +78,10 @@ const EducationSection = () => {
 
                     <div className="w-full flex flex-col items-start justify-center text-left">
                         <div className="space-y-4 md:space-y-5 max-w-2xl">
-                            <h3 className="es-institution-name text-2xl md:text-4xl font-bold tracking-tight">
+                            <h3 className="es-institution-name text-lg md:text-2xl font-bold tracking-tight">
                                 University of Mindanao Tagum City
                             </h3>
-                            <p className="es-degree-text text-sm md:text-base uppercase tracking-[0.12em] font-medium">
+                            <p className="es-degree-text text-xs uppercase tracking-[0.12em] font-medium">
                                 Bachelor of Science in Computer Science
                             </p>
                             <div className="flex flex-wrap gap-2 pt-2">

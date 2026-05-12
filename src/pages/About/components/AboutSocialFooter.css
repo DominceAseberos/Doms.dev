@@ -33,9 +33,9 @@
 .about-social-footer-title {
     margin: 0;
     color: var(--asf-title-color);
-    font-size: clamp(2rem, 4.5vw, 4rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
 }
 
 .about-social-footer-text {
