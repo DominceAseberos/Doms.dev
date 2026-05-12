@@ -1,21 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import './css/About.css';
 import { Helmet } from 'react-helmet-async';
 
 import ParticleBackground from '../../components/ParticleBackground';
 import NavBar from '../../components/NavBar';
-import AboutSection from '../../components/AboutSection';
-import EducationSection from './components/EducationSection';
-import GithubContributionSection from './components/GithubContributionSection';
-import FeedSection from './components/FeedSection';
-import AboutSocialFooter from './components/AboutSocialFooter';
 import NarrativeSection from './components/NarrativeSection';
 import useLoadingStore from '../../store/useLoadingStore';
 
 const AboutPage = () => {
     const isLoading = useLoadingStore((state) => state.isLoading);
-    const sectionRef = useRef(null);
-    const narrativeRef = useRef(null);
 
     useEffect(() => {
         if (!isLoading) {
@@ -29,19 +22,13 @@ const AboutPage = () => {
     return (
         <div className="about-home relative min-h-screen">
             <Helmet>
-                <title>About - Domince Aseberos</title>
-                <meta name="description" content="Learn more about Domince Aseberos, a creative developer with a passion for web animation, design systems, and frontend architecture." />
+                <title>Domince Aseberos — Creative Full Stack Developer</title>
+                <meta name="description" content="Creative Full Stack Developer in Davao, Philippines. Building high-performance web experiences where code meets motion." />
             </Helmet>
             <ParticleBackground />
             <NavBar />
-
             <div className="relative z-10">
-                <AboutSection ref={sectionRef} narrativeRef={narrativeRef} />
-                <NarrativeSection ref={narrativeRef} />
-                <EducationSection />
-                <GithubContributionSection />
-                <FeedSection />
-                <AboutSocialFooter />
+                <NarrativeSection />
             </div>
         </div>
     );
