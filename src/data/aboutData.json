@@ -2,35 +2,85 @@
     "resume": "",
     "cv": "/resume.pdf",
     "socials": [
+        { "label": "Facebook",  "href": "https://facebook.com",                    "external": true },
+        { "label": "Instagram", "href": "https://instagram.com",                   "external": true },
+        { "label": "LinkedIn",  "href": "https://www.linkedin.com/in/domincee/",   "external": true },
+        { "label": "X",         "href": "https://x.com",                           "external": true },
+        { "label": "Telegram",  "href": "https://telegram.org",                    "external": true },
+        { "label": "EMAIL",     "href": "",                                         "external": true }
+    ],
+    "hero": {
+        "location": "📍 Davao, Philippines",
+        "fullName": "Domince\nAseberos",
+        "role": "Creative Full Stack Developer",
+        "bio": "Building high-performance web experiences where code meets motion. GSAP · WebGL · React · Spline.",
+        "badges": ["React", "GSAP", "Next.js", "TypeScript", "Motion Design"],
+        "githubUrl": "https://github.com/DominceAseberos",
+        "linkedinUrl": "https://www.linkedin.com/in/domincee/",
+        "metrics": [
+            { "value": "60",  "unit": "fps", "label": "Render"     },
+            { "value": "10+", "unit": "rep", "label": "Projects"   },
+            { "value": "1",   "unit": "yr",  "label": "Experience" }
+        ]
+    },
+    "about": {
+        "heading": "Engineering",
+        "headingAccent": "Digital Poetry",
+        "intro": "I'm a technical architect specializing in the transition from static logic to immersive, motion-driven web systems. I don't just build websites — I build experiences.",
+        "blocks": [
+            {
+                "title": "The Philosophy",
+                "body": "The modern web belongs to those who move the fastest. By integrating AI-driven logic into my workflow, I bypass manual friction to focus on what truly matters: creating high-performance, immersive systems that respond to user intent with surgical precision."
+            },
+            {
+                "title": "The Approach",
+                "body": "I leverage AI-augmented development to accelerate the architectural process, allowing me to focus on high-level logic, complex motion sequencing, and scalability — transforming ideas into cinematic experiences with surgical speed."
+            },
+            {
+                "title": "Beyond the Browser",
+                "body": "When the GSAP timeline stops, you'll find me in high-intensity training, competitive gaming, or catching up on the latest anime — always with the same precision I apply to code."
+            }
+        ],
+        "location": "Worldwide / Remote",
+        "capabilities": ["Creative Development", "Interaction Design", "Technical Architecture", "Custom Animation", "Full-stack"],
+        "aiTools": ["GPT", "Claude", "Gemini", "Cursor", "Perplexity"]
+    },
+    "experience": [
         {
-            "label": "Facebook",
-            "href": "https://facebook.com",
-            "external": true
+            "role": "Creative Full Stack Developer",
+            "company": "Freelance",
+            "period": "2024 — Present",
+            "desc": "Building high-performance web experiences for clients worldwide. Specializing in motion-driven UIs, GSAP animations, and full-stack React/Node applications."
         },
         {
-            "label": "Instagram",
-            "href": "https://instagram.com",
-            "external": true
+            "role": "Frontend Developer",
+            "company": "Personal Projects",
+            "period": "2023 — 2024",
+            "desc": "Developed and shipped multiple production-grade projects including landing pages, marketplaces, and AI-powered tools."
         },
         {
-            "label": "LinkedIn",
-            "href": "https://linkedin.com",
-            "external": true
+            "role": "BS Computer Science",
+            "company": "University of Mindanao Tagum City",
+            "period": "2021 — Present",
+            "desc": "Studying software engineering, machine learning, data structures, and distributed systems."
         },
         {
-            "label": "X",
-            "href": "https://x.com",
-            "external": true
-        },
-        {
-            "label": "Telegram",
-            "href": "https://telegram.org",
-            "external": true
-        },
-        {
-            "label": "EMAIL",
-            "href": "",
-            "external": true
+            "role": "First Line of Code",
+            "company": "Self-taught",
+            "period": "2020",
+            "desc": "Started with curiosity — how a few lines could change what people see on a screen."
         }
-    ]
+    ],
+    "techStack": [
+        { "group": "Frontend",      "items": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Vite"] },
+        { "group": "Backend",       "items": ["Node.js", "Express", "PostgreSQL", "MongoDB", "REST APIs"] },
+        { "group": "Motion & 3D",   "items": ["GSAP", "Framer Motion", "Three.js", "Spline", "Lenis"] },
+        { "group": "Tools & Design","items": ["Figma", "Git", "Vercel", "Supabase", "AWS"] },
+        { "group": "No-Code & CMS", "items": ["WordPress", "Webflow", "Framer Sites", "Elementor", "WooCommerce"] }
+    ],
+    "techStackExtra": ["Figma", "Spline", "LottieFiles", "Framer", "SVG Animation", "Docker", "GitHub Actions", "Prisma"],
+    "contact": {
+        "heading": "Let's build something.",
+        "subtext": "Open to freelance projects, collaborations, and full-time opportunities."
+    }
 }
