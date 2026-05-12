@@ -8,7 +8,6 @@ import ContactPage from './pages/Contact/index';
 import NotFoundPage from './pages/NotFound/index';
 
 const AdminCMS = import.meta.env.DEV ? lazy(() => import('./pages/admin/AdminCMS')) : null;
-const ProjectEditor = import.meta.env.DEV ? lazy(() => import('./pages/admin/ProjectEditor')) : null;
 
 import GlobalLoader from './components/GlobalLoader';
 import useLoadingStore from './store/useLoadingStore';
@@ -56,7 +55,7 @@ function App() {
               {import.meta.env.DEV && AdminCMS && (
                 <Route path="/admin" element={<Suspense fallback={null}><AdminCMS /></Suspense>} />
               )}
-              {import.meta.env.DEV && ProjectEditor && (
+              {import.meta.env.DEV && (
                 <Route path="/admin/projects/:projectId" element={<ProjectDetailsPage isAdmin={true} />} />
               )}
             </Routes>

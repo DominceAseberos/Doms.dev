@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './css/About.css';
 import { Helmet } from 'react-helmet-async';
 
 import ParticleBackground from '../../components/ParticleBackground';
