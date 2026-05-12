@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import ProjectsPage from './pages/Projects/index';
 import ProjectDetailsPage from './pages/Projects/components/ProjectDetailsPage';
@@ -7,9 +7,7 @@ import AboutPage from './pages/About/index';
 import ContactPage from './pages/Contact/index';
 import NotFoundPage from './pages/NotFound/index';
 
-const AdminLayout = import.meta.env.DEV ? lazy(() => import('./pages/admin/AdminLayout')) : null;
-const LandingEditor = import.meta.env.DEV ? lazy(() => import('./pages/admin/LandingEditor')) : null;
-const AboutEditor = import.meta.env.DEV ? lazy(() => import('./pages/admin/AboutEditor')) : null;
+const AdminCMS = import.meta.env.DEV ? lazy(() => import('./pages/admin/AdminCMS')) : null;
 const ProjectEditor = import.meta.env.DEV ? lazy(() => import('./pages/admin/ProjectEditor')) : null;
 
 import GlobalLoader from './components/GlobalLoader';
@@ -55,13 +53,8 @@ function App() {
               <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="*" element={<NotFoundPage />} />
-              {import.meta.env.DEV && AdminLayout && (
-                <Route path="/admin" element={<Suspense fallback={null}><AdminLayout /></Suspense>}>
-                  <Route index element={<Navigate to="/admin/landing" replace />} />
-                  {LandingEditor && <Route path="landing" element={<Suspense fallback={null}><LandingEditor /></Suspense>} />}
-                  {AboutEditor && <Route path="about" element={<Suspense fallback={null}><AboutEditor /></Suspense>} />}
-                  {ProjectEditor && <Route path="projects" element={<Suspense fallback={null}><ProjectEditor /></Suspense>} />}
-                </Route>
+              {import.meta.env.DEV && AdminCMS && (
+                <Route path="/admin" element={<Suspense fallback={null}><AdminCMS /></Suspense>} />
               )}
               {import.meta.env.DEV && ProjectEditor && (
                 <Route path="/admin/projects/:projectId" element={<ProjectDetailsPage isAdmin={true} />} />
