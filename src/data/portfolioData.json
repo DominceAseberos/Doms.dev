@@ -7,7 +7,7 @@
         {
             "id": "project-1774573315239",
             "title": "Kernel",
-            "shortDescription": "A sophisticated React-based framework designed for immersive, scroll-driven storytelling. KERNEL blends a \"Terminal-Glass\" aesthetic with elite performance, featuring seamless GSAP orchestration and a signature boot-sequence entry.",
+            "shortDescription": "A production-grade React landing page built around scroll-driven storytelling, a terminal-style boot sequence, and a glassmorphic design system. Engineered for 60fps performance with GSAP ScrollTrigger and Lenis smooth scroll.",
             "images": [],
             "projectType": "LANDING PAGE",
             "mainImage": "/assets/uploads/project-1774573315239/imgs/1774575777662-kerne-hero.webp",
@@ -27,142 +27,134 @@
             ],
             "contentSections": [
                 {
-                    "id": "id-nsx7imqne",
-                    "sectionTitle": "Project Identity",
+                    "id": "id-overview",
+                    "sectionTitle": "Overview",
                     "layout": "full",
                     "columns": [
                         {
-                            "id": "id-3rlde2rm5",
-                            "columnTitle": "**KERNEL** is a high-end digital manifestation of the \"Prism & Glass\" aesthetic. It is designed as a sophisticated React-baed framework for immersive, scroll-driven storytelling, blending technical precision with cinematic fluid motion.",
-                            "blocks": []
+                            "id": "id-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "id-overview-text",
+                                    "type": "text",
+                                    "content": "Kernel is a React 19 landing page built to demonstrate production-level frontend architecture. The project focuses on three engineering concerns: scroll-driven animation orchestration, a modular component system, and a consistent design language applied across all UI states. Every component is custom — no UI library was used."
+                                }
+                            ]
                         }
                     ]
                 },
                 {
-                    "id": "id-slporih55",
-                    "sectionTitle": "Design System",
-                    "layout": "full",
+                    "id": "id-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
                     "columns": [
                         {
-                            "id": "id-89s2d65f8",
-                            "columnTitle": "**Typography**",
+                            "id": "id-arch-left",
+                            "columnTitle": "Tech Stack",
                             "blocks": [
                                 {
-                                    "id": "id-t00iy734l",
-                                    "type": "heading",
-                                    "content": "The typography is a dialogue between classical elegance and technical rigor.",
-                                    "fontSize": "lg"
+                                    "id": "id-arch-core",
+                                    "type": "chips",
+                                    "items": ["React 19", "TypeScript 5.8", "Vite 6"]
                                 },
                                 {
-                                    "id": "id-sqcemo3gu",
+                                    "id": "id-arch-motion-label",
+                                    "type": "heading",
+                                    "content": "Animation Layer"
+                                },
+                                {
+                                    "id": "id-arch-motion",
+                                    "type": "chips",
+                                    "items": ["GSAP 3.14", "ScrollTrigger", "Lenis", "SplitType"]
+                                },
+                                {
+                                    "id": "id-arch-style-label",
+                                    "type": "heading",
+                                    "content": "Styling"
+                                },
+                                {
+                                    "id": "id-arch-style",
+                                    "type": "chips",
+                                    "items": ["Tailwind CSS 4", "CSS Custom Properties"]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "id-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "id-arch-decisions",
                                     "type": "list",
                                     "items": [
-                                        "**Serif: Playfair Display** — Used for headings and primary narrative elements to provide a timeless, high-fashion feel.",
-                                        "**Mono: JetBrains Mon**o — Used for system logs, technical metadata, and UI labels to reinforce the \"Kernel OS\" terminal aesthetic."
-                                    ],
-                                    "fontSize": "lg"
-                                },
+                                        "GSAP context scoped per component — prevents ScrollTrigger memory leaks on unmount",
+                                        "Lenis handles smooth scroll globally; GSAP ScrollTrigger syncs via the Lenis RAF loop",
+                                        "SplitType used for character-level text reveals without layout shift",
+                                        "All timelines defined in useLayoutEffect with ctx.revert() cleanup",
+                                        "Vite manual chunk splitting keeps initial bundle under 200kb gzipped"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "id-design-system",
+                    "sectionTitle": "Design System",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "id-ds-colors",
+                            "columnTitle": "Color Palette",
+                            "blocks": [
                                 {
-                                    "id": "id-4uxnlgm1i",
-                                    "type": "heading",
-                                    "content": "Color Palette (The \"Prism\" System)",
-                                    "fontSize": "2xl"
-                                },
-                                {
-                                    "id": "id-1rsn7s8v8",
-                                    "type": "heading",
-                                    "content": "The palette is built on the principle of Atmospheric Contrast, where a deep void is punctuated by high-frequency light.",
-                                    "fontSize": "xl"
-                                },
-                                {
-                                    "id": "id-66laooeaz",
+                                    "id": "id-palette",
                                     "type": "color-palette",
                                     "colors": [
                                         "#0a0f1a",
                                         "#00ffcc",
                                         "#ffffff",
-                                        "rgba(0, 255, 204, 0.2)"
+                                        "#1a2540"
                                     ]
                                 },
                                 {
-                                    "id": "id-0xdzsogb1",
-                                    "type": "heading",
-                                    "content": "Theme Principles:",
-                                    "fontSize": "2xl"
-                                },
-                                {
-                                    "id": "id-e2d3krplm",
+                                    "id": "id-color-notes",
                                     "type": "list",
                                     "items": [
-                                        "**Prism Refraction:** Utilizing white and cyan in gradients to simulate light passing through glass edges.",
-                                        "**Glassmorphism**: Layered semi-transparent containers that maintain context of the underlying architectural grid.",
-                                        "**Visual Hierarchy:** Neon is reserved for action and system status, while muted translucent layers handle structural boundaries."
-                                    ],
-                                    "fontSize": "lg"
-                                },
-                                {
-                                    "id": "id-f6214nl39",
-                                    "type": "heading",
-                                    "content": "Spacing & Grid",
-                                    "fontSize": "2xl"
-                                },
-                                {
-                                    "id": "id-x4aqrpkqp",
-                                    "type": "list",
-                                    "items": [
-                                        "**Blueprint Grid**: A strict 40px x 40px architectural grid underpins the entire experience, visible during the boot sequence and as a subtle backdrop to section transitions.",
-                                        "**Modular Geometry:** Layouts are composed of technical schematics and wireframe visualizations, maintaining a \"work-in-progress\" technical blueprint feel."
-                                    ],
-                                    "fontSize": "lg"
+                                        "#0a0f1a — Primary background",
+                                        "#00ffcc — Accent / interactive states",
+                                        "#ffffff — Primary text",
+                                        "#1a2540 — Card / surface background"
+                                    ]
                                 }
                             ]
-                        }
-                    ]
-                },
-                {
-                    "id": "id-ts1uf08ao",
-                    "sectionTitle": "Technology Stack",
-                    "layout": "full",
-                    "columns": [
+                        },
                         {
-                            "id": "id-38oja16bt",
-                            "columnTitle": "Core Architecture",
+                            "id": "id-ds-type",
+                            "columnTitle": "Typography & Grid",
                             "blocks": [
                                 {
-                                    "id": "id-1wj7t0ed2",
-                                    "type": "chips",
+                                    "id": "id-type-list",
+                                    "type": "list",
                                     "items": [
-                                        "React 19",
-                                        "Vite 6",
-                                        "TypeScript 5.8"
+                                        "Playfair Display — Display headings and editorial sections",
+                                        "JetBrains Mono — System labels, metadata, terminal UI",
+                                        "Base: 12px · Scale ratio: 1.25 · Line height: 1.6 body / 1.1 display"
                                     ]
                                 },
                                 {
-                                    "id": "id-jz9iwpjsa",
+                                    "id": "id-grid-label",
                                     "type": "heading",
-                                    "content": "Motion & Orchestration"
+                                    "content": "Spacing"
                                 },
                                 {
-                                    "id": "id-rb8wndtiq",
-                                    "type": "chips",
+                                    "id": "id-grid-list",
+                                    "type": "list",
                                     "items": [
-                                        "GSAP 3.14",
-                                        "Lenis",
-                                        "Framer Motion",
-                                        "SplitType"
-                                    ]
-                                },
-                                {
-                                    "id": "id-gnzvoouph",
-                                    "type": "heading",
-                                    "content": "Styling & UI"
-                                },
-                                {
-                                    "id": "id-a11iq2l6u",
-                                    "type": "chips",
-                                    "items": [
-                                        "Tailwind CSS 4",
-                                        "Lucide React"
+                                        "40px base grid — visible in boot sequence and section transitions",
+                                        "8px spacing unit — all padding and margin are multiples of 8",
+                                        "Max content width: 1280px with 24px gutters"
                                     ]
                                 }
                             ]
@@ -170,48 +162,53 @@
                     ]
                 },
                 {
-                    "id": "id-lldg6pwit",
-                    "sectionTitle": "Core Modules",
+                    "id": "id-features",
+                    "sectionTitle": "Key Features",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "id-feat-boot",
+                            "columnTitle": "Boot Sequence",
+                            "blocks": [
+                                {
+                                    "id": "id-boot-text",
+                                    "type": "text",
+                                    "content": "A terminal-style preloader that simulates system initialization. Built as a GSAP timeline with staggered text reveals and a progress bar tied to asset loading state — dismissed on completion, not on a fixed timer."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "id-feat-scroll",
+                            "columnTitle": "Scroll & Interaction",
+                            "blocks": [
+                                {
+                                    "id": "id-scroll-text",
+                                    "type": "text",
+                                    "content": "Lenis normalizes scroll velocity across devices. ScrollTrigger pins sections and drives parallax transforms. Custom cursor tracks mouse position via requestAnimationFrame with lerp smoothing — no CSS transitions involved."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "id-performance",
+                    "sectionTitle": "Performance",
                     "layout": "full",
                     "columns": [
                         {
-                            "id": "id-g5rq9q8z4",
-                            "columnTitle": "Boot Sequence (Preloader)",
+                            "id": "id-perf-col",
+                            "columnTitle": "",
                             "blocks": [
                                 {
-                                    "id": "id-zmkbt3q3q",
+                                    "id": "id-perf-list",
                                     "type": "list",
                                     "items": [
-                                        "A terminal-style initialization sequence that simulates a system boot (KERNEL_OS v2.1). It builds anticipation and establishes the technical tone before the main content is revealed."
-                                    ],
-                                    "fontSize": "lg"
-                                },
-                                {
-                                    "id": "id-7mq8qpsu8",
-                                    "type": "heading",
-                                    "content": "Custom Interaction System"
-                                },
-                                {
-                                    "id": "id-l9gpg6fnz",
-                                    "type": "list",
-                                    "items": [
-                                        "**Precision Cursor** :   A multi-layered custom cursor (dot + ring) that interacts with the UI, providing tactile feedback",
-                                        "**Audio-Active UI:** Real-time synchronization between scroll velocity and ambient \"hum\" audio, creating an immersive sensory loop."
-                                    ],
-                                    "fontSize": "lg"
-                                },
-                                {
-                                    "id": "id-fncwzmwuq",
-                                    "type": "heading",
-                                    "content": ". Glass & Prism Assets"
-                                },
-                                {
-                                    "id": "id-bjpcpavq9",
-                                    "type": "list",
-                                    "items": [
-                                        "A curated set of 3D renders and wireframe schematics that bridge the gap between abstract metadata and high-end architectural design."
-                                    ],
-                                    "fontSize": "lg"
+                                        "Lighthouse Performance: 95+ on desktop",
+                                        "Initial JS bundle: ~180kb gzipped",
+                                        "All animations run on compositor thread (transform and opacity only — no layout triggers)",
+                                        "Images served as .webp with lazy loading below the fold",
+                                        "CLS: 0 — animated elements use transform, not position changes"
+                                    ]
                                 }
                             ]
                         }
