@@ -36,14 +36,14 @@
     "hero": {
         "location": "📍 Tagum City, Philippines",
         "fullName": "Domince\nAseberos",
-        "role": "Creative Full Stack Developer",
-        "bio": "Building high-performance web experiences where code meets motion. GSAP · WebGL · React · Spline.",
+        "role": "Full Stack Developer  ·  Motion & UI Engineer",
+        "bio": "I design and build production-grade web applications with a focus on performance, interaction quality, and scalable architecture. Available for freelance and full-time roles.",
         "badges": [
             "React",
-            "GSAP",
             "Next.js",
             "TypeScript",
-            "Motion Design"
+            "Node.js",
+            "GSAP"
         ],
         "githubUrl": "https://github.com/DominceAseberos",
         "linkedinUrl": "https://www.linkedin.com/in/domincee/",
@@ -51,80 +51,81 @@
             {
                 "value": "60",
                 "unit": "fps",
-                "label": "Render"
+                "label": "Target Render"
             },
             {
                 "value": "10+",
-                "unit": "rep",
-                "label": "Projects"
+                "unit": "",
+                "label": "Projects Shipped"
             },
             {
-                "value": "1",
+                "value": "1+",
                 "unit": "yr",
-                "label": "Experience"
+                "label": "Industry Exp."
             }
         ]
     },
     "about": {
-        "heading": "Engineering",
-        "headingAccent": "Digital Poetry",
-        "intro": "I'm a technical architect specializing in the transition from static logic to immersive, motion-driven web systems. I don't just build websites — I build experiences.",
+        "heading": "About",
+        "headingAccent": "Me",
+        "intro": "I'm a Full Stack Developer based in the Philippines with a focus on building fast, accessible, and visually refined web products. I work across the full stack — from REST APIs and database design to component architecture and production-grade UI animation.",
         "blocks": [
             {
-                "title": "The Philosophy",
-                "body": "The modern web belongs to those who move the fastest. By integrating AI-driven logic into my workflow, I bypass manual friction to focus on what truly matters: creating high-performance, immersive systems that respond to user intent with surgical precision."
+                "title": "How I Work",
+                "body": "I approach every project with a clear separation of concerns — clean backend logic, well-structured frontend architecture, and intentional UI decisions. I write code that's readable, maintainable, and built to scale."
             },
             {
-                "title": "The Approach",
-                "body": "I leverage AI-augmented development to accelerate the architectural process, allowing me to focus on high-level logic, complex motion sequencing, and scalability — transforming ideas into cinematic experiences with surgical speed."
+                "title": "What Sets Me Apart",
+                "body": "I combine strong engineering fundamentals with a deep understanding of motion and interaction design. This means I can own a feature end-to-end — from API design to the final pixel — without handing off between disciplines."
             },
             {
-                "title": "Beyond the Browser",
-                "body": "When the GSAP timeline stops, you'll find me in high-intensity training, competitive gaming, or catching up on the latest anime — always with the same precision I apply to code."
+                "title": "Outside of Work",
+                "body": "I stay sharp through consistent learning, competitive gaming, and following developments in AI tooling. I believe the best engineers are curious people who never stop building."
             }
         ],
-        "location": "Worldwide / Remote",
+        "location": "Tagum City, Philippines · Open to Remote",
         "capabilities": [
-            "Creative Development",
-            "Interaction Design",
-            "Technical Architecture",
-            "Custom Animation",
-            "Full-stack"
+            "Full Stack Development",
+            "UI & Interaction Engineering",
+            "REST API Design",
+            "Frontend Architecture",
+            "Motion & Animation",
+            "AI-Integrated Workflows"
         ],
         "aiTools": [
-            "GPT",
+            "GitHub Copilot",
+            "ChatGPT",
             "Claude",
             "Gemini",
             "Cursor",
-            "Perplexity",
             "Hugging Face",
             "OpenRouter"
         ]
     },
     "experience": [
         {
-            "role": "Creative Full Stack Developer",
-            "company": "Freelance",
+            "role": "Full Stack Developer",
+            "company": "Freelance · Independent",
             "period": "2024 — Present",
-            "desc": "Building high-performance web experiences for clients worldwide. Specializing in motion-driven UIs, GSAP animations, and full-stack React/Node applications."
+            "desc": "Designing and delivering end-to-end web applications for clients — covering frontend architecture, backend API development, database design, and deployment. Projects span landing pages, SaaS tools, and AI-integrated products."
         },
         {
             "role": "Frontend Developer",
-            "company": "Personal Projects",
+            "company": "Self-Directed Projects",
             "period": "2023 — 2024",
-            "desc": "Developed and shipped multiple production-grade projects including landing pages, marketplaces, and AI-powered tools."
+            "desc": "Built and shipped multiple production applications independently, including a marketplace platform, a portfolio CMS, and an AI-powered text tool. Focused on React, TypeScript, and performance-first UI development."
         },
         {
-            "role": "BS Computer Science",
+            "role": "Bachelor of Science in Computer Science",
             "company": "University of Mindanao Tagum City",
             "period": "2021 — Present",
-            "desc": "Studying software engineering, machine learning, data structures, and distributed systems."
+            "desc": "Pursuing a degree in Computer Science with coursework in software engineering, machine learning, data structures, distributed systems, and mobile development."
         },
         {
-            "role": "First Line of Code",
+            "role": "Started Programming",
             "company": "Self-taught",
             "period": "2020",
-            "desc": "Started with curiosity — how a few lines could change what people see on a screen."
+            "desc": "Began learning to code independently, driven by curiosity about how software works. Built early projects in HTML, CSS, and JavaScript before moving into full stack development."
         }
     ],
     "techStack": [
@@ -192,8 +193,8 @@
         "Prisma"
     ],
     "contact": {
-        "heading": "Let's build something.",
-        "subtext": "Open to freelance projects, collaborations, and full-time opportunities."
+        "heading": "Open to Opportunities",
+        "subtext": "Available for freelance projects, contract work, and full-time positions. If you have a role or project in mind, I'd like to hear about it."
     },
     "education": [
         {

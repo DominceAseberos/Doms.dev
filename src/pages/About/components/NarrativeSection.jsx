@@ -264,7 +264,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         )}
                         {(about.aiTools || []).length > 0 && (
                             <div className="ns-sidebar-block ns-reveal">
-                                <p className="ns-sidebar-label ui-sub-label">AI-Augmented Stack</p>
+                                <p className="ns-sidebar-label ui-sub-label">AI & Dev Tools</p>
                                 <div className="ns-pill-group">
                                     {about.aiTools.map((tool) => (
                                         <span key={tool} className="ns-ai-pill">✦ {tool}</span>
@@ -294,8 +294,8 @@ const NarrativeSection = forwardRef((props, ref) => {
             {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
             {experience.length > 0 && (
                 <section className="ns-section" id="experience">
-                    <p className="ui-sub-label ns-section-label ns-reveal">Experience</p>
-                    <h2 className="ns-section-heading ns-reveal">Things I've done.</h2>
+                    <p className="ui-sub-label ns-section-label ns-reveal">Work History</p>
+                    <h2 className="ns-section-heading ns-reveal">Experience</h2>
                     <div className="ns-timeline">
                         {experience.map((item, i) => (
                             <div key={i} className="ns-timeline-item ns-reveal">
@@ -317,8 +317,8 @@ const NarrativeSection = forwardRef((props, ref) => {
             {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
             {techStack.length > 0 && (
                 <section className="ns-section" id="stack">
-                    <p className="ui-sub-label ns-section-label ns-reveal">Tech Stack</p>
-                    <h2 className="ns-section-heading ns-reveal">What I work with.</h2>
+                    <p className="ui-sub-label ns-section-label ns-reveal">Technical Skills</p>
+                    <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
                     <div className="ns-stack-grid">
                         {techStack.map((group) => (
                             <div key={group.group} className="ns-stack-group ns-reveal">
@@ -333,7 +333,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     </div>
                     {techExtra.length > 0 && (
                         <div className="ns-stack-more ns-reveal">
-                            <p className="ui-sub-label">Also comfortable with</p>
+                            <p className="ui-sub-label">Additional Tools & Libraries</p>
                             <div className="ns-pill-group" style={{ marginTop: '0.75rem' }}>
                                 {techExtra.map((item) => (
                                     <span key={item} className="ns-pill">{item}</span>
@@ -349,8 +349,8 @@ const NarrativeSection = forwardRef((props, ref) => {
                 <section className="ns-section" id="projects">
                     <div className="ns-projects-header ns-reveal">
                         <div>
-                            <p className="ui-sub-label ns-section-label">Recent Projects</p>
-                            <h2 className="ns-section-heading">Things I've built.</h2>
+                            <p className="ui-sub-label ns-section-label">Selected Work</p>
+                            <h2 className="ns-section-heading">Projects</h2>
                         </div>
                         <Link to="/projects" className="ns-view-all">View All →</Link>
                     </div>
