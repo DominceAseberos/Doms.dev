@@ -93,30 +93,30 @@ html[data-theme='light'] .cs-page {
 
 .cs-overline {
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--cs-soft);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .cs-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: clamp(2rem, 3.8vw, 3.5rem);
-    line-height: 1.08;
-    letter-spacing: -0.03em;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     color: var(--cs-ink);
     margin: 0;
 }
 
 .cs-subtitle {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: clamp(1rem, 0.96rem + 0.16vw, 1.12rem);
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(0.88rem, 0.85rem + 0.12vw, 0.96rem);
     color: var(--cs-body);
     line-height: 1.7;
     max-width: 72ch;
-    margin-top: 14px;
+    margin-top: 10px;
 }
 
 .cs-links-row {
@@ -135,12 +135,11 @@ html[data-theme='light'] .cs-page {
     background: var(--cs-tab-bg);
     color: var(--cs-ink);
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.18em;
+    font-size: 11px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 11px 18px;
-    box-shadow: inset 0 0 0 1px transparent;
+    padding: 9px 16px;
     transition: 0.2s ease;
 }
 
@@ -236,10 +235,10 @@ video.cs-media-thumb {
 
 .cs-heading {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(1.45rem, 2.3vw, 2.15rem);
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
     line-height: 1.2;
     color: var(--cs-ink);
-    margin: 0 0 18px 0;
+    margin: 0 0 14px 0;
 }
 
 .cs-grid-2 {
@@ -315,8 +314,8 @@ video.cs-media-thumb {
 
 .cs-detail-body {
     color: var(--cs-ink);
-    font-size: clamp(0.98rem, 0.94rem + 0.12vw, 1.05rem);
-    line-height: 1.75;
+    font-size: 0.88rem;
+    line-height: 1.7;
     max-width: 42ch;
     overflow-wrap: anywhere;
 }
@@ -360,17 +359,18 @@ video.cs-media-thumb {
 }
 
 .cs-heading-sm {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     color: var(--cs-ink);
     font-family: 'Syne', sans-serif;
-    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    font-size: 0.95rem;
+    font-weight: 700;
 }
 
 .cs-list {
     margin: 0;
     padding-left: 18px;
     color: var(--cs-body);
-    font-size: clamp(0.97rem, 0.94rem + 0.1vw, 1.02rem);
+    font-size: 0.88rem;
     line-height: 1.7;
 }
 
@@ -572,14 +572,14 @@ video.cs-media-thumb {
 
 .cs-chip {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.14em;
+    font-size: 10px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--cs-soft);
     background: var(--cs-chip-bg);
     border: 1px solid var(--cs-chip-border);
     border-radius: 999px;
-    padding: 7px 14px;
+    padding: 5px 10px;
     transition: all 0.2s ease;
 }
 
@@ -592,13 +592,14 @@ video.cs-media-thumb {
 .cs-desc {
     color: var(--cs-body);
     max-width: 75ch;
-    line-height: 1.75;
+    line-height: 1.7;
+    font-size: 0.88rem;
 }
 
 .cs-markdown {
     margin-top: 12px;
     color: var(--cs-body);
-    font-size: clamp(0.97rem, 0.94rem + 0.1vw, 1.02rem);
+    font-size: 0.88rem;
     line-height: 1.75;
     max-width: 86ch;
     overflow-wrap: anywhere;
@@ -768,7 +769,7 @@ video.cs-media-thumb {
     }
 
     .cs-media-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: 1fr;
     }
 
     .cs-detail-row {

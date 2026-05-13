@@ -93,15 +93,15 @@ const ProjectTemplate = ({
         <section className="cs-shell cs-bottom-footer cs-animate">
             <div className="cs-bottom-footer__inner">
                 <div className="cs-bottom-footer__left">
-                    <p className="cs-overline">Next Phase</p>
-                    <h2 className="cs-heading">Interested in the process?</h2>
+                    <p className="cs-overline">What's next</p>
+                    <h2 className="cs-heading">Have a project in mind?</h2>
                     <p className="cs-desc">
-                        Every project has a story of challenges and breakthroughs. Let's discuss how we can build something impactful together.
+                        I'm available for freelance work and full-time roles. If you'd like to work together, reach out.
                     </p>
                 </div>
                 <div className="cs-bottom-footer__actions">
-                    <Link to="/contact" className="cs-link-btn">Initiate Collaboration</Link>
-                    <Link to="/projects" className="cs-link-btn cs-link-btn--ghost">Explore Full Archive</Link>
+                    <Link to="/contact" className="cs-link-btn">Get in Touch</Link>
+                    <Link to="/projects" className="cs-link-btn cs-link-btn--ghost">Back to Projects</Link>
                 </div>
             </div>
         </section>

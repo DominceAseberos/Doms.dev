@@ -328,55 +328,85 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
 
     if (block.type === 'color-palette') {
         const colors = block.colors || [];
+        const [copiedIdx, setCopiedIdx] = useState(null);
+
+        const getTextColor = (hex) => {
+            try {
+                const c = hex.replace('#', '');
+                const r = parseInt(c.substring(0, 2), 16);
+                const g = parseInt(c.substring(2, 4), 16);
+                const b = parseInt(c.substring(4, 6), 16);
+                return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.55 ? '#111111' : '#ffffff';
+            } catch { return '#111111'; }
+        };
+
+        const handleCopy = (color, i) => {
+            navigator.clipboard.writeText(color).then(() => {
+                setCopiedIdx(i);
+                setTimeout(() => setCopiedIdx(null), 1800);
+            });
+        };
+
         return (
             <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
-                <div className="flex flex-col gap-4">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div className="w-full overflow-hidden rounded-xl border border-black/10">
+                    {/* Swatch strips */}
+                    <div className="flex w-full" style={{ minHeight: 140 }}>
                         {colors.map((color, i) => (
-                            <div key={i} className="flex flex-col gap-2 group/color relative">
-                                <div 
-                                    className="aspect-square rounded-xl shadow-inner border border-black/5 overflow-hidden active:scale-95 transition-transform cursor-pointer"
-                                    style={{ backgroundColor: color }}
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(color);
-                                        // Optional: Visual feedback could be added here
-                                    }}
-                                    title="Click to copy color"
-                                />
-                                <div className="flex flex-col">
-                                    <EditableText 
-                                        className="text-[10px] font-mono uppercase tracking-wider opacity-60"
-                                        value={color}
-                                        onSave={v => {
-                                            const next = [...colors]; 
-                                            next[i] = v; 
-                                            onChange({ colors: next }); 
-                                         }} 
-                                        isAdminPreview={isAdminPreview}
-                                    />
-                                </div>
+                            <button
+                                key={i}
+                                type="button"
+                                onClick={() => handleCopy(color, i)}
+                                className="relative flex-1 flex items-center justify-center transition-all duration-200 hover:flex-[1.2] group/sw"
+                                style={{ backgroundColor: color, minHeight: 140 }}
+                                title={`Click to copy ${color}`}
+                            >
+                                <span
+                                    className={`absolute inset-0 flex items-center justify-center text-[11px] font-bold tracking-widest uppercase transition-opacity duration-150 ${copiedIdx === i ? 'opacity-100' : 'opacity-0 group-hover/sw:opacity-50'}`}
+                                    style={{ color: getTextColor(color), background: 'rgba(0,0,0,0.06)' }}
+                                >
+                                    {copiedIdx === i ? 'Copied!' : 'Copy'}
+                                </span>
                                 {isAdminPreview && (
-                                    <button 
-                                        onMouseDown={(e) => e.stopPropagation()}
-                                        onClick={(e) => { e.stopPropagation(); onChange({ colors: colors.filter((_, idx) => idx !== i) }); }}
-                                        className="absolute -top-3 -right-3 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg opacity-40 group-hover/color:opacity-100 hover:scale-110 transition-all z-[30]"
-                                        title="Remove Color"
-                                    >
-                                        <FiTrash2 size={14} />
-                                    </button>
+                                    <button
+                                        type="button"
+                                        onMouseDown={e => e.stopPropagation()}
+                                        onClick={e => { e.stopPropagation(); onChange({ colors: colors.filter((_, idx) => idx !== i) }); }}
+                                        className="absolute top-2 right-2 w-5 h-5 bg-red-500 text-white rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover/sw:opacity-100 transition-all z-10"
+                                    >×</button>
                                 )}
-                            </div>
+                            </button>
                         ))}
                         {isAdminPreview && (
-                            <button 
-                                onClick={() => onChange({ colors: [...colors, "#000000"] })} 
-                                className={`aspect-square rounded-xl border-2 border-dashed flex items-center justify-center text-xl transition-all ${
-                                    isLight ? 'bg-black/5 border-black/10 text-black/20 hover:text-black/40 hover:border-black/30' : 'bg-white/5 border-white/10 text-white/20 hover:text-white/40 hover:border-white/30'
-                                }`}
-                            >
-                                <FiPlus size={20} />
-                            </button>
+                            <div className="relative flex-none w-12 flex items-center justify-center bg-black/5 border-l border-black/10 group/add">
+                                <input
+                                    type="color"
+                                    defaultValue="#000000"
+                                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                                    onBlur={e => {
+                                        const val = e.target.value;
+                                        if (val) onChange({ colors: [...colors, val] });
+                                    }}
+                                    title="Pick color to add"
+                                />
+                                <span className="text-lg text-black/30 group-hover/add:text-black/60 pointer-events-none select-none">+</span>
+                            </div>
                         )}
+                    </div>
+                    {/* Hex labels */}
+                    <div className="flex w-full bg-white border-t border-black/8">
+                        {colors.map((color, i) => (
+                            <button
+                                key={i}
+                                type="button"
+                                onClick={() => handleCopy(color, i)}
+                                className="flex-1 py-2.5 px-1 text-center font-mono text-[11px] font-semibold tracking-wider text-[#111] hover:bg-black/5 transition-colors"
+                                title="Click to copy"
+                            >
+                                {color.toUpperCase()}
+                            </button>
+                        ))}
+                        {isAdminPreview && <div className="flex-none w-12" />}
                     </div>
                 </div>
             </ToolbarWrapper>

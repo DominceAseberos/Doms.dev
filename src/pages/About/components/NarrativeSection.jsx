@@ -391,7 +391,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             <section className="ns-contact-section" id="contact">
                 <div className="ns-contact-header ns-reveal">
                     <p className="ui-sub-label ns-section-label">Contact</p>
-                    <h2 className="ns-section-heading">{contact.heading || "Let's build something."}</h2>
+                    <h2 className="ns-section-heading">{contact.heading || "Open to Opportunities"}</h2>
                     {contact.subtext && (
                         <p className="ui-body-copy ns-contact-sub">{contact.subtext}</p>
                     )}
@@ -400,6 +400,30 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <CityscapeContact />
                 </div>
             </section>
+
+            {/* ══ FOOTER ═══════════════════════════════════════════════════ */}
+            <footer className="ns-footer">
+                <div className="ns-footer-inner">
+                    <div className="ns-footer-left">
+                        <p className="ns-footer-name">Domince Aseberos</p>
+                        <p className="ns-footer-role">{hero.role || 'Full Stack Developer'}</p>
+                    </div>
+                    <nav className="ns-footer-links" aria-label="Footer navigation">
+                        <Link to="/projects" className="ns-footer-link">Projects</Link>
+                        <Link to="/contact" className="ns-footer-link">Contact</Link>
+                        {hero.githubUrl && (
+                            <a href={hero.githubUrl} target="_blank" rel="noopener noreferrer" className="ns-footer-link">GitHub</a>
+                        )}
+                        {hero.linkedinUrl && (
+                            <a href={hero.linkedinUrl} target="_blank" rel="noopener noreferrer" className="ns-footer-link">LinkedIn</a>
+                        )}
+                        {socials.filter(s => s.href && s.label !== 'EMAIL').slice(0, 3).map(s => (
+                            <a key={s.label} href={s.href} target={s.external ? '_blank' : '_self'} rel="noopener noreferrer" className="ns-footer-link">{s.label}</a>
+                        ))}
+                    </nav>
+                    <p className="ns-footer-copy">© {new Date().getFullYear()} Domince Aseberos · Tagum City, Philippines</p>
+                </div>
+            </footer>
         </div>
     );
 });
