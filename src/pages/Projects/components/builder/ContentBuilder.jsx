@@ -14,7 +14,8 @@ const BLOCK_TYPES = [
     { type: 'chips', label: 'Tech Stack/Chips' },
     { type: 'metric', label: 'Metric/Stat' },
     { type: 'link', label: 'Button/Link' },
-    { type: 'color-palette', label: 'Color Palette' }
+    { type: 'color-palette', label: 'Color Palette' },
+    { type: 'font-preview', label: 'Font Preview' }
 ];
 
 const getGridClass = (layout) => {
@@ -408,6 +409,87 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                         ))}
                         {isAdminPreview && <div className="flex-none w-12" />}
                     </div>
+                </div>
+            </ToolbarWrapper>
+        );
+    }
+
+    if (block.type === 'font-preview') {
+        const fonts = block.fonts || [];
+        const SAMPLE = 'Aa Bb Cc — The quick brown fox';
+        return (
+            <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
+                <div className="flex flex-col gap-0 overflow-hidden rounded-xl border border-black/10 w-full">
+                    {fonts.map((f, i) => (
+                        <div
+                            key={i}
+                            className={`group/font relative flex flex-col gap-1 px-5 py-4 ${i > 0 ? 'border-t border-black/8' : ''}`}
+                            style={{ backgroundColor: isLight ? '#fff' : '#111' }}
+                        >
+                            {/* Font name label */}
+                            <span className="font-mono text-[10px] uppercase tracking-widest opacity-50" style={{ color: isLight ? '#111' : '#fff' }}>
+                                {f.name}
+                            </span>
+                            {/* Sample text rendered in the actual font */}
+                            <span
+                                className="text-2xl leading-tight"
+                                style={{ fontFamily: f.family, color: isLight ? '#111' : '#fff' }}
+                            >
+                                {f.sample || SAMPLE}
+                            </span>
+                            {/* Role / usage note */}
+                            {f.role && (
+                                <span className="font-mono text-[10px] opacity-40 mt-0.5" style={{ color: isLight ? '#111' : '#fff' }}>
+                                    {f.role}
+                                </span>
+                            )}
+                            {/* Admin controls */}
+                            {isAdminPreview && (
+                                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover/font:opacity-100 transition-all">
+                                    <button
+                                        onMouseDown={e => e.stopPropagation()}
+                                        onClick={e => { e.stopPropagation(); onChange({ fonts: fonts.filter((_, idx) => idx !== i) }); }}
+                                        className="w-6 h-6 bg-red-500 text-white rounded-full text-[10px] flex items-center justify-center"
+                                    >×</button>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                    {isAdminPreview && (
+                        <div className={`p-3 border-t border-black/8 flex flex-col gap-2 ${isLight ? 'bg-black/3' : 'bg-white/3'}`}>
+                            <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">Add Font</p>
+                            <div className="grid grid-cols-3 gap-2">
+                                <input
+                                    id={`fn-name-${block.id}`}
+                                    className={`px-2 py-1 text-xs rounded border ${isLight ? 'bg-white border-black/10 text-black' : 'bg-black/40 border-white/10 text-white'}`}
+                                    placeholder="Name (e.g. Playfair Display)"
+                                />
+                                <input
+                                    id={`fn-family-${block.id}`}
+                                    className={`px-2 py-1 text-xs rounded border ${isLight ? 'bg-white border-black/10 text-black' : 'bg-black/40 border-white/10 text-white'}`}
+                                    placeholder="CSS family (e.g. 'Playfair Display')"
+                                />
+                                <input
+                                    id={`fn-role-${block.id}`}
+                                    className={`px-2 py-1 text-xs rounded border ${isLight ? 'bg-white border-black/10 text-black' : 'bg-black/40 border-white/10 text-white'}`}
+                                    placeholder="Usage (e.g. Display headings)"
+                                />
+                            </div>
+                            <button
+                                onClick={() => {
+                                    const name   = document.getElementById(`fn-name-${block.id}`)?.value?.trim();
+                                    const family = document.getElementById(`fn-family-${block.id}`)?.value?.trim();
+                                    const role   = document.getElementById(`fn-role-${block.id}`)?.value?.trim();
+                                    if (!name || !family) return;
+                                    onChange({ fonts: [...fonts, { name, family, role }] });
+                                    ['name','family','role'].forEach(k => { const el = document.getElementById(`fn-${k}-${block.id}`); if(el) el.value=''; });
+                                }}
+                                className={`self-start px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded transition-all ${isLight ? 'bg-black text-white hover:bg-black/80' : 'bg-[#c8ff3e] text-black hover:bg-white'}`}
+                            >
+                                Add
+                            </button>
+                        </div>
+                    )}
                 </div>
             </ToolbarWrapper>
         );

@@ -135,12 +135,19 @@
                             "columnTitle": "Typography & Grid",
                             "blocks": [
                                 {
-                                    "id": "id-type-list",
-                                    "type": "list",
-                                    "items": [
-                                        "Playfair Display — Display headings and editorial sections",
-                                        "JetBrains Mono — System labels, metadata, terminal UI",
-                                        "Base: 12px · Scale ratio: 1.25 · Line height: 1.6 body / 1.1 display"
+                                    "id": "id-font-preview",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Playfair Display",
+                                            "family": "'Playfair Display', Georgia, serif",
+                                            "role": "Display headings · Editorial sections"
+                                        },
+                                        {
+                                            "name": "JetBrains Mono",
+                                            "family": "'JetBrains Mono', monospace",
+                                            "role": "System labels · Metadata · Terminal UI"
+                                        }
                                     ]
                                 },
                                 {
