@@ -5,6 +5,235 @@
     ],
     "projects": [
         {
+            "id": "project-pixvault",
+            "title": "PIXVAULT",
+            "shortDescription": "A design resource SPA aggregating GIFs, icons, UI components, and illustrations via live APIs. Built with React 18, TanStack Query, and a dark cyberpunk design system. No accounts, no paywalls.",
+            "images": [],
+            "projectType": "CASE STUDY",
+            "mainImage": "/assets/uploads/project-pixvault/imgs/hero.webp",
+            "galleryImages": [],
+            "assets": { "desktop": "", "tablet": "", "mobile": "" },
+            "liveUrl": "https://live-pixvault.vercel.app/",
+            "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
+            "desktopImage": "/assets/uploads/project-pixvault/imgs/hero.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-pixvault/imgs/gifs.webp",
+                "/assets/uploads/project-pixvault/imgs/icons.webp"
+            ],
+            "mobileImage": "",
+            "mobileGallery": [],
+            "featuredInTunnel": true,
+            "dateCreated": "2026-05-01",
+            "contentSections": [
+                {
+                    "id": "pv-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "pv-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "pv-overview-text",
+                                    "type": "text",
+                                    "content": "PIXVAULT is a single-page application that centralizes design resources for developers and designers. It pulls live data from multiple external APIs — GIFs from Reddit, icons from Iconify, UI components from shadcn/ui, and illustrations from open sources — and presents them in a unified, searchable interface. No accounts required, no paywalls."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "pv-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "pv-core-chips",
+                                    "type": "chips",
+                                    "items": ["React 18.3", "TypeScript 5.8", "Vite 5.4"]
+                                },
+                                {
+                                    "id": "pv-state-label",
+                                    "type": "heading",
+                                    "content": "State & Data"
+                                },
+                                {
+                                    "id": "pv-state-chips",
+                                    "type": "chips",
+                                    "items": ["TanStack Query 5", "React Router 6", "Zod", "React Hook Form"]
+                                },
+                                {
+                                    "id": "pv-ui-label",
+                                    "type": "heading",
+                                    "content": "UI & Animation"
+                                },
+                                {
+                                    "id": "pv-ui-chips",
+                                    "type": "chips",
+                                    "items": ["Tailwind CSS 3", "shadcn/ui", "Framer Motion 12", "Lucide React"]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "pv-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "pv-decisions",
+                                    "type": "list",
+                                    "items": [
+                                        "TanStack Query handles all API fetching, caching, and background refetching — no manual loading state management",
+                                        "Zod schemas validate all external API responses at runtime to prevent runtime crashes from shape changes",
+                                        "shadcn/ui primitives used for accessible components — no custom modal/dropdown logic needed",
+                                        "React Router with lazy-loaded routes keeps initial bundle small",
+                                        "Framer Motion used only for entrance animations — no layout animations that could cause reflow"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-design",
+                    "sectionTitle": "Design System",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "pv-colors",
+                            "columnTitle": "Color Palette",
+                            "blocks": [
+                                {
+                                    "id": "pv-palette",
+                                    "type": "color-palette",
+                                    "colors": ["#080c14", "#00d4ff", "#8b5cf6", "#ff4d6d", "#1a1f2e"]
+                                },
+                                {
+                                    "id": "pv-color-notes",
+                                    "type": "list",
+                                    "items": [
+                                        "#080c14 — Void Black (background)",
+                                        "#00d4ff — Neon Cyan (primary actions)",
+                                        "#8b5cf6 — Electric Violet (secondary)",
+                                        "#ff4d6d — Hot Coral (accents, tags)",
+                                        "#1a1f2e — Night Panel (card surfaces)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "pv-typography",
+                            "columnTitle": "Typography",
+                            "blocks": [
+                                {
+                                    "id": "pv-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Space Grotesk",
+                                            "family": "'Space Grotesk', sans-serif",
+                                            "role": "Headings · Buttons · Display text"
+                                        },
+                                        {
+                                            "name": "JetBrains Mono",
+                                            "family": "'JetBrains Mono', monospace",
+                                            "role": "Tags · Labels · Technical text"
+                                        },
+                                        {
+                                            "name": "Inter",
+                                            "family": "'Inter', sans-serif",
+                                            "role": "Body text · Descriptions"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-features",
+                    "sectionTitle": "Features",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "pv-feat-left",
+                            "columnTitle": "GIF & Icon Discovery",
+                            "blocks": [
+                                {
+                                    "id": "pv-gif-text",
+                                    "type": "text",
+                                    "content": "GIFs are pulled live from Reddit's top GIF communities with search and category filtering. Icons are sourced from Iconify — covering Lucide, Material, Heroicons, Tabler, and Phosphor — with copy-SVG and download functionality."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "pv-feat-right",
+                            "columnTitle": "UI Components & Inspiration",
+                            "blocks": [
+                                {
+                                    "id": "pv-ui-text",
+                                    "type": "text",
+                                    "content": "Pre-built shadcn/ui components are displayed with copy-paste code snippets. Each component is fully typed, WCAG-accessible, and Tailwind-customizable. The inspiration feed aggregates curated design content from multiple sources."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-skills",
+                    "sectionTitle": "Design System Prompt",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "pv-skills-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "pv-skills-text",
+                                    "type": "text",
+                                    "content": "PIXVAULT ships with a complete design system prompt for AI agents. Copy it into any AI conversation to instantly replicate the dark cyberpunk aesthetic — colors, typography, component patterns, spacing, and visual effects — in any new project."
+                                },
+                                {
+                                    "id": "pv-skills-link",
+                                    "type": "link",
+                                    "label": "View Design System on GitHub",
+                                    "url": "https://github.com/DominceAseberos/live-pixvault/blob/main/SKILLS.md"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-performance",
+                    "sectionTitle": "Performance",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "pv-perf-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "pv-perf-list",
+                                    "type": "list",
+                                    "items": [
+                                        "TanStack Query caches all API responses — repeat visits load instantly with stale-while-revalidate",
+                                        "Lazy-loaded routes — only the active section's JS is loaded on navigation",
+                                        "All images lazy-loaded with placeholder shimmer animations",
+                                        "Framer Motion animations use transform/opacity only — no layout triggers",
+                                        "Deployed on Vercel with edge CDN — sub-100ms TTFB globally"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "project-1774573315239",
             "title": "Kernel",
             "shortDescription": "A production-grade React landing page built around scroll-driven storytelling, a terminal-style boot sequence, and a glassmorphic design system. Engineered for 60fps performance with GSAP ScrollTrigger and Lenis smooth scroll.",

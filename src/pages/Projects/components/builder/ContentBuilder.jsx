@@ -432,8 +432,8 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                             </span>
                             {/* Sample text rendered in the actual font */}
                             <span
-                                className="text-2xl leading-tight"
-                                style={{ fontFamily: f.family, color: isLight ? '#111' : '#fff' }}
+                                className="leading-tight"
+                                style={{ fontFamily: f.family, color: isLight ? '#111' : '#fff', fontSize: 'clamp(2rem, 5vw, 4rem)' }}
                             >
                                 {f.sample || SAMPLE}
                             </span>
