@@ -44,13 +44,13 @@ const getFontStyle = (b) => {
     if (!b) return styles;
     if (b.fontSize) {
         const sizes = {
-            'xs': '0.75rem',
-            'sm': '0.875rem',
-            'base': '1rem',
-            'lg': '1.125rem',
-            'xl': '1.25rem',
-            '2xl': '1.5rem',
-            '3xl': '1.875rem'
+            'xs': '0.85rem',
+            'sm': '0.95rem',
+            'base': '1.1rem',
+            'lg': '1.25rem',
+            'xl': '1.5rem',
+            '2xl': '1.875rem',
+            '3xl': '2.25rem'
         };
         styles.fontSize = sizes[b.fontSize] || b.fontSize;
     }
@@ -200,7 +200,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
         const items = block.items || [];
         return (
             <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
-                <ul className={`list-disc pl-5 space-y-2 text-sm ${isLight ? 'text-black/70' : 'text-white/60'}`} style={getFontStyle(block)}>
+                <ul className={`list-disc pl-5 space-y-2 text-base ${isLight ? 'text-black/70' : 'text-white/60'}`} style={getFontStyle(block)}>
                     {items.map((item, i) => (
                         <li key={i} className="group/item relative">
                             <EditableText 
@@ -427,7 +427,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                             style={{ backgroundColor: isLight ? '#fff' : '#111' }}
                         >
                             {/* Font name label */}
-                            <span className="font-mono text-[10px] uppercase tracking-widest opacity-50" style={{ color: isLight ? '#111' : '#fff' }}>
+                            <span className="font-mono text-[12px] uppercase tracking-widest opacity-50" style={{ color: isLight ? '#111' : '#fff' }}>
                                 {f.name}
                             </span>
                             {/* Sample text rendered in the actual font */}
@@ -439,7 +439,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                             </span>
                             {/* Role / usage note */}
                             {f.role && (
-                                <span className="font-mono text-[10px] opacity-40 mt-0.5" style={{ color: isLight ? '#111' : '#fff' }}>
+                                <span className="font-mono text-[12px] opacity-40 mt-0.5" style={{ color: isLight ? '#111' : '#fff' }}>
                                     {f.role}
                                 </span>
                             )}

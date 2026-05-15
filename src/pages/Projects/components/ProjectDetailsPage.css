@@ -78,7 +78,7 @@ html[data-theme='light'] .cs-page {
     padding: 10px 14px;
     color: var(--cs-soft);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
@@ -93,11 +93,11 @@ html[data-theme='light'] .cs-page {
 
 .cs-overline {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--cs-soft);
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .cs-title {
@@ -112,11 +112,11 @@ html[data-theme='light'] .cs-page {
 
 .cs-subtitle {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(0.88rem, 0.85rem + 0.12vw, 0.96rem);
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
     color: var(--cs-body);
-    line-height: 1.7;
-    max-width: 72ch;
-    margin-top: 10px;
+    line-height: 1.75;
+    max-width: 80ch;
+    margin-top: 12px;
 }
 
 .cs-links-row {
@@ -135,11 +135,11 @@ html[data-theme='light'] .cs-page {
     background: var(--cs-tab-bg);
     color: var(--cs-ink);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 9px 16px;
+    padding: 10px 18px;
     transition: 0.2s ease;
 }
 
@@ -284,7 +284,7 @@ video.cs-media-thumb {
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-size: 10px;
+    font-size: 11.5px;
 }
 
 .cs-details-grid {
@@ -314,9 +314,9 @@ video.cs-media-thumb {
 
 .cs-detail-body {
     color: var(--cs-ink);
-    font-size: 0.88rem;
-    line-height: 1.7;
-    max-width: 42ch;
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 65ch;
     overflow-wrap: anywhere;
 }
 
@@ -335,7 +335,7 @@ video.cs-media-thumb {
 .cs-detail-row span:first-child {
     color: var(--cs-soft);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -362,7 +362,7 @@ video.cs-media-thumb {
     margin: 0 0 8px;
     color: var(--cs-ink);
     font-family: 'Syne', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     font-weight: 700;
 }
 
@@ -370,8 +370,8 @@ video.cs-media-thumb {
     margin: 0;
     padding-left: 18px;
     color: var(--cs-body);
-    font-size: 0.88rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.75;
 }
 
 .cs-list li {
@@ -396,7 +396,7 @@ video.cs-media-thumb {
     color: var(--cs-soft);
     font-family: 'DM Mono', monospace;
     letter-spacing: 0.11em;
-    font-size: 11px;
+    font-size: 13px;
     text-transform: uppercase;
 }
 
@@ -432,7 +432,7 @@ video.cs-media-thumb {
 .cs-asset-count {
     color: var(--cs-soft);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
@@ -458,7 +458,7 @@ video.cs-media-thumb {
 .cs-asset-file-name {
     color: var(--cs-ink);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.08em;
     overflow-wrap: anywhere;
 }
@@ -482,7 +482,7 @@ video.cs-media-thumb {
     color: var(--cs-ink);
     font-family: 'DM Mono', monospace;
     letter-spacing: 0.1em;
-    font-size: 11px;
+    font-size: 13px;
     text-transform: uppercase;
 }
 
@@ -509,7 +509,7 @@ video.cs-media-thumb {
 
 .cs-asset-download {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--cs-ink);
@@ -572,14 +572,14 @@ video.cs-media-thumb {
 
 .cs-chip {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--cs-soft);
     background: var(--cs-chip-bg);
     border: 1px solid var(--cs-chip-border);
     border-radius: 999px;
-    padding: 5px 10px;
+    padding: 7px 14px;
     transition: all 0.2s ease;
 }
 
@@ -593,15 +593,15 @@ video.cs-media-thumb {
     color: var(--cs-body);
     max-width: 75ch;
     line-height: 1.7;
-    font-size: 0.88rem;
+    font-size: 1rem;
 }
 
 .cs-markdown {
     margin-top: 12px;
     color: var(--cs-body);
-    font-size: 0.88rem;
-    line-height: 1.75;
-    max-width: 86ch;
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 85ch;
     overflow-wrap: anywhere;
 }
 
@@ -637,7 +637,7 @@ video.cs-media-thumb {
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .cs-score-value {
@@ -671,7 +671,7 @@ video.cs-media-thumb {
     align-items: center;
     gap: 8px;
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--cs-ink);
