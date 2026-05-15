@@ -11,18 +11,18 @@
             "shortDescription": "A premium design resource SPA aggregating GIFs, icons, UI components, and illustrations. Built with React 18 and a cyberpunk design system.",
             "images": [],
             "projectType": "WEB APPLICATION",
-            "mainImage": "/assets/uploads/project-pixvault/imgs/desktop.png",
+            "mainImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
             "galleryImages": [],
             "assets": {
-                "desktop": "/assets/uploads/project-pixvault/imgs/desktop.png",
+                "desktop": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
                 "tablet": "/assets/uploads/project-pixvault/imgs/tablet.png",
-                "mobile": "/assets/uploads/project-pixvault/imgs/mobile.png"
+                "mobile": "/assets/uploads/project-pixvault/imgs/hero_mobile.png"
             },
             "liveUrl": "https://live-pixvault.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
-            "desktopImage": "/assets/uploads/project-pixvault/imgs/desktop.png",
+            "desktopImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
             "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.png",
-            "mobileImage": "/assets/uploads/project-pixvault/imgs/mobile.png",
+            "mobileImage": "/assets/uploads/project-pixvault/imgs/hero_mobile.png",
             "desktopGallery": [
                 "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
                 "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
@@ -273,18 +273,18 @@
             "shortDescription": "A production-grade React landing page built around scroll-driven storytelling, a terminal-style boot sequence, and a glassmorphic design system. Engineered for 60fps performance with GSAP ScrollTrigger and Lenis smooth scroll.",
             "images": [],
             "projectType": "LANDING PAGE",
-            "mainImage": "/assets/uploads/project-1774573315239/imgs/desktop.png",
+            "mainImage": "/assets/uploads/project-1774573315239/imgs/hero_desktop.png",
             "galleryImages": [],
             "assets": {
-                "desktop": "/assets/uploads/project-1774573315239/imgs/desktop.png",
+                "desktop": "/assets/uploads/project-1774573315239/imgs/hero_desktop.png",
                 "tablet": "/assets/uploads/project-1774573315239/imgs/tablet.png",
-                "mobile": "/assets/uploads/project-1774573315239/imgs/mobile.png"
+                "mobile": "/assets/uploads/project-1774573315239/imgs/hero_mobile.png"
             },
             "liveUrl": "https://kernelprism.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/Kernel",
-            "desktopImage": "/assets/uploads/project-1774573315239/imgs/desktop.png",
+            "desktopImage": "/assets/uploads/project-1774573315239/imgs/hero_desktop.png",
             "tabletImage": "/assets/uploads/project-1774573315239/imgs/tablet.png",
-            "mobileImage": "/assets/uploads/project-1774573315239/imgs/mobile.png",
+            "mobileImage": "/assets/uploads/project-1774573315239/imgs/hero_mobile.png",
             "desktopGallery": [
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec2.png",
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec3.png",
