@@ -278,7 +278,19 @@ const ProjectTemplate = ({
                             )}
                         </div>
 
-                        <div className="flex items-center justify-center gap-1 mt-6">
+                        {/* Short Description Intro */}
+                        <div className="max-w-[800px] mx-auto mt-8">
+                            <EditableText 
+                                value={project.shortDescription} 
+                                onSave={(val) => onUpdateField('shortDescription', val)} 
+                                isAdminPreview={isAdminPreview}
+                                multiline={true}
+                                className="text-lg md:text-xl font-medium leading-relaxed opacity-80"
+                                placeholder="Add a short project introduction..."
+                            />
+                        </div>
+
+                        <div className="flex items-center justify-center gap-1 mt-10">
                             {Object.entries(VIEW_META).map(([view, meta]) => {
                                 const field = VIEW_IMAGE_FIELD[view];
                                 const hasImage = !!project[field];
