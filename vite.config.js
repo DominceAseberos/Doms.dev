@@ -116,7 +116,7 @@ const writeJsonPlugin = () => ({
               const fullPath = path.join(dir, file);
               if (fs.statSync(fullPath).isDirectory()) {
                   scanDir(fullPath);
-              } else if (file.match(/\.(jpg|jpeg|png|gif|webp|avif)$/i)) {
+              } else if (file.match(/\.(jpg|jpeg|png|gif|webp|avif|svg)$/i)) {
                   const relativePath = path.relative(path.resolve(__dirname, 'public'), fullPath);
                   images.push('/' + relativePath.split(path.sep).join('/'));
               }

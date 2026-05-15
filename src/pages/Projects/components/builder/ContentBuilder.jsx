@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiPlus, FiTrash2, FiArrowUp, FiArrowDown, FiImage } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiArrowUp, FiArrowDown, FiImage, FiType, FiList, FiCpu, FiBarChart2, FiLink, FiBox, FiSmartphone } from 'react-icons/fi';
 import { EditableText } from '../EditableText';
 import { LayoutPicker } from './LayoutPicker';
 import useThemeStore from '../../../../store/useThemeStore';
@@ -7,25 +7,25 @@ import useThemeStore from '../../../../store/useThemeStore';
 const uid = () => 'id-' + Math.random().toString(36).substr(2, 9);
 
 const BLOCK_TYPES = [
-    { type: 'text', label: 'Text/Markdown' },
-    { type: 'heading', label: 'Heading' },
-    { type: 'list', label: 'Bullet List' },
-    { type: 'image', label: 'Local Image' },
-    { type: 'chips', label: 'Tech Stack/Chips' },
-    { type: 'metric', label: 'Metric/Stat' },
-    { type: 'link', label: 'Button/Link' },
-    { type: 'color-palette', label: 'Color Palette' },
-    { type: 'font-preview', label: 'Font Preview' }
+    { type: 'text', label: 'Text / MD', icon: <FiType size={14}/> },
+    { type: 'heading', label: 'Heading', icon: <FiType size={16} className="font-bold"/> },
+    { type: 'list', label: 'Bullet List', icon: <FiList size={14}/> },
+    { type: 'image', label: 'Local Image', icon: <FiImage size={14}/> },
+    { type: 'chips', label: 'Tech Stack', icon: <FiCpu size={14}/> },
+    { type: 'metric', label: 'Metric/Stat', icon: <FiBarChart2 size={14}/> },
+    { type: 'link', label: 'Button/Link', icon: <FiLink size={14}/> },
+    { type: 'color-palette', label: 'Colors', icon: <FiBox size={14}/> },
+    { type: 'font-preview', label: 'Typography', icon: <FiSmartphone size={14}/> }
 ];
 
 const getGridClass = (layout) => {
     switch (layout) {
         case 'full': return 'grid grid-cols-1';
         case '2-equal':
-        case '2-stack': return 'grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-[clamp(24px,5vw,80px)] items-start';
+        case '2-stack': return 'grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-[clamp(32px,6vw,100px)] items-start';
         case 'left-big':
-        case 'left-stack': return 'grid grid-cols-1 lg:grid-cols-2 cs-grid-left-big gap-y-12 gap-x-[clamp(24px,5vw,80px)] items-start';
-        case 'right-big': return 'grid grid-cols-1 lg:grid-cols-2 cs-grid-right-big gap-y-12 gap-x-[clamp(24px,5vw,80px)] items-start';
+        case 'left-stack': return 'grid grid-cols-1 lg:grid-cols-2 cs-grid-left-big gap-y-12 gap-x-[clamp(32px,6vw,100px)] items-start';
+        case 'right-big': return 'grid grid-cols-1 lg:grid-cols-2 cs-grid-right-big gap-y-12 gap-x-[clamp(32px,6vw,100px)] items-start';
         default: return 'grid grid-cols-1';
     }
 };
@@ -652,117 +652,209 @@ export const ContentBuilder = ({ sections = [], onUpdateSections, isAdminPreview
         updateSection(sIdx, { columns: nextCols });
     };
 
-    return (
-        <div className="cs-builder-root flex flex-col gap-12 mt-12 mb-12">
-            {sections.map((section, sIdx) => (
-                <section key={section.id} className="cs-shell cs-story cs-animate relative group/section max-w-5xl mx-auto w-full">
-                    
-                    {/* Admin Section Controls */}
-                    {isAdminPreview && (
-                        <div className="absolute -left-12 top-0 flex flex-col gap-1 opacity-0 group-hover/section:opacity-100 transition-opacity z-10">
-                            <button onClick={() => moveSection(sIdx, -1)} disabled={sIdx === 0} className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/10 text-black hover:bg-black/20 disabled:opacity-30"><FiArrowUp size={14}/></button>
-                            <button onClick={() => moveSection(sIdx, 1)} disabled={sIdx === sections.length - 1} className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/10 text-black hover:bg-black/20 disabled:opacity-30"><FiArrowDown size={14}/></button>
-                            <div className="h-4" />
-                            <button onClick={() => removeSection(sIdx)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-red-100 text-red-500 hover:bg-red-200"><FiTrash2 size={14}/></button>
+    const [openAddMenu, setOpenAddMenu] = useState(null); // { sIdx, cIdx }
+
+    const BlockAdder = ({ sIdx, cIdx }) => {
+        const isOpen = openAddMenu?.sIdx === sIdx && openAddMenu?.cIdx === cIdx;
+        return (
+            <div className="relative mt-8 pt-4 border-t border-dashed border-black/10">
+                <button 
+                    onClick={() => setOpenAddMenu(isOpen ? null : { sIdx, cIdx })}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all border-2 ${
+                        isLight 
+                            ? (isOpen ? 'bg-black text-white border-black' : 'bg-white border-black/10 text-black/40 hover:text-black hover:border-black/30') 
+                            : (isOpen ? 'bg-[#c8ff3e] text-black border-[#c8ff3e]' : 'bg-transparent border-white/10 text-white/40 hover:text-[#c8ff3e] hover:border-[#c8ff3e]')
+                    }`}
+                >
+                    <FiPlus size={14} className={`transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`} />
+                    <span>{isOpen ? 'Close' : 'Add Block'}</span>
+                </button>
+
+                {isOpen && (
+                    <div className={`absolute bottom-full left-0 mb-4 p-4 rounded-3xl shadow-[0_32px_64px_rgba(0,0,0,0.4)] z-50 grid grid-cols-2 gap-2 min-w-[320px] animate-in fade-in slide-in-from-bottom-2 ${
+                        isLight ? 'bg-white border border-black/10' : 'bg-[#1a1a1a] border border-white/10'
+                    }`}>
+                        <div className="col-span-2 px-2 pb-2 border-bottom border-white/5 mb-1">
+                            <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40">Choose Component</p>
                         </div>
-                    )}
-
-                    {/* Section Title */}
-                    <ToolbarWrapper 
-                        id={`section-title-${section.id}`}
-                        block={{ type: 'section-title', ...section.sectionTitleStyle }}
-                        onChange={updater => updateSection(sIdx, { sectionTitleStyle: { ...(section.sectionTitleStyle || {}), ...updater } })}
-                        isAdminPreview={isAdminPreview}
-                        isLight={isLight}
-                        activeBlockId={activeBlockId}
-                    >
-                        <h2 className="cs-heading mb-6">
-                            <EditableText 
-                                value={section.sectionTitle} 
-                                onSave={v => updateSection(sIdx, { sectionTitle: v })} 
-                                isAdminPreview={isAdminPreview} 
-                                placeholder="Section Title"
-                                onFocus={() => setActiveBlockId(`section-title-${section.id}`)}
-                                onBlur={() => {
-                                    setTimeout(() => {
-                                        setActiveBlockId(prev => prev === `section-title-${section.id}` ? null : prev);
-                                    }, 200);
-                                }}
-                                style={getFontStyle(section.sectionTitleStyle || {})}
-                            />
-                        </h2>
-                    </ToolbarWrapper>
-
-                    <div className={getGridClass(section.layout)}>
-                        {(section.columns || []).map((col, cIdx) => (
-                            <div key={col.id} className="cs-detail-col flex-1 flex flex-col">
-                                {col.columnTitle && (
-                                    <ToolbarWrapper 
-                                        id={`column-title-${col.id}`}
-                                        block={{ type: 'column-title', ...col.columnTitleStyle }}
-                                        onChange={updater => updateColumn(sIdx, cIdx, { columnTitleStyle: { ...(col.columnTitleStyle || {}), ...updater } })}
-                                        isAdminPreview={isAdminPreview}
-                                        isLight={isLight}
-                                        activeBlockId={activeBlockId}
-                                    >
-                                        <h3 className="cs-heading-sm mb-4">
-                                            <EditableText 
-                                                value={col.columnTitle} 
-                                                onSave={v => updateColumn(sIdx, cIdx, { columnTitle: v })} 
-                                                isAdminPreview={isAdminPreview} 
-                                                placeholder="Column Title"
-                                                onFocus={() => setActiveBlockId(`column-title-${col.id}`)}
-                                                onBlur={() => {
-                                                    setTimeout(() => {
-                                                        setActiveBlockId(prev => prev === `column-title-${col.id}` ? null : prev);
-                                                    }, 200);
-                                                }}
-                                                style={getFontStyle(col.columnTitleStyle || {})}
-                                            />
-                                        </h3>
-                                    </ToolbarWrapper>
-                                )}
-                                
-                                <div className="flex flex-col gap-4">
-                                    {(col.blocks || []).map((block, bIdx) => (
-                                        <BlockRenderer 
-                                            key={block.id} 
-                                            block={block} 
-                                            onChange={updater => updateBlock(sIdx, cIdx, bIdx, updater)} 
-                                            onDelete={() => removeBlock(sIdx, cIdx, bIdx)}
-                                            isAdminPreview={isAdminPreview} 
-                                            projectId={projectId}
-                                            activeBlockId={activeBlockId}
-                                            onFocus={() => setActiveBlockId(block.id)}
-                                            onBlur={() => {
-                                                setTimeout(() => {
-                                                    setActiveBlockId(prev => prev === block.id ? null : prev);
-                                                }, 200);
-                                            }}
-                                        />
-                                    ))}
-                                </div>
-
-                                {isAdminPreview && (
-                                    <div className="mt-6 pt-4 border-t border-dashed border-black/10 flex flex-nowrap overflow-x-auto gap-2 pb-2">
-                                        {BLOCK_TYPES.map(bt => (
-                                            <button 
-                                                key={bt.type}
-                                                onClick={() => addBlock(sIdx, cIdx, bt.type)}
-                                                className={`whitespace-nowrap px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest transition-colors ${
-                                                    isLight ? 'bg-black/5 hover:bg-black/10 text-black/60' : 'bg-white/5 hover:bg-white/10 text-white/60'
-                                                }`}
-                                            >
-                                                + {bt.label}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                        {BLOCK_TYPES.map(bt => (
+                            <button 
+                                key={bt.type}
+                                onClick={() => { addBlock(sIdx, cIdx, bt.type); setOpenAddMenu(null); }}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-left text-[11px] font-bold uppercase tracking-widest transition-all ${
+                                    isLight 
+                                        ? 'hover:bg-black/5 text-black/70 hover:text-black' 
+                                        : 'hover:bg-white/5 text-white/70 hover:text-[#c8ff3e]'
+                                }`}
+                            >
+                                <span className="opacity-60">{bt.icon}</span>
+                                {bt.label}
+                            </button>
                         ))}
                     </div>
-                </section>
-            ))}
+                )}
+            </div>
+        );
+    };
+
+    return (
+        <div className="cs-builder-root flex flex-col gap-12 mt-12 mb-12">
+            {sections.map((section, sIdx) => {
+                const isFullWidth = section.width === 'full';
+                const alignment = section.titleAlignment || 'left';
+                
+                return (
+                    <section 
+                        key={section.id} 
+                        className={`cs-story cs-animate relative group/section w-full transition-all duration-500 ${
+                            isFullWidth ? 'max-w-none px-4 md:px-12' : 'cs-shell max-w-7xl mx-auto'
+                        }`}
+                    >
+                        
+                        {/* Admin Section Controls */}
+                        {isAdminPreview && (
+                            <div className="absolute -left-16 top-0 flex flex-col gap-2 opacity-0 group-hover/section:opacity-100 transition-opacity z-40">
+                                <button onClick={() => moveSection(sIdx, -1)} disabled={sIdx === 0} className={`w-10 h-10 flex items-center justify-center rounded-xl shadow-lg border transition-all ${isLight ? 'bg-white border-black/10 text-black hover:bg-black/5' : 'bg-[#1a1a1a] border-white/10 text-white hover:bg-white/5'} disabled:opacity-30`} title="Move Up"><FiArrowUp size={16}/></button>
+                                <button onClick={() => moveSection(sIdx, 1)} disabled={sIdx === sections.length - 1} className={`w-10 h-10 flex items-center justify-center rounded-xl shadow-lg border transition-all ${isLight ? 'bg-white border-black/10 text-black hover:bg-black/5' : 'bg-[#1a1a1a] border-white/10 text-white hover:bg-white/5'} disabled:opacity-30`} title="Move Down"><FiArrowDown size={16}/></button>
+                                
+                                <div className="h-4 border-l-2 border-white/5 ml-5 my-1" />
+                                
+                                {/* Layout Switcher */}
+                                <button 
+                                    onClick={() => {
+                                        const layouts = ['full', '2-equal', 'left-big', 'right-big'];
+                                        const currentIdx = layouts.indexOf(section.layout);
+                                        const nextLayout = layouts[(currentIdx + 1) % layouts.length];
+                                        updateSection(sIdx, { 
+                                            layout: nextLayout,
+                                            columns: nextLayout === 'full' 
+                                                ? [section.columns[0]] 
+                                                : (section.columns.length < 2 ? [...section.columns, { id: uid(), columnTitle: 'Column 2', blocks: [] }] : section.columns)
+                                        });
+                                    }}
+                                    className={`w-10 h-10 flex items-center justify-center rounded-xl shadow-lg border transition-all ${isLight ? 'bg-white border-black/10 text-black hover:bg-black/5' : 'bg-[#1a1a1a] border-white/10 text-white hover:bg-[#c8ff3e] hover:text-black'}`}
+                                    title="Change Layout"
+                                >
+                                    <FiArrowDown size={16} className="rotate-[-45deg]" />
+                                </button>
+
+                                {/* Width Toggle */}
+                                <button 
+                                    onClick={() => updateSection(sIdx, { width: isFullWidth ? 'boxed' : 'full' })}
+                                    className={`w-10 h-10 flex items-center justify-center rounded-xl shadow-lg border transition-all ${isFullWidth ? (isLight ? 'bg-black text-white' : 'bg-[#c8ff3e] text-black') : (isLight ? 'bg-white text-black hover:bg-black/5' : 'bg-[#1a1a1a] text-white hover:bg-white/5')}`}
+                                    title={isFullWidth ? "Switch to Boxed" : "Switch to Full Width"}
+                                >
+                                    <FiArrowDown size={16} className="rotate-90" />
+                                </button>
+
+                                {/* Alignment Toggle */}
+                                <button 
+                                    onClick={() => {
+                                        const aligns = ['left', 'center', 'right'];
+                                        const next = aligns[(aligns.indexOf(alignment) + 1) % aligns.length];
+                                        updateSection(sIdx, { titleAlignment: next });
+                                    }}
+                                    className={`w-10 h-10 flex items-center justify-center rounded-xl shadow-lg border transition-all ${isLight ? 'bg-white border-black/10 text-black hover:bg-black/5' : 'bg-[#1a1a1a] border-white/10 text-white hover:bg-white/5'}`}
+                                    title={`Title Alignment: ${alignment}`}
+                                >
+                                    <div className={`w-4 h-0.5 bg-current mb-0.5 ${alignment === 'center' ? 'mx-auto' : alignment === 'right' ? 'ml-auto' : ''}`} />
+                                    <div className={`w-3 h-0.5 bg-current mb-0.5 ${alignment === 'center' ? 'mx-auto' : alignment === 'right' ? 'ml-auto' : ''}`} />
+                                    <div className={`w-4 h-0.5 bg-current ${alignment === 'center' ? 'mx-auto' : alignment === 'right' ? 'ml-auto' : ''}`} />
+                                </button>
+
+                                <div className="h-4 border-l-2 border-white/5 ml-5 my-1" />
+
+                                <button onClick={() => removeSection(sIdx)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-red-500 text-white hover:bg-red-600 shadow-lg border-2 border-white/10 transition-all"><FiTrash2 size={16}/></button>
+                            </div>
+                        )}
+
+                        {/* Section Title */}
+                        <div className={`mb-10 flex flex-col ${alignment === 'center' ? 'items-center text-center' : alignment === 'right' ? 'items-end text-right' : 'items-start'}`}>
+                            <ToolbarWrapper 
+                                id={`section-title-${section.id}`}
+                                block={{ type: 'section-title', ...section.sectionTitleStyle }}
+                                onChange={updater => updateSection(sIdx, { sectionTitleStyle: { ...(section.sectionTitleStyle || {}), ...updater } })}
+                                isAdminPreview={isAdminPreview}
+                                isLight={isLight}
+                                activeBlockId={activeBlockId}
+                            >
+                                <h2 className="cs-heading !mb-0">
+                                    <EditableText 
+                                        value={section.sectionTitle} 
+                                        onSave={v => updateSection(sIdx, { sectionTitle: v })} 
+                                        isAdminPreview={isAdminPreview} 
+                                        placeholder="Section Title"
+                                        onFocus={() => setActiveBlockId(`section-title-${section.id}`)}
+                                        onBlur={() => {
+                                            setTimeout(() => {
+                                                setActiveBlockId(prev => prev === `section-title-${section.id}` ? null : prev);
+                                            }, 200);
+                                        }}
+                                        style={getFontStyle(section.sectionTitleStyle || {})}
+                                    />
+                                </h2>
+                            </ToolbarWrapper>
+                            <div className={`h-1 w-12 bg-[#c8ff3e] mt-4 rounded-full transition-all duration-500 ${isFullWidth ? 'w-24' : ''}`} />
+                        </div>
+
+                        <div className={getGridClass(section.layout)}>
+                            {(section.columns || []).map((col, cIdx) => (
+                                <div key={col.id} className="flex-1 flex flex-col">
+                                    {col.columnTitle && (
+                                        <ToolbarWrapper 
+                                            id={`column-title-${col.id}`}
+                                            block={{ type: 'column-title', ...col.columnTitleStyle }}
+                                            onChange={updater => updateColumn(sIdx, cIdx, { columnTitleStyle: { ...(col.columnTitleStyle || {}), ...updater } })}
+                                            isAdminPreview={isAdminPreview}
+                                            isLight={isLight}
+                                            activeBlockId={activeBlockId}
+                                        >
+                                            <h3 className="cs-heading-sm mb-6 flex items-center gap-3">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[#c8ff3e]" />
+                                                <EditableText 
+                                                    value={col.columnTitle} 
+                                                    onSave={v => updateColumn(sIdx, cIdx, { columnTitle: v })} 
+                                                    isAdminPreview={isAdminPreview} 
+                                                    placeholder="Column Title"
+                                                    onFocus={() => setActiveBlockId(`column-title-${col.id}`)}
+                                                    onBlur={() => {
+                                                        setTimeout(() => {
+                                                            setActiveBlockId(prev => prev === `column-title-${col.id}` ? null : prev);
+                                                        }, 200);
+                                                    }}
+                                                    style={getFontStyle(col.columnTitleStyle || {})}
+                                                />
+                                            </h3>
+                                        </ToolbarWrapper>
+                                    )}
+                                    
+                                    <div className="flex flex-col gap-6">
+                                        {(col.blocks || []).map((block, bIdx) => (
+                                            <BlockRenderer 
+                                                key={block.id} 
+                                                block={block} 
+                                                onChange={updater => updateBlock(sIdx, cIdx, bIdx, updater)} 
+                                                onDelete={() => removeBlock(sIdx, cIdx, bIdx)}
+                                                isAdminPreview={isAdminPreview} 
+                                                projectId={projectId}
+                                                activeBlockId={activeBlockId}
+                                                onFocus={() => setActiveBlockId(block.id)}
+                                                onBlur={() => {
+                                                    setTimeout(() => {
+                                                        setActiveBlockId(prev => prev === block.id ? null : prev);
+                                                    }, 200);
+                                                }}
+                                            />
+                                        ))}
+                                    </div>
+
+                                    {isAdminPreview && <BlockAdder sIdx={sIdx} cIdx={cIdx} />}
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                );
+            })}
 
             {/* Add Section Button */}
             {isAdminPreview && (

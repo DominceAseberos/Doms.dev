@@ -853,3 +853,47 @@ video.cs-media-thumb {
         margin-top: 2px;
     }
 }
+
+/* ADMIN ENHANCEMENTS */
+.animate-in {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation-fill-mode: both;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slide-in-from-bottom-2 {
+    from { transform: translateY(0.5rem); }
+    to { transform: translateY(0); }
+}
+
+.fade-in { animation-name: fade-in; }
+.slide-in-from-bottom-2 { animation-name: slide-in-from-bottom-2; }
+
+/* Section width transitions */
+.cs-story {
+    transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s ease;
+}
+
+/* Admin floating bar adjustments */
+.group\/section:hover .absolute {
+    pointer-events: auto;
+}
+
+/* Custom scrollbar for add menu */
+.grid-cols-2::-webkit-scrollbar {
+    width: 4px;
+}
+
+.grid-cols-2::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.grid-cols-2::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.2);
+    border-radius: 10px;
+}
