@@ -1,26 +1,33 @@
 {
     "categories": [
         "Landing Page",
-        "Case Study"
+        "Case Study",
+        "Web Application"
     ],
     "projects": [
         {
             "id": "project-pixvault",
             "title": "PIXVAULT",
-            "shortDescription": "A design resource SPA aggregating GIFs, icons, UI components, and illustrations via live APIs. Built with React 18, TanStack Query, and a dark cyberpunk design system. No accounts, no paywalls.",
+            "shortDescription": "A premium design resource SPA aggregating GIFs, icons, UI components, and illustrations. Built with React 18 and a cyberpunk design system.",
             "images": [],
-            "projectType": "CASE STUDY",
-            "mainImage": "/assets/uploads/project-pixvault/imgs/hero.webp",
+            "projectType": "WEB APPLICATION",
+            "mainImage": "/assets/uploads/project-pixvault/imgs/desktop.png",
             "galleryImages": [],
-            "assets": { "desktop": "", "tablet": "", "mobile": "" },
+            "assets": {
+                "desktop": "/assets/uploads/project-pixvault/imgs/desktop.png",
+                "tablet": "/assets/uploads/project-pixvault/imgs/tablet.png",
+                "mobile": "/assets/uploads/project-pixvault/imgs/mobile.png"
+            },
             "liveUrl": "https://live-pixvault.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
-            "desktopImage": "/assets/uploads/project-pixvault/imgs/hero.webp",
+            "desktopImage": "/assets/uploads/project-pixvault/imgs/desktop.png",
+            "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.png",
+            "mobileImage": "/assets/uploads/project-pixvault/imgs/mobile.png",
             "desktopGallery": [
                 "/assets/uploads/project-pixvault/imgs/gifs.webp",
                 "/assets/uploads/project-pixvault/imgs/icons.webp"
             ],
-            "mobileImage": "",
+            "tabletGallery": [],
             "mobileGallery": [],
             "featuredInTunnel": true,
             "dateCreated": "2026-05-01",
@@ -55,7 +62,11 @@
                                 {
                                     "id": "pv-core-chips",
                                     "type": "chips",
-                                    "items": ["React 18.3", "TypeScript 5.8", "Vite 5.4"]
+                                    "items": [
+                                        "React 18.3",
+                                        "TypeScript 5.8",
+                                        "Vite 5.4"
+                                    ]
                                 },
                                 {
                                     "id": "pv-state-label",
@@ -65,7 +76,12 @@
                                 {
                                     "id": "pv-state-chips",
                                     "type": "chips",
-                                    "items": ["TanStack Query 5", "React Router 6", "Zod", "React Hook Form"]
+                                    "items": [
+                                        "TanStack Query 5",
+                                        "React Router 6",
+                                        "Zod",
+                                        "React Hook Form"
+                                    ]
                                 },
                                 {
                                     "id": "pv-ui-label",
@@ -75,7 +91,12 @@
                                 {
                                     "id": "pv-ui-chips",
                                     "type": "chips",
-                                    "items": ["Tailwind CSS 3", "shadcn/ui", "Framer Motion 12", "Lucide React"]
+                                    "items": [
+                                        "Tailwind CSS 3",
+                                        "shadcn/ui",
+                                        "Framer Motion 12",
+                                        "Lucide React"
+                                    ]
                                 }
                             ]
                         },
@@ -110,7 +131,13 @@
                                 {
                                     "id": "pv-palette",
                                     "type": "color-palette",
-                                    "colors": ["#080c14", "#00d4ff", "#8b5cf6", "#ff4d6d", "#1a1f2e"]
+                                    "colors": [
+                                        "#080c14",
+                                        "#00d4ff",
+                                        "#8b5cf6",
+                                        "#ff4d6d",
+                                        "#1a1f2e"
+                                    ]
                                 },
                                 {
                                     "id": "pv-color-notes",
@@ -239,20 +266,28 @@
             "shortDescription": "A production-grade React landing page built around scroll-driven storytelling, a terminal-style boot sequence, and a glassmorphic design system. Engineered for 60fps performance with GSAP ScrollTrigger and Lenis smooth scroll.",
             "images": [],
             "projectType": "LANDING PAGE",
-            "mainImage": "/assets/uploads/project-1774573315239/imgs/1774575777662-kerne-hero.webp",
+            "mainImage": "/assets/uploads/project-1774573315239/imgs/desktop.png",
             "galleryImages": [],
             "assets": {
-                "desktop": "",
-                "tablet": "",
-                "mobile": ""
+                "desktop": "/assets/uploads/project-1774573315239/imgs/desktop.png",
+                "tablet": "/assets/uploads/project-1774573315239/imgs/tablet.png",
+                "mobile": "/assets/uploads/project-1774573315239/imgs/mobile.png"
             },
             "liveUrl": "https://kernelprism.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/Kernel",
-            "desktopImage": "/assets/uploads/project-1774573315239/imgs/1774573363416-kerne-hero.webp",
+            "desktopImage": "/assets/uploads/project-1774573315239/imgs/desktop.png",
+            "tabletImage": "/assets/uploads/project-1774573315239/imgs/tablet.png",
+            "mobileImage": "/assets/uploads/project-1774573315239/imgs/mobile.png",
             "desktopGallery": [
                 "/assets/uploads/project-1774573315239/imgs/1774573376029-about.webp",
                 "/assets/uploads/project-1774573315239/imgs/1774573381445-project.webp",
                 "/assets/uploads/project-1774573315239/imgs/1774573386213-footer.webp"
+            ],
+            "tabletGallery": [],
+            "mobileGallery": [
+                "/assets/uploads/project-1774573315239/imgs/1774599626258-about-mobile.webp",
+                "/assets/uploads/project-1774573315239/imgs/1774599633824-project-mobile.webp",
+                "/assets/uploads/project-1774573315239/imgs/1774599636874-footer-mobile.webp"
             ],
             "contentSections": [
                 {
@@ -285,7 +320,11 @@
                                 {
                                     "id": "id-arch-core",
                                     "type": "chips",
-                                    "items": ["React 19", "TypeScript 5.8", "Vite 6"]
+                                    "items": [
+                                        "React 19",
+                                        "TypeScript 5.8",
+                                        "Vite 6"
+                                    ]
                                 },
                                 {
                                     "id": "id-arch-motion-label",
@@ -295,7 +334,12 @@
                                 {
                                     "id": "id-arch-motion",
                                     "type": "chips",
-                                    "items": ["GSAP 3.14", "ScrollTrigger", "Lenis", "SplitType"]
+                                    "items": [
+                                        "GSAP 3.14",
+                                        "ScrollTrigger",
+                                        "Lenis",
+                                        "SplitType"
+                                    ]
                                 },
                                 {
                                     "id": "id-arch-style-label",
@@ -305,7 +349,10 @@
                                 {
                                     "id": "id-arch-style",
                                     "type": "chips",
-                                    "items": ["Tailwind CSS 4", "CSS Custom Properties"]
+                                    "items": [
+                                        "Tailwind CSS 4",
+                                        "CSS Custom Properties"
+                                    ]
                                 }
                             ]
                         },
@@ -453,7 +500,7 @@
             ],
             "featuredInTunnel": true,
             "dateCreated": "2026-03-02",
-            "mobileImage": "/assets/uploads/project-1774573315239/imgs/1774599621399-hero-mobile.webp",
+            "mobileImage": "/assets/uploads/project-1774573315239/imgs/mobile.png",
             "mobileGallery": [
                 "/assets/uploads/project-1774573315239/imgs/1774599626258-about-mobile.webp",
                 "/assets/uploads/project-1774573315239/imgs/1774599633824-project-mobile.webp",
