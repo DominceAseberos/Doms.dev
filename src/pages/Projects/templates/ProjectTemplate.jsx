@@ -51,6 +51,12 @@ const ProjectTemplate = ({
         const galleryField = VIEW_GALLERY_FIELD[activeView];
         const viewGallery = project[galleryField];
         if (viewGallery && viewGallery.length > 0) return viewGallery;
+        
+        // Fallback: If tablet is empty, show desktop gallery
+        if (activeView === 'tablet') {
+            return project.desktopGallery || project.images || [];
+        }
+        
         return [];
     }, [project, activeView, isAdminPreview]);
 

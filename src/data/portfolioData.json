@@ -29,7 +29,12 @@
                 "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
                 "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
             ],
-            "tabletGallery": [],
+            "tabletGallery": [
+                "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
+            ],
             "mobileGallery": [
                 "/assets/uploads/project-pixvault/imgs/mobile_sec2.png",
                 "/assets/uploads/project-pixvault/imgs/mobile_sec3.png",
@@ -291,7 +296,12 @@
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec4.png",
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec5.png"
             ],
-            "tabletGallery": [],
+            "tabletGallery": [
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec2.png",
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec3.png",
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec4.png",
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec5.png"
+            ],
             "mobileGallery": [
                 "/assets/uploads/project-1774573315239/imgs/mobile_sec2.png",
                 "/assets/uploads/project-1774573315239/imgs/mobile_sec3.png",
