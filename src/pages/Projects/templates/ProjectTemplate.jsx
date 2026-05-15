@@ -149,9 +149,12 @@ const ProjectTemplate = ({
                 } else {
                     onUpdateField(uploading, data.url);
                 }
+            } else {
+                alert("Upload failed: " + (data.error || "Unknown error"));
             }
         } catch (err) {
             console.error("Upload failed", err);
+            alert("Upload failed. Check console for details.");
         } finally {
             setUploading(null);
             e.target.value = '';
@@ -190,7 +193,7 @@ const ProjectTemplate = ({
                     type="file" 
                     ref={fileInputRef} 
                     className="hidden" 
-                    accept="image/*" 
+                    accept=".jpg,.jpeg,.png,.gif,.webp,.avif,.svg" 
                     onChange={handleFileUpload} 
                     onCancel={() => setUploading(null)}
                 />

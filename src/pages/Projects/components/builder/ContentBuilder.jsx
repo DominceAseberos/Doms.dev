@@ -510,9 +510,12 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                 const data = await res.json();
                 if (data.ok) {
                     onChange({ src: data.url });
+                } else {
+                    alert("Upload failed: " + (data.error || "Unknown error"));
                 }
             } catch (err) {
                 console.error("Upload failed", err);
+                alert("Upload failed. Check console for details.");
             } finally {
                 setUploading(false);
                 e.target.value = '';
@@ -539,7 +542,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                             <input 
                                 type="file" 
                                 className="hidden" 
-                                accept="image/*" 
+                                accept=".jpg,.jpeg,.png,.gif,.webp,.avif,.svg" 
                                 onChange={handleImageUpload} 
                                 disabled={uploading}
                             />
