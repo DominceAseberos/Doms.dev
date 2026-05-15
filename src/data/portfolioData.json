@@ -24,7 +24,6 @@
             "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.png",
             "mobileImage": "/assets/uploads/project-pixvault/imgs/mobile.png",
             "desktopGallery": [
-                "/assets/uploads/project-pixvault/imgs/desktop_sec1.png",
                 "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
                 "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
                 "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
@@ -32,7 +31,6 @@
             ],
             "tabletGallery": [],
             "mobileGallery": [
-                "/assets/uploads/project-pixvault/imgs/mobile_sec1.png",
                 "/assets/uploads/project-pixvault/imgs/mobile_sec2.png",
                 "/assets/uploads/project-pixvault/imgs/mobile_sec3.png",
                 "/assets/uploads/project-pixvault/imgs/mobile_sec4.png",
@@ -288,7 +286,6 @@
             "tabletImage": "/assets/uploads/project-1774573315239/imgs/tablet.png",
             "mobileImage": "/assets/uploads/project-1774573315239/imgs/mobile.png",
             "desktopGallery": [
-                "/assets/uploads/project-1774573315239/imgs/desktop_sec1.png",
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec2.png",
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec3.png",
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec4.png",
@@ -296,7 +293,6 @@
             ],
             "tabletGallery": [],
             "mobileGallery": [
-                "/assets/uploads/project-1774573315239/imgs/mobile_sec1.png",
                 "/assets/uploads/project-1774573315239/imgs/mobile_sec2.png",
                 "/assets/uploads/project-1774573315239/imgs/mobile_sec3.png",
                 "/assets/uploads/project-1774573315239/imgs/mobile_sec4.png",
