@@ -24,11 +24,20 @@
             "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.png",
             "mobileImage": "/assets/uploads/project-pixvault/imgs/mobile.png",
             "desktopGallery": [
-                "/assets/uploads/project-pixvault/imgs/gifs.webp",
-                "/assets/uploads/project-pixvault/imgs/icons.webp"
+                "/assets/uploads/project-pixvault/imgs/desktop_sec1.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
             ],
             "tabletGallery": [],
-            "mobileGallery": [],
+            "mobileGallery": [
+                "/assets/uploads/project-pixvault/imgs/mobile_sec1.png",
+                "/assets/uploads/project-pixvault/imgs/mobile_sec2.png",
+                "/assets/uploads/project-pixvault/imgs/mobile_sec3.png",
+                "/assets/uploads/project-pixvault/imgs/mobile_sec4.png",
+                "/assets/uploads/project-pixvault/imgs/mobile_sec5.png"
+            ],
             "featuredInTunnel": true,
             "dateCreated": "2026-05-01",
             "contentSections": [
@@ -279,15 +288,19 @@
             "tabletImage": "/assets/uploads/project-1774573315239/imgs/tablet.png",
             "mobileImage": "/assets/uploads/project-1774573315239/imgs/mobile.png",
             "desktopGallery": [
-                "/assets/uploads/project-1774573315239/imgs/1774573376029-about.webp",
-                "/assets/uploads/project-1774573315239/imgs/1774573381445-project.webp",
-                "/assets/uploads/project-1774573315239/imgs/1774573386213-footer.webp"
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec1.png",
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec2.png",
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec3.png",
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec4.png",
+                "/assets/uploads/project-1774573315239/imgs/desktop_sec5.png"
             ],
             "tabletGallery": [],
             "mobileGallery": [
-                "/assets/uploads/project-1774573315239/imgs/1774599626258-about-mobile.webp",
-                "/assets/uploads/project-1774573315239/imgs/1774599633824-project-mobile.webp",
-                "/assets/uploads/project-1774573315239/imgs/1774599636874-footer-mobile.webp"
+                "/assets/uploads/project-1774573315239/imgs/mobile_sec1.png",
+                "/assets/uploads/project-1774573315239/imgs/mobile_sec2.png",
+                "/assets/uploads/project-1774573315239/imgs/mobile_sec3.png",
+                "/assets/uploads/project-1774573315239/imgs/mobile_sec4.png",
+                "/assets/uploads/project-1774573315239/imgs/mobile_sec5.png"
             ],
             "contentSections": [
                 {
