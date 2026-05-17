@@ -6,6 +6,243 @@
     ],
     "projects": [
         {
+            "id": "project-banana-leaf-detector",
+            "title": "BANANA LEAF DETECTOR",
+            "shortDescription": "A premium Flask web application featuring active learning and computer vision to detect banana leaf diseases in real-time with instant local model retraining based on user feedback.",
+            "projectType": "WEB APPLICATION",
+            "dateCreated": "2025-10-09",
+            "liveUrl": "",
+            "githubUrl": "https://github.com/Domincee/Banana-Leaf-Detector",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-banana-leaf-detector/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-banana-leaf-detector/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-2.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-3.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-4.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-2.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-3.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-4.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-2.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-3.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-4.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-banana-leaf-detector/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-banana-leaf-detector/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "banana-leaf-detector-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-overview-text",
+                                    "type": "text",
+                                    "content": "Banana Leaf Disease Detector is a high-performance machine learning web application built to execute immediate, localized crop diagnostics. To achieve lightweight in-process execution, the system processes plant imagery into a dense 59-dimensional feature fingerprint. This mathematical vector comprises 30 color dimensions (HSV & LAB averages and deviations, plus a 16-bin Hue histogram), 25 texture dimensions (a 4-metric GLCM matrix, an 18-bin Uniform LBP descriptor, 2 HOG summary variables, and Canny edge density), and 4 shape dimensions (area, perimeter, circularity, and aspect ratio). A localized K-Nearest Neighbors (k=5) classifier uses this vector for real-time predictions, supported by a closed-loop active learning system that retrains the model in under 200ms when feedback is received."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "banana-leaf-detector-arch",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-core",
+                                    "type": "chips",
+                                    "items": [
+                                        "Flask",
+                                        "Python 3.12",
+                                        "HTML5 / CSS3",
+                                        "JavaScript (Vanilla)"
+                                    ]
+                                },
+                                {
+                                    "id": "banana-leaf-detector-ml-label",
+                                    "type": "heading",
+                                    "content": "Machine Learning & CV"
+                                },
+                                {
+                                    "id": "banana-leaf-detector-ml-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "scikit-learn (KNN)",
+                                        "OpenCV (cv2)",
+                                        "scikit-image",
+                                        "NumPy",
+                                        "Pandas"
+                                    ]
+                                },
+                                {
+                                    "id": "banana-leaf-detector-db-label",
+                                    "type": "heading",
+                                    "content": "Cloud Infrastructure"
+                                },
+                                {
+                                    "id": "banana-leaf-detector-db-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "Firebase Admin SDK",
+                                        "Firestore (NoSQL)",
+                                        "Chart.js (Visuals)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "banana-leaf-detector-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-decisions",
+                                    "type": "list",
+                                    "items": [
+                                        "Dynamic Leaf Masking — Leverages green-channel HSV thresholding with strict numerical bounds of [25, 40, 40] to [90, 255, 255] and executes mathematical morph close/open filters using a (7,7) ellipse kernel.",
+                                        "GLCM Quantification — Quantizes raw grayscale pixels into 64 distinct gray levels to extract 4 texture variables (contrast, homogeneity, energy, correlation) at a precise spatial offset distance of 5 pixels and 0 angle.",
+                                        "Uniform LBP Processing — Captures microscopic crop surface lesions via local binary patterns with P=8 sampling points, R=1 radius, and uniform method mapping to compute a structured 18-bin histogram.",
+                                        "Closed-Loop Retraining Thread — When a prediction error is corrected, the 59-dimensional feature vector is cached and committed to Firestore and retrained in-process under 200ms using the locally cached KNN classifier.",
+                                        "Multi-Channel Log Layer — Implements real-time Firestore sockets alongside local logging of offline CSV audit records to prevent agricultural diagnostics data loss."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "banana-leaf-detector-design",
+                    "sectionTitle": "Design System",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-colors",
+                            "columnTitle": "Color Palette",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-palette",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#667eea",
+                                        "#764ba2",
+                                        "#e0e7ff",
+                                        "#27ae60",
+                                        "#c0392b",
+                                        "#f39c12"
+                                    ]
+                                },
+                                {
+                                    "id": "banana-leaf-detector-color-notes",
+                                    "type": "list",
+                                    "items": [
+                                        "#667eea — Brand Royal Blue (Primary actions, gradients)",
+                                        "#764ba2 — Deep Violet (Secondary accent)",
+                                        "#e0e7ff — Indigo Tint (Active state borders, tags)",
+                                        "#27ae60 — Forest Green (Healthy leaf status)",
+                                        "#c0392b — Crimson Red (Unhealthy disease status)",
+                                        "#f39c12 — Ochre Yellow (Active Learning correction warnings)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "banana-leaf-detector-type",
+                            "columnTitle": "Typography",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Inter",
+                                            "family": "'Inter', 'Segoe UI', sans-serif",
+                                            "role": "General content, interactive panels, analytics labels"
+                                        },
+                                        {
+                                            "name": "Segoe UI",
+                                            "family": "'Segoe UI', 'Helvetica Neue', Arial",
+                                            "role": "High-performance native UI fallbacks for smooth cross-device styling"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "banana-leaf-detector-features",
+                    "sectionTitle": "Features",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-feat-left",
+                            "columnTitle": "Active Learning Real-time Loop",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-feat-left-text",
+                                    "type": "text",
+                                    "content": "Integrates a closed-loop active learning system where classifier errors are immediately corrected by the user. The corrected sample's 59-dimensional feature matrix is dynamically appended to the training set and triggers background scikit-learn KNN (k=5) model retraining in under 200ms with live model weights updates in-process, allowing continuous classifier improvements."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "banana-leaf-detector-feat-right",
+                            "columnTitle": "Multi-Dimensional CV Feature Pipeline",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-feat-right-text",
+                                    "type": "text",
+                                    "content": "Extracts 59 unique color, texture, and structural features from uploaded crop images on-the-fly. Leverages Grey-Level Co-occurrence Matrices (GLCM) with 64 levels at a pixel distance of 5 for texture, Local Binary Patterns (LBP) with P=8 and R=1 for disease-spot boundaries, and HSV/LAB color Moments alongside a 16-bin Hue histogram for rapid chlorosis screening."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "banana-leaf-detector-perf",
+                    "sectionTitle": "Performance",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-perf-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-perf-list",
+                                    "type": "list",
+                                    "items": [
+                                        "Predictive Latency: < 80ms for complete OpenCV feature extraction and KNN classification on local hosts.",
+                                        "In-Process Retraining Convergence: < 200ms background scikit-learn KNN fit cycle following user correction events.",
+                                        "Edge Friendly Footprint: Bypasses heavy deep learning dependencies, allowing the entire application and active learning pipeline to run smoothly on extremely lightweight compute servers.",
+                                        "Analytical Load Times: Highly-optimized NoSQL database schema enables instant aggregation of thousands of historical scan entries for Chart.js canvas elements."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "project-pixvault",
             "title": "PIXVAULT",
             "shortDescription": "A premium design resource SPA aggregating GIFs, icons, UI components, and illustrations. Built with React 18 and a cyberpunk design system.",
@@ -289,7 +526,7 @@
             "githubUrl": "https://github.com/DominceAseberos/Kernel",
             "desktopImage": "/assets/uploads/project-1774573315239/imgs/hero_desktop.png",
             "tabletImage": "/assets/uploads/project-1774573315239/imgs/tablet.png",
-            "mobileImage": "/assets/uploads/project-1774573315239/imgs/hero_mobile.png",
+            "mobileImage": "/assets/uploads/project-1774573315239/imgs/mobile.png",
             "desktopGallery": [
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec2.png",
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec3.png",
@@ -303,10 +540,9 @@
                 "/assets/uploads/project-1774573315239/imgs/desktop_sec5.png"
             ],
             "mobileGallery": [
-                "/assets/uploads/project-1774573315239/imgs/mobile_sec2.png",
-                "/assets/uploads/project-1774573315239/imgs/mobile_sec3.png",
-                "/assets/uploads/project-1774573315239/imgs/mobile_sec4.png",
-                "/assets/uploads/project-1774573315239/imgs/mobile_sec5.png"
+                "/assets/uploads/project-1774573315239/imgs/1774599626258-about-mobile.webp",
+                "/assets/uploads/project-1774573315239/imgs/1774599633824-project-mobile.webp",
+                "/assets/uploads/project-1774573315239/imgs/1774599636874-footer-mobile.webp"
             ],
             "contentSections": [
                 {
@@ -518,13 +754,7 @@
                 }
             ],
             "featuredInTunnel": true,
-            "dateCreated": "2026-03-02",
-            "mobileImage": "/assets/uploads/project-1774573315239/imgs/mobile.png",
-            "mobileGallery": [
-                "/assets/uploads/project-1774573315239/imgs/1774599626258-about-mobile.webp",
-                "/assets/uploads/project-1774573315239/imgs/1774599633824-project-mobile.webp",
-                "/assets/uploads/project-1774573315239/imgs/1774599636874-footer-mobile.webp"
-            ]
+            "dateCreated": "2026-03-02"
         }
     ],
     "customCategories": [
