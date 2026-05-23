@@ -134,7 +134,7 @@ input[type="button"],
 }
 
 /* ── NAV ── */
-nav {
+.main-nav {
     position: fixed;
     top: 0;
     left: 0;
@@ -177,7 +177,7 @@ body.nav-hidden-in-hallway nav:focus-within {
     transform: translateY(0);
 }
 
-nav.nav-scrolled {
+.main-nav.nav-scrolled {
     background: var(--nav-scrolled-bg);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -643,7 +643,7 @@ html[data-theme='light'] .cs-page {
 }
 
 @media (max-width: 768px) {
-    nav {
+    .main-nav {
         padding: 32px 24px;
         align-items: center;
         justify-content: center;
@@ -830,7 +830,7 @@ html[data-theme='light'] .cs-page {
 
 /* Tablet Layout Adjustments */
 @media (min-width: 769px) and (max-width: 1024px) {
-    nav {
+    .main-nav {
         padding: 36px 48px;
         align-items: flex-start;
     }
