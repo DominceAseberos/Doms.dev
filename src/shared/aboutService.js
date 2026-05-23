@@ -1,14 +1,20 @@
+import staticAboutData from '../data/aboutData.json';
+
 const ABOUT_JSON_URL = '/src/data/aboutData.json';
 const WRITE_API_URL = '/__write-json?file=aboutData.json';
 
 export const fetchAboutData = async () => {
     try {
         const res = await fetch(ABOUT_JSON_URL);
-        if (res.ok) return await res.json();
-        throw new Error(`Failed to fetch about data: ${res.status}`);
+        const contentType = res.headers.get('content-type');
+        if (res.ok && contentType && contentType.includes('application/json')) {
+            return await res.json();
+        }
+
+        return staticAboutData;
     } catch (err) {
-        console.error("Error fetching about data:", err);
-        throw err;
+        console.warn('Falling back to static about data:', err);
+        return staticAboutData;
     }
 };
 

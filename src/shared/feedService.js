@@ -1,14 +1,20 @@
+import staticFeedPosts from '../data/feedPosts.json';
+
 const FEED_JSON_URL = '/src/data/feedPosts.json';
 const WRITE_API_URL = '/__write-json?file=feedPosts.json';
 
 export const fetchFeedPosts = async () => {
     try {
         const res = await fetch(FEED_JSON_URL);
-        if (res.ok) return await res.json();
-        throw new Error(`Failed to fetch feed posts: ${res.status}`);
+        const contentType = res.headers.get('content-type');
+        if (res.ok && contentType && contentType.includes('application/json')) {
+            return await res.json();
+        }
+
+        return staticFeedPosts;
     } catch (err) {
-        console.error("Error fetching feed posts:", err);
-        throw err;
+        console.warn('Falling back to static feed posts:', err);
+        return staticFeedPosts;
     }
 };
 

@@ -27,6 +27,8 @@ const MID_IDS = ['m-teal-office', 'm-green-step', 'm-dark-apt', 'm-office-grid',
 const SML_IDS = ['s-pillar', 's-left-h', 's-brick-t', 's-thin', 's-teal-low', 's-corner',
   's-sheds', 's-light', 's-roof', 's-cyan', 's-teal-strip', 's-hr-strip',
   's-cyan-br', 's-pale-apt', 's-blue-bridge'];
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '4049f1f8-1b52-4582-8471-a194348d5bdb';
 
 function shuffle(arr) {
   const a = [...arr];
@@ -179,16 +181,26 @@ const CityscapeContact = () => {
     setStatus({ state: 'sending', message: '' });
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `New portfolio brief from ${form.name}`,
+          from_name: 'Doms.dev Portfolio',
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
       });
 
       const result = await response.json().catch(() => ({}));
 
-      if (!response.ok || !result.ok) {
-        throw new Error(result.error || 'Could not send your brief right now.');
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Could not send your brief right now.');
       }
 
       setSubmitted(true);
