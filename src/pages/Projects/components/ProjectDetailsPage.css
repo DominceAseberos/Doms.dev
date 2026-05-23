@@ -314,9 +314,9 @@ video.cs-media-thumb {
 
 .cs-detail-body {
     color: var(--cs-ink);
-    font-size: 1rem;
+    font-size: clamp(1.1rem, 1.2vw, 1.25rem);
     line-height: 1.75;
-    max-width: 65ch;
+    max-width: 100%;
     overflow-wrap: anywhere;
 }
 
@@ -362,7 +362,7 @@ video.cs-media-thumb {
     margin: 0 0 8px;
     color: var(--cs-ink);
     font-family: 'Syne', sans-serif;
-    font-size: 1.15rem;
+    font-size: clamp(1.25rem, 1.5vw, 1.4rem);
     font-weight: 700;
 }
 
@@ -370,7 +370,7 @@ video.cs-media-thumb {
     margin: 0;
     padding-left: 18px;
     color: var(--cs-body);
-    font-size: 1rem;
+    font-size: clamp(1.1rem, 1.2vw, 1.25rem);
     line-height: 1.75;
 }
 
@@ -591,17 +591,17 @@ video.cs-media-thumb {
 
 .cs-desc {
     color: var(--cs-body);
-    max-width: 75ch;
+    max-width: 100%;
     line-height: 1.7;
-    font-size: 1rem;
+    font-size: clamp(1.1rem, 1.2vw, 1.25rem);
 }
 
 .cs-markdown {
     margin-top: 12px;
     color: var(--cs-body);
-    font-size: 1rem;
+    font-size: clamp(1.1rem, 1.2vw, 1.25rem);
     line-height: 1.8;
-    max-width: 85ch;
+    max-width: 100%;
     overflow-wrap: anywhere;
 }
 
