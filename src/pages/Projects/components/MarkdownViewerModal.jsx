@@ -11,6 +11,7 @@ import useThemeStore from '../../../store/useThemeStore';
  */
 const getRawGithubUrl = (url) => {
     if (!url) return '';
+    if (url.startsWith('/')) return url; // Support local public files
     if (url.includes('raw.githubusercontent.com')) return url;
     
     // Replace domain and remove /blob/

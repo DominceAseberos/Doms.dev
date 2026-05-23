@@ -453,7 +453,7 @@
             },
             "liveUrl": "https://live-pixvault.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
-            "primaryBtnUrl": "https://github.com/DominceAseberos/live-pixvault/blob/main/DOCUMENTATION.md",
+            "primaryBtnUrl": "/assets/markdowns/pixvault-docs.md",
             "primaryBtnLabel": "DOCUMENTATION",
             "desktopImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
             "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.png",
