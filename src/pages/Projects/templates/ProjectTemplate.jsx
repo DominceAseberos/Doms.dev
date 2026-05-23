@@ -6,6 +6,7 @@ import NavBar from '../../../components/NavBar';
 import useThemeStore from '../../../store/useThemeStore';
 import { EditableText } from '../components/EditableText';
 import { ContentBuilder } from '../components/builder/ContentBuilder';
+import MarkdownViewerModal from '../components/MarkdownViewerModal';
 
 const ProjectTemplate = ({
     project,
@@ -20,6 +21,8 @@ const ProjectTemplate = ({
     const isLight = theme === 'light';
 
     const [activeView, setActiveView] = useState('desktop');
+    const [isMarkdownModalOpen, setIsMarkdownModalOpen] = useState(false);
+    const [markdownUrl, setMarkdownUrl] = useState('');
 
     const VIEW_META = {
         desktop: { icon: <FiMonitor size={14} />, label: 'Desktop' },
@@ -221,7 +224,17 @@ const ProjectTemplate = ({
                                     target={isAdminPreview ? undefined : (project.primaryBtnUrl.startsWith('/') ? undefined : "_blank")} 
                                     rel="noopener noreferrer" 
                                     className="cs-top-link cs-top-link--ghost flex items-center gap-2"
-                                    onClick={e => isAdminPreview && e.preventDefault()}
+                                    onClick={e => {
+                                        if (isAdminPreview) {
+                                            e.preventDefault();
+                                            return;
+                                        }
+                                        if (project.primaryBtnUrl.endsWith('.md')) {
+                                            e.preventDefault();
+                                            setMarkdownUrl(project.primaryBtnUrl);
+                                            setIsMarkdownModalOpen(true);
+                                        }
+                                    }}
                                 >
                                     <span>
                                         {project.primaryBtnLabel || 
@@ -490,6 +503,13 @@ const ProjectTemplate = ({
                         </button>
                     </div>
                 )}
+
+                <MarkdownViewerModal 
+                    isOpen={isMarkdownModalOpen} 
+                    onClose={() => setIsMarkdownModalOpen(false)} 
+                    githubUrl={markdownUrl}
+                    title={project.primaryBtnLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation')}
+                />
             </main>
         </div>
     );
