@@ -44,6 +44,7 @@ const CityscapeContact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [lit, setLit] = useState(false);   // windows-lit after submit
   const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState({ state: 'idle', message: '' });
 
   // ── Follow global theme from navbar store ──────────────────────────────
   const theme = useThemeStore((state) => state.theme);
@@ -170,10 +171,35 @@ const CityscapeContact = () => {
 
 
   // ── Form submit ──────────────────────────────────────────────────────────
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setLit(true);  // trigger window glow on the cityscape
+
+    if (status.state === 'sending') return;
+
+    setStatus({ state: 'sending', message: '' });
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || 'Could not send your brief right now.');
+      }
+
+      setSubmitted(true);
+      setLit(true);  // trigger window glow on the cityscape
+      setStatus({ state: 'sent', message: '' });
+    } catch (err) {
+      setStatus({
+        state: 'error',
+        message: err.message || 'Could not send your brief right now.',
+      });
+    }
   };
 
   // ── Render ───────────────────────────────────────────────────────────────
@@ -241,12 +267,22 @@ const CityscapeContact = () => {
                   <textarea
                     placeholder="Describe what you want to build..."
                     rows={4}
+                    required
                     value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                   />
                 </div>
-                <button type="submit" className="cc-submit-btn">
-                  <span className="cc-submit-text">Submit Brief</span>
+                {status.state === 'error' && (
+                  <p className="cc-form-error" role="alert">{status.message}</p>
+                )}
+                <button
+                  type="submit"
+                  className="cc-submit-btn"
+                  disabled={status.state === 'sending'}
+                >
+                  <span className="cc-submit-text">
+                    {status.state === 'sending' ? 'Sending' : 'Submit Brief'}
+                  </span>
                   <span className="cc-submit-arrow">→</span>
                 </button>
               </form>

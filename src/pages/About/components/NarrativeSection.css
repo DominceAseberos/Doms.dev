@@ -177,8 +177,8 @@ html[data-theme='light'] .ns-section-label {
 .ns-hero-bio {
     max-width: 46ch;
     margin: 0;
-    font-size: 0.9rem;
-    line-height: 1.7;
+    font-size: clamp(1.05rem, 0.98rem + 0.22vw, 1.22rem);
+    line-height: 1.75;
 }
 
 /* Badges */

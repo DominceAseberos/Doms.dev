@@ -624,6 +624,13 @@
   box-shadow: 0 6px 20px rgba(168, 255, 62, 0.35);
 }
 
+.cc-submit-btn:disabled {
+  cursor: wait;
+  opacity: 0.68;
+  transform: none;
+  box-shadow: none;
+}
+
 .cc-submit-btn:active {
   transform: translateY(0);
 }
@@ -634,6 +641,16 @@
 
 .cc-submit-btn:hover .cc-submit-arrow {
   transform: translateX(4px);
+}
+
+.cc-form-error {
+  max-width: 340px;
+  margin: 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 1px;
+  color: #ff5c5c;
 }
 
 /* Success state */
