@@ -230,7 +230,7 @@
                                 {
                                     "id": "banana-leaf-detector-overview-text",
                                     "type": "text",
-                                    "content": "Banana Leaf Disease Detector is a high-performance machine learning web application built to execute immediate, localized crop diagnostics. To achieve lightweight in-process execution, the system processes plant imagery into a dense 59-dimensional feature fingerprint. This mathematical vector comprises 30 color dimensions (HSV & LAB averages and deviations, plus a 16-bin Hue histogram), 25 texture dimensions (a 4-metric GLCM matrix, an 18-bin Uniform LBP descriptor, 2 HOG summary variables, and Canny edge density), and 4 shape dimensions (area, perimeter, circularity, and aspect ratio). A localized K-Nearest Neighbors (k=5) classifier uses this vector for real-time predictions, supported by a closed-loop active learning system that retrains the model in under 200ms when feedback is received."
+                                    "content": "Banana Leaf Disease Detector is a machine learning web application designed to help farmers execute immediate, localized crop diagnostics. As the Team Lead and ML Engineer for this 3-person academic project, I managed task delegation, repository versioning, and architected the data pipeline. Because traditional ML algorithms like KNN cannot process raw pixels as easily as modern Deep Learning networks, we built a custom feature extraction engine using OpenCV and Scikit-Image to process plant imagery into a dense 59-dimensional feature fingerprint. A localized K-Nearest Neighbors (k=5) classifier then uses this vector for real-time predictions, allowing highly accurate, lightweight crop analysis without heavy neural networks."
                                 }
                             ]
                         }
@@ -295,11 +295,11 @@
                                     "id": "banana-leaf-detector-decisions",
                                     "type": "list",
                                     "items": [
-                                        "Dynamic Leaf Masking — Leverages green-channel HSV thresholding with strict numerical bounds of [25, 40, 40] to [90, 255, 255] and executes mathematical morph close/open filters using a (7,7) ellipse kernel.",
-                                        "GLCM Quantification — Quantizes raw grayscale pixels into 64 distinct gray levels to extract 4 texture variables (contrast, homogeneity, energy, correlation) at a precise spatial offset distance of 5 pixels and 0 angle.",
-                                        "Uniform LBP Processing — Captures microscopic crop surface lesions via local binary patterns with P=8 sampling points, R=1 radius, and uniform method mapping to compute a structured 18-bin histogram.",
-                                        "Closed-Loop Retraining Thread — When a prediction error is corrected, the 59-dimensional feature vector is cached and committed to Firestore and retrained in-process under 200ms using the locally cached KNN classifier.",
-                                        "Multi-Channel Log Layer — Implements real-time Firestore sockets alongside local logging of offline CSV audit records to prevent agricultural diagnostics data loss."
+                                        "Proprietary Dataset Creation — Bypassed expensive/unavailable datasets by taking manual photos of banana leaves in the field, managing the entire data ingestion pipeline from scratch.",
+                                        "Mitigating Overfitting via Data Augmentation — Built a custom augmentation script (generate_aug.py) to automatically rotate, flip, and scale our limited proprietary dataset, artificially expanding the training size for the KNN model.",
+                                        "Negative Class Implementation — Identified a critical vulnerability where the model classified random objects as diseases (false positives). Solved this by writing a web scraper to gather non-leaf images from Unsplash, successfully teaching the model a \"Background/Negative\" class.",
+                                        "Dynamic Leaf Masking & Feature Extraction — Extracted 59 unique color, texture, and structural features from uploaded crop images on-the-fly using Grey-Level Co-occurrence Matrices (GLCM) and Local Binary Patterns (LBP).",
+                                        "Closed-Loop Retraining Thread — When a prediction error is corrected by users, the feature vector is committed to Firestore and the KNN model is instantly retrained in-process under 200ms."
                                     ]
                                 }
                             ]
