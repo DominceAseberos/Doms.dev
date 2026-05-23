@@ -42,19 +42,19 @@
     "about": {
         "heading": "About",
         "headingAccent": "Me",
-        "intro": "I'm a Full Stack Developer based in the Philippines with a focus on building fast, accessible, and visually refined web products. I work across the full stack — from REST APIs and database design to component architecture and production-grade UI animation.",
+        "intro": "I'm a Full Stack Developer and Computer Science student specializing in building complete applications—from robust REST APIs and databases to responsive frontend interfaces.",
         "blocks": [
             {
                 "title": "How I Work",
-                "body": "I approach every project with a clear separation of concerns — clean backend logic, well-structured frontend architecture, and intentional UI decisions. I write code that's readable, maintainable, and built to scale."
+                "body": "I focus on pragmatic engineering and modern architecture. Whether it's integrating real-time WebSockets, designing offline-first systems, or structuring clean frontend code, I build applications that solve real-world problems."
             },
             {
                 "title": "What Sets Me Apart",
-                "body": "I combine strong engineering fundamentals with a deep understanding of motion and interaction design. This means I can own a feature end-to-end — from API design to the final pixel — without handing off between disciplines."
+                "body": "My background spans web, mobile, and machine learning development. I don't just build UIs; I integrate predictive ML models, handle backend logic with FastAPI and Node.js, and deploy across platforms using Flutter and modern web frameworks."
             },
             {
                 "title": "Outside of Work",
-                "body": "I stay sharp through consistent learning, competitive gaming, and following developments in AI tooling. I believe the best engineers are curious people who never stop building."
+                "body": "I am continually expanding my knowledge of emerging AI tooling, computer vision, and cloud platforms. I believe the best developers are lifelong learners who actively build and experiment."
             }
         ],
         "location": "Tagum City, Philippines · Open to Remote",

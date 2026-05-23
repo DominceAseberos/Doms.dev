@@ -298,10 +298,14 @@ html[data-theme='light'] .ns-section-label {
 }
 
 .ns-body-lg {
-    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
     line-height: 1.7;
     max-width: 56ch;
     margin: 0 0 2rem;
+}
+
+.ns-about-block .ui-body-copy {
+    font-size: clamp(0.95rem, 1.3vw, 1.15rem);
 }
 
 .ns-about-blocks {
