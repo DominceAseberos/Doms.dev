@@ -16,15 +16,9 @@
     "hero": {
         "location": "📍 Tagum City, Philippines",
         "fullName": "Domince\nAseberos",
-        "role": "Full Stack Developer  ·  Motion & UI Engineer",
+        "role": "Full Stack Developer",
         "bio": "I design and build production-grade web applications with a focus on performance, interaction quality, and scalable architecture. Available for freelance and full-time roles.",
-        "badges": [
-            "React",
-            "Next.js",
-            "TypeScript",
-            "Node.js",
-            "GSAP"
-        ],
+        "badges": [],
         "githubUrl": "https://github.com/DominceAseberos",
         "linkedinUrl": "https://www.linkedin.com/in/domincee/",
         "metrics": [
@@ -34,14 +28,14 @@
                 "label": "Target Render"
             },
             {
-                "value": "10+",
-                "unit": "",
+                "value": "4",
+                "unit": "+",
                 "label": "Projects Shipped"
             },
             {
-                "value": "1+",
-                "unit": "yr",
-                "label": "Industry Exp."
+                "value": "3",
+                "unit": "+",
+                "label": "Years Coding"
             }
         ]
     },
