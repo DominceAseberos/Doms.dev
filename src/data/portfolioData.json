@@ -9,7 +9,7 @@
             "id": "project-vayora",
             "title": "VAYORA",
             "shortDescription": "A bespoke luxury travel curation platform built with React 18 and Framer Motion, featuring immersive micro-interactions and an elegant design system.",
-            "projectType": "WEB APPLICATION",
+            "projectType": "LANDING PAGE",
             "dateCreated": "2026-01-14",
             "liveUrl": "https://vayora.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/Vayora",
@@ -94,7 +94,13 @@
                                 {
                                     "id": "vayora-stack",
                                     "type": "chips",
-                                    "items": ["React 18", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui (Radix)"]
+                                    "items": [
+                                        "React 18",
+                                        "TypeScript",
+                                        "Vite",
+                                        "Tailwind CSS",
+                                        "shadcn/ui (Radix)"
+                                    ]
                                 },
                                 {
                                     "id": "vayora-anim",
@@ -104,7 +110,12 @@
                                 {
                                     "id": "vayora-anim-chips",
                                     "type": "chips",
-                                    "items": ["Framer Motion", "Embla Carousel", "Vaul (Drawers)", "Sonner (Toasts)"]
+                                    "items": [
+                                        "Framer Motion",
+                                        "Embla Carousel",
+                                        "Vaul (Drawers)",
+                                        "Sonner (Toasts)"
+                                    ]
                                 }
                             ]
                         },
@@ -137,7 +148,14 @@
                                 {
                                     "id": "vayora-palette",
                                     "type": "color-palette",
-                                    "colors": ["#FAF6EF", "#1E2A38", "#FFFFFF", "#B8943F", "#C6735A", "#A9998A"]
+                                    "colors": [
+                                        "#FAF6EF",
+                                        "#1E2A38",
+                                        "#FFFFFF",
+                                        "#B8943F",
+                                        "#C6735A",
+                                        "#A9998A"
+                                    ]
                                 },
                                 {
                                     "id": "vayora-color-notes",
