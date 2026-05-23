@@ -199,20 +199,26 @@ html[data-theme='light'] .ns-section-label {
 .ns-hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     align-items: center;
-    margin-top: 0.25rem;
+    margin-top: 0.35rem;
 }
 
 .ns-btn {
-    font-size: 0.72rem !important;
-    padding: 0.6rem 1.1rem !important;
+    font-size: clamp(0.82rem, 0.78rem + 0.12vw, 0.95rem) !important;
+    padding: 0.78rem 1.35rem !important;
     border-radius: 4px;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 9px;
     line-height: 1;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
+    min-height: 44px;
+}
+
+.ns-btn svg {
+    width: 1.15em;
+    height: 1.15em;
 }
 
 .ns-btn-icon {
@@ -263,7 +269,7 @@ html[data-theme='light'] .ns-section-label {
 
 .ns-metric-lbl {
     font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
+    font-size: clamp(0.68rem, 0.64rem + 0.1vw, 0.78rem);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--ns-metric-lbl);
