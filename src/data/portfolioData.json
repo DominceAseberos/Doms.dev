@@ -11,7 +11,7 @@
             "shortDescription": "A bespoke luxury travel curation platform built with React 18 and Framer Motion, featuring immersive micro-interactions and an elegant design system.",
             "projectType": "WEB APPLICATION",
             "dateCreated": "2026-01-14",
-            "liveUrl": "",
+            "liveUrl": "https://vayora.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/Vayora",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-vayora/imgs/desktop.webp",
