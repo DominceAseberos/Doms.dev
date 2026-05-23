@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { FiX, FiExternalLink } from 'react-icons/fi';
+import { FiX, FiExternalLink, FiCopy, FiCheck } from 'react-icons/fi';
 import useThemeStore from '../../../store/useThemeStore';
 
 /**
@@ -26,6 +26,17 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
     const [markdownContent, setMarkdownContent] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isCopied, setIsCopied] = useState(false);
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(markdownContent);
+            setIsCopied(true);
+            setTimeout(() => setIsCopied(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    };
 
     useEffect(() => {
         if (!isOpen || !githubUrl) return;
@@ -34,6 +45,7 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
         setIsLoading(true);
         setError(null);
         setMarkdownContent('');
+        setIsCopied(false);
 
         const fetchMarkdown = async () => {
             try {
@@ -119,6 +131,23 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
                         >
                             <FiExternalLink size={14} />
                         </a>
+                        {!isLoading && !error && (
+                            <button
+                                type="button"
+                                onClick={handleCopy}
+                                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full border transition-all ${
+                                    isCopied 
+                                        ? 'bg-green-500/10 text-green-500 border-green-500/20' 
+                                        : isLight 
+                                            ? 'border-black/10 hover:bg-black/5 opacity-70 hover:opacity-100' 
+                                            : 'border-white/10 hover:bg-white/5 opacity-70 hover:opacity-100'
+                                }`}
+                                title="Copy to clipboard"
+                            >
+                                {isCopied ? <FiCheck size={12} /> : <FiCopy size={12} />}
+                                <span>{isCopied ? 'Copied!' : 'Copy Skills'}</span>
+                            </button>
+                        )}
                     </div>
                     <button 
                         type="button"
