@@ -210,7 +210,7 @@ const ProjectTemplate = ({
                     <div className="flex justify-between items-center w-full mb-12">
                         <Link to={isAdminPreview ? "/admin/projects" : "/projects"} className="cs-top-link cs-top-link--ghost flex items-center gap-2">
                             <FiArrowLeft size={16} />
-                            <span>{isAdminPreview ? "Dashboard" : "Archive"}</span>
+                            <span>{isAdminPreview ? "Dashboard" : "Back"}</span>
                         </Link>
                         
                         <div className="flex items-center gap-4">
@@ -222,7 +222,12 @@ const ProjectTemplate = ({
                                 className="cs-top-link cs-top-link--ghost flex items-center gap-2"
                                 onClick={e => isAdminPreview && e.preventDefault()}
                             >
-                                <span>{project.primaryBtnLabel || 'View Details'}</span>
+                                <span>
+                                    {project.primaryBtnLabel || 
+                                     (project.projectType === 'LANDING PAGE' ? 'SKILLS' : 
+                                      project.projectType === 'CASE STUDY' ? 'DOCX' : 
+                                      'VIEW DETAILS')}
+                                </span>
                             </a>
 
                             {/* Secondary Button */}
