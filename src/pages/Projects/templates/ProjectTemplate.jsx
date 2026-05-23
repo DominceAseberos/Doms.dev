@@ -503,14 +503,14 @@ const ProjectTemplate = ({
                         </button>
                     </div>
                 )}
-
-                <MarkdownViewerModal 
-                    isOpen={isMarkdownModalOpen} 
-                    onClose={() => setIsMarkdownModalOpen(false)} 
-                    githubUrl={markdownUrl}
-                    title={project.primaryBtnLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation')}
-                />
             </main>
+            
+            <MarkdownViewerModal 
+                isOpen={isMarkdownModalOpen} 
+                onClose={() => setIsMarkdownModalOpen(false)} 
+                githubUrl={markdownUrl}
+                title={project.primaryBtnLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation')}
+            />
         </div>
     );
 };
