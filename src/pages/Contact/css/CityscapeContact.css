@@ -463,12 +463,12 @@
   display: flex;
   align-items: stretch;
   width: 100%;
-  max-width: 920px;
+  max-width: 1080px;
   background: var(--cc-card-bg);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--cc-border);
-  min-height: 480px;
+  min-height: 560px;
   /* entry state */
   opacity: 0;
   transform: translateY(28px) scale(0.97);
@@ -484,12 +484,12 @@
 
 /* Left column */
 .cc-form-left {
-  flex: 0 0 46%;
-  padding: 44px 40px;
+  flex: 0 0 50%;
+  padding: 60px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 24px;
   /* staggered entry */
   opacity: 0;
   transform: translateX(-20px);
@@ -503,7 +503,7 @@
 
 /* Tag chip */
 .cc-form-tag {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 3px;
   color: var(--cc-lime);
@@ -522,7 +522,7 @@
 /* Title */
 .cc-form-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(32px, 4vw, 54px);
+  font-size: clamp(42px, 5vw, 68px);
   font-weight: 400;
   line-height: 0.85;
   letter-spacing: -0.5px;
@@ -537,7 +537,7 @@
 
 /* Sub */
 .cc-form-sub {
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 2px;
   color: var(--cc-sub);
   text-transform: uppercase;
@@ -563,7 +563,7 @@
 }
 
 .cc-field label {
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 2.5px;
   font-weight: 500;
   color: var(--cc-sub);
@@ -575,9 +575,9 @@
   background: var(--cc-input-bg);
   border: 1px solid var(--cc-border);
   border-radius: 3px;
-  padding: 10px 12px;
+  padding: 14px 16px;
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 14px;
   color: var(--cc-input-text);
   outline: none;
   resize: none;
@@ -603,9 +603,9 @@
   color: var(--on-accent);
   border: none;
   border-radius: 4px;
-  padding: 14px 32px;
+  padding: 16px 36px;
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -647,7 +647,7 @@
   max-width: 340px;
   margin: 0;
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
   letter-spacing: 1px;
   color: #ff5c5c;
