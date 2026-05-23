@@ -11,6 +11,7 @@ import EducationSection from './EducationSection';
 import GithubContributionSection from './GithubContributionSection';
 import FeedSection from './FeedSection';
 import CityscapeContact from '../../Contact/components/CityscapeContact';
+import ResumeViewerModal from './ResumeViewerModal';
 import humanPortrait from '../../../assets/human-cutout.png';
 import animePortrait from '../../../assets/anime-cutout.png';
 import useLoadingStore from '../../../store/useLoadingStore';
@@ -139,6 +140,8 @@ const NarrativeSection = forwardRef((props, ref) => {
         if (el && !stripesRef.current.includes(el)) stripesRef.current.push(el);
     };
 
+    const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+
     // ── Destructure with safe fallbacks ───────────────────────────────────
     const hero       = data.hero       || {};
     const about      = data.about      || {};
@@ -186,9 +189,12 @@ const NarrativeSection = forwardRef((props, ref) => {
 
                         <div className="ns-hero-actions">
                             {data.resume && (
-                                <a href={data.resume} download className="btn-primary ns-btn">
-                                    Download CV
-                                </a>
+                                <button 
+                                    onClick={(e) => { e.preventDefault(); setIsResumeModalOpen(true); }}
+                                    className="btn-primary ns-btn"
+                                >
+                                    View CV
+                                </button>
                             )}
                             {hero.githubUrl && (
                                 <a href={hero.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost ns-btn ns-btn-icon">
@@ -424,6 +430,12 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <p className="ns-footer-copy">© {new Date().getFullYear()} Domince Aseberos · Tagum City, Philippines</p>
                 </div>
             </footer>
+
+            <ResumeViewerModal 
+                isOpen={isResumeModalOpen} 
+                onClose={() => setIsResumeModalOpen(false)} 
+                resumeUrl={data.resume} 
+            />
         </div>
     );
 });
