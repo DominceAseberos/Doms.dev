@@ -6,6 +6,181 @@
     ],
     "projects": [
         {
+            "id": "project-vayora",
+            "title": "VAYORA",
+            "shortDescription": "A bespoke luxury travel curation platform built with React 18 and Framer Motion, featuring immersive micro-interactions and an elegant design system.",
+            "projectType": "WEB APPLICATION",
+            "dateCreated": "2026-01-14",
+            "liveUrl": "",
+            "githubUrl": "https://github.com/DominceAseberos/Vayora",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-vayora/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-vayora/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-vayora/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-vayora/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-vayora/imgs/desktop-2.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-3.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-4.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-5.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-6.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-7.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-8.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-9.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-10.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-11.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-vayora/imgs/tablet-2.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-3.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-4.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-5.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-6.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-7.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-8.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-9.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-10.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-11.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-vayora/imgs/mobile-2.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-3.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-4.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-5.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-6.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-7.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-8.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-9.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-10.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-11.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-vayora/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-vayora/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-vayora/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "vayora-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "vayora-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "vayora-overview-text",
+                                    "type": "text",
+                                    "content": "Vayora is an exclusive travel curation application focusing on luxury itineraries and high-end concierge services. Drawing inspiration from platforms like Airbnb Luxe and Black Tomato, the architecture leverages a modern React/Vite stack with highly optimized UI primitives (Radix UI) to deliver a seamless, premium web experience without compromising on performance."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "vayora-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "vayora-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "vayora-stack",
+                                    "type": "chips",
+                                    "items": ["React 18", "TypeScript", "Vite", "Tailwind CSS", "shadcn/ui (Radix)"]
+                                },
+                                {
+                                    "id": "vayora-anim",
+                                    "type": "heading",
+                                    "content": "Interaction Libraries"
+                                },
+                                {
+                                    "id": "vayora-anim-chips",
+                                    "type": "chips",
+                                    "items": ["Framer Motion", "Embla Carousel", "Vaul (Drawers)", "Sonner (Toasts)"]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "vayora-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "vayora-decisions",
+                                    "type": "list",
+                                    "items": [
+                                        "Component Primitives — Integrated Radix UI via shadcn/ui to ensure fully accessible, unstyled core components that were subsequently themed with the bespoke Vayora design system.",
+                                        "Fluid Animations — Implemented Framer Motion and tailwindcss-animate to orchestrate smooth entrance reveals ('Fade In Up'), continuous 'Ticker' scroll galleries, and hardware-accelerated drawer transitions.",
+                                        "Strict Typings — Enforced full strict-mode TypeScript across all React components and data interfaces to guarantee runtime safety during itinerary rendering."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "vayora-design",
+                    "sectionTitle": "Design System",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "vayora-colors",
+                            "columnTitle": "Color Palette",
+                            "blocks": [
+                                {
+                                    "id": "vayora-palette",
+                                    "type": "color-palette",
+                                    "colors": ["#FAF6EF", "#1E2A38", "#FFFFFF", "#B8943F", "#C6735A", "#A9998A"]
+                                },
+                                {
+                                    "id": "vayora-color-notes",
+                                    "type": "list",
+                                    "items": [
+                                        "#FAF6EF — Ivory Sand (Warm primary background)",
+                                        "#1E2A38 — Deep Slate (High contrast foreground)",
+                                        "#B8943F — Horizon Gold (Primary interactive accent)",
+                                        "#C6735A — Terracotta Blush (Warm highlights)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "vayora-typography",
+                            "columnTitle": "Typography",
+                            "blocks": [
+                                {
+                                    "id": "vayora-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Libre Baskerville",
+                                            "family": "'Libre Baskerville', serif",
+                                            "role": "Elegant, commanding display headings (H1-H6)"
+                                        },
+                                        {
+                                            "name": "Jost",
+                                            "family": "'Jost', sans-serif",
+                                            "role": "Clean and modern UI elements and navigation"
+                                        },
+                                        {
+                                            "name": "Lora",
+                                            "family": "'Lora', serif",
+                                            "role": "Premium, editorial body copy"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "project-banana-leaf-detector",
             "title": "BANANA LEAF DETECTOR",
             "shortDescription": "A premium Flask web application featuring active learning and computer vision to detect banana leaf diseases in real-time with instant local model retraining based on user feedback.",
