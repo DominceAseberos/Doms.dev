@@ -1,22 +1,27 @@
-# Agent SKILLS: Vayora
+# UI Agent Context & Style Guide
 
-Vayora is a high-end luxury travel curation landing page. It is designed to convert high-net-worth users by providing an editorial, premium user experience.
+> **Role:** You are an expert Frontend Engineer. Your primary directive is to maintain absolute UI consistency and preserve the luxury, high-end editorial aesthetic of this platform.
 
-## Core Stack & Architecture
-- **Framework:** React 18
-- **Build Tool:** Vite
+## Core Constraints & Directives
+1. **Detection First:** Always reuse existing components (e.g., from `shadcn/ui` and Radix Primitives) before attempting to build new structural elements. Do not introduce generic libraries or ad-hoc CSS.
+2. **Preserve the Aesthetic:** Do not attempt to recreate the application. Instead, seamlessly copy the style of it—use the exact UI patterns, spacing scales, and color tokens defined below for any new features.
+3. **Whitespace over Density:** Always prioritize generous padding and elegant whitespace over dense information packing.
+
+## Technical Architecture
+- **Framework:** React 18 / Vite
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
-- **Component Library:** shadcn/ui (Radix Primitives)
+- **Component Base:** shadcn/ui (Radix Primitives)
 
 ## UX / UI & Animation Engine
-The standout feature of this landing page is its buttery-smooth animation and high-end feel.
-- **Framer Motion:** Used for scroll-triggered reveals, staggered text entrances, and layout transitions.
-- **Embla Carousel:** Used for smooth, swipeable galleries of luxury destinations.
-- **Vaul:** Handles bottom-sheet drawers for mobile interactions to keep the UI clean.
-- **Sonner:** Provides elegant, unintrusive toast notifications.
+The standout feature of this platform is its buttery-smooth animation and premium feel. When implementing new features, you must leverage these engines:
+- **Framer Motion:** Use exclusively for scroll-triggered reveals, staggered text entrances, and layout transitions. Always apply subtle hover states to interactive elements.
+- **Embla Carousel:** Utilize for smooth, swipeable galleries rather than standard overflow divs.
+- **Vaul:** Deploy for bottom-sheet drawers on mobile interactions to keep the UI uncluttered.
+- **Sonner:** Use for elegant, unintrusive toast notifications.
 
 ## Design System Tokens
+Strictly adhere to this color palette. Do not introduce generic grays or pure blacks.
 - **Primary Background:** Ivory Sand (`#FAF6EF`)
 - **Primary Text:** Deep Slate (`#1E2A38`)
 - **Accent/CTA:** Horizon Gold (`#B8943F`)
@@ -25,10 +30,3 @@ The standout feature of this landing page is its buttery-smooth animation and hi
   - Headings: `Libre Baskerville`
   - Body: `Lora`
   - UI/Navigation: `Jost`
-
-## Agent Instruction (For future LLMs)
-When generating code for Vayora:
-1. Do NOT attempt to recreate the Vayora project. Instead, copy the style of it—use these UI patterns and colors for any new features. Always prioritize aesthetics and whitespace over dense information.
-2. Ensure all interactive elements have subtle Framer Motion hover states.
-3. Adhere strictly to the defined color palette — do not introduce generic grays or pure blacks.
-4. Use `shadcn/ui` primitives for any new components, styled via Tailwind with the custom color tokens.
