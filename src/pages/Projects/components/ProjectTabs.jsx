@@ -70,9 +70,9 @@ const PROJECT_THEMES = {
 };
 
 const dynamicCategories = Array.from(new Set([
-    ...(portfolioData.customCategories || []),
+    ...(portfolioData.categories || []),
     ...portfolioData.projects.map(p => p.projectType)
-])).filter(Boolean);
+].filter(Boolean).map(cat => cat.toUpperCase())));
 
 const FILTERS = [
     { id: 'all', label: 'All Projects' },
@@ -174,8 +174,8 @@ const ProjectTabs = ({ onView }) => {
     const filteredProjects = useMemo(() => {
         if (activeFilter === 'all') return projects;
         return projects.filter((project) =>
-            project.projectType === activeFilter ||
-            project.categories?.includes(activeFilter)
+            (project.projectType || '').toUpperCase() === activeFilter ||
+            (project.categories || []).some(cat => cat.toUpperCase() === activeFilter)
         );
     }, [activeFilter]);
 
