@@ -165,7 +165,7 @@ const ProfileTab = () => {
                     <Field label="Location Badge"><input value={hero.location||''} onChange={e=>setHero({location:e.target.value})} className={inputCls} placeholder="📍 Davao, Philippines" /></Field>
                     <Field label="GitHub URL"><input value={hero.githubUrl||''} onChange={e=>setHero({githubUrl:e.target.value})} className={inputCls} /></Field>
                     <Field label="LinkedIn URL"><input value={hero.linkedinUrl||''} onChange={e=>setHero({linkedinUrl:e.target.value})} className={inputCls} /></Field>
-                    <Field label="Resume URL / Path"><input value={d.resume||''} onChange={e=>update({resume:e.target.value})} className={inputCls} placeholder="/resume.pdf" /></Field>
+                    <Field label="CV URL / Path"><input value={d.resume||''} onChange={e=>update({resume:e.target.value})} className={inputCls} placeholder="/cv.pdf" /></Field>
                     <Field label="Bio" className="md:col-span-2"><textarea value={hero.bio||''} onChange={e=>setHero({bio:e.target.value})} rows={3} className={textareaCls} /></Field>
                     <Field label="Badges" className="md:col-span-2">
                         <TagInput items={hero.badges||[]} onChange={v=>setHero({badges:v})} placeholder="Add badge..." />

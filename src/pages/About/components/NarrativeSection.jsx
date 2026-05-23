@@ -187,7 +187,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         <div className="ns-hero-actions">
                             {data.resume && (
                                 <a href={data.resume} download className="btn-primary ns-btn">
-                                    Download Resume
+                                    Download CV
                                 </a>
                             )}
                             {hero.githubUrl && (
