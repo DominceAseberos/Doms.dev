@@ -59,6 +59,7 @@
           "id": "kernel-overview",
           "sectionTitle": "Overview",
           "layout": "full",
+          "width": "full",
           "columns": [
             {
               "id": "kernel-overview-col",
@@ -67,6 +68,7 @@
                 {
                   "id": "kernel-overview-text",
                   "type": "text",
+                  "fontSize": "xl",
                   "content": "KERNEL is a sophisticated React-based framework designed for immersive, scroll-driven storytelling. It blends a 'Terminal-Glass' aesthetic with elite performance, serving as the core engine for high-end digital experiences."
                 }
               ]
@@ -75,37 +77,52 @@
         },
         {
           "id": "kernel-architecture",
-          "sectionTitle": "Motion Architecture",
-          "layout": "split",
+          "sectionTitle": "Architecture",
+          "layout": "2-equal",
           "columns": [
             {
               "id": "kernel-arch-left",
-              "columnTitle": "GSAP & Lenis",
+              "columnTitle": "Tech Stack",
               "blocks": [
                 {
-                  "id": "kernel-arch-1",
-                  "type": "text",
-                  "content": "Engineered around GSAP's ScrollTrigger plugin for hardware-accelerated scroll sequences, tightly synchronized with the Lenis smooth-scrolling engine for deterministic interpolation."
+                  "id": "kernel-stack",
+                  "type": "chips",
+                  "items": [
+                    "React 19",
+                    "TypeScript",
+                    "Vite 6",
+                    "Tailwind CSS 4"
+                  ]
                 },
                 {
-                  "id": "kernel-arch-chips",
+                  "id": "kernel-anim",
+                  "type": "heading",
+                  "content": "Motion Engine"
+                },
+                {
+                  "id": "kernel-anim-chips",
                   "type": "chips",
                   "items": [
                     "GSAP 3.14",
                     "Lenis",
-                    "ScrollTrigger"
+                    "Framer Motion",
+                    "SplitType"
                   ]
                 }
               ]
             },
             {
               "id": "kernel-arch-right",
-              "columnTitle": "Viewport Overrides",
+              "columnTitle": "Engineering Decisions",
               "blocks": [
                 {
-                  "id": "kernel-arch-2",
-                  "type": "text",
-                  "content": "A critical viewport override was implemented—enforcing overflow-x: hidden strictly on the <html> tag—to prevent positioning recalculation errors and broken layouts during complex fixed-pinning phases in Safari and iOS."
+                  "id": "kernel-decisions",
+                  "type": "list",
+                  "items": [
+                    "GSAP Viewport Pining — A critical viewport override was implemented—enforcing overflow-x: hidden strictly on the <html> tag—to prevent positioning recalculation errors and broken layouts during complex fixed-pinning phases.",
+                    "Lenis Integration — Synchronized native GSAP scroll triggers with Lenis to ensure ultra-smooth, deterministic hardware-accelerated interpolation.",
+                    "Audio-Active Sensory Loop — Implemented real-time synchronization between the user's scroll velocity and ambient acoustic humming for deep immersion."
+                  ]
                 }
               ]
             }
@@ -113,62 +130,60 @@
         },
         {
           "id": "kernel-design",
-          "sectionTitle": "Prism & Glass System",
-          "layout": "split",
+          "sectionTitle": "Design System",
+          "layout": "2-equal",
           "columns": [
             {
-              "id": "kernel-design-left",
-              "columnTitle": "Tokens & Typography",
+              "id": "kernel-colors",
+              "columnTitle": "Color Palette",
               "blocks": [
                 {
-                  "id": "kernel-design-1",
+                  "id": "kernel-palette",
+                  "type": "color-palette",
+                  "colors": [
+                    "#0a0f1a",
+                    "#00ffcc",
+                    "#ffffff",
+                    "rgba(0, 255, 204, 0.2)"
+                  ]
+                },
+                {
+                  "id": "kernel-color-notes",
                   "type": "list",
                   "items": [
-                    "Palette: Neon Cyan (#00ffcc) highlighting a Void Navy (#0a0f1a) canvas.",
-                    "Grid: 40px underlying geometric layout built via raw CSS linear-gradients.",
-                    "Serif: Playfair Display for editorial narrative and high-fashion contrast.",
-                    "Mono: JetBrains Mono exclusively for system logs and data components."
+                    "#0a0f1a — Void Navy (Deep atmospheric canvas)",
+                    "#00ffcc — Neon Cyan (Primary interactive pulse)",
+                    "rgba(0,255,204,0.2) — Translucent Accent (Glass layers)"
                   ]
                 }
               ]
             },
             {
-              "id": "kernel-design-right",
-              "columnTitle": "Visual Hierarchy",
+              "id": "kernel-typography",
+              "columnTitle": "Typography & Grid",
               "blocks": [
                 {
-                  "id": "kernel-design-2",
-                  "type": "text",
-                  "content": "Atmospheric Contrast defines the visual language. High-frequency neon light punches through a deep void, while semi-transparent rgba(0, 255, 204, 0.2) containers establish glassmorphic depth without muddying the foundational blueprint grid."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "kernel-features",
-          "sectionTitle": "Core Modules",
-          "layout": "split",
-          "columns": [
-            {
-              "id": "kernel-feat-left",
-              "columnTitle": "Terminal Boot Sequence",
-              "blocks": [
+                  "id": "kernel-fonts",
+                  "type": "font-preview",
+                  "fonts": [
+                    {
+                      "name": "Playfair Display",
+                      "family": "'Playfair Display', serif",
+                      "role": "High-fashion editorial narrative and display headers"
+                    },
+                    {
+                      "name": "JetBrains Mono",
+                      "family": "'JetBrains Mono', monospace",
+                      "role": "System logs, data UI elements, and technical diagnostics"
+                    }
+                  ]
+                },
                 {
-                  "id": "kernel-feat-1",
-                  "type": "text",
-                  "content": "The experience initiates with a KERNEL_OS v2.1 terminal boot-sequence. This preloader masks asset hydration while instantly establishing the highly technical narrative tone."
-                }
-              ]
-            },
-            {
-              "id": "kernel-feat-right",
-              "columnTitle": "Sensory Interactions",
-              "blocks": [
-                {
-                  "id": "kernel-feat-2",
-                  "type": "text",
-                  "content": "Features a multi-layered custom cursor built to provide tactile feedback against data nodes, supplemented by an Audio-Active UI that synchronizes ambient acoustic humming directly with the user's scroll velocity."
+                  "id": "kernel-grid",
+                  "type": "list",
+                  "items": [
+                    "Blueprint Geometry — Relies on a strict 40px background grid generated purely via CSS linear-gradients to maintain the technical schematic aesthetic."
+                  ]
                 }
               ]
             }
