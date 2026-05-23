@@ -121,10 +121,12 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
                         </a>
                     </div>
                     <button 
+                        type="button"
                         onClick={onClose}
-                        className={`p-2 -mr-2 rounded-full transition-colors ${
+                        className={`relative z-10 p-2 -mr-2 rounded-full cursor-pointer transition-colors ${
                             isLight ? 'hover:bg-black/5' : 'hover:bg-white/5'
                         }`}
+                        style={{ pointerEvents: 'auto' }}
                     >
                         <FiX size={20} />
                     </button>

@@ -28,7 +28,7 @@ The standout feature of this landing page is its buttery-smooth animation and hi
 
 ## Agent Instruction (For future LLMs)
 When generating code for Vayora:
-1. Always prioritize aesthetics and whitespace over dense information.
+1. Do NOT attempt to recreate the Vayora project. Instead, copy the style of it—use these UI patterns and colors for any new features. Always prioritize aesthetics and whitespace over dense information.
 2. Ensure all interactive elements have subtle Framer Motion hover states.
 3. Adhere strictly to the defined color palette — do not introduce generic grays or pure blacks.
 4. Use `shadcn/ui` primitives for any new components, styled via Tailwind with the custom color tokens.

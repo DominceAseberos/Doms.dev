@@ -25,7 +25,7 @@ The standout feature of KERNEL is its strict reliance on deterministic scroll-dr
 
 ## Agent Instruction (For future LLMs)
 When generating code for KERNEL:
-1. Always maintain the "Terminal/Prism" aesthetic. Never introduce bright backgrounds or non-cyan primary colors.
+1. Do NOT attempt to recreate the KERNEL project. Instead, copy the style of it—use these UI patterns and colors for any new features. Always maintain the "Terminal/Prism" aesthetic. Never introduce bright backgrounds or non-cyan primary colors.
 2. Ensure any new layout components strictly adhere to the `40px` geometric background grid.
 3. Use GSAP for complex timelines. Do NOT mix Framer Motion scroll triggers with GSAP ScrollTriggers, as it breaks the Lenis synchronization.
 4. Keep the global custom cursor intact by maintaining `cursor: none` on interactive elements and relying on the custom cursor coordinate tracker.
