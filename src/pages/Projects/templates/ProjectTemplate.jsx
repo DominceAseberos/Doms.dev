@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiMonitor, FiTablet, FiSmartphone, FiArrowLeft, FiLink2 } from 'react-icons/fi';
+import { FiMonitor, FiTablet, FiSmartphone, FiArrowLeft, FiLink2, FiCode, FiExternalLink, FiGithub } from 'react-icons/fi';
 import ParticleBackground from '../../../components/ParticleBackground';
 import NavBar from '../../../components/NavBar';
 import useThemeStore from '../../../store/useThemeStore';
@@ -213,7 +213,7 @@ const ProjectTemplate = ({
                     <div className="flex justify-between items-center w-full mb-12">
                         <Link to={isAdminPreview ? "/admin/projects" : "/projects"} className="cs-top-link cs-top-link--ghost flex items-center gap-2">
                             <FiArrowLeft size={16} />
-                            <span>{isAdminPreview ? "Dashboard" : "Back"}</span>
+                            <span className="hidden md:inline">{isAdminPreview ? "Dashboard" : "Back"}</span>
                         </Link>
                         
                         <div className="flex items-center gap-4">
@@ -236,7 +236,8 @@ const ProjectTemplate = ({
                                         }
                                     }}
                                 >
-                                    <span>
+                                    <FiCode size={16} />
+                                    <span className="hidden md:inline">
                                         {project.primaryBtnLabel || 
                                          (project.projectType === 'LANDING PAGE' ? 'SKILLS' : 
                                           project.projectType === 'CASE STUDY' ? 'DOCX' : 
@@ -254,7 +255,8 @@ const ProjectTemplate = ({
                                     className="cs-top-link flex items-center gap-2"
                                     onClick={e => isAdminPreview && e.preventDefault()}
                                 >
-                                    <span>{project.secondaryBtnLabel || 'Live View'}</span>
+                                    <FiExternalLink size={16} />
+                                    <span className="hidden md:inline">{project.secondaryBtnLabel || 'Live View'}</span>
                                 </a>
                             )}
 
@@ -267,7 +269,8 @@ const ProjectTemplate = ({
                                     className="cs-top-link cs-top-link--ghost flex items-center gap-2"
                                     onClick={e => isAdminPreview && e.preventDefault()}
                                 >
-                                    <span>{project.githubBtnLabel || 'GitHub'}</span>
+                                    <FiGithub size={16} />
+                                    <span className="hidden md:inline">{project.githubBtnLabel || 'GitHub'}</span>
                                 </a>
                             )}
                         </div>

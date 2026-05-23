@@ -781,6 +781,11 @@ video.cs-media-thumb {
         padding: 9px 12px;
     }
 
+    .cs-chip {
+        font-size: 9px;
+        padding: 4px 10px;
+    }
+
     .cs-landing-tools,
     .cs-system-dynamic,
     .cs-assets-list,
