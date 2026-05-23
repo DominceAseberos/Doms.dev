@@ -33,7 +33,7 @@
     --soft-text: rgba(255, 255, 255, 0.82);
     --muted-text: rgba(255, 255, 255, 0.74);
     --surface: rgba(255, 255, 255, 0.04);
-    --nav-scrolled-bg: rgba(5, 8, 20, 0.16);
+    --nav-scrolled-bg: rgba(5, 8, 20, 0.65);
     --nav-scrolled-border: rgba(255, 255, 255, 0.05);
     --title-outline: rgba(242, 240, 237, 0.4);
     --cursor-hover: url('./assets/cursor-hover.svg');

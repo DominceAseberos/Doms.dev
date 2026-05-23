@@ -417,7 +417,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         {hero.linkedinUrl && (
                             <a href={hero.linkedinUrl} target="_blank" rel="noopener noreferrer" className="ns-footer-link">LinkedIn</a>
                         )}
-                        {socials.filter(s => s.href && s.label !== 'EMAIL').slice(0, 3).map(s => (
+                        {socials.filter(s => s.href && !['EMAIL', 'FACEBOOK', 'INSTAGRAM', 'LINKEDIN'].includes(s.label.toUpperCase()) && !s.href.match(/facebook\.com$|instagram\.com$/)).slice(0, 3).map(s => (
                             <a key={s.label} href={s.href} target={s.external ? '_blank' : '_self'} rel="noopener noreferrer" className="ns-footer-link">{s.label}</a>
                         ))}
                     </nav>
