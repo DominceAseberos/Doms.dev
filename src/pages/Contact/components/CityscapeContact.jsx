@@ -248,7 +248,7 @@ const CityscapeContact = () => {
               Let's Build<br />
               <span className="cc-form-title-accent">&amp;</span> Launch
             </h2>
-            <p className="cc-form-sub">· Tell us about your project ·</p>
+            <p className="cc-form-sub">· PROJECT INQUIRY ·</p>
 
             {!submitted ? (
               <form className="cc-build-form" onSubmit={handleSubmit}>
