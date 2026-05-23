@@ -57,32 +57,118 @@
       "contentSections": [
         {
           "id": "kernel-overview",
-          "sectionTitle": "Architecture & Specs",
+          "sectionTitle": "Overview",
+          "layout": "full",
+          "columns": [
+            {
+              "id": "kernel-overview-col",
+              "columnTitle": "",
+              "blocks": [
+                {
+                  "id": "kernel-overview-text",
+                  "type": "text",
+                  "content": "KERNEL is a sophisticated React-based framework designed for immersive, scroll-driven storytelling. It blends a 'Terminal-Glass' aesthetic with elite performance, serving as the core engine for high-end digital experiences."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "kernel-architecture",
+          "sectionTitle": "Motion Architecture",
           "layout": "split",
           "columns": [
             {
               "id": "kernel-arch-left",
-              "columnTitle": "Core Mechanics",
+              "columnTitle": "GSAP & Lenis",
               "blocks": [
                 {
                   "id": "kernel-arch-1",
                   "type": "text",
-                  "content": "Engineered around GSAP's ScrollTrigger plugin for hardware-accelerated scroll sequences. A critical viewport override (enforcing overflow-x: hidden strictly on the <html> tag) was implemented to prevent positioning recalculation errors during fixed pinning phases."
+                  "content": "Engineered around GSAP's ScrollTrigger plugin for hardware-accelerated scroll sequences, tightly synchronized with the Lenis smooth-scrolling engine for deterministic interpolation."
+                },
+                {
+                  "id": "kernel-arch-chips",
+                  "type": "chips",
+                  "items": [
+                    "GSAP 3.14",
+                    "Lenis",
+                    "ScrollTrigger"
+                  ]
                 }
               ]
             },
             {
               "id": "kernel-arch-right",
-              "columnTitle": "Design System",
+              "columnTitle": "Viewport Overrides",
               "blocks": [
                 {
                   "id": "kernel-arch-2",
+                  "type": "text",
+                  "content": "A critical viewport override was implemented—enforcing overflow-x: hidden strictly on the <html> tag—to prevent positioning recalculation errors and broken layouts during complex fixed-pinning phases in Safari and iOS."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "kernel-design",
+          "sectionTitle": "Prism & Glass System",
+          "layout": "split",
+          "columns": [
+            {
+              "id": "kernel-design-left",
+              "columnTitle": "Tokens & Typography",
+              "blocks": [
+                {
+                  "id": "kernel-design-1",
                   "type": "list",
                   "items": [
-                    "Palette: Neon Cyan (#00ffcc) overlaying Void Navy (#0a0f1a).",
-                    "Grid: Underlying geometric 40px base grid layered via linear-gradients.",
-                    "Typography: Exact structural typography using JetBrains Mono paired with Playfair Display for editorial contrast."
+                    "Palette: Neon Cyan (#00ffcc) highlighting a Void Navy (#0a0f1a) canvas.",
+                    "Grid: 40px underlying geometric layout built via raw CSS linear-gradients.",
+                    "Serif: Playfair Display for editorial narrative and high-fashion contrast.",
+                    "Mono: JetBrains Mono exclusively for system logs and data components."
                   ]
+                }
+              ]
+            },
+            {
+              "id": "kernel-design-right",
+              "columnTitle": "Visual Hierarchy",
+              "blocks": [
+                {
+                  "id": "kernel-design-2",
+                  "type": "text",
+                  "content": "Atmospheric Contrast defines the visual language. High-frequency neon light punches through a deep void, while semi-transparent rgba(0, 255, 204, 0.2) containers establish glassmorphic depth without muddying the foundational blueprint grid."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "kernel-features",
+          "sectionTitle": "Core Modules",
+          "layout": "split",
+          "columns": [
+            {
+              "id": "kernel-feat-left",
+              "columnTitle": "Terminal Boot Sequence",
+              "blocks": [
+                {
+                  "id": "kernel-feat-1",
+                  "type": "text",
+                  "content": "The experience initiates with a KERNEL_OS v2.1 terminal boot-sequence. This preloader masks asset hydration while instantly establishing the highly technical narrative tone."
+                }
+              ]
+            },
+            {
+              "id": "kernel-feat-right",
+              "columnTitle": "Sensory Interactions",
+              "blocks": [
+                {
+                  "id": "kernel-feat-2",
+                  "type": "text",
+                  "content": "Features a multi-layered custom cursor built to provide tactile feedback against data nodes, supplemented by an Audio-Active UI that synchronizes ambient acoustic humming directly with the user's scroll velocity."
                 }
               ]
             }
