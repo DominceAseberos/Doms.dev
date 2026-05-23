@@ -348,7 +348,7 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
         const items = block.items || [];
         return (
             <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
-                <ul className={`list-disc pl-5 space-y-2 text-base ${isLight ? 'text-black/70' : 'text-white/60'}`} style={getFontStyle(block)}>
+                <ul className="list-disc pl-5 cs-list" style={getFontStyle(block)}>
                     {items.map((item, i) => (
                         <li key={i} className="group/item relative">
                             <EditableText 
