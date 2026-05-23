@@ -186,7 +186,7 @@
             "id": "project-banana-leaf-detector",
             "title": "BANANA LEAF DETECTOR",
             "shortDescription": "A premium Flask web application featuring active learning and computer vision to detect banana leaf diseases in real-time with instant local model retraining based on user feedback.",
-            "projectType": "WEB APPLICATION",
+            "projectType": "CASE STUDY",
             "dateCreated": "2025-10-09",
             "liveUrl": "",
             "githubUrl": "https://github.com/Domincee/Banana-Leaf-Detector",
