@@ -215,20 +215,22 @@ const ProjectTemplate = ({
                         
                         <div className="flex items-center gap-4">
                             {/* Primary Button */}
-                            <a 
-                                href={isAdminPreview ? undefined : (project.primaryBtnUrl || `/projects/${project.id}`)} 
-                                target={isAdminPreview ? undefined : (project.primaryBtnUrl && project.primaryBtnUrl.startsWith('/') ? undefined : "_blank")} 
-                                rel="noopener noreferrer" 
-                                className="cs-top-link cs-top-link--ghost flex items-center gap-2"
-                                onClick={e => isAdminPreview && e.preventDefault()}
-                            >
-                                <span>
-                                    {project.primaryBtnLabel || 
-                                     (project.projectType === 'LANDING PAGE' ? 'SKILLS' : 
-                                      project.projectType === 'CASE STUDY' ? 'DOCX' : 
-                                      'VIEW DETAILS')}
-                                </span>
-                            </a>
+                            {project.primaryBtnUrl && (
+                                <a 
+                                    href={isAdminPreview ? undefined : project.primaryBtnUrl} 
+                                    target={isAdminPreview ? undefined : (project.primaryBtnUrl.startsWith('/') ? undefined : "_blank")} 
+                                    rel="noopener noreferrer" 
+                                    className="cs-top-link cs-top-link--ghost flex items-center gap-2"
+                                    onClick={e => isAdminPreview && e.preventDefault()}
+                                >
+                                    <span>
+                                        {project.primaryBtnLabel || 
+                                         (project.projectType === 'LANDING PAGE' ? 'SKILLS' : 
+                                          project.projectType === 'CASE STUDY' ? 'DOCX' : 
+                                          'VIEW DETAILS')}
+                                    </span>
+                                </a>
+                            )}
 
                             {/* Secondary Button */}
                             {(project.secondaryBtnUrl || project.liveUrl) && (
