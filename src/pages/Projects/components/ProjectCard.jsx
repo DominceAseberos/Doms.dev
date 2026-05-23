@@ -53,15 +53,7 @@ const ProjectCard = ({ project, onView }) => {
                         <span key={s} className="ov-pill pg-pill-lg">{s}</span>
                     ))}
                 </div>
-                <a
-                    href={project.livePreviewLink || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ov-link pg-label-lg"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    View Details ↗
-                </a>
+
             </div>
         </div>
     );

@@ -240,7 +240,7 @@ const ProjectTemplate = ({
                                         {project.primaryBtnLabel || 
                                          (project.projectType === 'LANDING PAGE' ? 'SKILLS' : 
                                           project.projectType === 'CASE STUDY' ? 'DOCX' : 
-                                          'VIEW DETAILS')}
+                                          'DOCUMENTATION')}
                                     </span>
                                 </a>
                             )}
