@@ -66,6 +66,7 @@
                     "id": "vayora-overview",
                     "sectionTitle": "Overview",
                     "layout": "full",
+                    "width": "full",
                     "columns": [
                         {
                             "id": "vayora-overview-col",
@@ -74,6 +75,7 @@
                                 {
                                     "id": "vayora-overview-text",
                                     "type": "text",
+                                    "fontSize": "xl",
                                     "content": "Vayora is an exclusive travel curation application focusing on luxury itineraries and high-end concierge services. Drawing inspiration from platforms like Airbnb Luxe and Black Tomato, the architecture leverages a modern React/Vite stack with highly optimized UI primitives (Radix UI) to deliver a seamless, premium web experience without compromising on performance."
                                 }
                             ]
