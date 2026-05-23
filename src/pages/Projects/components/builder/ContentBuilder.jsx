@@ -832,7 +832,7 @@ export const ContentBuilder = ({ sections = [], onUpdateSections, isAdminPreview
                         <div className="col-span-2 px-2 pb-2 border-bottom border-white/5 mb-1">
                             <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40">Choose Component</p>
                         </div>
-                        {BLOCK_TYPES.map(bt => (
+                        {BLOCK_TYPES.filter(bt => bt.type !== 'dataset-gallery' || projectId === 'project-banana-leaf-detector').map(bt => (
                             <button 
                                 key={bt.type}
                                 onClick={() => { addBlock(sIdx, cIdx, bt.type); setOpenAddMenu(null); }}
