@@ -11,7 +11,7 @@
       "shortDescription": "A high-end scroll-triggered digital experience built on React and GSAP. Employs a 'Prism & Glass' design system featuring a 40px blueprint grid and glowing cyan (#00ffcc) accents over a void navy (#0a0f1a) background.",
       "projectType": "LANDING PAGE",
       "dateCreated": "2026-03-22",
-      "liveUrl": "",
+      "liveUrl": "https://kernelprism.vercel.app/",
       "githubUrl": "https://github.com/DominceAseberos/Refokus",
       "primaryBtnUrl": "/assets/markdowns/kernel-docs.md",
       "primaryBtnLabel": "SYSTEM DESIGN",
