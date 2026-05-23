@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { FiX, FiExternalLink } from 'react-icons/fi';
-import useThemeStore from '../../../../store/useThemeStore';
+import useThemeStore from '../../../store/useThemeStore';
 
 /**
  * Converts a standard GitHub URL to a raw user content URL
