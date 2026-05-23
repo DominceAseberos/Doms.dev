@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiPlus, FiTrash2, FiArrowUp, FiArrowDown, FiImage, FiType, FiList, FiCpu, FiBarChart2, FiLink, FiBox, FiSmartphone } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiArrowUp, FiArrowDown, FiImage, FiType, FiList, FiCpu, FiBarChart2, FiLink, FiBox, FiSmartphone, FiFolder } from 'react-icons/fi';
 import { EditableText } from '../EditableText';
 import { LayoutPicker } from './LayoutPicker';
 import useThemeStore from '../../../../store/useThemeStore';
@@ -15,7 +15,8 @@ const BLOCK_TYPES = [
     { type: 'metric', label: 'Metric/Stat', icon: <FiBarChart2 size={14}/> },
     { type: 'link', label: 'Button/Link', icon: <FiLink size={14}/> },
     { type: 'color-palette', label: 'Colors', icon: <FiBox size={14}/> },
-    { type: 'font-preview', label: 'Typography', icon: <FiSmartphone size={14}/> }
+    { type: 'font-preview', label: 'Typography', icon: <FiSmartphone size={14}/> },
+    { type: 'dataset-gallery', label: 'Dataset Gallery', icon: <FiFolder size={14}/> }
 ];
 
 const getGridClass = (layout) => {
@@ -153,6 +154,153 @@ const ToolbarWrapper = ({ children, block, onChange, onDelete, isAdminPreview, i
                 </>
             )}
         </div>
+    );
+};
+
+const DatasetGalleryBlock = ({ block, onChange, onDelete, isAdminPreview, isLight, activeBlockId, projectId, onFocus, onBlur }) => {
+    const [activeFolderId, setActiveFolderId] = useState(block.datasets?.[0]?.id || null);
+    const [uploading, setUploading] = useState(false);
+
+    const datasets = block.datasets || [];
+
+    useEffect(() => {
+        if (datasets.length > 0 && !activeFolderId) {
+            setActiveFolderId(datasets[0].id);
+        }
+    }, [datasets, activeFolderId]);
+
+    const addDataset = () => {
+        const newId = uid();
+        const newDatasets = [...datasets, { id: newId, label: 'New Class', images: [] }];
+        onChange({ datasets: newDatasets });
+        setActiveFolderId(newId);
+    };
+
+    const removeDataset = (id) => {
+        const newDatasets = datasets.filter(d => d.id !== id);
+        onChange({ datasets: newDatasets });
+        if (activeFolderId === id) {
+            setActiveFolderId(newDatasets[0]?.id || null);
+        }
+    };
+
+    const updateDatasetLabel = (id, newLabel) => {
+        const newDatasets = datasets.map(d => d.id === id ? { ...d, label: newLabel } : d);
+        onChange({ datasets: newDatasets });
+    };
+
+    const handleImageUpload = async (e, folderId) => {
+        const file = e.target.files?.[0];
+        if (!file || !projectId) return;
+        
+        try {
+            setUploading(true);
+            const res = await fetch(`/__upload-image?name=${encodeURIComponent(file.name)}&projectId=${projectId}&type=imgs`, {
+                method: 'POST', body: file
+            });
+            const data = await res.json();
+            if (data.ok) {
+                const newDatasets = datasets.map(d => {
+                    if (d.id === folderId) {
+                        return { ...d, images: [...(d.images || []), data.url] };
+                    }
+                    return d;
+                });
+                onChange({ datasets: newDatasets });
+            } else {
+                alert("Upload failed: " + (data.error || "Unknown error"));
+            }
+        } catch (err) {
+            console.error("Upload failed", err);
+            alert("Upload failed. Check console for details.");
+        } finally {
+            setUploading(false);
+            e.target.value = '';
+        }
+    };
+
+    const removeImage = (folderId, imgIdx) => {
+        const newDatasets = datasets.map(d => {
+            if (d.id === folderId) {
+                const newImages = [...d.images];
+                newImages.splice(imgIdx, 1);
+                return { ...d, images: newImages };
+            }
+            return d;
+        });
+        onChange({ datasets: newDatasets });
+    };
+
+    const activeDataset = datasets.find(d => d.id === activeFolderId);
+
+    return (
+        <ToolbarWrapper block={block} onChange={onChange} onDelete={onDelete} id={block.id} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId}>
+            <div className={`w-full rounded-xl border p-4 ${isLight ? 'bg-white/50 border-black/10' : 'bg-[#1a1a1a]/50 border-white/10'}`}>
+                <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2 custom-scrollbar">
+                    {datasets.map(d => (
+                        <div key={d.id} className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-colors whitespace-nowrap ${activeFolderId === d.id ? (isLight ? 'bg-black text-white' : 'bg-white text-black') : (isLight ? 'bg-black/5 hover:bg-black/10 text-black/70' : 'bg-white/5 hover:bg-white/10 text-white/70')}`} onClick={() => setActiveFolderId(d.id)}>
+                            <FiFolder size={16} />
+                            {isAdminPreview ? (
+                                <div onClick={e => e.stopPropagation()}>
+                                    <EditableText value={d.label} onSave={(v) => updateDatasetLabel(d.id, v)} isAdminPreview={isAdminPreview} onFocus={onFocus} onBlur={onBlur} className="min-w-[50px] outline-none" />
+                                </div>
+                            ) : (
+                                <span className="text-sm font-medium">{d.label}</span>
+                            )}
+                            {isAdminPreview && (
+                                <button onClick={(e) => { e.stopPropagation(); removeDataset(d.id); }} className="ml-2 text-red-500 hover:text-red-700 p-1">
+                                    <FiTrash2 size={12} />
+                                </button>
+                            )}
+                        </div>
+                    ))}
+                    {isAdminPreview && (
+                        <button onClick={addDataset} className={`flex items-center justify-center w-8 h-8 rounded-lg border-2 border-dashed ${isLight ? 'border-black/20 text-black/50 hover:border-black/40' : 'border-white/20 text-white/50 hover:border-white/40'}`}>
+                            <FiPlus size={16} />
+                        </button>
+                    )}
+                </div>
+
+                {activeDataset && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        {(activeDataset.images || []).map((imgUrl, idx) => (
+                            <div key={idx} className="relative group/img aspect-square rounded-lg overflow-hidden bg-black/5">
+                                <img src={imgUrl} alt={`Dataset ${activeDataset.label} ${idx}`} className="w-full h-full object-cover" />
+                                {isAdminPreview && (
+                                    <button onClick={() => removeImage(activeDataset.id, idx)} className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-md opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg">
+                                        <FiTrash2 size={12} />
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                        
+                        {isAdminPreview && (
+                            <label className={`cursor-pointer flex flex-col items-center justify-center aspect-square rounded-lg border-2 border-dashed transition-colors ${isLight ? 'border-black/10 hover:border-black/20 text-black/40 hover:text-black/60' : 'border-white/10 hover:border-white/20 text-white/40 hover:text-white/60'}`}>
+                                {uploading ? (
+                                    <span className="text-xs font-bold">...</span>
+                                ) : (
+                                    <>
+                                        <FiPlus size={24} className="mb-2" />
+                                        <span className="text-xs font-bold">Upload</span>
+                                    </>
+                                )}
+                                <input type="file" className="hidden" accept=".jpg,.jpeg,.png,.gif,.webp" onChange={(e) => handleImageUpload(e, activeDataset.id)} disabled={uploading} />
+                            </label>
+                        )}
+                        {!isAdminPreview && (!activeDataset.images || activeDataset.images.length === 0) && (
+                            <div className="col-span-full py-8 text-center text-sm opacity-50">
+                                No images in this dataset class yet.
+                            </div>
+                        )}
+                    </div>
+                )}
+                {!activeDataset && datasets.length === 0 && (
+                    <div className="py-8 text-center text-sm opacity-50">
+                        {isAdminPreview ? 'Click + to add a dataset class folder.' : 'No datasets available.'}
+                    </div>
+                )}
+            </div>
+        </ToolbarWrapper>
     );
 };
 
@@ -493,6 +641,10 @@ const BlockRenderer = ({ block, onChange, onDelete, isAdminPreview, projectId, a
                 </div>
             </ToolbarWrapper>
         );
+    }
+
+    if (block.type === 'dataset-gallery') {
+        return <DatasetGalleryBlock block={block} onChange={onChange} onDelete={onDelete} isAdminPreview={isAdminPreview} isLight={isLight} activeBlockId={activeBlockId} projectId={projectId} onFocus={onFocus} onBlur={onBlur} />;
     }
 
     if (block.type === 'image') {
