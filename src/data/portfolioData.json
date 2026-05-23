@@ -21,13 +21,31 @@
       "tabletImage": "/assets/uploads/project-kernel/imgs/tablet.webp",
       "mobileImage": "/assets/uploads/project-kernel/imgs/mobile.webp",
       "desktopGallery": [
-        "/assets/uploads/project-kernel/imgs/desktop-2.webp"
+        "/assets/uploads/project-kernel/imgs/desktop-2.webp",
+        "/assets/uploads/project-kernel/imgs/desktop-3.webp",
+        "/assets/uploads/project-kernel/imgs/desktop-4.webp",
+        "/assets/uploads/project-kernel/imgs/desktop-5.webp",
+        "/assets/uploads/project-kernel/imgs/desktop-6.webp",
+        "/assets/uploads/project-kernel/imgs/desktop-7.webp",
+        "/assets/uploads/project-kernel/imgs/desktop-8.webp"
       ],
       "tabletGallery": [
-        "/assets/uploads/project-kernel/imgs/tablet-2.webp"
+        "/assets/uploads/project-kernel/imgs/tablet-2.webp",
+        "/assets/uploads/project-kernel/imgs/tablet-3.webp",
+        "/assets/uploads/project-kernel/imgs/tablet-4.webp",
+        "/assets/uploads/project-kernel/imgs/tablet-5.webp",
+        "/assets/uploads/project-kernel/imgs/tablet-6.webp",
+        "/assets/uploads/project-kernel/imgs/tablet-7.webp",
+        "/assets/uploads/project-kernel/imgs/tablet-8.webp"
       ],
       "mobileGallery": [
-        "/assets/uploads/project-kernel/imgs/mobile-2.webp"
+        "/assets/uploads/project-kernel/imgs/mobile-2.webp",
+        "/assets/uploads/project-kernel/imgs/mobile-3.webp",
+        "/assets/uploads/project-kernel/imgs/mobile-4.webp",
+        "/assets/uploads/project-kernel/imgs/mobile-5.webp",
+        "/assets/uploads/project-kernel/imgs/mobile-6.webp",
+        "/assets/uploads/project-kernel/imgs/mobile-7.webp",
+        "/assets/uploads/project-kernel/imgs/mobile-8.webp"
       ],
       "images": [],
       "galleryImages": [],

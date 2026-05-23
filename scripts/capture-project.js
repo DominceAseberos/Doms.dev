@@ -73,7 +73,12 @@ const main = async () => {
     await page.goto(targetUrl, { waitUntil: 'networkidle2', timeout: 30000 });
     
     // Give a short delay to ensure any scroll animations or charts load fully
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    let delayMs = 2000;
+    if (projectSlug === 'kernel') {
+       delayMs = 15000;
+       console.log('⏳ Waiting 15s for Kernel preloader to finish...');
+    }
+    await new Promise(resolve => setTimeout(resolve, delayMs));
 
     // Automated Section Detection
     // We look for major sections or slice the page if none exist
@@ -114,6 +119,8 @@ const main = async () => {
 
       console.log(`   └─ Capturing section: ${section.name} -> ${filename}`);
 
+      const waitTime = projectSlug === 'kernel' ? 2500 : 500;
+
       if (section.selector) {
         // Scroll element into view
         await page.evaluate((sel) => {
@@ -122,13 +129,13 @@ const main = async () => {
             el.scrollIntoView({ behavior: 'instant', block: 'start' });
           }
         }, section.selector);
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, waitTime));
       } else if (section.fold !== undefined) {
         // Scroll to fold
         await page.evaluate((fold, height) => {
           window.scrollTo(0, fold * height);
         }, section.fold, viewport.height);
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, waitTime));
       } else if (section.index !== undefined) {
         // Scroll to general element
         await page.evaluate((idx) => {
@@ -137,7 +144,7 @@ const main = async () => {
             els[idx].scrollIntoView({ behavior: 'instant', block: 'start' });
           }
         }, section.index);
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, waitTime));
       }
 
       // Take WebP screenshot
