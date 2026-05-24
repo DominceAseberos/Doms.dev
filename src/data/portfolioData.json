@@ -161,19 +161,40 @@
       "githubUrl": "https://github.com/DominceAseberos/GanapPH",
       "primaryBtnUrl": "/assets/markdowns/ganapph-skills.md",
       "featuredInTunnel": false,
-      "mainImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "desktopImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "tabletImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "mobileImage": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile",
-      "desktopGallery": [],
-      "tabletGallery": [],
-      "mobileGallery": [],
+      "mainImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
+      "desktopImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
+      "tabletImage": "/assets/uploads/project-ganapph/imgs/tablet.webp",
+      "mobileImage": "/assets/uploads/project-ganapph/imgs/mobile.webp",
+      "desktopGallery": [
+        "/assets/uploads/project-ganapph/imgs/desktop-2.webp",
+        "/assets/uploads/project-ganapph/imgs/desktop-3.webp",
+        "/assets/uploads/project-ganapph/imgs/desktop-4.webp",
+        "/assets/uploads/project-ganapph/imgs/desktop-5.webp",
+        "/assets/uploads/project-ganapph/imgs/desktop-6.webp",
+        "/assets/uploads/project-ganapph/imgs/desktop-7.webp"
+      ],
+      "tabletGallery": [
+        "/assets/uploads/project-ganapph/imgs/tablet-2.webp",
+        "/assets/uploads/project-ganapph/imgs/tablet-3.webp",
+        "/assets/uploads/project-ganapph/imgs/tablet-4.webp",
+        "/assets/uploads/project-ganapph/imgs/tablet-5.webp",
+        "/assets/uploads/project-ganapph/imgs/tablet-6.webp",
+        "/assets/uploads/project-ganapph/imgs/tablet-7.webp"
+      ],
+      "mobileGallery": [
+        "/assets/uploads/project-ganapph/imgs/mobile-2.webp",
+        "/assets/uploads/project-ganapph/imgs/mobile-3.webp",
+        "/assets/uploads/project-ganapph/imgs/mobile-4.webp",
+        "/assets/uploads/project-ganapph/imgs/mobile-5.webp",
+        "/assets/uploads/project-ganapph/imgs/mobile-6.webp",
+        "/assets/uploads/project-ganapph/imgs/mobile-7.webp"
+      ],
       "images": [],
       "galleryImages": [],
       "assets": {
-        "desktop": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-        "tablet": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-        "mobile": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile"
+        "desktop": "/assets/uploads/project-ganapph/imgs/desktop.webp",
+        "tablet": "/assets/uploads/project-ganapph/imgs/tablet.webp",
+        "mobile": "/assets/uploads/project-ganapph/imgs/mobile.webp"
       },
       "contentSections": [
         {
