@@ -203,16 +203,9 @@ const NarrativeSection = forwardRef((props, ref) => {
                                     View CV
                                 </button>
                             )}
-                            {hero.githubUrl && (
-                                <a href={hero.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost ns-btn ns-btn-icon">
-                                    <GithubIcon /> GitHub
-                                </a>
-                            )}
-                            {hero.linkedinUrl && (
-                                <a href={hero.linkedinUrl} target="_blank" rel="noopener noreferrer" className="btn-ghost ns-btn ns-btn-icon">
-                                    <LinkedInIcon /> LinkedIn
-                                </a>
-                            )}
+                            <Link to="/projects" className="btn-ghost ns-btn">
+                                Projects
+                            </Link>
                         </div>
 
                         {(hero.metrics || []).length > 0 && (
