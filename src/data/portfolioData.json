@@ -52,7 +52,6 @@
           "id": "catsy-overview",
           "sectionTitle": "Overview",
           "layout": "full",
-          "width": "full",
           "columns": [
             {
               "id": "catsy-overview-col",
@@ -326,7 +325,6 @@
           "id": "baylora-overview",
           "sectionTitle": "Overview",
           "layout": "full",
-          "width": "full",
           "columns": [
             {
               "id": "baylora-overview-col",
@@ -408,7 +406,6 @@
           "id": "nlp-overview",
           "sectionTitle": "Overview",
           "layout": "full",
-          "width": "full",
           "columns": [
             {
               "id": "nlp-overview-col",
@@ -515,7 +512,6 @@
           "id": "kernel-overview",
           "sectionTitle": "Overview",
           "layout": "full",
-          "width": "full",
           "columns": [
             {
               "id": "kernel-overview-col",
@@ -709,7 +705,6 @@
           "id": "vayora-overview",
           "sectionTitle": "Overview",
           "layout": "full",
-          "width": "full",
           "columns": [
             {
               "id": "vayora-overview-col",
