@@ -41,7 +41,6 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
 
     const isPdf = docUrl && docUrl.toLowerCase().endsWith('.pdf');
     const msViewerEmbedUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(publicUrl)}`;
-    const msViewerLinkUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(publicUrl)}`;
 
     const iframeSrc = isPdf ? publicUrl : msViewerEmbedUrl;
 
@@ -81,23 +80,6 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
                             <FiDownload size={14} />
                             <span className="hidden sm:inline">Download</span>
                         </a>
-
-                        {!isPdf && (
-                            <a 
-                                href={msViewerLinkUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                                    isLight 
-                                        ? 'bg-black/5 hover:bg-black/10 text-black' 
-                                        : 'bg-white/5 hover:bg-white/10 text-white'
-                                }`}
-                                style={{ pointerEvents: 'auto' }}
-                            >
-                                <FiExternalLink size={14} />
-                                <span className="hidden sm:inline">Open in Word Online</span>
-                            </a>
-                        )}
                     </div>
                     
                     <button 
