@@ -145,6 +145,7 @@ html[data-theme='light'] .proj-page {
 .ph-right strong {
     color: var(--about-title);
     display: block;
+    font-size: clamp(16px, 1.5vw, 18px);
     margin-bottom: 6px;
 }
 

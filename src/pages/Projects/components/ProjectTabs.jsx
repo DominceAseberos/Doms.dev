@@ -216,7 +216,7 @@ const ProjectTabs = ({ onView }) => {
                         <div className="ph-title">Pro<em>jects</em></div>
                     </div>
                     <div className="ph-right pg-subtitle-lg">
-                        <strong>{projects.length} Projects — 2023–2024</strong>
+                        <strong>{projects.length} Projects — 2023–Present</strong>
                         Browse a curated set of work. Each one built with intention, shipped without compromise.
                     </div>
                 </div>
@@ -255,13 +255,13 @@ const ProjectTabs = ({ onView }) => {
                             </div>
                             <div className="pg-stat-div"></div>
                             <div>
-                                <div className="pg-stat-year">2023–24</div>
+                                <div className="pg-stat-year">2023–Present</div>
                                 <div className="pg-stat-label pg-label-lg">Active Period</div>
                             </div>
                             <div className="pg-stat-div"></div>
                             <div>
-                                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '40px', color: 'var(--paper)', lineHeight: 1 }}>4+</div>
-                                <div className="pg-stat-label pg-label-lg">Tech Stacks</div>
+                                <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '40px', color: 'var(--paper)', lineHeight: 1 }}>{dynamicCategories.length}</div>
+                                <div className="pg-stat-label pg-label-lg">Categories</div>
                             </div>
                         </div>
                     </div>
