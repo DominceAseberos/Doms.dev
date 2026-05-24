@@ -497,14 +497,14 @@ html[data-theme='light'] .ns-sidebar-label {
 
 .ns-timeline-role {
     font-family: 'Syne', sans-serif;
-    font-size: 0.95rem;
+    font-size: clamp(1rem, 1.2vw, 1.15rem);
     font-weight: 700;
     color: var(--white);
     margin: 0;
 }
 
 .ns-timeline-period {
-    font-size: 0.65rem;
+    font-size: clamp(0.7rem, 1vw, 0.8rem);
     color: var(--gray);
     white-space: nowrap;
     flex-shrink: 0;
@@ -516,7 +516,7 @@ html[data-theme='light'] .ns-timeline-period {
 
 .ns-timeline-company {
     font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--gray);
@@ -524,8 +524,8 @@ html[data-theme='light'] .ns-timeline-period {
 }
 
 .ns-timeline-desc {
-    margin: 0.2rem 0 0;
-    font-size: 0.85rem;
+    margin: 0.3rem 0 0;
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
     max-width: 60ch;
     line-height: 1.65;
 }

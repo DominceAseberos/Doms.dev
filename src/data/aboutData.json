@@ -78,28 +78,28 @@
     },
     "experience": [
         {
-            "role": "Full Stack Developer",
-            "company": "Freelance · Independent",
-            "period": "2024 — Present",
-            "desc": "Designing and delivering end-to-end web applications for clients — covering frontend architecture, backend API development, database design, and deployment. Projects span landing pages, SaaS tools, and AI-integrated products."
+            "role": "3rd Year — Full Stack, Mobile & AI/ML",
+            "company": "BS Computer Science",
+            "period": "2025 — Present",
+            "desc": "Built a fullstack 3-tier system for Catsy Coffee and a multi-vendor marketplace (Baylora). In Machine Learning, developed a KNN Banana Leaf Disease detector, gathered real-world samples, and advanced it using CNNs. Engineered an NLP topic and language modeling tool for Tagalog, English, and Bisaya. Pitched 'GanapPH', an AI-powered job recommendation platform."
         },
         {
-            "role": "Frontend Developer",
-            "company": "Self-Directed Projects",
+            "role": "2nd Year — Backend & Algorithms",
+            "company": "BS Computer Science",
+            "period": "2024 — 2025",
+            "desc": "Deepened knowledge in Java (OOP, Data Structures & Algorithms). Expanded to fullstack web development with PHP and MySQL, focusing on database normalization, SQL queries, application dataflow, and data visualization using charts."
+        },
+        {
+            "role": "1st Year — Web Fundamentals",
+            "company": "BS Computer Science",
             "period": "2023 — 2024",
-            "desc": "Built and shipped multiple production applications independently, including a marketplace platform, a portfolio CMS, and an AI-powered text tool. Focused on React, TypeScript, and performance-first UI development."
+            "desc": "Mastered the core building blocks of the web: HTML semantics, the DOM, and CSS presentation. Learned how to structure web layouts and apply global styling using classes and IDs to create responsive interfaces."
         },
         {
-            "role": "Bachelor of Science in Computer Science",
-            "company": "University of Mindanao Tagum City",
-            "period": "2021 — Present",
-            "desc": "Pursuing a degree in Computer Science with coursework in software engineering, machine learning, data structures, distributed systems, and mobile development."
-        },
-        {
-            "role": "Started Programming",
-            "company": "Self-taught",
-            "period": "2020",
-            "desc": "Began learning to code independently, driven by curiosity about how software works. Built early projects in HTML, CSS, and JavaScript before moving into full stack development."
+            "role": "Self-Taught Game Developer",
+            "company": "First Coding Experience",
+            "period": "2020 — 2023",
+            "desc": "Began programming during the COVID-19 pandemic by writing Lua scripts for Roblox. Transitioned to the Godot Engine to build 2D RPGs, sparking a lifelong passion for software engineering and problem-solving."
         }
     ],
     "techStack": [
