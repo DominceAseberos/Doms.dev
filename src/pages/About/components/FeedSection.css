@@ -30,7 +30,7 @@
 }
 
 .feed-shell {
-    max-width: 1200px;
+    max-width: 1400px;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -172,17 +172,17 @@
 @media (min-width: 1025px) {
     .feed-detail-card,
     .feed-list-card {
-        height: 22.5rem;
-        min-height: 22.5rem;
-        max-height: 22.5rem;
+        height: 32rem;
+        min-height: 32rem;
+        max-height: 32rem;
         overflow: hidden;
     }
 
     .feed-media-wrap {
         aspect-ratio: 16 / 9;
         height: auto;
-        min-height: 10rem;
-        max-height: 13rem;
+        min-height: 16rem;
+        max-height: 20rem;
         display: flex;
         align-items: center;
         justify-content: center;
