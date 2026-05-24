@@ -11,7 +11,7 @@
       "shortDescription": "A multi-platform cafe operations system featuring a FastAPI backend, a React web storefront, and a Flutter POS mobile app. Real-time sync via WebSockets and offline-first mobile capability.",
       "projectType": "FULL-STACK APPLICATION",
       "dateCreated": "2025-10-15",
-      "liveUrl": "https://catsy.onrender.com",
+      "liveUrl": "https://catsy-coffee.vercel.app/",
       "githubUrl": "https://github.com/Domincee/CATSY",
       "primaryBtnUrl": "/assets/docs/catsy.docx",
       "featuredInTunnel": true,
