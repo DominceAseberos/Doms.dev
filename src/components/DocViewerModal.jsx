@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FiX, FiDownload, FiExternalLink } from 'react-icons/fi';
-import useThemeStore from '../../../store/useThemeStore';
+import useThemeStore from '../store/useThemeStore';
 
 const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
     const { theme } = useThemeStore();
