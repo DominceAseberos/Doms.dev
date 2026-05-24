@@ -154,12 +154,12 @@
     {
       "id": "project-ganapph",
       "title": "GANAP PH",
-      "shortDescription": "An AI-powered career guide and job recommendation platform built with React, Vite, and TanStack Router. Generates tailored steps and matches jobs based on user profiles.",
-      "projectType": "AI PLATFORM",
+      "shortDescription": "An AI-powered livelihood guidance platform designed to bridge unemployed and underemployed residents in Tagum City with personalized career roadmaps and government opportunities.",
+      "projectType": "CASE STUDY",
       "dateCreated": "2026-02-10",
       "liveUrl": "",
       "githubUrl": "https://github.com/DominceAseberos/GanapPH",
-      "primaryBtnUrl": "/assets/markdowns/ganapph-skills.md",
+      "primaryBtnUrl": "/assets/docs/GanapPH.docx",
       "featuredInTunnel": false,
       "mainImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
       "desktopImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
@@ -198,56 +198,98 @@
       },
       "contentSections": [
         {
-          "id": "ganap-overview",
-          "sectionTitle": "Overview",
+          "id": "ganap-problem",
+          "sectionTitle": "The Problem",
           "layout": "full",
-          "width": "full",
           "columns": [
             {
-              "id": "ganap-overview-col",
+              "id": "ganap-prob-col",
               "columnTitle": "",
               "blocks": [
                 {
-                  "id": "ganap-overview-text",
+                  "id": "ganap-prob-text",
                   "type": "text",
-                  "fontSize": "xl",
-                  "content": "GanapPH was developed as a Technopreneurship project to bridge the gap between skills and employment. It analyzes a user's background to provide AI-generated step-by-step career pathways."
+                  "content": "Many residents in Tagum City are unemployed or underemployed not because they lack skills, but because they lack access to the right guidance. Opportunities like free TESDA training, DOLE assistance, and PESO referrals exist, but government websites are difficult to navigate for ordinary users with low digital literacy."
                 }
               ]
             }
           ]
         },
         {
-          "id": "ganap-architecture",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
+          "id": "ganap-solution",
+          "sectionTitle": "The Solution",
+          "layout": "full",
           "columns": [
             {
-              "id": "ganap-arch-left",
-              "columnTitle": "Tech Stack",
+              "id": "ganap-sol-col",
+              "columnTitle": "",
               "blocks": [
                 {
-                  "id": "ganap-stack-chips",
-                  "type": "chips",
-                  "items": [
-                    "React / Vite",
-                    "TanStack Router",
-                    "React Query",
-                    "Tailwind CSS",
-                    "Radix UI"
-                  ]
+                  "id": "ganap-sol-text",
+                  "type": "text",
+                  "content": "GanapPH transforms confusing government information into a clear, step-by-step action plan. By asking simple onboarding questions (skills, location, work preference, and target income), the AI generates a personalized livelihood roadmap recommending training programs, local job opportunities, and microbusiness paths."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ganap-personas",
+          "sectionTitle": "Target Personas",
+          "layout": "3-equal",
+          "columns": [
+            {
+              "id": "persona-1",
+              "columnTitle": "The Local Vendor",
+              "blocks": [
+                {
+                  "id": "p1-text",
+                  "type": "text",
+                  "content": "Anthony, 62, a vendor and former security guard with limited digital literacy. He struggles finding stable income and finds government processes confusing. He needs clear direction to improve his technical skills."
                 }
               ]
             },
             {
-              "id": "ganap-arch-right",
-              "columnTitle": "Design Decisions",
+              "id": "persona-2",
+              "columnTitle": "The Student Part-Timer",
               "blocks": [
                 {
-                  "id": "ganap-decisions",
+                  "id": "p2-text",
                   "type": "text",
-                  "fontSize": "md",
-                  "content": "The platform relies heavily on Radix UI primitives to ensure high accessibility standards while maintaining a deeply customized, modern aesthetic through Tailwind CSS."
+                  "content": "Wilmar, 21, a college student balancing studies with work. He struggles finding flexible job opportunities and wants a clearer direction toward stable employment after graduation."
+                }
+              ]
+            },
+            {
+              "id": "persona-3",
+              "columnTitle": "Local Business Owners",
+              "blocks": [
+                {
+                  "id": "p3-text",
+                  "type": "text",
+                  "content": "Noel and Cherly, business managers relying on referrals and Facebook postings. They struggle to find workers that match their required skills and want to simplify local hiring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ganap-market",
+          "sectionTitle": "Market Sizing",
+          "layout": "full",
+          "columns": [
+            {
+              "id": "market-col",
+              "columnTitle": "",
+              "blocks": [
+                {
+                  "id": "market-list",
+                  "type": "list",
+                  "items": [
+                    "TAM: 2.26 million unemployed Filipinos nationwide who could benefit from opportunity access.",
+                    "SAM: 5.3 million residents across the Davao Region.",
+                    "SOM: 300,000+ residents in Tagum City, with an initial pilot reach of 500-1000 users."
+                  ]
                 }
               ]
             }
