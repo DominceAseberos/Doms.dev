@@ -1,37 +1,36 @@
-# ☕ Catsy Coffee — Multi-Platform Cafe System
+# ☕ CUTshier — Modern POS & Management System for Catsy Coffee
 
-**Catsy Coffee** is a comprehensive, production-ready 3-tier application built to modernize cafe operations. It serves as a fully integrated ecosystem connecting customer storefronts, staff point-of-sale (POS) systems, and a central administration panel.
+**CUTshier** (Catsy Coffee POS) is a comprehensive, production-ready 3-tier application designed to modernize and automate café operations. Originally built to replace inefficient manual processes—such as tracking sales on paper and managing reservations via Facebook Messenger—it now serves as a fully integrated ecosystem connecting customer storefronts, staff operations, and central administration.
 
 The platform is designed with a strong focus on real-time synchronization, offline reliability, and scalable cloud architecture.
 
 ### 👥 User Roles & Ecosystem
 
-The platform is divided into three core experiences:
+The platform solves specific problems for three distinct user groups:
 
-- **Customer (Web Storefront)**: Customers can browse the menu, place orders, book table reservations, and earn digital **Loyalty Stamps** for rewards.
-- **Staff (Mobile POS)**: Staff members use the Flutter mobile application to handle daily operations, manage walk-in/online orders, process reservations, and view **AI-driven daily operational forecasts** directly from the shop floor.
-- **Admin (Web Dashboard)**: Store managers use the secure React web portal to oversee overall operations, update menus, view **comprehensive sales analytics**, and manage staff accounts.
+- **Customer (Web Storefront)**: Customers can browse the menu, view **live café seat availability**, and book table reservations by pre-ordering and uploading payment references. They earn **QR-based Loyalty Stamps** on purchases and can leave post-purchase reviews and ratings.
+- **Staff / Cashier (Mobile POS)**: Staff use the Flutter mobile application to handle daily operations. They can quickly process on-site orders, automatically deduct inventory, scan customer QR codes to award loyalty stamps, and track upcoming online reservations directly from the shop floor.
+- **Admin / Owner (Web Dashboard)**: Store managers use the secure React portal to oversee the entire business. Admins can perform CRUD operations on the menu/inventory, receive low-stock alerts, and view **daily, weekly, and monthly sales analytics** alongside predictive performance metrics to guide restocking decisions.
 
-### 🏗 Architecture (3-Tier & Monorepo)
+### 🏗 Architecture (3-Tier Layered)
 
-Catsy Coffee follows a strict **3-Tier Architecture**, organized as a **Monorepo** (a single repository containing all projects, deployed separately to specialized hosting providers).
+CUTshier follows a strict **3-Tier Client-Server Architecture** featuring an Offline-First Mobile Sync capability.
 
 - **Presentation Layer (Frontend)**: 
-  - **`catsy-web` (React + Vite)**: The responsive customer and admin web interface.
-  - **`catsy_mobile` (Flutter)**: The robust, offline-capable mobile POS for staff.
-- **Logic / Business Layer (Backend)**: 
-  - **`catsy-backend` (FastAPI)**: A high-performance Python server that handles core business logic, real-time WebSocket/SSE streams, and authentication handshakes.
+  - **`catsy-web` (React + Vite)**: The responsive customer storefront and admin dashboard.
+  - **`catsy_mobile` (Flutter / Riverpod)**: The robust mobile POS designed specifically for café staff.
+- **Business Logic Layer (Backend)**: 
+  - **`catsy-backend` (FastAPI / Python)**: A high-performance server handling core business logic, validation, real-time WebSockets/SSE streams, and authentication handshakes.
 - **Data Layer (Database)**: 
   - **Supabase (PostgreSQL)**: The central cloud database driving the entire ecosystem.
-  - **Drift (SQLite)**: The local database powering the offline-first Flutter mobile POS.
+  - **Drift (SQLite)**: A local database powering the offline-first Flutter mobile POS.
 
 ### ⚡ Key Features
 
-- **Real-Time Order Syncing**: Utilizes PostgreSQL triggers and Server-Sent Events (SSE) / WebSockets to instantly update screens across all web and mobile clients.
-- **Loyalty & Reservations**: Integrated customer loyalty stamp system and dynamic table reservation management.
-- **Admin Analytics**: The web dashboard provides in-depth analytics, tracking sales performance and inventory trends.
-- **Operational Forecasting**: The mobile app provides staff with intelligent operational forecasting to prepare for peak hours.
-- **Offline-First POS**: The staff mobile app uses Drift (SQLite) to store data locally, allowing operations to continue during network outages. Data is queued and automatically synced when the connection is restored.
-- **Push Notifications**: Integrated Firebase Cloud Messaging (FCM) to deliver instant order and reservation alerts directly to staff devices.
+- **Automated Inventory & Analytics**: Automatically tracks stock levels and generates real-time product performance insights to identify best-selling vs. slow-moving items.
+- **Live Reservation & Seat Tracking**: Eliminates manual chat bookings by allowing customers to book online while checking live seat availability.
+- **QR-Based Loyalty System**: A digital stamp card progression system that tracks customer rewards efficiently.
+- **Real-Time Order Syncing**: Utilizes PostgreSQL triggers and Server-Sent Events (SSE) to instantly update screens across all web and mobile clients.
+- **Offline-First POS Capability**: The mobile app caches transactions via SQLite during network outages and automatically queues them for syncing once the connection is restored.
 
-This project demonstrates advanced full-stack capabilities, bridging mobile-first architecture with high-performance web frameworks and real-time backend infrastructure.
+Developed using the **Waterfall Methodology**, this project demonstrates advanced full-stack capabilities, bridging mobile-first architecture with high-performance web frameworks to solve real-world business bottlenecks.
