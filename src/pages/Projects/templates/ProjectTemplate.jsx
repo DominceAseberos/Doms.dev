@@ -236,7 +236,7 @@ const ProjectTemplate = ({
                                             e.preventDefault();
                                             setMarkdownUrl(project.primaryBtnUrl);
                                             setIsMarkdownModalOpen(true);
-                                        } else if (project.primaryBtnUrl.endsWith('.docx')) {
+                                        } else {
                                             e.preventDefault();
                                             setDocUrl(project.primaryBtnUrl);
                                             setIsDocModalOpen(true);

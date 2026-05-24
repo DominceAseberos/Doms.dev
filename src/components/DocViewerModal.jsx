@@ -39,8 +39,11 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
 
     if (!isOpen) return null;
 
+    const isPdf = docUrl && docUrl.toLowerCase().endsWith('.pdf');
     const msViewerEmbedUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(publicUrl)}`;
     const msViewerLinkUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(publicUrl)}`;
+
+    const iframeSrc = isPdf ? publicUrl : msViewerEmbedUrl;
 
     return (
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 md:p-12">
@@ -79,20 +82,22 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
                             <span className="hidden sm:inline">Download</span>
                         </a>
 
-                        <a 
-                            href={msViewerLinkUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                                isLight 
-                                    ? 'bg-black/5 hover:bg-black/10 text-black' 
-                                    : 'bg-white/5 hover:bg-white/10 text-white'
-                            }`}
-                            style={{ pointerEvents: 'auto' }}
-                        >
-                            <FiExternalLink size={14} />
-                            <span className="hidden sm:inline">Open in Word Online</span>
-                        </a>
+                        {!isPdf && (
+                            <a 
+                                href={msViewerLinkUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                                    isLight 
+                                        ? 'bg-black/5 hover:bg-black/10 text-black' 
+                                        : 'bg-white/5 hover:bg-white/10 text-white'
+                                }`}
+                                style={{ pointerEvents: 'auto' }}
+                            >
+                                <FiExternalLink size={14} />
+                                <span className="hidden sm:inline">Open in Word Online</span>
+                            </a>
+                        )}
                     </div>
                     
                     <button 
@@ -111,14 +116,14 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
                 {/* Content Area */}
                 <div className="flex-1 overflow-hidden bg-white">
                     <iframe 
-                        src={msViewerEmbedUrl}
+                        src={iframeSrc}
                         width="100%"
                         height="100%"
                         frameBorder="0"
                         title="Document Viewer"
                         className="w-full h-full"
                     >
-                        This browser does not support PDFs/DOCX. Please download the document to view it.
+                        This browser does not support inline document viewing. Please download the document to view it.
                     </iframe>
                 </div>
             </div>
