@@ -139,9 +139,9 @@ const FeedSection = () => {
         <section className="feed-section relative z-10">
             <div className="feed-shell mx-auto w-full">
                 <div className="feed-head">
-                    <p className="ui-sub-label">Feed</p>
-                    <h2 className="feed-title">Posts and updates from me.</h2>
-                    <p className="feed-intro ui-body-copy">
+                    <p className="ui-sub-label ns-reveal">Feed</p>
+                    <h2 className="feed-title ns-reveal">Posts and updates from me.</h2>
+                    <p className="feed-intro ui-body-copy ns-reveal">
                         A blog-style section where I share whatever I want to publish, including text posts, images, and progress updates.
                     </p>
                 </div>
@@ -149,18 +149,18 @@ const FeedSection = () => {
                 {hasPosts && selectedPost ? (
                     <div className="feed-layout">
                         <article className="feed-detail-card">
-                            <div className="feed-detail-meta ui-sub-label">
+                            <div className="feed-detail-meta ui-sub-label ns-reveal">
                                 <span className="feed-type">{selectedPost.type === 'image' ? 'Image Post' : 'Text Post'}</span>
                                 <time dateTime={selectedPost.createdAt}>{formatDate(selectedPost.createdAt)}</time>
                             </div>
 
                             <div className="feed-card-copy">
-                                <h3 className="feed-card-title">{selectedPost.title}</h3>
-                                {selectedPost.body ? <p className="feed-card-body ui-body-copy">{selectedPost.body}</p> : null}
+                                <h3 className="feed-card-title ns-reveal">{selectedPost.title}</h3>
+                                {selectedPost.body ? <p className="feed-card-body ui-body-copy ns-reveal">{selectedPost.body}</p> : null}
                             </div>
 
                             {selectedMedia.length ? (
-                                <div className={`feed-media-wrap ${selectedMedia.length > 1 ? 'feed-media-grid' : ''}`}>
+                                <div className={`feed-media-wrap ns-reveal ${selectedMedia.length > 1 ? 'feed-media-grid' : ''}`}>
                                     {selectedMedia.map((src, index) => (
                                         <button
                                             key={`${src}-${index}`}
@@ -182,7 +182,7 @@ const FeedSection = () => {
 
                         </article>
 
-                        <aside className="feed-list-card" aria-label="Recent posts">
+                        <aside className="feed-list-card ns-reveal" aria-label="Recent posts">
                             <div className="feed-list-head ui-sub-label">Past posts</div>
                             <div
                                 ref={listScrollRef}
@@ -238,7 +238,7 @@ const FeedSection = () => {
                         </aside>
                     </div>
                 ) : (
-                    <div className="feed-empty">
+                    <div className="feed-empty ns-reveal">
                         <p className="feed-empty-title">No published posts yet.</p>
                         <p className="feed-empty-copy ui-body-copy">
                             Once posts are added, this section will automatically show them here for visitors.

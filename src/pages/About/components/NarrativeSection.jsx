@@ -30,20 +30,21 @@ function useScrubReveal(containerRef, dataReady) {
         const raf = requestAnimationFrame(() => {
             const ctx = gsap.context(() => {
                 const els = gsap.utils.toArray('.ns-reveal', containerRef.current);
-                els.forEach((el, i) => {
-                    // Force initial hidden state in JS (not CSS) so GSAP owns it
-                    gsap.set(el, { opacity: 0, y: 36, immediateRender: true });
-                    gsap.to(el, {
-                        opacity: 1, y: 0,
-                        duration: 0.7,
-                        ease: 'power2.out',
-                        delay: (i % 4) * 0.05,
-                        scrollTrigger: {
-                            trigger: el,
-                            start: 'top 92%',
-                            toggleActions: 'play none none none',
-                        },
-                    });
+                
+                // Force initial hidden state in JS (not CSS) so GSAP owns it
+                gsap.set(els, { opacity: 0, y: 36, immediateRender: true });
+                
+                ScrollTrigger.batch(els, {
+                    start: 'top 92%',
+                    onEnter: (batch) => {
+                        gsap.to(batch, {
+                            opacity: 1, 
+                            y: 0,
+                            duration: 0.7,
+                            ease: 'power2.out',
+                            stagger: 0.1,
+                        });
+                    },
                 });
                 ScrollTrigger.refresh();
             }, containerRef);
@@ -175,25 +176,25 @@ const NarrativeSection = forwardRef((props, ref) => {
                 <div className="ns-hero-inner">
                     <div className="ns-hero-text">
                         {hero.location && (
-                            <p className="ns-hero-location ui-sub-label">{hero.location}</p>
+                            <p className="ns-hero-location ui-sub-label ns-reveal">{hero.location}</p>
                         )}
-                        <h1 className="ns-hero-name">
+                        <h1 className="ns-hero-name ns-reveal">
                             {(hero.fullName || 'Domince\nAseberos').split('\n').map((line, i, arr) => (
                                 <React.Fragment key={i}>{line}{i < arr.length - 1 && <br />}</React.Fragment>
                             ))}
                         </h1>
-                        {hero.role && <p className="ns-hero-role">{hero.role}</p>}
-                        {hero.bio  && <p className="ns-hero-bio ui-body-copy">{hero.bio}</p>}
+                        {hero.role && <p className="ns-hero-role ns-reveal">{hero.role}</p>}
+                        {hero.bio  && <p className="ns-hero-bio ui-body-copy ns-reveal">{hero.bio}</p>}
 
                         {(hero.badges || []).length > 0 && (
-                            <div className="ns-hero-badges">
+                            <div className="ns-hero-badges ns-reveal">
                                 {hero.badges.map((b) => (
                                     <span key={b} className="ui-pill ns-badge">{b}</span>
                                 ))}
                             </div>
                         )}
 
-                        <div className="ns-hero-actions">
+                        <div className="ns-hero-actions ns-reveal">
                             {data.resume && (
                                 <button 
                                     onClick={(e) => { e.preventDefault(); setIsResumeModalOpen(true); }}
@@ -215,7 +216,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         </div>
 
                         {(hero.metrics || []).length > 0 && (
-                            <div className="ns-metrics">
+                            <div className="ns-metrics ns-reveal">
                                 {hero.metrics.map((m, i) => {
                                     let displayValue = m.value;
                                     if (m.label && m.label.toLowerCase() === 'projects shipped') {
@@ -235,23 +236,23 @@ const NarrativeSection = forwardRef((props, ref) => {
                         )}
                     </div>
 
-                    <div className="ns-hero-card">
+                    <div className="ns-hero-card ns-reveal">
                         <ProfileMorphCard realSrc={humanPortrait} animeSrc={animePortrait} alt="Domince portrait" />
                     </div>
                 </div>
             </section>
 
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
-            <section className="ns-section ns-reveal" id="about">
-                <p className="ui-sub-label ns-section-label">About</p>
+            <section className="ns-section" id="about">
+                <p className="ui-sub-label ns-section-label ns-reveal">About</p>
                 <div className="ns-about-grid">
                     <div className="ns-about-main">
-                        <h2 className="ns-section-heading">
+                        <h2 className="ns-section-heading ns-reveal">
                             {about.heading || 'Engineering'}{' '}
                             <span className="ns-accent">{about.headingAccent || 'Digital Poetry'}</span>
                         </h2>
                         {about.intro && (
-                            <p className="ns-body-lg ui-body-copy">{about.intro}</p>
+                            <p className="ns-body-lg ui-body-copy ns-reveal">{about.intro}</p>
                         )}
                         <div className="ns-about-blocks">
                             {(about.blocks || []).map((block, i) => (
@@ -397,21 +398,21 @@ const NarrativeSection = forwardRef((props, ref) => {
             )}
 
             {/* ══ EDUCATION ════════════════════════════════════════════════ */}
-            <div className="ns-reveal"><EducationSection /></div>
+            <EducationSection />
 
             {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
-            <div className="ns-reveal"><GithubContributionSection /></div>
+            <GithubContributionSection />
 
             {/* ══ FEED ═════════════════════════════════════════════════════ */}
-            <div className="ns-reveal"><FeedSection /></div>
+            <FeedSection />
 
             {/* ══ CONTACT ══════════════════════════════════════════════════ */}
             <section className="ns-contact-section" id="contact">
-                <div className="ns-contact-header ns-reveal">
-                    <p className="ui-sub-label ns-section-label">Contact</p>
-                    <h2 className="ns-section-heading">{contact.heading || "Open to Opportunities"}</h2>
+                <div className="ns-contact-header">
+                    <p className="ui-sub-label ns-section-label ns-reveal">Contact</p>
+                    <h2 className="ns-section-heading ns-reveal">{contact.heading || "Open to Opportunities"}</h2>
                     {contact.subtext && (
-                        <p className="ui-body-copy ns-contact-sub">{contact.subtext}</p>
+                        <p className="ui-body-copy ns-contact-sub ns-reveal">{contact.subtext}</p>
                     )}
                 </div>
                 <div className="ns-cityscape-wrap">

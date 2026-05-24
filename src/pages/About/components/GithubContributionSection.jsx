@@ -160,13 +160,13 @@ const GithubContributionSection = () => {
     return (
         <section className="github-contrib-wrap">
             <div className="github-contrib-head">
-                <h2 className="github-contrib-title">GitHub Activity</h2>
-                <p className="github-contrib-subtitle">
+                <h2 className="github-contrib-title ns-reveal">GitHub Activity</h2>
+                <p className="github-contrib-subtitle ns-reveal">
                     Contribution heat map and latest commits pulled from GitHub.
                 </p>
             </div>
 
-            <div className="github-contrib-actions">
+            <div className="github-contrib-actions ns-reveal">
                 {status ? <p className="github-contrib-status">{status}</p> : <span />}
                 <button
                     type="button"
@@ -179,7 +179,7 @@ const GithubContributionSection = () => {
             </div>
 
             <div className="github-activity-grid">
-                <div className="gc-heatmap-card">
+                <div className="gc-heatmap-card ns-reveal">
                     <div className="gc-card-eyebrow">Contribution Heat Map</div>
                     <GitHubCalendar
                         username={USERNAME}
@@ -192,7 +192,7 @@ const GithubContributionSection = () => {
                     />
                 </div>
 
-                <div className="gc-commit-card">
+                <div className="gc-commit-card ns-reveal">
                     <div className="gc-card-eyebrow">Latest Commits</div>
                     <h3 className="gc-card-title">@{USERNAME}</h3>
                     <div className="gc-commits-list">
