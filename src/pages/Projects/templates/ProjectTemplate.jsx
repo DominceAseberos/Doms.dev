@@ -7,7 +7,7 @@ import useThemeStore from '../../../store/useThemeStore';
 import { EditableText } from '../components/EditableText';
 import { ContentBuilder } from '../components/builder/ContentBuilder';
 import MarkdownViewerModal from '../components/MarkdownViewerModal';
-import DocViewerModal from '../components/DocViewerModal';
+import DocViewerModal from '../../../components/DocViewerModal';
 
 const ProjectTemplate = ({
     project,

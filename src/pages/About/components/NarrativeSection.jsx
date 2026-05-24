@@ -11,7 +11,7 @@ import EducationSection from './EducationSection';
 import GithubContributionSection from './GithubContributionSection';
 import FeedSection from './FeedSection';
 import CityscapeContact from '../../Contact/components/CityscapeContact';
-import ResumeViewerModal from './ResumeViewerModal';
+import DocViewerModal from '../../../components/DocViewerModal';
 import humanPortrait from '../../../assets/human-cutout.png';
 import animePortrait from '../../../assets/anime-cutout.png';
 import useLoadingStore from '../../../store/useLoadingStore';
@@ -431,10 +431,11 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </footer>
 
-            <ResumeViewerModal 
+            <DocViewerModal 
                 isOpen={isResumeModalOpen} 
                 onClose={() => setIsResumeModalOpen(false)} 
-                resumeUrl={data.resume} 
+                docUrl={data.resume} 
+                title="Curriculum Vitae"
             />
         </div>
     );
