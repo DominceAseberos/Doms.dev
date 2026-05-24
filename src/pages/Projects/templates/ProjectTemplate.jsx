@@ -518,6 +518,7 @@ const ProjectTemplate = ({
                 onClose={() => setIsMarkdownModalOpen(false)} 
                 githubUrl={markdownUrl}
                 title={project.primaryBtnLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation')}
+                isSkills={project.projectType === 'LANDING PAGE'}
             />
 
             <DocViewerModal 

@@ -20,7 +20,7 @@ const getRawGithubUrl = (url) => {
         .replace('/blob/', '/');
 };
 
-const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentation" }) => {
+const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentation", isSkills = false }) => {
     const { theme } = useThemeStore();
     const isLight = theme === 'light';
     const [markdownContent, setMarkdownContent] = useState('');
@@ -131,7 +131,7 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
                         >
                             <FiExternalLink size={14} />
                         </a>
-                        {!isLoading && !error && (
+                        {!isLoading && !error && isSkills && (
                             <button
                                 type="button"
                                 onClick={handleCopy}
