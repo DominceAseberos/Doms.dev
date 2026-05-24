@@ -10,6 +10,14 @@
     opacity: 0;
     will-change: transform, opacity, filter;
     transform-origin: center;
+    transition: stroke 0.3s ease, filter 0.3s ease;
+}
+
+/* Add an outline and subtle shadow in light mode for better visibility */
+html[data-theme='light'] .animated-nav-logo-wrap svg path {
+    stroke: rgba(18, 18, 18, 0.5);
+    stroke-width: 1.5px;
+    stroke-linejoin: round;
 }
 
 .animated-nav-logo-glow-bg {
