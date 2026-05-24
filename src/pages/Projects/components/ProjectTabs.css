@@ -164,6 +164,12 @@ html[data-theme='light'] .proj-page {
 .filters {
     display: flex;
     gap: 10px;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.filters::-webkit-scrollbar {
+    display: none;
 }
 .f-btn {
     font-family: 'DM Mono', monospace;
@@ -177,6 +183,8 @@ html[data-theme='light'] .proj-page {
     color: var(--about-label);
     transition: all .2s;
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 .f-btn.active,
 .f-btn:hover {
