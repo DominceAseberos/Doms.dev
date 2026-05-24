@@ -79,9 +79,11 @@ const NarrativeSection = forwardRef((props, ref) => {
     const [dataReady, setDataReady] = useState(false);
 
     // Projects from portfolioData.json
-    const [projects, setProjects] = useState(() =>
-        (portfolioDataDefault.projects || []).slice(0, 4)
-    );
+    const [projects, setProjects] = useState(() => {
+        const all = portfolioDataDefault.projects || [];
+        const featured = all.filter(p => p.featuredOnHome);
+        return featured.length > 0 ? featured : all.slice(0, 4);
+    });
     const [totalProjectsCount, setTotalProjectsCount] = useState(() =>
         (portfolioDataDefault.projects || []).length
     );
@@ -137,8 +139,10 @@ const NarrativeSection = forwardRef((props, ref) => {
     useEffect(() => {
         fetchPortfolioData()
             .then((d) => {
-                setProjects((d.projects || []).slice(0, 4));
-                setTotalProjectsCount((d.projects || []).length);
+                const all = d.projects || [];
+                const featured = all.filter(p => p.featuredOnHome);
+                setProjects(featured.length > 0 ? featured : all.slice(0, 4));
+                setTotalProjectsCount(all.length);
             })
             .catch(() => {/* keep bundled default */});
     }, []);

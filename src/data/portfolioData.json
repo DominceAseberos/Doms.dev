@@ -1,1486 +1,1495 @@
 {
-  "categories": [
-    "Landing Page",
-    "Case Study",
-    "Web Application"
-  ],
-  "projects": [
-    {
-      "id": "project-github-universe",
-      "title": "GITHUB UNIVERSE",
-      "shortDescription": "An interactive GitHub data visualization universe built with a static-data pipeline. It features a 4-level drill-down (Galaxy -> Country -> Users -> Repositories) driven by deep scraping and query-bucket partitioning.",
-      "projectType": "DATA VISUALIZATION",
-      "dateCreated": "2026-03-14",
-      "liveUrl": "https://gremote-universe.vercel.app/",
-      "githubUrl": "https://github.com/DominceAseberos/github-universe",
-      "featuredInTunnel": true,
-      "mainImage": "/assets/uploads/project-github-universe/imgs/desktop.webp",
-      "desktopImage": "/assets/uploads/project-github-universe/imgs/desktop.webp",
-      "tabletImage": "/assets/uploads/project-github-universe/imgs/tablet.webp",
-      "mobileImage": "/assets/uploads/project-github-universe/imgs/mobile.webp",
-      "desktopGallery": [
-        "/assets/uploads/project-github-universe/imgs/desktop-2.webp"
-      ],
-      "tabletGallery": [
-        "/assets/uploads/project-github-universe/imgs/tablet-2.webp"
-      ],
-      "mobileGallery": [
-        "/assets/uploads/project-github-universe/imgs/mobile-2.webp"
-      ],
-      "images": [],
-      "galleryImages": [],
-      "assets": {
-        "desktop": "/assets/uploads/project-github-universe/imgs/desktop.webp",
-        "tablet": "/assets/uploads/project-github-universe/imgs/tablet.webp",
-        "mobile": "/assets/uploads/project-github-universe/imgs/mobile.webp"
-      },
-      "contentSections": [
+    "categories": [
+        "Landing Page",
+        "Case Study",
+        "Web Application"
+    ],
+    "projects": [
         {
-          "id": "github-universe-overview",
-          "sectionTitle": "Overview",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "github-universe-overview-col",
-              "columnTitle": "",
-              "blocks": [
+            "id": "project-github-universe",
+            "title": "GITHUB UNIVERSE",
+            "shortDescription": "An interactive GitHub data visualization universe built with a static-data pipeline. It features a 4-level drill-down (Galaxy -> Country -> Users -> Repositories) driven by deep scraping and query-bucket partitioning.",
+            "projectType": "DATA VISUALIZATION",
+            "dateCreated": "2026-03-14",
+            "liveUrl": "https://gremote-universe.vercel.app/",
+            "githubUrl": "https://github.com/DominceAseberos/github-universe",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-github-universe/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-github-universe/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-github-universe/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-github-universe/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-github-universe/imgs/desktop-2.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-github-universe/imgs/tablet-2.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-github-universe/imgs/mobile-2.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-github-universe/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-github-universe/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-github-universe/imgs/mobile.webp"
+            },
+            "contentSections": [
                 {
-                  "id": "github-universe-overview-text",
-                  "type": "text",
-                  "fontSize": "xl",
-                  "content": "GitHub Universe is an experimental data visualization project that maps public GitHub activity into an explorable cosmos. Using a custom Python scraper with query-bucket partitioning and deep-scrape follower modes, the pipeline statically compiles millions of data points into a high-performance 4-level SVG and WebGL drill-down interface: Countries (Level 0), Cities (Level 1), Users (Level 2), and Repositories (Level 3)."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "github-universe-architecture",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "github-universe-arch-left",
-              "columnTitle": "Data Pipeline",
-              "blocks": [
-                {
-                  "id": "github-universe-stack-chips",
-                  "type": "chips",
-                  "items": [
-                    "Python 3.12",
-                    "JSON Data Engine",
-                    "Query-Bucket Partitioning",
-                    "GitHub Actions"
-                  ]
+                    "id": "github-universe-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "github-universe-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "github-universe-overview-text",
+                                    "type": "text",
+                                    "fontSize": "xl",
+                                    "content": "GitHub Universe is an experimental data visualization project that maps public GitHub activity into an explorable cosmos. Using a custom Python scraper with query-bucket partitioning and deep-scrape follower modes, the pipeline statically compiles millions of data points into a high-performance 4-level SVG and WebGL drill-down interface: Countries (Level 0), Cities (Level 1), Users (Level 2), and Repositories (Level 3)."
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
-                  "id": "github-universe-ui-label",
-                  "type": "heading",
-                  "content": "Visualization UI"
+                    "id": "github-universe-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "github-universe-arch-left",
+                            "columnTitle": "Data Pipeline",
+                            "blocks": [
+                                {
+                                    "id": "github-universe-stack-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "Python 3.12",
+                                        "JSON Data Engine",
+                                        "Query-Bucket Partitioning",
+                                        "GitHub Actions"
+                                    ]
+                                },
+                                {
+                                    "id": "github-universe-ui-label",
+                                    "type": "heading",
+                                    "content": "Visualization UI"
+                                },
+                                {
+                                    "id": "github-universe-ui-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "SVG Node Rendering",
+                                        "Adaptive FPS HUD",
+                                        "Vercel Deployment"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "github-universe-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "github-universe-decisions",
+                                    "type": "list",
+                                    "items": [
+                                        "Static-Data Pipeline: Bypasses runtime backend requirements by compiling scraped data into `data/index.json` and partitioned `data/countries/{CODE}.json` files, achieving zero-latency data serving on Vercel.",
+                                        "Query-Bucket Partitioning: The scraper logic segments API requests by 'follower' and 'year' buckets to circumvent top-result API caps, yielding a higher density of data representation per country node.",
+                                        "Adaptive Rendering: Incorporates an automatic performance degradation engine (auto/high/mid/low) with a live FPS HUD, culling off-screen elements via wide-spread layouts and de-crowding algorithms to maintain 60 FPS in dense views."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
-                  "id": "github-universe-ui-chips",
-                  "type": "chips",
-                  "items": [
-                    "SVG Node Rendering",
-                    "Adaptive FPS HUD",
-                    "Vercel Deployment"
-                  ]
+                    "id": "github-universe-goals",
+                    "sectionTitle": "Mission & Challenges",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "github-universe-goal-col",
+                            "columnTitle": "The Goal: A Cosmic Map",
+                            "blocks": [
+                                {
+                                    "id": "github-universe-goal-text",
+                                    "type": "text",
+                                    "fontSize": "md",
+                                    "content": "The primary objective is to map the vast, invisible landscape of the open-source community into a tangible, explorable cosmos. By treating GitHub not just as a database, but as a digital universe, the visualization allows users to navigate geographically—zooming seamlessly from a macro-galactic view of global countries down into specific cities, and eventually into the individual users (stars) and their repositories (satellites). It transforms raw, tabular API data into an interactive, spatial map of global software engineering density."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "github-universe-challenge-col",
+                            "columnTitle": "The Challenge: Scale & API Limits",
+                            "blocks": [
+                                {
+                                    "id": "github-universe-challenge-text",
+                                    "type": "text",
+                                    "fontSize": "md",
+                                    "content": "The most formidable engineering hurdle was the sheer scale of data retrieval combined with GitHub's strict API rate limits. Scraping a global population sequentially takes an unfeasible amount of time, and the API hard-caps pagination at 1,000 results per query. To bypass this, the scraper was engineered with an advanced \"Query-Bucket Partitioning\" algorithm. By dynamically slicing search requests into granular sub-buckets (based on exact follower counts and account creation years), the system forces the API to expose deeper layers of hidden users. Additionally, a fault-tolerant state-resume mode was built to handle network drops over continuous multi-day scraping operations."
+                                }
+                            ]
+                        }
+                    ]
                 }
-              ]
-            },
-            {
-              "id": "github-universe-arch-right",
-              "columnTitle": "Engineering Decisions",
-              "blocks": [
-                {
-                  "id": "github-universe-decisions",
-                  "type": "list",
-                  "items": [
-                    "Static-Data Pipeline: Bypasses runtime backend requirements by compiling scraped data into `data/index.json` and partitioned `data/countries/{CODE}.json` files, achieving zero-latency data serving on Vercel.",
-                    "Query-Bucket Partitioning: The scraper logic segments API requests by 'follower' and 'year' buckets to circumvent top-result API caps, yielding a higher density of data representation per country node.",
-                    "Adaptive Rendering: Incorporates an automatic performance degradation engine (auto/high/mid/low) with a live FPS HUD, culling off-screen elements via wide-spread layouts and de-crowding algorithms to maintain 60 FPS in dense views."
-                  ]
-                }
-              ]
-            }
-          ]
+            ],
+            "primaryBtnUrl": "/assets/markdowns/github-universe-docs.md",
+            "featuredOnHome": false
         },
         {
-          "id": "github-universe-goals",
-          "sectionTitle": "Mission & Challenges",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "github-universe-goal-col",
-              "columnTitle": "The Goal: A Cosmic Map",
-              "blocks": [
-                {
-                  "id": "github-universe-goal-text",
-                  "type": "text",
-                  "fontSize": "md",
-                  "content": "The primary objective is to map the vast, invisible landscape of the open-source community into a tangible, explorable cosmos. By treating GitHub not just as a database, but as a digital universe, the visualization allows users to navigate geographically—zooming seamlessly from a macro-galactic view of global countries down into specific cities, and eventually into the individual users (stars) and their repositories (satellites). It transforms raw, tabular API data into an interactive, spatial map of global software engineering density."
-                }
-              ]
+            "id": "project-catsy",
+            "title": "CATSY COFFEE",
+            "shortDescription": "A multi-platform cafe operations system featuring a FastAPI backend, a React web storefront, and a Flutter POS mobile app. Real-time sync via WebSockets and offline-first mobile capability.",
+            "projectType": "FULL-STACK APPLICATION",
+            "dateCreated": "2025-10-15",
+            "liveUrl": "https://catsy-coffee.vercel.app/",
+            "githubUrl": "https://github.com/Domincee/CATSY",
+            "primaryBtnUrl": "/assets/docs/catsy.docx",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-catsy/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-catsy/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-catsy/imgs/desktop-2.webp",
+                "/assets/uploads/project-catsy/imgs/desktop-3.webp",
+                "/assets/uploads/project-catsy/imgs/desktop-4.webp",
+                "/assets/uploads/project-catsy/imgs/desktop-5.webp",
+                "/assets/uploads/project-catsy/imgs/desktop-6.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-catsy/imgs/tablet-2.webp",
+                "/assets/uploads/project-catsy/imgs/tablet-3.webp",
+                "/assets/uploads/project-catsy/imgs/tablet-4.webp",
+                "/assets/uploads/project-catsy/imgs/tablet-5.webp",
+                "/assets/uploads/project-catsy/imgs/tablet-6.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-catsy/imgs/mobile-2.webp",
+                "/assets/uploads/project-catsy/imgs/mobile-3.webp",
+                "/assets/uploads/project-catsy/imgs/mobile-4.webp",
+                "/assets/uploads/project-catsy/imgs/mobile-5.webp",
+                "/assets/uploads/project-catsy/imgs/mobile-6.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-catsy/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-catsy/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-catsy/imgs/mobile.webp"
             },
-            {
-              "id": "github-universe-challenge-col",
-              "columnTitle": "The Challenge: Scale & API Limits",
-              "blocks": [
+            "contentSections": [
                 {
-                  "id": "github-universe-challenge-text",
-                  "type": "text",
-                  "fontSize": "md",
-                  "content": "The most formidable engineering hurdle was the sheer scale of data retrieval combined with GitHub's strict API rate limits. Scraping a global population sequentially takes an unfeasible amount of time, and the API hard-caps pagination at 1,000 results per query. To bypass this, the scraper was engineered with an advanced \"Query-Bucket Partitioning\" algorithm. By dynamically slicing search requests into granular sub-buckets (based on exact follower counts and account creation years), the system forces the API to expose deeper layers of hidden users. Additionally, a fault-tolerant state-resume mode was built to handle network drops over continuous multi-day scraping operations."
+                    "id": "catsy-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "catsy-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "catsy-overview-text",
+                                    "type": "text",
+                                    "fontSize": "xl",
+                                    "content": "Catsy Coffee is a fully integrated 3-tier system built to handle cafe operations. From the React storefront to the offline-first Flutter POS app, it uses real-time WebSockets and SSE to keep all devices perfectly synced."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "catsy-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "catsy-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "catsy-stack-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "FastAPI",
+                                        "React / Vite",
+                                        "Flutter",
+                                        "Supabase"
+                                    ]
+                                },
+                                {
+                                    "id": "catsy-db-label",
+                                    "type": "heading",
+                                    "content": "Database & Sync"
+                                },
+                                {
+                                    "id": "catsy-db-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "PostgreSQL",
+                                        "SQLite (Drift)",
+                                        "WebSockets",
+                                        "SSE"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "catsy-arch-right",
+                            "columnTitle": "Design Decisions",
+                            "blocks": [
+                                {
+                                    "id": "catsy-decisions",
+                                    "type": "text",
+                                    "fontSize": "md",
+                                    "content": "The architecture was heavily influenced by the need for operational reliability. If the cafe internet drops, the Flutter POS app seamlessly falls back to a local SQLite database (via Drift) and queues all transactions, synchronizing automatically when the connection is restored."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "catsy-features",
+                    "sectionTitle": "Key Features",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "catsy-feat-left",
+                            "columnTitle": "Real-Time Notifications",
+                            "blocks": [
+                                {
+                                    "id": "catsy-feat-left-text",
+                                    "type": "text",
+                                    "fontSize": "md",
+                                    "content": "Leveraging Firebase Cloud Messaging (FCM) and Supabase database triggers, the system pushes instant background notifications to staff mobile devices whenever a new order is received or an inventory alert is triggered."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "catsy-feat-right",
+                            "columnTitle": "Admin Dashboard",
+                            "blocks": [
+                                {
+                                    "id": "catsy-feat-right-text",
+                                    "type": "text",
+                                    "fontSize": "md",
+                                    "content": "The React web application serves dual purposes: a customer-facing menu and a secure, gated admin panel allowing management to update products, view sales reports, and manage staff roles."
+                                }
+                            ]
+                        }
+                    ]
                 }
-              ]
-            }
-          ]
+            ],
+            "featuredOnHome": true
+        },
+        {
+            "id": "project-ganapph",
+            "title": "GANAP PH",
+            "shortDescription": "An AI-powered livelihood guidance platform designed to bridge unemployed and underemployed residents in Tagum City with personalized career roadmaps and government opportunities.",
+            "projectType": "CASE STUDY",
+            "dateCreated": "2026-02-10",
+            "liveUrl": "https://ganapph.vercel.app/",
+            "githubUrl": "https://github.com/DominceAseberos/GanapPH",
+            "primaryBtnUrl": "/assets/docs/GanapPH.docx",
+            "featuredInTunnel": false,
+            "mainImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-ganapph/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-ganapph/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-ganapph/imgs/desktop-2.webp",
+                "/assets/uploads/project-ganapph/imgs/desktop-3.webp",
+                "/assets/uploads/project-ganapph/imgs/desktop-4.webp",
+                "/assets/uploads/project-ganapph/imgs/desktop-5.webp",
+                "/assets/uploads/project-ganapph/imgs/desktop-6.webp",
+                "/assets/uploads/project-ganapph/imgs/desktop-7.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-ganapph/imgs/tablet-2.webp",
+                "/assets/uploads/project-ganapph/imgs/tablet-3.webp",
+                "/assets/uploads/project-ganapph/imgs/tablet-4.webp",
+                "/assets/uploads/project-ganapph/imgs/tablet-5.webp",
+                "/assets/uploads/project-ganapph/imgs/tablet-6.webp",
+                "/assets/uploads/project-ganapph/imgs/tablet-7.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-ganapph/imgs/mobile-2.webp",
+                "/assets/uploads/project-ganapph/imgs/mobile-3.webp",
+                "/assets/uploads/project-ganapph/imgs/mobile-4.webp",
+                "/assets/uploads/project-ganapph/imgs/mobile-5.webp",
+                "/assets/uploads/project-ganapph/imgs/mobile-6.webp",
+                "/assets/uploads/project-ganapph/imgs/mobile-7.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-ganapph/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-ganapph/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-ganapph/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "ganap-problem",
+                    "sectionTitle": "The Problem",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "ganap-prob-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "ganap-prob-text",
+                                    "type": "text",
+                                    "content": "Many residents in Tagum City are unemployed or underemployed not because they lack skills, but because they lack access to the right guidance. Opportunities like free TESDA training, DOLE assistance, and PESO referrals exist, but government websites are difficult to navigate for ordinary users with low digital literacy."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "ganap-solution",
+                    "sectionTitle": "The Solution",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "ganap-sol-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "ganap-sol-text",
+                                    "type": "text",
+                                    "content": "GanapPH transforms confusing government information into a clear, step-by-step action plan. By asking simple onboarding questions (skills, location, work preference, and target income), the AI generates a personalized livelihood roadmap recommending training programs, local job opportunities, and microbusiness paths."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "ganap-personas",
+                    "sectionTitle": "Target Personas",
+                    "layout": "3-equal",
+                    "columns": [
+                        {
+                            "id": "persona-1",
+                            "columnTitle": "The Local Vendor",
+                            "blocks": [
+                                {
+                                    "id": "p1-text",
+                                    "type": "text",
+                                    "content": "Anthony, 62, a vendor and former security guard with limited digital literacy. He struggles finding stable income and finds government processes confusing. He needs clear direction to improve his technical skills."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "persona-2",
+                            "columnTitle": "The Student Part-Timer",
+                            "blocks": [
+                                {
+                                    "id": "p2-text",
+                                    "type": "text",
+                                    "content": "Wilmar, 21, a college student balancing studies with work. He struggles finding flexible job opportunities and wants a clearer direction toward stable employment after graduation."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "persona-3",
+                            "columnTitle": "Local Business Owners",
+                            "blocks": [
+                                {
+                                    "id": "p3-text",
+                                    "type": "text",
+                                    "content": "Noel and Cherly, business managers relying on referrals and Facebook postings. They struggle to find workers that match their required skills and want to simplify local hiring."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "ganap-market",
+                    "sectionTitle": "Market Sizing",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "market-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "market-list",
+                                    "type": "list",
+                                    "items": [
+                                        "TAM: 2.26 million unemployed Filipinos nationwide who could benefit from opportunity access.",
+                                        "SAM: 5.3 million residents across the Davao Region.",
+                                        "SOM: 300,000+ residents in Tagum City, with an initial pilot reach of 500-1000 users."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "featuredOnHome": false
+        },
+        {
+            "id": "project-baylora",
+            "title": "BAYLORA",
+            "shortDescription": "A modern mobile marketplace and trading platform built with Flutter and Supabase. Facilitates secure cash, trade, or mixed transactions with a real-time bidding system.",
+            "projectType": "MOBILE APPLICATION",
+            "dateCreated": "2026-03-01",
+            "liveUrl": "",
+            "githubUrl": "https://github.com/DominceAseberos/Baylora",
+            "primaryBtnUrl": "/assets/markdowns/baylora-skills.md",
+            "featuredInTunnel": false,
+            "mainImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+            "desktopImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+            "tabletImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+            "mobileImage": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile",
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+                "tablet": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+                "mobile": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile"
+            },
+            "contentSections": [
+                {
+                    "id": "baylora-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "baylora-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "baylora-overview-text",
+                                    "type": "text",
+                                    "fontSize": "xl",
+                                    "content": "Baylora is a flexible marketplace application that revives the bartering system for the digital age. It allows users to list items for straight cash, trade, or a mixed combination, supported by a real-time bidding and offer-management system."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "baylora-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "baylora-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "baylora-stack-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "Flutter (Dart)",
+                                        "Riverpod",
+                                        "Supabase",
+                                        "PostgreSQL"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "baylora-arch-right",
+                            "columnTitle": "Design Decisions",
+                            "blocks": [
+                                {
+                                    "id": "baylora-decisions",
+                                    "type": "text",
+                                    "fontSize": "md",
+                                    "content": "The application heavily utilizes Supabase as a Backend-as-a-Service (BaaS) to manage relational PostgreSQL data, securely authenticate users, and store media uploads efficiently, allowing the frontend logic to be cleanly managed by Riverpod."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "featuredOnHome": false
+        },
+        {
+            "id": "project-nlp",
+            "title": "NLP CLASSIFIER",
+            "shortDescription": "A specialized machine learning pipeline for topic classification and language detection across English, Tagalog, and Cebuano using BERTopic and BART models.",
+            "projectType": "MACHINE LEARNING",
+            "dateCreated": "2026-04-01",
+            "liveUrl": "",
+            "githubUrl": "https://github.com/KyndelRoy/NLP-Project",
+            "primaryBtnUrl": "/assets/markdowns/nlp-skills.md",
+            "featuredInTunnel": false,
+            "mainImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+            "desktopImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+            "tabletImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+            "mobileImage": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile",
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+                "tablet": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
+                "mobile": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile"
+            },
+            "contentSections": [
+                {
+                    "id": "nlp-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "nlp-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "nlp-overview-text",
+                                    "type": "text",
+                                    "fontSize": "xl",
+                                    "content": "This project tackles the complexity of multi-dialect natural language processing. It combines a custom language detection model with advanced Transformer-based topic extractors to accurately classify unstructured text in code-switched environments."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "nlp-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "nlp-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "nlp-stack-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "Python",
+                                        "FastAPI",
+                                        "BERTopic",
+                                        "BART-Large-MNLI",
+                                        "Scikit-Learn"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "nlp-arch-right",
+                            "columnTitle": "Design Decisions",
+                            "blocks": [
+                                {
+                                    "id": "nlp-decisions",
+                                    "type": "text",
+                                    "fontSize": "md",
+                                    "content": "The backend API leverages FastAPI to serve heavily cached .pkl model states. By pre-training the Logistic Regression, LDA, and BERTopic embeddings, the system reduces cold-start latency and can route input text to the correct model based on instant language identification."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "featuredOnHome": false
+        },
+        {
+            "id": "project-kernel",
+            "title": "KERNEL",
+            "shortDescription": "A high-end scroll-triggered digital experience built on React and GSAP. Employs a 'Prism & Glass' design system featuring a 40px blueprint grid and glowing cyan (#00ffcc) accents over a void navy (#0a0f1a) background.",
+            "projectType": "LANDING PAGE",
+            "dateCreated": "2026-03-22",
+            "liveUrl": "https://kernelprism.vercel.app/",
+            "githubUrl": "https://github.com/DominceAseberos/Refokus",
+            "primaryBtnUrl": "/assets/markdowns/kernel-skills.md",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-kernel/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-kernel/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-kernel/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-kernel/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-kernel/imgs/desktop-2.webp",
+                "/assets/uploads/project-kernel/imgs/desktop-3.webp",
+                "/assets/uploads/project-kernel/imgs/desktop-4.webp",
+                "/assets/uploads/project-kernel/imgs/desktop-5.webp",
+                "/assets/uploads/project-kernel/imgs/desktop-6.webp",
+                "/assets/uploads/project-kernel/imgs/desktop-7.webp",
+                "/assets/uploads/project-kernel/imgs/desktop-8.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-kernel/imgs/tablet-2.webp",
+                "/assets/uploads/project-kernel/imgs/tablet-3.webp",
+                "/assets/uploads/project-kernel/imgs/tablet-4.webp",
+                "/assets/uploads/project-kernel/imgs/tablet-5.webp",
+                "/assets/uploads/project-kernel/imgs/tablet-6.webp",
+                "/assets/uploads/project-kernel/imgs/tablet-7.webp",
+                "/assets/uploads/project-kernel/imgs/tablet-8.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-kernel/imgs/mobile-2.webp",
+                "/assets/uploads/project-kernel/imgs/mobile-3.webp",
+                "/assets/uploads/project-kernel/imgs/mobile-4.webp",
+                "/assets/uploads/project-kernel/imgs/mobile-5.webp",
+                "/assets/uploads/project-kernel/imgs/mobile-6.webp",
+                "/assets/uploads/project-kernel/imgs/mobile-7.webp",
+                "/assets/uploads/project-kernel/imgs/mobile-8.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-kernel/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-kernel/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-kernel/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "kernel-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "kernel-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "kernel-overview-text",
+                                    "type": "text",
+                                    "fontSize": "xl",
+                                    "content": "KERNEL is a sophisticated React-based framework designed for immersive, scroll-driven storytelling. It blends a 'Terminal-Glass' aesthetic with elite performance, serving as the core engine for high-end digital experiences."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "kernel-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "kernel-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "kernel-stack",
+                                    "type": "chips",
+                                    "items": [
+                                        "React 19",
+                                        "TypeScript",
+                                        "Vite 6",
+                                        "Tailwind CSS 4"
+                                    ]
+                                },
+                                {
+                                    "id": "kernel-anim",
+                                    "type": "heading",
+                                    "content": "Motion Engine"
+                                },
+                                {
+                                    "id": "kernel-anim-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "GSAP 3.14",
+                                        "Lenis",
+                                        "Framer Motion",
+                                        "SplitType"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "kernel-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "kernel-decisions",
+                                    "type": "list",
+                                    "items": [
+                                        "GSAP Viewport Pining — A critical viewport override was implemented—enforcing overflow-x: hidden strictly on the <html> tag—to prevent positioning recalculation errors and broken layouts during complex fixed-pinning phases.",
+                                        "Lenis Integration — Synchronized native GSAP scroll triggers with Lenis to ensure ultra-smooth, deterministic hardware-accelerated interpolation.",
+                                        "Audio-Active Sensory Loop — Implemented real-time synchronization between the user's scroll velocity and ambient acoustic humming for deep immersion."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "kernel-design",
+                    "sectionTitle": "Design System",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "kernel-colors",
+                            "columnTitle": "Color Palette",
+                            "blocks": [
+                                {
+                                    "id": "kernel-palette",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#0a0f1a",
+                                        "#00ffcc",
+                                        "#ffffff",
+                                        "rgba(0, 255, 204, 0.2)"
+                                    ]
+                                },
+                                {
+                                    "id": "kernel-color-notes",
+                                    "type": "list",
+                                    "items": [
+                                        "#0a0f1a — Void Navy (Deep atmospheric canvas)",
+                                        "#00ffcc — Neon Cyan (Primary interactive pulse)",
+                                        "rgba(0,255,204,0.2) — Translucent Accent (Glass layers)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "kernel-typography",
+                            "columnTitle": "Typography & Grid",
+                            "blocks": [
+                                {
+                                    "id": "kernel-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Playfair Display",
+                                            "family": "'Playfair Display', serif",
+                                            "role": "High-fashion editorial narrative and display headers"
+                                        },
+                                        {
+                                            "name": "JetBrains Mono",
+                                            "family": "'JetBrains Mono', monospace",
+                                            "role": "System logs, data UI elements, and technical diagnostics"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "kernel-grid",
+                                    "type": "list",
+                                    "items": [
+                                        "Blueprint Geometry — Relies on a strict 40px background grid generated purely via CSS linear-gradients to maintain the technical schematic aesthetic."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "featuredOnHome": false
+        },
+        {
+            "id": "project-vayora",
+            "title": "VAYORA",
+            "shortDescription": "A bespoke luxury travel curation platform built with React 18 and Framer Motion, featuring immersive micro-interactions and an elegant design system.",
+            "projectType": "LANDING PAGE",
+            "dateCreated": "2026-01-14",
+            "liveUrl": "https://vayora.vercel.app/",
+            "githubUrl": "https://github.com/DominceAseberos/Vayora",
+            "primaryBtnUrl": "/assets/markdowns/vayora-skills.md",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-vayora/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-vayora/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-vayora/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-vayora/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-vayora/imgs/desktop-2.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-3.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-4.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-5.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-6.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-7.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-8.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-9.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-10.webp",
+                "/assets/uploads/project-vayora/imgs/desktop-11.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-vayora/imgs/tablet-2.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-3.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-4.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-5.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-6.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-7.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-8.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-9.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-10.webp",
+                "/assets/uploads/project-vayora/imgs/tablet-11.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-vayora/imgs/mobile-2.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-3.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-4.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-5.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-6.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-7.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-8.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-9.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-10.webp",
+                "/assets/uploads/project-vayora/imgs/mobile-11.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-vayora/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-vayora/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-vayora/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "vayora-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "vayora-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "vayora-overview-text",
+                                    "type": "text",
+                                    "fontSize": "xl",
+                                    "content": "Vayora is an exclusive travel curation application focusing on luxury itineraries and high-end concierge services. Drawing inspiration from platforms like Airbnb Luxe and Black Tomato, the architecture leverages a modern React/Vite stack with highly optimized UI primitives (Radix UI) to deliver a seamless, premium web experience without compromising on performance."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "vayora-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "vayora-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "vayora-stack",
+                                    "type": "chips",
+                                    "items": [
+                                        "React 18",
+                                        "TypeScript",
+                                        "Vite",
+                                        "Tailwind CSS",
+                                        "shadcn/ui (Radix)"
+                                    ]
+                                },
+                                {
+                                    "id": "vayora-anim",
+                                    "type": "heading",
+                                    "content": "Interaction Libraries"
+                                },
+                                {
+                                    "id": "vayora-anim-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "Framer Motion",
+                                        "Embla Carousel",
+                                        "Vaul (Drawers)",
+                                        "Sonner (Toasts)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "vayora-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "vayora-decisions",
+                                    "type": "list",
+                                    "items": [
+                                        "Component Primitives — Integrated Radix UI via shadcn/ui to ensure fully accessible, unstyled core components that were subsequently themed with the bespoke Vayora design system.",
+                                        "Fluid Animations — Implemented Framer Motion and tailwindcss-animate to orchestrate smooth entrance reveals ('Fade In Up'), continuous 'Ticker' scroll galleries, and hardware-accelerated drawer transitions.",
+                                        "Strict Typings — Enforced full strict-mode TypeScript across all React components and data interfaces to guarantee runtime safety during itinerary rendering."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "vayora-design",
+                    "sectionTitle": "Design System",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "vayora-colors",
+                            "columnTitle": "Color Palette",
+                            "blocks": [
+                                {
+                                    "id": "vayora-palette",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#FAF6EF",
+                                        "#1E2A38",
+                                        "#FFFFFF",
+                                        "#B8943F",
+                                        "#C6735A",
+                                        "#A9998A"
+                                    ]
+                                },
+                                {
+                                    "id": "vayora-color-notes",
+                                    "type": "list",
+                                    "items": [
+                                        "#FAF6EF — Ivory Sand (Warm primary background)",
+                                        "#1E2A38 — Deep Slate (High contrast foreground)",
+                                        "#B8943F — Horizon Gold (Primary interactive accent)",
+                                        "#C6735A — Terracotta Blush (Warm highlights)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "vayora-typography",
+                            "columnTitle": "Typography",
+                            "blocks": [
+                                {
+                                    "id": "vayora-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Libre Baskerville",
+                                            "family": "'Libre Baskerville', serif",
+                                            "role": "Elegant, commanding display headings (H1-H6)"
+                                        },
+                                        {
+                                            "name": "Jost",
+                                            "family": "'Jost', sans-serif",
+                                            "role": "Clean and modern UI elements and navigation"
+                                        },
+                                        {
+                                            "name": "Lora",
+                                            "family": "'Lora', serif",
+                                            "role": "Premium, editorial body copy"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "featuredOnHome": true
+        },
+        {
+            "id": "project-banana-leaf-detector",
+            "title": "BANANA LEAF DETECTOR",
+            "shortDescription": "A premium Flask web application featuring active learning and computer vision to detect banana leaf diseases in real-time with instant local model retraining based on user feedback.",
+            "projectType": "CASE STUDY",
+            "dateCreated": "2025-10-09",
+            "liveUrl": "",
+            "githubUrl": "https://github.com/Domincee/Banana-Leaf-Detector",
+            "primaryBtnUrl": "/assets/markdowns/banana-leaf-casestudy.md",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-banana-leaf-detector/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-banana-leaf-detector/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-2.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-3.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-4.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-2.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-3.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-4.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-2.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-3.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-4.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-banana-leaf-detector/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-banana-leaf-detector/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "banana-leaf-detector-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-overview-text",
+                                    "type": "text",
+                                    "content": "Banana Leaf Disease Detector is a machine learning web application designed to help farmers execute immediate, localized crop diagnostics. As the Team Lead and ML Engineer for this 3-person academic project, I managed task delegation, repository versioning, and architected the data pipeline. Because traditional ML algorithms like KNN cannot process raw pixels as easily as modern Deep Learning networks, we built a custom feature extraction engine using OpenCV and Scikit-Image to process plant imagery into a dense 59-dimensional feature fingerprint. A localized K-Nearest Neighbors (k=5) classifier then uses this vector for real-time predictions, allowing highly accurate, lightweight crop analysis without heavy neural networks."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "banana-leaf-detector-arch",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-core",
+                                    "type": "chips",
+                                    "items": [
+                                        "Flask",
+                                        "Python 3.12",
+                                        "HTML5 / CSS3",
+                                        "JavaScript (Vanilla)"
+                                    ]
+                                },
+                                {
+                                    "id": "banana-leaf-detector-ml-label",
+                                    "type": "heading",
+                                    "content": "Machine Learning & CV"
+                                },
+                                {
+                                    "id": "banana-leaf-detector-ml-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "scikit-learn (KNN)",
+                                        "OpenCV (cv2)",
+                                        "scikit-image",
+                                        "NumPy",
+                                        "Pandas"
+                                    ]
+                                },
+                                {
+                                    "id": "banana-leaf-detector-db-label",
+                                    "type": "heading",
+                                    "content": "Cloud Infrastructure"
+                                },
+                                {
+                                    "id": "banana-leaf-detector-db-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "Firebase Admin SDK",
+                                        "Firestore (NoSQL)",
+                                        "Chart.js (Visuals)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "banana-leaf-detector-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-decisions",
+                                    "type": "list",
+                                    "items": [
+                                        "Proprietary Dataset Creation — Bypassed expensive/unavailable datasets by taking manual photos of banana leaves in the field, managing the entire data ingestion pipeline from scratch.",
+                                        "Mitigating Overfitting via Data Augmentation — Built a custom augmentation script (generate_aug.py) to automatically rotate, flip, and scale our limited proprietary dataset, artificially expanding the training size for the KNN model.",
+                                        "Negative Class Implementation — Identified a critical vulnerability where the model classified random objects as diseases (false positives). Solved this by writing a web scraper to gather non-leaf images from Unsplash, successfully teaching the model a \"Background/Negative\" class.",
+                                        "Dynamic Leaf Masking & Feature Extraction — Extracted 59 unique color, texture, and structural features from uploaded crop images on-the-fly using Grey-Level Co-occurrence Matrices (GLCM) and Local Binary Patterns (LBP).",
+                                        "Closed-Loop Retraining Thread — When a prediction error is corrected by users, the feature vector is committed to Firestore and the KNN model is instantly retrained in-process under 200ms."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "banana-leaf-detector-design",
+                    "sectionTitle": "Design System",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-colors",
+                            "columnTitle": "Color Palette",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-palette",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#667eea",
+                                        "#764ba2",
+                                        "#e0e7ff",
+                                        "#27ae60",
+                                        "#c0392b",
+                                        "#f39c12"
+                                    ]
+                                },
+                                {
+                                    "id": "banana-leaf-detector-color-notes",
+                                    "type": "list",
+                                    "items": [
+                                        "#667eea — Brand Royal Blue (Primary actions, gradients)",
+                                        "#764ba2 — Deep Violet (Secondary accent)",
+                                        "#e0e7ff — Indigo Tint (Active state borders, tags)",
+                                        "#27ae60 — Forest Green (Healthy leaf status)",
+                                        "#c0392b — Crimson Red (Unhealthy disease status)",
+                                        "#f39c12 — Ochre Yellow (Active Learning correction warnings)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "banana-leaf-detector-type",
+                            "columnTitle": "Typography",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Inter",
+                                            "family": "'Inter', 'Segoe UI', sans-serif",
+                                            "role": "General content, interactive panels, analytics labels"
+                                        },
+                                        {
+                                            "name": "Segoe UI",
+                                            "family": "'Segoe UI', 'Helvetica Neue', Arial",
+                                            "role": "High-performance native UI fallbacks for smooth cross-device styling"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "banana-leaf-detector-features",
+                    "sectionTitle": "Features",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-feat-left",
+                            "columnTitle": "Active Learning Real-time Loop",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-feat-left-text",
+                                    "type": "text",
+                                    "content": "Integrates a closed-loop active learning system where classifier errors are immediately corrected by the user. The corrected sample's 59-dimensional feature matrix is dynamically appended to the training set and triggers background scikit-learn KNN (k=5) model retraining in under 200ms with live model weights updates in-process, allowing continuous classifier improvements."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "banana-leaf-detector-feat-right",
+                            "columnTitle": "Multi-Dimensional CV Feature Pipeline",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-feat-right-text",
+                                    "type": "text",
+                                    "content": "Extracts 59 unique color, texture, and structural features from uploaded crop images on-the-fly. Leverages Grey-Level Co-occurrence Matrices (GLCM) with 64 levels at a pixel distance of 5 for texture, Local Binary Patterns (LBP) with P=8 and R=1 for disease-spot boundaries, and HSV/LAB color Moments alongside a 16-bin Hue histogram for rapid chlorosis screening."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "banana-leaf-detector-perf",
+                    "sectionTitle": "Performance",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "banana-leaf-detector-perf-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "banana-leaf-detector-perf-list",
+                                    "type": "list",
+                                    "items": [
+                                        "Predictive Latency: < 80ms for complete OpenCV feature extraction and KNN classification on local hosts.",
+                                        "In-Process Retraining Convergence: < 200ms background scikit-learn KNN fit cycle following user correction events.",
+                                        "Edge Friendly Footprint: Bypasses heavy deep learning dependencies, allowing the entire application and active learning pipeline to run smoothly on extremely lightweight compute servers.",
+                                        "Analytical Load Times: Highly-optimized NoSQL database schema enables instant aggregation of thousands of historical scan entries for Chart.js canvas elements."
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "featuredOnHome": true
+        },
+        {
+            "id": "project-pixvault",
+            "title": "PIXVAULT",
+            "shortDescription": "A premium design resource SPA aggregating GIFs, icons, UI components, and illustrations. Built with React 18 and a cyberpunk design system.",
+            "images": [],
+            "projectType": "WEB APPLICATION",
+            "mainImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
+                "tablet": "/assets/uploads/project-pixvault/imgs/tablet.png",
+                "mobile": "/assets/uploads/project-pixvault/imgs/hero_mobile.png"
+            },
+            "liveUrl": "https://live-pixvault.vercel.app/",
+            "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
+            "primaryBtnUrl": "/assets/markdowns/pixvault-docs.md",
+            "desktopImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
+            "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.png",
+            "mobileImage": "/assets/uploads/project-pixvault/imgs/hero_mobile.png",
+            "desktopGallery": [
+                "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
+                "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-pixvault/imgs/mobile_sec2.png",
+                "/assets/uploads/project-pixvault/imgs/mobile_sec3.png",
+                "/assets/uploads/project-pixvault/imgs/mobile_sec4.png",
+                "/assets/uploads/project-pixvault/imgs/mobile_sec5.png"
+            ],
+            "featuredInTunnel": true,
+            "dateCreated": "2026-05-01",
+            "contentSections": [
+                {
+                    "id": "pv-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "pv-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "pv-overview-text",
+                                    "type": "text",
+                                    "content": "PIXVAULT is a single-page application that centralizes design resources for developers and designers. It pulls live data from multiple external APIs — GIFs from Reddit, icons from Iconify, UI components from shadcn/ui, and illustrations from open sources — and presents them in a unified, searchable interface. No accounts required, no paywalls."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-architecture",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "pv-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "pv-core-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "React 18.3",
+                                        "TypeScript 5.8",
+                                        "Vite 5.4"
+                                    ]
+                                },
+                                {
+                                    "id": "pv-state-label",
+                                    "type": "heading",
+                                    "content": "State & Data"
+                                },
+                                {
+                                    "id": "pv-state-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "TanStack Query 5",
+                                        "React Router 6",
+                                        "Zod",
+                                        "React Hook Form"
+                                    ]
+                                },
+                                {
+                                    "id": "pv-ui-label",
+                                    "type": "heading",
+                                    "content": "UI & Animation"
+                                },
+                                {
+                                    "id": "pv-ui-chips",
+                                    "type": "chips",
+                                    "items": [
+                                        "Tailwind CSS 3",
+                                        "shadcn/ui",
+                                        "Framer Motion 12",
+                                        "Lucide React"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "pv-arch-right",
+                            "columnTitle": "Engineering Decisions",
+                            "blocks": [
+                                {
+                                    "id": "pv-decisions",
+                                    "type": "list",
+                                    "items": [
+                                        "TanStack Query handles all API fetching, caching, and background refetching — no manual loading state management",
+                                        "Zod schemas validate all external API responses at runtime to prevent runtime crashes from shape changes",
+                                        "shadcn/ui primitives used for accessible components — no custom modal/dropdown logic needed",
+                                        "React Router with lazy-loaded routes keeps initial bundle small",
+                                        "Framer Motion used only for entrance animations — no layout animations that could cause reflow"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-design",
+                    "sectionTitle": "Design System",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "pv-colors",
+                            "columnTitle": "Color Palette",
+                            "blocks": [
+                                {
+                                    "id": "pv-palette",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#080c14",
+                                        "#00d4ff",
+                                        "#8b5cf6",
+                                        "#ff4d6d",
+                                        "#1a1f2e"
+                                    ]
+                                },
+                                {
+                                    "id": "pv-color-notes",
+                                    "type": "list",
+                                    "items": [
+                                        "#080c14 — Void Black (background)",
+                                        "#00d4ff — Neon Cyan (primary actions)",
+                                        "#8b5cf6 — Electric Violet (secondary)",
+                                        "#ff4d6d — Hot Coral (accents, tags)",
+                                        "#1a1f2e — Night Panel (card surfaces)"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "pv-typography",
+                            "columnTitle": "Typography",
+                            "blocks": [
+                                {
+                                    "id": "pv-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Space Grotesk",
+                                            "family": "'Space Grotesk', sans-serif",
+                                            "role": "Headings · Buttons · Display text"
+                                        },
+                                        {
+                                            "name": "JetBrains Mono",
+                                            "family": "'JetBrains Mono', monospace",
+                                            "role": "Tags · Labels · Technical text"
+                                        },
+                                        {
+                                            "name": "Inter",
+                                            "family": "'Inter', sans-serif",
+                                            "role": "Body text · Descriptions"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-features",
+                    "sectionTitle": "Features",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "pv-feat-left",
+                            "columnTitle": "GIF & Icon Discovery",
+                            "blocks": [
+                                {
+                                    "id": "pv-gif-text",
+                                    "type": "text",
+                                    "content": "GIFs are pulled live from Reddit's top GIF communities with search and category filtering. Icons are sourced from Iconify — covering Lucide, Material, Heroicons, Tabler, and Phosphor — with copy-SVG and download functionality."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "pv-feat-right",
+                            "columnTitle": "UI Components & Inspiration",
+                            "blocks": [
+                                {
+                                    "id": "pv-ui-text",
+                                    "type": "text",
+                                    "content": "Pre-built shadcn/ui components are displayed with copy-paste code snippets. Each component is fully typed, WCAG-accessible, and Tailwind-customizable. The inspiration feed aggregates curated design content from multiple sources."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-skills",
+                    "sectionTitle": "Design System Prompt",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "pv-skills-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "pv-skills-text",
+                                    "type": "text",
+                                    "content": "PIXVAULT ships with a complete design system prompt for AI agents. Copy it into any AI conversation to instantly replicate the dark cyberpunk aesthetic — colors, typography, component patterns, spacing, and visual effects — in any new project."
+                                },
+                                {
+                                    "id": "pv-skills-link",
+                                    "type": "link",
+                                    "label": "View Design System on GitHub",
+                                    "url": "https://github.com/DominceAseberos/live-pixvault/blob/main/SKILLS.md"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "pv-performance",
+                    "sectionTitle": "Performance",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "pv-perf-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "pv-perf-list",
+                                    "type": "list",
+                                    "items": [
+                                        "TanStack Query caches all API responses — repeat visits load instantly with stale-while-revalidate",
+                                        "Lazy-loaded routes — only the active section's JS is loaded on navigation",
+                                        "All images lazy-loaded with placeholder shimmer animations",
+                                        "Framer Motion animations use transform/opacity only — no layout triggers",
+                                        "Deployed on Vercel with edge CDN — sub-100ms TTFB globally"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "featuredOnHome": true
         }
-      ],
-      "primaryBtnUrl": "/assets/markdowns/github-universe-docs.md"
-    },
-    {
-      "id": "project-catsy",
-      "title": "CATSY COFFEE",
-      "shortDescription": "A multi-platform cafe operations system featuring a FastAPI backend, a React web storefront, and a Flutter POS mobile app. Real-time sync via WebSockets and offline-first mobile capability.",
-      "projectType": "FULL-STACK APPLICATION",
-      "dateCreated": "2025-10-15",
-      "liveUrl": "https://catsy-coffee.vercel.app/",
-      "githubUrl": "https://github.com/Domincee/CATSY",
-      "primaryBtnUrl": "/assets/docs/catsy.docx",
-      "featuredInTunnel": true,
-      "mainImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
-      "desktopImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
-      "tabletImage": "/assets/uploads/project-catsy/imgs/tablet.webp",
-      "mobileImage": "/assets/uploads/project-catsy/imgs/mobile.webp",
-      "desktopGallery": [
-        "/assets/uploads/project-catsy/imgs/desktop-2.webp",
-        "/assets/uploads/project-catsy/imgs/desktop-3.webp",
-        "/assets/uploads/project-catsy/imgs/desktop-4.webp",
-        "/assets/uploads/project-catsy/imgs/desktop-5.webp",
-        "/assets/uploads/project-catsy/imgs/desktop-6.webp"
-      ],
-      "tabletGallery": [
-        "/assets/uploads/project-catsy/imgs/tablet-2.webp",
-        "/assets/uploads/project-catsy/imgs/tablet-3.webp",
-        "/assets/uploads/project-catsy/imgs/tablet-4.webp",
-        "/assets/uploads/project-catsy/imgs/tablet-5.webp",
-        "/assets/uploads/project-catsy/imgs/tablet-6.webp"
-      ],
-      "mobileGallery": [
-        "/assets/uploads/project-catsy/imgs/mobile-2.webp",
-        "/assets/uploads/project-catsy/imgs/mobile-3.webp",
-        "/assets/uploads/project-catsy/imgs/mobile-4.webp",
-        "/assets/uploads/project-catsy/imgs/mobile-5.webp",
-        "/assets/uploads/project-catsy/imgs/mobile-6.webp"
-      ],
-      "images": [],
-      "galleryImages": [],
-      "assets": {
-        "desktop": "/assets/uploads/project-catsy/imgs/desktop.webp",
-        "tablet": "/assets/uploads/project-catsy/imgs/tablet.webp",
-        "mobile": "/assets/uploads/project-catsy/imgs/mobile.webp"
-      },
-      "contentSections": [
-        {
-          "id": "catsy-overview",
-          "sectionTitle": "Overview",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "catsy-overview-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "catsy-overview-text",
-                  "type": "text",
-                  "fontSize": "xl",
-                  "content": "Catsy Coffee is a fully integrated 3-tier system built to handle cafe operations. From the React storefront to the offline-first Flutter POS app, it uses real-time WebSockets and SSE to keep all devices perfectly synced."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "catsy-architecture",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "catsy-arch-left",
-              "columnTitle": "Tech Stack",
-              "blocks": [
-                {
-                  "id": "catsy-stack-chips",
-                  "type": "chips",
-                  "items": [
-                    "FastAPI",
-                    "React / Vite",
-                    "Flutter",
-                    "Supabase"
-                  ]
-                },
-                {
-                  "id": "catsy-db-label",
-                  "type": "heading",
-                  "content": "Database & Sync"
-                },
-                {
-                  "id": "catsy-db-chips",
-                  "type": "chips",
-                  "items": [
-                    "PostgreSQL",
-                    "SQLite (Drift)",
-                    "WebSockets",
-                    "SSE"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "catsy-arch-right",
-              "columnTitle": "Design Decisions",
-              "blocks": [
-                {
-                  "id": "catsy-decisions",
-                  "type": "text",
-                  "fontSize": "md",
-                  "content": "The architecture was heavily influenced by the need for operational reliability. If the cafe internet drops, the Flutter POS app seamlessly falls back to a local SQLite database (via Drift) and queues all transactions, synchronizing automatically when the connection is restored."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "catsy-features",
-          "sectionTitle": "Key Features",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "catsy-feat-left",
-              "columnTitle": "Real-Time Notifications",
-              "blocks": [
-                {
-                  "id": "catsy-feat-left-text",
-                  "type": "text",
-                  "fontSize": "md",
-                  "content": "Leveraging Firebase Cloud Messaging (FCM) and Supabase database triggers, the system pushes instant background notifications to staff mobile devices whenever a new order is received or an inventory alert is triggered."
-                }
-              ]
-            },
-            {
-              "id": "catsy-feat-right",
-              "columnTitle": "Admin Dashboard",
-              "blocks": [
-                {
-                  "id": "catsy-feat-right-text",
-                  "type": "text",
-                  "fontSize": "md",
-                  "content": "The React web application serves dual purposes: a customer-facing menu and a secure, gated admin panel allowing management to update products, view sales reports, and manage staff roles."
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "project-ganapph",
-      "title": "GANAP PH",
-      "shortDescription": "An AI-powered livelihood guidance platform designed to bridge unemployed and underemployed residents in Tagum City with personalized career roadmaps and government opportunities.",
-      "projectType": "CASE STUDY",
-      "dateCreated": "2026-02-10",
-      "liveUrl": "https://ganapph.vercel.app/",
-      "githubUrl": "https://github.com/DominceAseberos/GanapPH",
-      "primaryBtnUrl": "/assets/docs/GanapPH.docx",
-      "featuredInTunnel": false,
-      "mainImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
-      "desktopImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
-      "tabletImage": "/assets/uploads/project-ganapph/imgs/tablet.webp",
-      "mobileImage": "/assets/uploads/project-ganapph/imgs/mobile.webp",
-      "desktopGallery": [
-        "/assets/uploads/project-ganapph/imgs/desktop-2.webp",
-        "/assets/uploads/project-ganapph/imgs/desktop-3.webp",
-        "/assets/uploads/project-ganapph/imgs/desktop-4.webp",
-        "/assets/uploads/project-ganapph/imgs/desktop-5.webp",
-        "/assets/uploads/project-ganapph/imgs/desktop-6.webp",
-        "/assets/uploads/project-ganapph/imgs/desktop-7.webp"
-      ],
-      "tabletGallery": [
-        "/assets/uploads/project-ganapph/imgs/tablet-2.webp",
-        "/assets/uploads/project-ganapph/imgs/tablet-3.webp",
-        "/assets/uploads/project-ganapph/imgs/tablet-4.webp",
-        "/assets/uploads/project-ganapph/imgs/tablet-5.webp",
-        "/assets/uploads/project-ganapph/imgs/tablet-6.webp",
-        "/assets/uploads/project-ganapph/imgs/tablet-7.webp"
-      ],
-      "mobileGallery": [
-        "/assets/uploads/project-ganapph/imgs/mobile-2.webp",
-        "/assets/uploads/project-ganapph/imgs/mobile-3.webp",
-        "/assets/uploads/project-ganapph/imgs/mobile-4.webp",
-        "/assets/uploads/project-ganapph/imgs/mobile-5.webp",
-        "/assets/uploads/project-ganapph/imgs/mobile-6.webp",
-        "/assets/uploads/project-ganapph/imgs/mobile-7.webp"
-      ],
-      "images": [],
-      "galleryImages": [],
-      "assets": {
-        "desktop": "/assets/uploads/project-ganapph/imgs/desktop.webp",
-        "tablet": "/assets/uploads/project-ganapph/imgs/tablet.webp",
-        "mobile": "/assets/uploads/project-ganapph/imgs/mobile.webp"
-      },
-      "contentSections": [
-        {
-          "id": "ganap-problem",
-          "sectionTitle": "The Problem",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "ganap-prob-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "ganap-prob-text",
-                  "type": "text",
-                  "content": "Many residents in Tagum City are unemployed or underemployed not because they lack skills, but because they lack access to the right guidance. Opportunities like free TESDA training, DOLE assistance, and PESO referrals exist, but government websites are difficult to navigate for ordinary users with low digital literacy."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "ganap-solution",
-          "sectionTitle": "The Solution",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "ganap-sol-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "ganap-sol-text",
-                  "type": "text",
-                  "content": "GanapPH transforms confusing government information into a clear, step-by-step action plan. By asking simple onboarding questions (skills, location, work preference, and target income), the AI generates a personalized livelihood roadmap recommending training programs, local job opportunities, and microbusiness paths."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "ganap-personas",
-          "sectionTitle": "Target Personas",
-          "layout": "3-equal",
-          "columns": [
-            {
-              "id": "persona-1",
-              "columnTitle": "The Local Vendor",
-              "blocks": [
-                {
-                  "id": "p1-text",
-                  "type": "text",
-                  "content": "Anthony, 62, a vendor and former security guard with limited digital literacy. He struggles finding stable income and finds government processes confusing. He needs clear direction to improve his technical skills."
-                }
-              ]
-            },
-            {
-              "id": "persona-2",
-              "columnTitle": "The Student Part-Timer",
-              "blocks": [
-                {
-                  "id": "p2-text",
-                  "type": "text",
-                  "content": "Wilmar, 21, a college student balancing studies with work. He struggles finding flexible job opportunities and wants a clearer direction toward stable employment after graduation."
-                }
-              ]
-            },
-            {
-              "id": "persona-3",
-              "columnTitle": "Local Business Owners",
-              "blocks": [
-                {
-                  "id": "p3-text",
-                  "type": "text",
-                  "content": "Noel and Cherly, business managers relying on referrals and Facebook postings. They struggle to find workers that match their required skills and want to simplify local hiring."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "ganap-market",
-          "sectionTitle": "Market Sizing",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "market-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "market-list",
-                  "type": "list",
-                  "items": [
-                    "TAM: 2.26 million unemployed Filipinos nationwide who could benefit from opportunity access.",
-                    "SAM: 5.3 million residents across the Davao Region.",
-                    "SOM: 300,000+ residents in Tagum City, with an initial pilot reach of 500-1000 users."
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "project-baylora",
-      "title": "BAYLORA",
-      "shortDescription": "A modern mobile marketplace and trading platform built with Flutter and Supabase. Facilitates secure cash, trade, or mixed transactions with a real-time bidding system.",
-      "projectType": "MOBILE APPLICATION",
-      "dateCreated": "2026-03-01",
-      "liveUrl": "",
-      "githubUrl": "https://github.com/DominceAseberos/Baylora",
-      "primaryBtnUrl": "/assets/markdowns/baylora-skills.md",
-      "featuredInTunnel": false,
-      "mainImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "desktopImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "tabletImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "mobileImage": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile",
-      "desktopGallery": [],
-      "tabletGallery": [],
-      "mobileGallery": [],
-      "images": [],
-      "galleryImages": [],
-      "assets": {
-        "desktop": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-        "tablet": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-        "mobile": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile"
-      },
-      "contentSections": [
-        {
-          "id": "baylora-overview",
-          "sectionTitle": "Overview",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "baylora-overview-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "baylora-overview-text",
-                  "type": "text",
-                  "fontSize": "xl",
-                  "content": "Baylora is a flexible marketplace application that revives the bartering system for the digital age. It allows users to list items for straight cash, trade, or a mixed combination, supported by a real-time bidding and offer-management system."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "baylora-architecture",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "baylora-arch-left",
-              "columnTitle": "Tech Stack",
-              "blocks": [
-                {
-                  "id": "baylora-stack-chips",
-                  "type": "chips",
-                  "items": [
-                    "Flutter (Dart)",
-                    "Riverpod",
-                    "Supabase",
-                    "PostgreSQL"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "baylora-arch-right",
-              "columnTitle": "Design Decisions",
-              "blocks": [
-                {
-                  "id": "baylora-decisions",
-                  "type": "text",
-                  "fontSize": "md",
-                  "content": "The application heavily utilizes Supabase as a Backend-as-a-Service (BaaS) to manage relational PostgreSQL data, securely authenticate users, and store media uploads efficiently, allowing the frontend logic to be cleanly managed by Riverpod."
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "project-nlp",
-      "title": "NLP CLASSIFIER",
-      "shortDescription": "A specialized machine learning pipeline for topic classification and language detection across English, Tagalog, and Cebuano using BERTopic and BART models.",
-      "projectType": "MACHINE LEARNING",
-      "dateCreated": "2026-04-01",
-      "liveUrl": "",
-      "githubUrl": "https://github.com/KyndelRoy/NLP-Project",
-      "primaryBtnUrl": "/assets/markdowns/nlp-skills.md",
-      "featuredInTunnel": false,
-      "mainImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "desktopImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "tabletImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "mobileImage": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile",
-      "desktopGallery": [],
-      "tabletGallery": [],
-      "mobileGallery": [],
-      "images": [],
-      "galleryImages": [],
-      "assets": {
-        "desktop": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-        "tablet": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-        "mobile": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile"
-      },
-      "contentSections": [
-        {
-          "id": "nlp-overview",
-          "sectionTitle": "Overview",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "nlp-overview-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "nlp-overview-text",
-                  "type": "text",
-                  "fontSize": "xl",
-                  "content": "This project tackles the complexity of multi-dialect natural language processing. It combines a custom language detection model with advanced Transformer-based topic extractors to accurately classify unstructured text in code-switched environments."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "nlp-architecture",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "nlp-arch-left",
-              "columnTitle": "Tech Stack",
-              "blocks": [
-                {
-                  "id": "nlp-stack-chips",
-                  "type": "chips",
-                  "items": [
-                    "Python",
-                    "FastAPI",
-                    "BERTopic",
-                    "BART-Large-MNLI",
-                    "Scikit-Learn"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "nlp-arch-right",
-              "columnTitle": "Design Decisions",
-              "blocks": [
-                {
-                  "id": "nlp-decisions",
-                  "type": "text",
-                  "fontSize": "md",
-                  "content": "The backend API leverages FastAPI to serve heavily cached .pkl model states. By pre-training the Logistic Regression, LDA, and BERTopic embeddings, the system reduces cold-start latency and can route input text to the correct model based on instant language identification."
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "project-kernel",
-      "title": "KERNEL",
-      "shortDescription": "A high-end scroll-triggered digital experience built on React and GSAP. Employs a 'Prism & Glass' design system featuring a 40px blueprint grid and glowing cyan (#00ffcc) accents over a void navy (#0a0f1a) background.",
-      "projectType": "LANDING PAGE",
-      "dateCreated": "2026-03-22",
-      "liveUrl": "https://kernelprism.vercel.app/",
-      "githubUrl": "https://github.com/DominceAseberos/Refokus",
-      "primaryBtnUrl": "/assets/markdowns/kernel-skills.md",
-      "featuredInTunnel": true,
-      "mainImage": "/assets/uploads/project-kernel/imgs/desktop.webp",
-      "desktopImage": "/assets/uploads/project-kernel/imgs/desktop.webp",
-      "tabletImage": "/assets/uploads/project-kernel/imgs/tablet.webp",
-      "mobileImage": "/assets/uploads/project-kernel/imgs/mobile.webp",
-      "desktopGallery": [
-        "/assets/uploads/project-kernel/imgs/desktop-2.webp",
-        "/assets/uploads/project-kernel/imgs/desktop-3.webp",
-        "/assets/uploads/project-kernel/imgs/desktop-4.webp",
-        "/assets/uploads/project-kernel/imgs/desktop-5.webp",
-        "/assets/uploads/project-kernel/imgs/desktop-6.webp",
-        "/assets/uploads/project-kernel/imgs/desktop-7.webp",
-        "/assets/uploads/project-kernel/imgs/desktop-8.webp"
-      ],
-      "tabletGallery": [
-        "/assets/uploads/project-kernel/imgs/tablet-2.webp",
-        "/assets/uploads/project-kernel/imgs/tablet-3.webp",
-        "/assets/uploads/project-kernel/imgs/tablet-4.webp",
-        "/assets/uploads/project-kernel/imgs/tablet-5.webp",
-        "/assets/uploads/project-kernel/imgs/tablet-6.webp",
-        "/assets/uploads/project-kernel/imgs/tablet-7.webp",
-        "/assets/uploads/project-kernel/imgs/tablet-8.webp"
-      ],
-      "mobileGallery": [
-        "/assets/uploads/project-kernel/imgs/mobile-2.webp",
-        "/assets/uploads/project-kernel/imgs/mobile-3.webp",
-        "/assets/uploads/project-kernel/imgs/mobile-4.webp",
-        "/assets/uploads/project-kernel/imgs/mobile-5.webp",
-        "/assets/uploads/project-kernel/imgs/mobile-6.webp",
-        "/assets/uploads/project-kernel/imgs/mobile-7.webp",
-        "/assets/uploads/project-kernel/imgs/mobile-8.webp"
-      ],
-      "images": [],
-      "galleryImages": [],
-      "assets": {
-        "desktop": "/assets/uploads/project-kernel/imgs/desktop.webp",
-        "tablet": "/assets/uploads/project-kernel/imgs/tablet.webp",
-        "mobile": "/assets/uploads/project-kernel/imgs/mobile.webp"
-      },
-      "contentSections": [
-        {
-          "id": "kernel-overview",
-          "sectionTitle": "Overview",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "kernel-overview-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "kernel-overview-text",
-                  "type": "text",
-                  "fontSize": "xl",
-                  "content": "KERNEL is a sophisticated React-based framework designed for immersive, scroll-driven storytelling. It blends a 'Terminal-Glass' aesthetic with elite performance, serving as the core engine for high-end digital experiences."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "kernel-architecture",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "kernel-arch-left",
-              "columnTitle": "Tech Stack",
-              "blocks": [
-                {
-                  "id": "kernel-stack",
-                  "type": "chips",
-                  "items": [
-                    "React 19",
-                    "TypeScript",
-                    "Vite 6",
-                    "Tailwind CSS 4"
-                  ]
-                },
-                {
-                  "id": "kernel-anim",
-                  "type": "heading",
-                  "content": "Motion Engine"
-                },
-                {
-                  "id": "kernel-anim-chips",
-                  "type": "chips",
-                  "items": [
-                    "GSAP 3.14",
-                    "Lenis",
-                    "Framer Motion",
-                    "SplitType"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "kernel-arch-right",
-              "columnTitle": "Engineering Decisions",
-              "blocks": [
-                {
-                  "id": "kernel-decisions",
-                  "type": "list",
-                  "items": [
-                    "GSAP Viewport Pining — A critical viewport override was implemented—enforcing overflow-x: hidden strictly on the <html> tag—to prevent positioning recalculation errors and broken layouts during complex fixed-pinning phases.",
-                    "Lenis Integration — Synchronized native GSAP scroll triggers with Lenis to ensure ultra-smooth, deterministic hardware-accelerated interpolation.",
-                    "Audio-Active Sensory Loop — Implemented real-time synchronization between the user's scroll velocity and ambient acoustic humming for deep immersion."
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "kernel-design",
-          "sectionTitle": "Design System",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "kernel-colors",
-              "columnTitle": "Color Palette",
-              "blocks": [
-                {
-                  "id": "kernel-palette",
-                  "type": "color-palette",
-                  "colors": [
-                    "#0a0f1a",
-                    "#00ffcc",
-                    "#ffffff",
-                    "rgba(0, 255, 204, 0.2)"
-                  ]
-                },
-                {
-                  "id": "kernel-color-notes",
-                  "type": "list",
-                  "items": [
-                    "#0a0f1a — Void Navy (Deep atmospheric canvas)",
-                    "#00ffcc — Neon Cyan (Primary interactive pulse)",
-                    "rgba(0,255,204,0.2) — Translucent Accent (Glass layers)"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "kernel-typography",
-              "columnTitle": "Typography & Grid",
-              "blocks": [
-                {
-                  "id": "kernel-fonts",
-                  "type": "font-preview",
-                  "fonts": [
-                    {
-                      "name": "Playfair Display",
-                      "family": "'Playfair Display', serif",
-                      "role": "High-fashion editorial narrative and display headers"
-                    },
-                    {
-                      "name": "JetBrains Mono",
-                      "family": "'JetBrains Mono', monospace",
-                      "role": "System logs, data UI elements, and technical diagnostics"
-                    }
-                  ]
-                },
-                {
-                  "id": "kernel-grid",
-                  "type": "list",
-                  "items": [
-                    "Blueprint Geometry — Relies on a strict 40px background grid generated purely via CSS linear-gradients to maintain the technical schematic aesthetic."
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "project-vayora",
-      "title": "VAYORA",
-      "shortDescription": "A bespoke luxury travel curation platform built with React 18 and Framer Motion, featuring immersive micro-interactions and an elegant design system.",
-      "projectType": "LANDING PAGE",
-      "dateCreated": "2026-01-14",
-      "liveUrl": "https://vayora.vercel.app/",
-      "githubUrl": "https://github.com/DominceAseberos/Vayora",
-      "primaryBtnUrl": "/assets/markdowns/vayora-skills.md",
-      "featuredInTunnel": true,
-      "mainImage": "/assets/uploads/project-vayora/imgs/desktop.webp",
-      "desktopImage": "/assets/uploads/project-vayora/imgs/desktop.webp",
-      "tabletImage": "/assets/uploads/project-vayora/imgs/tablet.webp",
-      "mobileImage": "/assets/uploads/project-vayora/imgs/mobile.webp",
-      "desktopGallery": [
-        "/assets/uploads/project-vayora/imgs/desktop-2.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-3.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-4.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-5.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-6.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-7.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-8.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-9.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-10.webp",
-        "/assets/uploads/project-vayora/imgs/desktop-11.webp"
-      ],
-      "tabletGallery": [
-        "/assets/uploads/project-vayora/imgs/tablet-2.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-3.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-4.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-5.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-6.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-7.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-8.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-9.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-10.webp",
-        "/assets/uploads/project-vayora/imgs/tablet-11.webp"
-      ],
-      "mobileGallery": [
-        "/assets/uploads/project-vayora/imgs/mobile-2.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-3.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-4.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-5.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-6.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-7.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-8.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-9.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-10.webp",
-        "/assets/uploads/project-vayora/imgs/mobile-11.webp"
-      ],
-      "images": [],
-      "galleryImages": [],
-      "assets": {
-        "desktop": "/assets/uploads/project-vayora/imgs/desktop.webp",
-        "tablet": "/assets/uploads/project-vayora/imgs/tablet.webp",
-        "mobile": "/assets/uploads/project-vayora/imgs/mobile.webp"
-      },
-      "contentSections": [
-        {
-          "id": "vayora-overview",
-          "sectionTitle": "Overview",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "vayora-overview-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "vayora-overview-text",
-                  "type": "text",
-                  "fontSize": "xl",
-                  "content": "Vayora is an exclusive travel curation application focusing on luxury itineraries and high-end concierge services. Drawing inspiration from platforms like Airbnb Luxe and Black Tomato, the architecture leverages a modern React/Vite stack with highly optimized UI primitives (Radix UI) to deliver a seamless, premium web experience without compromising on performance."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "vayora-architecture",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "vayora-arch-left",
-              "columnTitle": "Tech Stack",
-              "blocks": [
-                {
-                  "id": "vayora-stack",
-                  "type": "chips",
-                  "items": [
-                    "React 18",
-                    "TypeScript",
-                    "Vite",
-                    "Tailwind CSS",
-                    "shadcn/ui (Radix)"
-                  ]
-                },
-                {
-                  "id": "vayora-anim",
-                  "type": "heading",
-                  "content": "Interaction Libraries"
-                },
-                {
-                  "id": "vayora-anim-chips",
-                  "type": "chips",
-                  "items": [
-                    "Framer Motion",
-                    "Embla Carousel",
-                    "Vaul (Drawers)",
-                    "Sonner (Toasts)"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "vayora-arch-right",
-              "columnTitle": "Engineering Decisions",
-              "blocks": [
-                {
-                  "id": "vayora-decisions",
-                  "type": "list",
-                  "items": [
-                    "Component Primitives — Integrated Radix UI via shadcn/ui to ensure fully accessible, unstyled core components that were subsequently themed with the bespoke Vayora design system.",
-                    "Fluid Animations — Implemented Framer Motion and tailwindcss-animate to orchestrate smooth entrance reveals ('Fade In Up'), continuous 'Ticker' scroll galleries, and hardware-accelerated drawer transitions.",
-                    "Strict Typings — Enforced full strict-mode TypeScript across all React components and data interfaces to guarantee runtime safety during itinerary rendering."
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "vayora-design",
-          "sectionTitle": "Design System",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "vayora-colors",
-              "columnTitle": "Color Palette",
-              "blocks": [
-                {
-                  "id": "vayora-palette",
-                  "type": "color-palette",
-                  "colors": [
-                    "#FAF6EF",
-                    "#1E2A38",
-                    "#FFFFFF",
-                    "#B8943F",
-                    "#C6735A",
-                    "#A9998A"
-                  ]
-                },
-                {
-                  "id": "vayora-color-notes",
-                  "type": "list",
-                  "items": [
-                    "#FAF6EF — Ivory Sand (Warm primary background)",
-                    "#1E2A38 — Deep Slate (High contrast foreground)",
-                    "#B8943F — Horizon Gold (Primary interactive accent)",
-                    "#C6735A — Terracotta Blush (Warm highlights)"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "vayora-typography",
-              "columnTitle": "Typography",
-              "blocks": [
-                {
-                  "id": "vayora-fonts",
-                  "type": "font-preview",
-                  "fonts": [
-                    {
-                      "name": "Libre Baskerville",
-                      "family": "'Libre Baskerville', serif",
-                      "role": "Elegant, commanding display headings (H1-H6)"
-                    },
-                    {
-                      "name": "Jost",
-                      "family": "'Jost', sans-serif",
-                      "role": "Clean and modern UI elements and navigation"
-                    },
-                    {
-                      "name": "Lora",
-                      "family": "'Lora', serif",
-                      "role": "Premium, editorial body copy"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "project-banana-leaf-detector",
-      "title": "BANANA LEAF DETECTOR",
-      "shortDescription": "A premium Flask web application featuring active learning and computer vision to detect banana leaf diseases in real-time with instant local model retraining based on user feedback.",
-      "projectType": "CASE STUDY",
-      "dateCreated": "2025-10-09",
-      "liveUrl": "",
-      "githubUrl": "https://github.com/Domincee/Banana-Leaf-Detector",
-      "primaryBtnUrl": "/assets/markdowns/banana-leaf-casestudy.md",
-      "featuredInTunnel": true,
-      "mainImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
-      "desktopImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
-      "tabletImage": "/assets/uploads/project-banana-leaf-detector/imgs/tablet.webp",
-      "mobileImage": "/assets/uploads/project-banana-leaf-detector/imgs/mobile.webp",
-      "desktopGallery": [
-        "/assets/uploads/project-banana-leaf-detector/imgs/desktop-2.webp",
-        "/assets/uploads/project-banana-leaf-detector/imgs/desktop-3.webp",
-        "/assets/uploads/project-banana-leaf-detector/imgs/desktop-4.webp"
-      ],
-      "tabletGallery": [
-        "/assets/uploads/project-banana-leaf-detector/imgs/tablet-2.webp",
-        "/assets/uploads/project-banana-leaf-detector/imgs/tablet-3.webp",
-        "/assets/uploads/project-banana-leaf-detector/imgs/tablet-4.webp"
-      ],
-      "mobileGallery": [
-        "/assets/uploads/project-banana-leaf-detector/imgs/mobile-2.webp",
-        "/assets/uploads/project-banana-leaf-detector/imgs/mobile-3.webp",
-        "/assets/uploads/project-banana-leaf-detector/imgs/mobile-4.webp"
-      ],
-      "images": [],
-      "galleryImages": [],
-      "assets": {
-        "desktop": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
-        "tablet": "/assets/uploads/project-banana-leaf-detector/imgs/tablet.webp",
-        "mobile": "/assets/uploads/project-banana-leaf-detector/imgs/mobile.webp"
-      },
-      "contentSections": [
-        {
-          "id": "banana-leaf-detector-overview",
-          "sectionTitle": "Overview",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "banana-leaf-detector-overview-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "banana-leaf-detector-overview-text",
-                  "type": "text",
-                  "content": "Banana Leaf Disease Detector is a machine learning web application designed to help farmers execute immediate, localized crop diagnostics. As the Team Lead and ML Engineer for this 3-person academic project, I managed task delegation, repository versioning, and architected the data pipeline. Because traditional ML algorithms like KNN cannot process raw pixels as easily as modern Deep Learning networks, we built a custom feature extraction engine using OpenCV and Scikit-Image to process plant imagery into a dense 59-dimensional feature fingerprint. A localized K-Nearest Neighbors (k=5) classifier then uses this vector for real-time predictions, allowing highly accurate, lightweight crop analysis without heavy neural networks."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "banana-leaf-detector-arch",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "banana-leaf-detector-arch-left",
-              "columnTitle": "Tech Stack",
-              "blocks": [
-                {
-                  "id": "banana-leaf-detector-core",
-                  "type": "chips",
-                  "items": [
-                    "Flask",
-                    "Python 3.12",
-                    "HTML5 / CSS3",
-                    "JavaScript (Vanilla)"
-                  ]
-                },
-                {
-                  "id": "banana-leaf-detector-ml-label",
-                  "type": "heading",
-                  "content": "Machine Learning & CV"
-                },
-                {
-                  "id": "banana-leaf-detector-ml-chips",
-                  "type": "chips",
-                  "items": [
-                    "scikit-learn (KNN)",
-                    "OpenCV (cv2)",
-                    "scikit-image",
-                    "NumPy",
-                    "Pandas"
-                  ]
-                },
-                {
-                  "id": "banana-leaf-detector-db-label",
-                  "type": "heading",
-                  "content": "Cloud Infrastructure"
-                },
-                {
-                  "id": "banana-leaf-detector-db-chips",
-                  "type": "chips",
-                  "items": [
-                    "Firebase Admin SDK",
-                    "Firestore (NoSQL)",
-                    "Chart.js (Visuals)"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "banana-leaf-detector-arch-right",
-              "columnTitle": "Engineering Decisions",
-              "blocks": [
-                {
-                  "id": "banana-leaf-detector-decisions",
-                  "type": "list",
-                  "items": [
-                    "Proprietary Dataset Creation — Bypassed expensive/unavailable datasets by taking manual photos of banana leaves in the field, managing the entire data ingestion pipeline from scratch.",
-                    "Mitigating Overfitting via Data Augmentation — Built a custom augmentation script (generate_aug.py) to automatically rotate, flip, and scale our limited proprietary dataset, artificially expanding the training size for the KNN model.",
-                    "Negative Class Implementation — Identified a critical vulnerability where the model classified random objects as diseases (false positives). Solved this by writing a web scraper to gather non-leaf images from Unsplash, successfully teaching the model a \"Background/Negative\" class.",
-                    "Dynamic Leaf Masking & Feature Extraction — Extracted 59 unique color, texture, and structural features from uploaded crop images on-the-fly using Grey-Level Co-occurrence Matrices (GLCM) and Local Binary Patterns (LBP).",
-                    "Closed-Loop Retraining Thread — When a prediction error is corrected by users, the feature vector is committed to Firestore and the KNN model is instantly retrained in-process under 200ms."
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "banana-leaf-detector-design",
-          "sectionTitle": "Design System",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "banana-leaf-detector-colors",
-              "columnTitle": "Color Palette",
-              "blocks": [
-                {
-                  "id": "banana-leaf-detector-palette",
-                  "type": "color-palette",
-                  "colors": [
-                    "#667eea",
-                    "#764ba2",
-                    "#e0e7ff",
-                    "#27ae60",
-                    "#c0392b",
-                    "#f39c12"
-                  ]
-                },
-                {
-                  "id": "banana-leaf-detector-color-notes",
-                  "type": "list",
-                  "items": [
-                    "#667eea — Brand Royal Blue (Primary actions, gradients)",
-                    "#764ba2 — Deep Violet (Secondary accent)",
-                    "#e0e7ff — Indigo Tint (Active state borders, tags)",
-                    "#27ae60 — Forest Green (Healthy leaf status)",
-                    "#c0392b — Crimson Red (Unhealthy disease status)",
-                    "#f39c12 — Ochre Yellow (Active Learning correction warnings)"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "banana-leaf-detector-type",
-              "columnTitle": "Typography",
-              "blocks": [
-                {
-                  "id": "banana-leaf-detector-fonts",
-                  "type": "font-preview",
-                  "fonts": [
-                    {
-                      "name": "Inter",
-                      "family": "'Inter', 'Segoe UI', sans-serif",
-                      "role": "General content, interactive panels, analytics labels"
-                    },
-                    {
-                      "name": "Segoe UI",
-                      "family": "'Segoe UI', 'Helvetica Neue', Arial",
-                      "role": "High-performance native UI fallbacks for smooth cross-device styling"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "banana-leaf-detector-features",
-          "sectionTitle": "Features",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "banana-leaf-detector-feat-left",
-              "columnTitle": "Active Learning Real-time Loop",
-              "blocks": [
-                {
-                  "id": "banana-leaf-detector-feat-left-text",
-                  "type": "text",
-                  "content": "Integrates a closed-loop active learning system where classifier errors are immediately corrected by the user. The corrected sample's 59-dimensional feature matrix is dynamically appended to the training set and triggers background scikit-learn KNN (k=5) model retraining in under 200ms with live model weights updates in-process, allowing continuous classifier improvements."
-                }
-              ]
-            },
-            {
-              "id": "banana-leaf-detector-feat-right",
-              "columnTitle": "Multi-Dimensional CV Feature Pipeline",
-              "blocks": [
-                {
-                  "id": "banana-leaf-detector-feat-right-text",
-                  "type": "text",
-                  "content": "Extracts 59 unique color, texture, and structural features from uploaded crop images on-the-fly. Leverages Grey-Level Co-occurrence Matrices (GLCM) with 64 levels at a pixel distance of 5 for texture, Local Binary Patterns (LBP) with P=8 and R=1 for disease-spot boundaries, and HSV/LAB color Moments alongside a 16-bin Hue histogram for rapid chlorosis screening."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "banana-leaf-detector-perf",
-          "sectionTitle": "Performance",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "banana-leaf-detector-perf-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "banana-leaf-detector-perf-list",
-                  "type": "list",
-                  "items": [
-                    "Predictive Latency: < 80ms for complete OpenCV feature extraction and KNN classification on local hosts.",
-                    "In-Process Retraining Convergence: < 200ms background scikit-learn KNN fit cycle following user correction events.",
-                    "Edge Friendly Footprint: Bypasses heavy deep learning dependencies, allowing the entire application and active learning pipeline to run smoothly on extremely lightweight compute servers.",
-                    "Analytical Load Times: Highly-optimized NoSQL database schema enables instant aggregation of thousands of historical scan entries for Chart.js canvas elements."
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "project-pixvault",
-      "title": "PIXVAULT",
-      "shortDescription": "A premium design resource SPA aggregating GIFs, icons, UI components, and illustrations. Built with React 18 and a cyberpunk design system.",
-      "images": [],
-      "projectType": "WEB APPLICATION",
-      "mainImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
-      "galleryImages": [],
-      "assets": {
-        "desktop": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
-        "tablet": "/assets/uploads/project-pixvault/imgs/tablet.png",
-        "mobile": "/assets/uploads/project-pixvault/imgs/hero_mobile.png"
-      },
-      "liveUrl": "https://live-pixvault.vercel.app/",
-      "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
-      "primaryBtnUrl": "/assets/markdowns/pixvault-docs.md",
-      "desktopImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
-      "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.png",
-      "mobileImage": "/assets/uploads/project-pixvault/imgs/hero_mobile.png",
-      "desktopGallery": [
-        "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
-        "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
-        "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
-        "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
-      ],
-      "tabletGallery": [
-        "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
-        "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
-        "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
-        "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
-      ],
-      "mobileGallery": [
-        "/assets/uploads/project-pixvault/imgs/mobile_sec2.png",
-        "/assets/uploads/project-pixvault/imgs/mobile_sec3.png",
-        "/assets/uploads/project-pixvault/imgs/mobile_sec4.png",
-        "/assets/uploads/project-pixvault/imgs/mobile_sec5.png"
-      ],
-      "featuredInTunnel": true,
-      "dateCreated": "2026-05-01",
-      "contentSections": [
-        {
-          "id": "pv-overview",
-          "sectionTitle": "Overview",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "pv-overview-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "pv-overview-text",
-                  "type": "text",
-                  "content": "PIXVAULT is a single-page application that centralizes design resources for developers and designers. It pulls live data from multiple external APIs — GIFs from Reddit, icons from Iconify, UI components from shadcn/ui, and illustrations from open sources — and presents them in a unified, searchable interface. No accounts required, no paywalls."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "pv-architecture",
-          "sectionTitle": "Architecture",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "pv-arch-left",
-              "columnTitle": "Tech Stack",
-              "blocks": [
-                {
-                  "id": "pv-core-chips",
-                  "type": "chips",
-                  "items": [
-                    "React 18.3",
-                    "TypeScript 5.8",
-                    "Vite 5.4"
-                  ]
-                },
-                {
-                  "id": "pv-state-label",
-                  "type": "heading",
-                  "content": "State & Data"
-                },
-                {
-                  "id": "pv-state-chips",
-                  "type": "chips",
-                  "items": [
-                    "TanStack Query 5",
-                    "React Router 6",
-                    "Zod",
-                    "React Hook Form"
-                  ]
-                },
-                {
-                  "id": "pv-ui-label",
-                  "type": "heading",
-                  "content": "UI & Animation"
-                },
-                {
-                  "id": "pv-ui-chips",
-                  "type": "chips",
-                  "items": [
-                    "Tailwind CSS 3",
-                    "shadcn/ui",
-                    "Framer Motion 12",
-                    "Lucide React"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "pv-arch-right",
-              "columnTitle": "Engineering Decisions",
-              "blocks": [
-                {
-                  "id": "pv-decisions",
-                  "type": "list",
-                  "items": [
-                    "TanStack Query handles all API fetching, caching, and background refetching — no manual loading state management",
-                    "Zod schemas validate all external API responses at runtime to prevent runtime crashes from shape changes",
-                    "shadcn/ui primitives used for accessible components — no custom modal/dropdown logic needed",
-                    "React Router with lazy-loaded routes keeps initial bundle small",
-                    "Framer Motion used only for entrance animations — no layout animations that could cause reflow"
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "pv-design",
-          "sectionTitle": "Design System",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "pv-colors",
-              "columnTitle": "Color Palette",
-              "blocks": [
-                {
-                  "id": "pv-palette",
-                  "type": "color-palette",
-                  "colors": [
-                    "#080c14",
-                    "#00d4ff",
-                    "#8b5cf6",
-                    "#ff4d6d",
-                    "#1a1f2e"
-                  ]
-                },
-                {
-                  "id": "pv-color-notes",
-                  "type": "list",
-                  "items": [
-                    "#080c14 — Void Black (background)",
-                    "#00d4ff — Neon Cyan (primary actions)",
-                    "#8b5cf6 — Electric Violet (secondary)",
-                    "#ff4d6d — Hot Coral (accents, tags)",
-                    "#1a1f2e — Night Panel (card surfaces)"
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "pv-typography",
-              "columnTitle": "Typography",
-              "blocks": [
-                {
-                  "id": "pv-fonts",
-                  "type": "font-preview",
-                  "fonts": [
-                    {
-                      "name": "Space Grotesk",
-                      "family": "'Space Grotesk', sans-serif",
-                      "role": "Headings · Buttons · Display text"
-                    },
-                    {
-                      "name": "JetBrains Mono",
-                      "family": "'JetBrains Mono', monospace",
-                      "role": "Tags · Labels · Technical text"
-                    },
-                    {
-                      "name": "Inter",
-                      "family": "'Inter', sans-serif",
-                      "role": "Body text · Descriptions"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "pv-features",
-          "sectionTitle": "Features",
-          "layout": "2-equal",
-          "columns": [
-            {
-              "id": "pv-feat-left",
-              "columnTitle": "GIF & Icon Discovery",
-              "blocks": [
-                {
-                  "id": "pv-gif-text",
-                  "type": "text",
-                  "content": "GIFs are pulled live from Reddit's top GIF communities with search and category filtering. Icons are sourced from Iconify — covering Lucide, Material, Heroicons, Tabler, and Phosphor — with copy-SVG and download functionality."
-                }
-              ]
-            },
-            {
-              "id": "pv-feat-right",
-              "columnTitle": "UI Components & Inspiration",
-              "blocks": [
-                {
-                  "id": "pv-ui-text",
-                  "type": "text",
-                  "content": "Pre-built shadcn/ui components are displayed with copy-paste code snippets. Each component is fully typed, WCAG-accessible, and Tailwind-customizable. The inspiration feed aggregates curated design content from multiple sources."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "pv-skills",
-          "sectionTitle": "Design System Prompt",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "pv-skills-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "pv-skills-text",
-                  "type": "text",
-                  "content": "PIXVAULT ships with a complete design system prompt for AI agents. Copy it into any AI conversation to instantly replicate the dark cyberpunk aesthetic — colors, typography, component patterns, spacing, and visual effects — in any new project."
-                },
-                {
-                  "id": "pv-skills-link",
-                  "type": "link",
-                  "label": "View Design System on GitHub",
-                  "url": "https://github.com/DominceAseberos/live-pixvault/blob/main/SKILLS.md"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "pv-performance",
-          "sectionTitle": "Performance",
-          "layout": "full",
-          "columns": [
-            {
-              "id": "pv-perf-col",
-              "columnTitle": "",
-              "blocks": [
-                {
-                  "id": "pv-perf-list",
-                  "type": "list",
-                  "items": [
-                    "TanStack Query caches all API responses — repeat visits load instantly with stale-while-revalidate",
-                    "Lazy-loaded routes — only the active section's JS is loaded on navigation",
-                    "All images lazy-loaded with placeholder shimmer animations",
-                    "Framer Motion animations use transform/opacity only — no layout triggers",
-                    "Deployed on Vercel with edge CDN — sub-100ms TTFB globally"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "customCategories": [
-    "Case Study"
-  ]
+    ],
+    "customCategories": [
+        "Case Study"
+    ]
 }

@@ -427,6 +427,12 @@ const ProjectsTab = () => {
                                 <Field label="Live URL"><input value={p.liveUrl||''} onChange={e=>updateProject(i,{liveUrl:e.target.value})} className={inputCls} placeholder="https://..." /></Field>
                                 <Field label="GitHub URL"><input value={p.githubUrl||''} onChange={e=>updateProject(i,{githubUrl:e.target.value})} className={inputCls} placeholder="https://github.com/..." /></Field>
                                 <Field label="Short Description" className="md:col-span-2"><textarea value={p.shortDescription||''} onChange={e=>updateProject(i,{shortDescription:e.target.value})} rows={3} className={textareaCls} /></Field>
+                                <div className="md:col-span-2 mt-1 mb-2">
+                                    <label className="flex items-center gap-2 cursor-pointer w-fit">
+                                        <input type="checkbox" checked={!!p.featuredOnHome} onChange={e=>updateProject(i,{featuredOnHome:e.target.checked})} className="w-4 h-4 rounded border-white/20 bg-black accent-[#c8ff3e] cursor-pointer" />
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Highlight on Hero Section</span>
+                                    </label>
+                                </div>
                             </div>
 
                             {/* Main image */}
