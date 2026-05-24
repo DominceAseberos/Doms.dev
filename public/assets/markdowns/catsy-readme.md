@@ -9,8 +9,8 @@ The platform is designed with a strong focus on real-time synchronization, offli
 The platform is divided into three core experiences:
 
 - **Customer (Web Storefront)**: Customers can browse the menu, place orders, book table reservations, and earn digital **Loyalty Stamps** for rewards.
-- **Staff (Mobile POS)**: Staff members use the Flutter mobile application to handle daily operations, manage walk-in/online orders, and process reservations directly from the shop floor.
-- **Admin (Web Dashboard)**: Store managers use the secure React web portal to oversee overall operations, update menus, view sales analytics, and manage staff accounts.
+- **Staff (Mobile POS)**: Staff members use the Flutter mobile application to handle daily operations, manage walk-in/online orders, process reservations, and view **AI-driven daily operational forecasts** directly from the shop floor.
+- **Admin (Web Dashboard)**: Store managers use the secure React web portal to oversee overall operations, update menus, view **comprehensive sales analytics**, and manage staff accounts.
 
 ### 🏗 Architecture (3-Tier & Monorepo)
 
@@ -29,6 +29,8 @@ Catsy Coffee follows a strict **3-Tier Architecture**, organized as a **Monorepo
 
 - **Real-Time Order Syncing**: Utilizes PostgreSQL triggers and Server-Sent Events (SSE) / WebSockets to instantly update screens across all web and mobile clients.
 - **Loyalty & Reservations**: Integrated customer loyalty stamp system and dynamic table reservation management.
+- **Admin Analytics**: The web dashboard provides in-depth analytics, tracking sales performance and inventory trends.
+- **Operational Forecasting**: The mobile app provides staff with intelligent operational forecasting to prepare for peak hours.
 - **Offline-First POS**: The staff mobile app uses Drift (SQLite) to store data locally, allowing operations to continue during network outages. Data is queued and automatically synced when the connection is restored.
 - **Push Notifications**: Integrated Firebase Cloud Messaging (FCM) to deliver instant order and reservation alerts directly to staff devices.
 
