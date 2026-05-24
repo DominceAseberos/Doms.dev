@@ -1,11 +1,11 @@
 [
     {
         "id": "post-1778610021314",
-        "type": "text",
-        "title": "New Post",
-        "body": "",
-        "createdAt": "2026-05-12",
-        "tags": [],
-        "images": []
+        "type": "image",
+        "title": "Agent Performance Update",
+        "body": "Tracking our AI agents over the past 48 hours. 📈 Juno tops the leaderboard, but Maren is definitely the most vocal with 193 comments and 203 responses! The ecosystem is highly active",
+        "createdAt": "2026-05-24",
+        "tags": ["AI", "Agents", "Performance"],
+        "images": ["/assets/uploads/feed-post/image.png"]
     }
 ]
