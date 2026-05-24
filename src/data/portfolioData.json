@@ -6,6 +6,110 @@
   ],
   "projects": [
     {
+      "id": "project-github-universe",
+      "title": "GITHUB UNIVERSE",
+      "shortDescription": "An interactive GitHub data visualization universe built with a static-data pipeline. It features a 4-level drill-down (Galaxy -> Country -> Users -> Repositories) driven by deep scraping and query-bucket partitioning.",
+      "projectType": "DATA VISUALIZATION",
+      "dateCreated": "2026-03-14",
+      "liveUrl": "https://gremote-universe.vercel.app/",
+      "githubUrl": "https://github.com/DominceAseberos/github-universe",
+      "featuredInTunnel": true,
+      "mainImage": "/assets/uploads/project-github-universe/imgs/desktop.webp",
+      "desktopImage": "/assets/uploads/project-github-universe/imgs/desktop.webp",
+      "tabletImage": "/assets/uploads/project-github-universe/imgs/tablet.webp",
+      "mobileImage": "/assets/uploads/project-github-universe/imgs/mobile.webp",
+      "desktopGallery": [
+        "/assets/uploads/project-github-universe/imgs/desktop-2.webp"
+      ],
+      "tabletGallery": [
+        "/assets/uploads/project-github-universe/imgs/tablet-2.webp"
+      ],
+      "mobileGallery": [
+        "/assets/uploads/project-github-universe/imgs/mobile-2.webp"
+      ],
+      "images": [],
+      "galleryImages": [],
+      "assets": {
+        "desktop": "/assets/uploads/project-github-universe/imgs/desktop.webp",
+        "tablet": "/assets/uploads/project-github-universe/imgs/tablet.webp",
+        "mobile": "/assets/uploads/project-github-universe/imgs/mobile.webp"
+      },
+      "contentSections": [
+        {
+          "id": "github-universe-overview",
+          "sectionTitle": "Overview",
+          "layout": "full",
+          "columns": [
+            {
+              "id": "github-universe-overview-col",
+              "columnTitle": "",
+              "blocks": [
+                {
+                  "id": "github-universe-overview-text",
+                  "type": "text",
+                  "fontSize": "xl",
+                  "content": "GitHub Universe is an experimental data visualization project that maps public GitHub activity into an explorable cosmos. Using a custom Python scraper with query-bucket partitioning and deep-scrape follower modes, the pipeline statically compiles millions of data points into a high-performance 4-level SVG and WebGL drill-down interface: Countries (Level 0), Cities (Level 1), Users (Level 2), and Repositories (Level 3)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "github-universe-architecture",
+          "sectionTitle": "Architecture",
+          "layout": "2-equal",
+          "columns": [
+            {
+              "id": "github-universe-arch-left",
+              "columnTitle": "Data Pipeline",
+              "blocks": [
+                {
+                  "id": "github-universe-stack-chips",
+                  "type": "chips",
+                  "items": [
+                    "Python 3.12",
+                    "JSON Data Engine",
+                    "Query-Bucket Partitioning",
+                    "GitHub Actions"
+                  ]
+                },
+                {
+                  "id": "github-universe-ui-label",
+                  "type": "heading",
+                  "content": "Visualization UI"
+                },
+                {
+                  "id": "github-universe-ui-chips",
+                  "type": "chips",
+                  "items": [
+                    "SVG Node Rendering",
+                    "Adaptive FPS HUD",
+                    "Vercel Deployment"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "github-universe-arch-right",
+              "columnTitle": "Engineering Decisions",
+              "blocks": [
+                {
+                  "id": "github-universe-decisions",
+                  "type": "list",
+                  "items": [
+                    "Static-Data Pipeline: Bypasses runtime backend requirements by compiling scraped data into `data/index.json` and partitioned `data/countries/{CODE}.json` files, achieving zero-latency data serving on Vercel.",
+                    "Query-Bucket Partitioning: The scraper logic segments API requests by 'follower' and 'year' buckets to circumvent top-result API caps, yielding a higher density of data representation per country node.",
+                    "Adaptive Rendering: Incorporates an automatic performance degradation engine (auto/high/mid/low) with a live FPS HUD, culling off-screen elements via wide-spread layouts and de-crowding algorithms to maintain 60 FPS in dense views."
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "primaryBtnUrl": "/assets/markdowns/github-universe-docs.md"
+    },
+    {
       "id": "project-catsy",
       "title": "CATSY COFFEE",
       "shortDescription": "A multi-platform cafe operations system featuring a FastAPI backend, a React web storefront, and a Flutter POS mobile app. Real-time sync via WebSockets and offline-first mobile capability.",
@@ -571,9 +675,9 @@
                   "id": "kernel-decisions",
                   "type": "list",
                   "items": [
-                    "GSAP Viewport Pining \u2014 A critical viewport override was implemented\u2014enforcing overflow-x: hidden strictly on the <html> tag\u2014to prevent positioning recalculation errors and broken layouts during complex fixed-pinning phases.",
-                    "Lenis Integration \u2014 Synchronized native GSAP scroll triggers with Lenis to ensure ultra-smooth, deterministic hardware-accelerated interpolation.",
-                    "Audio-Active Sensory Loop \u2014 Implemented real-time synchronization between the user's scroll velocity and ambient acoustic humming for deep immersion."
+                    "GSAP Viewport Pining — A critical viewport override was implemented—enforcing overflow-x: hidden strictly on the <html> tag—to prevent positioning recalculation errors and broken layouts during complex fixed-pinning phases.",
+                    "Lenis Integration — Synchronized native GSAP scroll triggers with Lenis to ensure ultra-smooth, deterministic hardware-accelerated interpolation.",
+                    "Audio-Active Sensory Loop — Implemented real-time synchronization between the user's scroll velocity and ambient acoustic humming for deep immersion."
                   ]
                 }
               ]
@@ -603,9 +707,9 @@
                   "id": "kernel-color-notes",
                   "type": "list",
                   "items": [
-                    "#0a0f1a \u2014 Void Navy (Deep atmospheric canvas)",
-                    "#00ffcc \u2014 Neon Cyan (Primary interactive pulse)",
-                    "rgba(0,255,204,0.2) \u2014 Translucent Accent (Glass layers)"
+                    "#0a0f1a — Void Navy (Deep atmospheric canvas)",
+                    "#00ffcc — Neon Cyan (Primary interactive pulse)",
+                    "rgba(0,255,204,0.2) — Translucent Accent (Glass layers)"
                   ]
                 }
               ]
@@ -634,7 +738,7 @@
                   "id": "kernel-grid",
                   "type": "list",
                   "items": [
-                    "Blueprint Geometry \u2014 Relies on a strict 40px background grid generated purely via CSS linear-gradients to maintain the technical schematic aesthetic."
+                    "Blueprint Geometry — Relies on a strict 40px background grid generated purely via CSS linear-gradients to maintain the technical schematic aesthetic."
                   ]
                 }
               ]
@@ -765,9 +869,9 @@
                   "id": "vayora-decisions",
                   "type": "list",
                   "items": [
-                    "Component Primitives \u2014 Integrated Radix UI via shadcn/ui to ensure fully accessible, unstyled core components that were subsequently themed with the bespoke Vayora design system.",
-                    "Fluid Animations \u2014 Implemented Framer Motion and tailwindcss-animate to orchestrate smooth entrance reveals ('Fade In Up'), continuous 'Ticker' scroll galleries, and hardware-accelerated drawer transitions.",
-                    "Strict Typings \u2014 Enforced full strict-mode TypeScript across all React components and data interfaces to guarantee runtime safety during itinerary rendering."
+                    "Component Primitives — Integrated Radix UI via shadcn/ui to ensure fully accessible, unstyled core components that were subsequently themed with the bespoke Vayora design system.",
+                    "Fluid Animations — Implemented Framer Motion and tailwindcss-animate to orchestrate smooth entrance reveals ('Fade In Up'), continuous 'Ticker' scroll galleries, and hardware-accelerated drawer transitions.",
+                    "Strict Typings — Enforced full strict-mode TypeScript across all React components and data interfaces to guarantee runtime safety during itinerary rendering."
                   ]
                 }
               ]
@@ -799,10 +903,10 @@
                   "id": "vayora-color-notes",
                   "type": "list",
                   "items": [
-                    "#FAF6EF \u2014 Ivory Sand (Warm primary background)",
-                    "#1E2A38 \u2014 Deep Slate (High contrast foreground)",
-                    "#B8943F \u2014 Horizon Gold (Primary interactive accent)",
-                    "#C6735A \u2014 Terracotta Blush (Warm highlights)"
+                    "#FAF6EF — Ivory Sand (Warm primary background)",
+                    "#1E2A38 — Deep Slate (High contrast foreground)",
+                    "#B8943F — Horizon Gold (Primary interactive accent)",
+                    "#C6735A — Terracotta Blush (Warm highlights)"
                   ]
                 }
               ]
@@ -952,11 +1056,11 @@
                   "id": "banana-leaf-detector-decisions",
                   "type": "list",
                   "items": [
-                    "Proprietary Dataset Creation \u2014 Bypassed expensive/unavailable datasets by taking manual photos of banana leaves in the field, managing the entire data ingestion pipeline from scratch.",
-                    "Mitigating Overfitting via Data Augmentation \u2014 Built a custom augmentation script (generate_aug.py) to automatically rotate, flip, and scale our limited proprietary dataset, artificially expanding the training size for the KNN model.",
-                    "Negative Class Implementation \u2014 Identified a critical vulnerability where the model classified random objects as diseases (false positives). Solved this by writing a web scraper to gather non-leaf images from Unsplash, successfully teaching the model a \"Background/Negative\" class.",
-                    "Dynamic Leaf Masking & Feature Extraction \u2014 Extracted 59 unique color, texture, and structural features from uploaded crop images on-the-fly using Grey-Level Co-occurrence Matrices (GLCM) and Local Binary Patterns (LBP).",
-                    "Closed-Loop Retraining Thread \u2014 When a prediction error is corrected by users, the feature vector is committed to Firestore and the KNN model is instantly retrained in-process under 200ms."
+                    "Proprietary Dataset Creation — Bypassed expensive/unavailable datasets by taking manual photos of banana leaves in the field, managing the entire data ingestion pipeline from scratch.",
+                    "Mitigating Overfitting via Data Augmentation — Built a custom augmentation script (generate_aug.py) to automatically rotate, flip, and scale our limited proprietary dataset, artificially expanding the training size for the KNN model.",
+                    "Negative Class Implementation — Identified a critical vulnerability where the model classified random objects as diseases (false positives). Solved this by writing a web scraper to gather non-leaf images from Unsplash, successfully teaching the model a \"Background/Negative\" class.",
+                    "Dynamic Leaf Masking & Feature Extraction — Extracted 59 unique color, texture, and structural features from uploaded crop images on-the-fly using Grey-Level Co-occurrence Matrices (GLCM) and Local Binary Patterns (LBP).",
+                    "Closed-Loop Retraining Thread — When a prediction error is corrected by users, the feature vector is committed to Firestore and the KNN model is instantly retrained in-process under 200ms."
                   ]
                 }
               ]
@@ -988,12 +1092,12 @@
                   "id": "banana-leaf-detector-color-notes",
                   "type": "list",
                   "items": [
-                    "#667eea \u2014 Brand Royal Blue (Primary actions, gradients)",
-                    "#764ba2 \u2014 Deep Violet (Secondary accent)",
-                    "#e0e7ff \u2014 Indigo Tint (Active state borders, tags)",
-                    "#27ae60 \u2014 Forest Green (Healthy leaf status)",
-                    "#c0392b \u2014 Crimson Red (Unhealthy disease status)",
-                    "#f39c12 \u2014 Ochre Yellow (Active Learning correction warnings)"
+                    "#667eea — Brand Royal Blue (Primary actions, gradients)",
+                    "#764ba2 — Deep Violet (Secondary accent)",
+                    "#e0e7ff — Indigo Tint (Active state borders, tags)",
+                    "#27ae60 — Forest Green (Healthy leaf status)",
+                    "#c0392b — Crimson Red (Unhealthy disease status)",
+                    "#f39c12 — Ochre Yellow (Active Learning correction warnings)"
                   ]
                 }
               ]
@@ -1128,7 +1232,7 @@
                 {
                   "id": "pv-overview-text",
                   "type": "text",
-                  "content": "PIXVAULT is a single-page application that centralizes design resources for developers and designers. It pulls live data from multiple external APIs \u2014 GIFs from Reddit, icons from Iconify, UI components from shadcn/ui, and illustrations from open sources \u2014 and presents them in a unified, searchable interface. No accounts required, no paywalls."
+                  "content": "PIXVAULT is a single-page application that centralizes design resources for developers and designers. It pulls live data from multiple external APIs — GIFs from Reddit, icons from Iconify, UI components from shadcn/ui, and illustrations from open sources — and presents them in a unified, searchable interface. No accounts required, no paywalls."
                 }
               ]
             }
@@ -1192,11 +1296,11 @@
                   "id": "pv-decisions",
                   "type": "list",
                   "items": [
-                    "TanStack Query handles all API fetching, caching, and background refetching \u2014 no manual loading state management",
+                    "TanStack Query handles all API fetching, caching, and background refetching — no manual loading state management",
                     "Zod schemas validate all external API responses at runtime to prevent runtime crashes from shape changes",
-                    "shadcn/ui primitives used for accessible components \u2014 no custom modal/dropdown logic needed",
+                    "shadcn/ui primitives used for accessible components — no custom modal/dropdown logic needed",
                     "React Router with lazy-loaded routes keeps initial bundle small",
-                    "Framer Motion used only for entrance animations \u2014 no layout animations that could cause reflow"
+                    "Framer Motion used only for entrance animations — no layout animations that could cause reflow"
                   ]
                 }
               ]
@@ -1227,11 +1331,11 @@
                   "id": "pv-color-notes",
                   "type": "list",
                   "items": [
-                    "#080c14 \u2014 Void Black (background)",
-                    "#00d4ff \u2014 Neon Cyan (primary actions)",
-                    "#8b5cf6 \u2014 Electric Violet (secondary)",
-                    "#ff4d6d \u2014 Hot Coral (accents, tags)",
-                    "#1a1f2e \u2014 Night Panel (card surfaces)"
+                    "#080c14 — Void Black (background)",
+                    "#00d4ff — Neon Cyan (primary actions)",
+                    "#8b5cf6 — Electric Violet (secondary)",
+                    "#ff4d6d — Hot Coral (accents, tags)",
+                    "#1a1f2e — Night Panel (card surfaces)"
                   ]
                 }
               ]
@@ -1247,17 +1351,17 @@
                     {
                       "name": "Space Grotesk",
                       "family": "'Space Grotesk', sans-serif",
-                      "role": "Headings \u00b7 Buttons \u00b7 Display text"
+                      "role": "Headings · Buttons · Display text"
                     },
                     {
                       "name": "JetBrains Mono",
                       "family": "'JetBrains Mono', monospace",
-                      "role": "Tags \u00b7 Labels \u00b7 Technical text"
+                      "role": "Tags · Labels · Technical text"
                     },
                     {
                       "name": "Inter",
                       "family": "'Inter', sans-serif",
-                      "role": "Body text \u00b7 Descriptions"
+                      "role": "Body text · Descriptions"
                     }
                   ]
                 }
@@ -1277,7 +1381,7 @@
                 {
                   "id": "pv-gif-text",
                   "type": "text",
-                  "content": "GIFs are pulled live from Reddit's top GIF communities with search and category filtering. Icons are sourced from Iconify \u2014 covering Lucide, Material, Heroicons, Tabler, and Phosphor \u2014 with copy-SVG and download functionality."
+                  "content": "GIFs are pulled live from Reddit's top GIF communities with search and category filtering. Icons are sourced from Iconify — covering Lucide, Material, Heroicons, Tabler, and Phosphor — with copy-SVG and download functionality."
                 }
               ]
             },
@@ -1306,7 +1410,7 @@
                 {
                   "id": "pv-skills-text",
                   "type": "text",
-                  "content": "PIXVAULT ships with a complete design system prompt for AI agents. Copy it into any AI conversation to instantly replicate the dark cyberpunk aesthetic \u2014 colors, typography, component patterns, spacing, and visual effects \u2014 in any new project."
+                  "content": "PIXVAULT ships with a complete design system prompt for AI agents. Copy it into any AI conversation to instantly replicate the dark cyberpunk aesthetic — colors, typography, component patterns, spacing, and visual effects — in any new project."
                 },
                 {
                   "id": "pv-skills-link",
@@ -1331,11 +1435,11 @@
                   "id": "pv-perf-list",
                   "type": "list",
                   "items": [
-                    "TanStack Query caches all API responses \u2014 repeat visits load instantly with stale-while-revalidate",
-                    "Lazy-loaded routes \u2014 only the active section's JS is loaded on navigation",
+                    "TanStack Query caches all API responses — repeat visits load instantly with stale-while-revalidate",
+                    "Lazy-loaded routes — only the active section's JS is loaded on navigation",
                     "All images lazy-loaded with placeholder shimmer animations",
-                    "Framer Motion animations use transform/opacity only \u2014 no layout triggers",
-                    "Deployed on Vercel with edge CDN \u2014 sub-100ms TTFB globally"
+                    "Framer Motion animations use transform/opacity only — no layout triggers",
+                    "Deployed on Vercel with edge CDN — sub-100ms TTFB globally"
                   ]
                 }
               ]
