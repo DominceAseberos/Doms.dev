@@ -4,19 +4,25 @@
 
 The platform is designed with a strong focus on real-time synchronization, offline reliability, and scalable cloud architecture.
 
-### 🏗 Architecture & Ecosystem
+### 👥 User Roles & Ecosystem
 
-The system is divided into three core applications working seamlessly together:
+The platform is divided into three core experiences:
 
-- **`catsy-backend`**: A high-performance Python **FastAPI** server that handles complex business logic, real-time WebSocket/SSE streams, and interfaces with a Supabase PostgreSQL database.
-- **`catsy-web`**: A modern **React + Vite** web application serving both as a customer-facing storefront and a secure administrative dashboard for menu and order management.
-- **`catsy_mobile`**: A robust **Flutter** POS application built for staff. It ensures uninterrupted service with offline-first local SQLite persistence and queue-based data synchronization.
+- **Customer (Web Storefront)**: Customers can browse the menu, place orders, book table reservations, and earn digital **Loyalty Stamps** for rewards.
+- **Staff (Mobile POS)**: Staff members use the Flutter mobile application to handle daily operations, manage walk-in/online orders, and process reservations directly from the shop floor.
+- **Admin (Web Dashboard)**: Store managers use the secure React web portal to oversee overall operations, update menus, view sales analytics, and manage staff accounts.
+
+### 🏗 Architecture & Infrastructure
+
+- **Backend (`catsy-backend`)**: A high-performance Python **FastAPI** server that handles complex business logic, real-time WebSocket/SSE streams, and interfaces with a Supabase PostgreSQL database.
+- **Frontend (`catsy-web`)**: A modern **React + Vite** web application serving the Customer storefront and Admin dashboard.
+- **Mobile (`catsy_mobile`)**: A robust **Flutter** POS application built for staff. It ensures uninterrupted service with offline-first local SQLite persistence.
 
 ### ⚡ Key Features
 
-- **Real-Time Order Syncing**: Utilizes PostgreSQL triggers and Server-Sent Events (SSE) / WebSockets to instantly update screens across all web and mobile clients when an order is placed or updated.
-- **Offline-First POS**: The Flutter mobile app uses Drift (SQLite) to store data locally, allowing staff to process transactions even during network outages. Data is queued and automatically synced when the connection is restored.
-- **Multi-Platform Deployment**: Engineered for modern cloud environments—backend hosted on Render, web app distributed via Vercel, and a unified API bridge for seamless local device testing.
-- **Push Notifications**: Integrated Firebase Cloud Messaging (FCM) to deliver instant order alerts directly to staff devices.
+- **Real-Time Order Syncing**: Utilizes PostgreSQL triggers and Server-Sent Events (SSE) / WebSockets to instantly update screens across all web and mobile clients.
+- **Loyalty & Reservations**: Integrated customer loyalty stamp system and dynamic table reservation management.
+- **Offline-First POS**: The staff mobile app uses Drift (SQLite) to store data locally, allowing operations to continue during network outages. Data is queued and automatically synced when the connection is restored.
+- **Push Notifications**: Integrated Firebase Cloud Messaging (FCM) to deliver instant order and reservation alerts directly to staff devices.
 
 This project demonstrates advanced full-stack capabilities, bridging mobile-first architecture with high-performance web frameworks and real-time backend infrastructure.
