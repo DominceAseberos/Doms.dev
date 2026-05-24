@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import emailjs from '@emailjs/browser';
+import ReCAPTCHA from 'react-google-recaptcha';
 import '../css/CityscapeContact.css';
 import useThemeStore from '../../../store/useThemeStore';
 import useLoadingStore from '../../../store/useLoadingStore';
@@ -27,8 +29,22 @@ const MID_IDS = ['m-teal-office', 'm-green-step', 'm-dark-apt', 'm-office-grid',
 const SML_IDS = ['s-pillar', 's-left-h', 's-brick-t', 's-thin', 's-teal-low', 's-corner',
   's-sheds', 's-light', 's-roof', 's-cyan', 's-teal-strip', 's-hr-strip',
   's-cyan-br', 's-pale-apt', 's-blue-bridge'];
-const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
-const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '4049f1f8-1b52-4582-8471-a194348d5bdb';
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const EMAILJS_OWNER_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_OWNER_TEMPLATE_ID;
+const EMAILJS_AUTOREPLY_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID;
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6Le-rPksAAAAAGjZyU9RoImL18m2WCc9m0UxsKiR';
+const MIN_SUBMIT_DELAY_MS = 2500;
+const SUBMIT_COOLDOWN_MS = 60_000;
+const LAST_SUBMIT_KEY = 'domsdev:last-contact-submit';
+
+const cleanField = (value, maxLength) =>
+  String(value)
+    .replace(/[<>]/g, '')
+    .replace(/[\u0000-\u001f\u007f]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, maxLength);
 
 function shuffle(arr) {
   const a = [...arr];
@@ -46,6 +62,8 @@ const CityscapeContact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [lit, setLit] = useState(false);   // windows-lit after submit
   const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [website, setWebsite] = useState('');
+  const [captchaToken, setCaptchaToken] = useState('');
   const [status, setStatus] = useState({ state: 'idle', message: '' });
 
   // ── Follow global theme from navbar store ──────────────────────────────
@@ -59,7 +77,9 @@ const CityscapeContact = () => {
   const svgRef = useRef(null);
   const stageRef = useRef(null);
   const formRightRef = useRef(null);
+  const recaptchaRef = useRef(null);
   const timersRef = useRef([]);
+  const formMountedAtRef = useRef(Date.now());
 
   // Clear all pending timers on unmount
   useEffect(() => {
@@ -181,32 +201,72 @@ const CityscapeContact = () => {
     setStatus({ state: 'sending', message: '' });
 
     try {
-      const response = await fetch(WEB3FORMS_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          subject: `New portfolio brief from ${form.name}`,
-          from_name: 'Doms.dev Portfolio',
-          name: form.name,
-          email: form.email,
-          message: form.message,
-        }),
-      });
-
-      const result = await response.json().catch(() => ({}));
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || 'Could not send your brief right now.');
+      if (website) {
+        setSubmitted(true);
+        setLit(true);
+        setStatus({ state: 'sent', message: '' });
+        return;
       }
 
+      if (Date.now() - formMountedAtRef.current < MIN_SUBMIT_DELAY_MS) {
+        throw new Error('Please take a moment before sending your message.');
+      }
+
+      const lastSubmit = Number(window.localStorage.getItem(LAST_SUBMIT_KEY) || 0);
+      if (Date.now() - lastSubmit < SUBMIT_COOLDOWN_MS) {
+        throw new Error('Please wait a minute before sending another message.');
+      }
+
+      if (!EMAILJS_SERVICE_ID || !EMAILJS_PUBLIC_KEY || !EMAILJS_OWNER_TEMPLATE_ID) {
+        throw new Error('EmailJS is not configured yet.');
+      }
+
+      if (RECAPTCHA_SITE_KEY && !captchaToken) {
+        throw new Error('Please complete the reCAPTCHA check.');
+      }
+
+      const safeForm = {
+        name: cleanField(form.name, 80),
+        email: cleanField(form.email, 120),
+        message: cleanField(form.message, 1500),
+      };
+
+      const templateParams = {
+        from_name: safeForm.name,
+        from_email: safeForm.email,
+        reply_to: safeForm.email,
+        message: safeForm.message,
+        to_name: 'Domince',
+        'g-recaptcha-response': captchaToken,
+      };
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_OWNER_TEMPLATE_ID,
+        templateParams,
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
+
+      if (EMAILJS_AUTOREPLY_TEMPLATE_ID) {
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_AUTOREPLY_TEMPLATE_ID,
+          {
+            ...templateParams,
+            to_email: safeForm.email,
+            to_name: safeForm.name,
+          },
+          { publicKey: EMAILJS_PUBLIC_KEY }
+        );
+      }
+
+      window.localStorage.setItem(LAST_SUBMIT_KEY, String(Date.now()));
       setSubmitted(true);
       setLit(true);  // trigger window glow on the cityscape
       setStatus({ state: 'sent', message: '' });
     } catch (err) {
+      recaptchaRef.current?.reset();
+      setCaptchaToken('');
       setStatus({
         state: 'error',
         message: err.message || 'Could not send your brief right now.',
@@ -252,6 +312,18 @@ const CityscapeContact = () => {
 
             {!submitted ? (
               <form className="cc-build-form" onSubmit={handleSubmit}>
+                <div className="cc-honeypot" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    id="website"
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={website}
+                    onChange={e => setWebsite(e.target.value)}
+                  />
+                </div>
                 <div className="cc-field-row">
                   <div className="cc-field">
                     <label>Name</label>
@@ -259,6 +331,8 @@ const CityscapeContact = () => {
                       type="text"
                       placeholder="Your name"
                       required
+                      minLength={2}
+                      maxLength={80}
                       value={form.name}
                       onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                     />
@@ -269,6 +343,7 @@ const CityscapeContact = () => {
                       type="email"
                       placeholder="you@company.com"
                       required
+                      maxLength={120}
                       value={form.email}
                       onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                     />
@@ -280,10 +355,23 @@ const CityscapeContact = () => {
                     placeholder="Describe what you want to build..."
                     rows={4}
                     required
+                    minLength={10}
+                    maxLength={1500}
                     value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                   />
                 </div>
+                {RECAPTCHA_SITE_KEY && (
+                  <div className="cc-recaptcha">
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey={RECAPTCHA_SITE_KEY}
+                      onChange={(token) => setCaptchaToken(token || '')}
+                      onExpired={() => setCaptchaToken('')}
+                      theme={isDay ? 'light' : 'dark'}
+                    />
+                  </div>
+                )}
                 {status.state === 'error' && (
                   <p className="cc-form-error" role="alert">{status.message}</p>
                 )}

@@ -550,6 +550,19 @@
   gap: 14px;
 }
 
+.cc-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.cc-recaptcha {
+  min-height: 78px;
+  overflow: hidden;
+}
+
 .cc-field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;

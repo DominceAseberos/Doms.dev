@@ -77,6 +77,12 @@ const main = async () => {
     if (projectSlug === 'kernel') {
        delayMs = 15000;
        console.log('⏳ Waiting 15s for Kernel preloader to finish...');
+    } else if (projectSlug === 'catsy') {
+       delayMs = 6000; // Giving 6s just to be safe (user asked for 5s)
+       console.log('⏳ Waiting 6s for Catsy animations to finish...');
+    } else if (projectSlug === 'ganapph') {
+       delayMs = 4000;
+       console.log('⏳ Waiting 4s for GanapPH animations to finish...');
     }
     await new Promise(resolve => setTimeout(resolve, delayMs));
 
