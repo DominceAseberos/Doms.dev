@@ -15,7 +15,9 @@ const WRITE_API_URL = '/__write-json?file=portfolioData.json';
  */
 export const fetchPortfolioData = async () => {
     try {
-        const res = await fetch(PORTFOLIO_JSON_URL);
+        // Append timestamp to prevent aggressive browser caching
+        const fetchUrl = `${PORTFOLIO_JSON_URL}?t=${new Date().getTime()}`;
+        const res = await fetch(fetchUrl);
         
         // In Vercel, a missing file might return the index.html with a 200 OK.
         // We ensure it actually returns JSON content type before parsing.
