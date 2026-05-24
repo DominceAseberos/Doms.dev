@@ -62,19 +62,19 @@
     "about": {
         "heading": "About",
         "headingAccent": "Me",
-        "intro": "I'm a Full Stack Developer and Computer Science student specializing in building complete applications—from robust REST APIs and databases to responsive frontend interfaces.",
+        "intro": "I'm a Computer Science student and Full Stack Developer who thrives on conceptualizing and creating unique ideas. I have a growing passion for front-end design and story-driven landing pages, and I am constantly learning how to craft more immersive digital experiences.",
         "blocks": [
             {
-                "title": "How I Work",
-                "body": "I focus on pragmatic engineering and modern architecture. Whether it's integrating real-time WebSockets, designing offline-first systems, or structuring clean frontend code, I build applications that solve real-world problems."
+                "title": "How I Build",
+                "body": "My core focus lies in full-stack development, bridging the gap between web and mobile applications. Whether I'm structuring a responsive frontend or designing a scalable backend architecture, my goal is to build pragmatic, real-world solutions."
             },
             {
-                "title": "What Sets Me Apart",
-                "body": "My background spans web, mobile, and machine learning development. I don't just build UIs; I integrate predictive ML models, handle backend logic with FastAPI and Node.js, and deploy across platforms using Flutter and modern web frameworks."
+                "title": "Creative Philosophy",
+                "body": "I believe that development is just as much about narrative as it is about code. I spend a lot of time thinking about how to weave unique stories into landing pages and user interfaces, experimenting with design to create memorable interactions."
             },
             {
-                "title": "Outside of Work",
-                "body": "I am continually expanding my knowledge of emerging AI tooling, computer vision, and cloud platforms. I believe the best developers are lifelong learners who actively build and experiment."
+                "title": "Always Learning",
+                "body": "While I'm still in school, my curiosity doesn't stop at standard coursework. I'm actively exploring machine learning and deep learning, constantly experimenting and finding new, practical ways to apply AI-driven features into my applications."
             }
         ],
         "location": "Tagum City, Philippines · Open to Remote",
@@ -131,6 +131,7 @@
                 "TypeScript",
                 "Tailwind CSS",
                 "Vite",
+                "Turbopack",
                 "HTML",
                 "Javascript"
             ]
@@ -142,7 +143,9 @@
                 "Express",
                 "PostgreSQL",
                 "MongoDB",
-                "Fast API"
+                "Fast API",
+                "Flask",
+                "REST API"
             ]
         },
         {
@@ -174,17 +177,46 @@
                 "Framer Sites",
                 "Elementor"
             ]
+        },
+        {
+            "group": "AI & Machine Learning",
+            "items": [
+                "Scikit-learn",
+                "SymPy",
+                "KNN",
+                "Logistic Regression",
+                "Linear Regression",
+                "TensorFlow",
+                "NumPy",
+                "Pandas",
+                "OpenCV",
+                "NLTK"
+            ]
+        },
+        {
+            "group": "Mobile Development",
+            "items": [
+                "Flutter",
+                "Dart",
+                "Riverpod",
+                "SQLite"
+            ]
         }
     ],
     "techStackExtra": [
-        "Figma",
-        "Spline",
         "LottieFiles",
         "Framer",
         "SVG Animation",
         "Docker",
         "GitHub Actions",
-        "Prisma"
+        "Prisma",
+        "Zod",
+        "React Hook Form",
+        "TanStack Query",
+        "shadcn/ui",
+        "EmailJS",
+        "Lovable",
+        "UptimeRobot"
     ],
     "contact": {
         "heading": "Open to Opportunities",
