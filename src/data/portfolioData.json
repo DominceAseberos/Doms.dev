@@ -15,19 +15,37 @@
       "githubUrl": "https://github.com/Domincee/CATSY",
       "primaryBtnUrl": "/assets/markdowns/catsy-skills.md",
       "featuredInTunnel": true,
-      "mainImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "desktopImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "tabletImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-      "mobileImage": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile",
-      "desktopGallery": [],
-      "tabletGallery": [],
-      "mobileGallery": [],
+      "mainImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
+      "desktopImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
+      "tabletImage": "/assets/uploads/project-catsy/imgs/tablet.webp",
+      "mobileImage": "/assets/uploads/project-catsy/imgs/mobile.webp",
+      "desktopGallery": [
+        "/assets/uploads/project-catsy/imgs/desktop-2.webp",
+        "/assets/uploads/project-catsy/imgs/desktop-3.webp",
+        "/assets/uploads/project-catsy/imgs/desktop-4.webp",
+        "/assets/uploads/project-catsy/imgs/desktop-5.webp",
+        "/assets/uploads/project-catsy/imgs/desktop-6.webp"
+      ],
+      "tabletGallery": [
+        "/assets/uploads/project-catsy/imgs/tablet-2.webp",
+        "/assets/uploads/project-catsy/imgs/tablet-3.webp",
+        "/assets/uploads/project-catsy/imgs/tablet-4.webp",
+        "/assets/uploads/project-catsy/imgs/tablet-5.webp",
+        "/assets/uploads/project-catsy/imgs/tablet-6.webp"
+      ],
+      "mobileGallery": [
+        "/assets/uploads/project-catsy/imgs/mobile-2.webp",
+        "/assets/uploads/project-catsy/imgs/mobile-3.webp",
+        "/assets/uploads/project-catsy/imgs/mobile-4.webp",
+        "/assets/uploads/project-catsy/imgs/mobile-5.webp",
+        "/assets/uploads/project-catsy/imgs/mobile-6.webp"
+      ],
       "images": [],
       "galleryImages": [],
       "assets": {
-        "desktop": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-        "tablet": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-        "mobile": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile"
+        "desktop": "/assets/uploads/project-catsy/imgs/desktop.webp",
+        "tablet": "/assets/uploads/project-catsy/imgs/tablet.webp",
+        "mobile": "/assets/uploads/project-catsy/imgs/mobile.webp"
       },
       "contentSections": [
         {
