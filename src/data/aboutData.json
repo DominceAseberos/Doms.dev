@@ -8,6 +8,26 @@
             "external": true
         },
         {
+            "label": "X",
+            "href": "https://x.com/dmn_zff",
+            "external": true
+        },
+        {
+            "label": "Threads",
+            "href": "https://www.threads.com/@domncss",
+            "external": true
+        },
+        {
+            "label": "Instagram",
+            "href": "https://www.instagram.com/domncss/",
+            "external": true
+        },
+        {
+            "label": "Facebook",
+            "href": "https://www.facebook.com/",
+            "external": true
+        },
+        {
             "label": "EMAIL",
             "href": "",
             "external": true
@@ -66,14 +86,14 @@
             "Motion & Animation",
             "AI-Integrated Workflows"
         ],
-        "aiTools": [
-            "GitHub Copilot",
-            "ChatGPT",
-            "Claude",
-            "Gemini",
+        "devTools": [
+            "VS Code",
             "Cursor",
-            "Hugging Face",
-            "OpenRouter"
+            "Git",
+            "Docker",
+            "Postman",
+            "Vercel",
+            "Figma"
         ]
     },
     "experience": [
@@ -99,7 +119,7 @@
             "role": "Self-Taught Game Developer",
             "company": "First Coding Experience",
             "period": "2020 — 2023",
-            "desc": "Began programming during the COVID-19 pandemic by writing Lua scripts for Roblox. Transitioned to the Godot Engine to build 2D RPGs, sparking a lifelong passion for software engineering and problem-solving."
+            "desc": "Began programming during the COVID-19 pandemic by writing Lua scripts for games in Roblox. Transitioned to the Godot Engine to build 2D RPGs, sparking a lifelong passion for software engineering and problem-solving."
         }
     ],
     "techStack": [

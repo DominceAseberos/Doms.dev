@@ -43,20 +43,6 @@ const EducationSection = () => {
                     },
                 }
             );
-            gsap.fromTo(
-                headingRef.current,
-                { y: 150 },
-                {
-                    y: 0,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: sectionRef.current,
-                        start: 'top bottom',
-                        end: 'top 20%',
-                        scrub: 1.2,
-                    },
-                }
-            );
         }, sectionRef);
         return () => ctx.revert();
     }, []);

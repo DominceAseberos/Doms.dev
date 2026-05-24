@@ -81,6 +81,9 @@ const NarrativeSection = forwardRef((props, ref) => {
     const [projects, setProjects] = useState(() =>
         (portfolioDataDefault.projects || []).slice(0, 4)
     );
+    const [totalProjectsCount, setTotalProjectsCount] = useState(() =>
+        (portfolioDataDefault.projects || []).length
+    );
 
     useScrubReveal(containerRef, dataReady);
 
@@ -132,7 +135,10 @@ const NarrativeSection = forwardRef((props, ref) => {
 
     useEffect(() => {
         fetchPortfolioData()
-            .then((d) => setProjects((d.projects || []).slice(0, 4)))
+            .then((d) => {
+                setProjects((d.projects || []).slice(0, 4));
+                setTotalProjectsCount((d.projects || []).length);
+            })
             .catch(() => {/* keep bundled default */});
     }, []);
 
@@ -210,15 +216,21 @@ const NarrativeSection = forwardRef((props, ref) => {
 
                         {(hero.metrics || []).length > 0 && (
                             <div className="ns-metrics">
-                                {hero.metrics.map((m, i) => (
-                                    <React.Fragment key={i}>
-                                        {i > 0 && <div className="ns-metric-div" />}
-                                        <div className="ns-metric">
-                                            <span className="ns-metric-val">{m.value}<sup>{m.unit}</sup></span>
-                                            <span className="ns-metric-lbl">{m.label}</span>
-                                        </div>
-                                    </React.Fragment>
-                                ))}
+                                {hero.metrics.map((m, i) => {
+                                    let displayValue = m.value;
+                                    if (m.label && m.label.toLowerCase() === 'projects shipped') {
+                                        displayValue = totalProjectsCount;
+                                    }
+                                    return (
+                                        <React.Fragment key={i}>
+                                            {i > 0 && <div className="ns-metric-div" />}
+                                            <div className="ns-metric">
+                                                <span className="ns-metric-val">{displayValue}<sup>{m.unit}</sup></span>
+                                                <span className="ns-metric-lbl">{m.label}</span>
+                                            </div>
+                                        </React.Fragment>
+                                    );
+                                })}
                             </div>
                         )}
                     </div>
@@ -268,12 +280,12 @@ const NarrativeSection = forwardRef((props, ref) => {
                                 </div>
                             </div>
                         )}
-                        {(about.aiTools || []).length > 0 && (
+                        {(about.devTools || []).length > 0 && (
                             <div className="ns-sidebar-block ns-reveal">
-                                <p className="ns-sidebar-label ui-sub-label">AI & Dev Tools</p>
+                                <p className="ns-sidebar-label ui-sub-label">Dev Tools</p>
                                 <div className="ns-pill-group">
-                                    {about.aiTools.map((tool) => (
-                                        <span key={tool} className="ns-ai-pill">✦ {tool}</span>
+                                    {about.devTools.map((tool) => (
+                                        <span key={tool} className="ns-pill">{tool}</span>
                                     ))}
                                 </div>
                             </div>
