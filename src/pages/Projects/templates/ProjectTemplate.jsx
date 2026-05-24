@@ -7,6 +7,7 @@ import useThemeStore from '../../../store/useThemeStore';
 import { EditableText } from '../components/EditableText';
 import { ContentBuilder } from '../components/builder/ContentBuilder';
 import MarkdownViewerModal from '../components/MarkdownViewerModal';
+import DocViewerModal from '../components/DocViewerModal';
 
 const ProjectTemplate = ({
     project,
@@ -23,6 +24,8 @@ const ProjectTemplate = ({
     const [activeView, setActiveView] = useState('desktop');
     const [isMarkdownModalOpen, setIsMarkdownModalOpen] = useState(false);
     const [markdownUrl, setMarkdownUrl] = useState('');
+    const [isDocModalOpen, setIsDocModalOpen] = useState(false);
+    const [docUrl, setDocUrl] = useState('');
 
     const VIEW_META = {
         desktop: { icon: <FiMonitor size={14} />, label: 'Desktop' },
@@ -233,15 +236,17 @@ const ProjectTemplate = ({
                                             e.preventDefault();
                                             setMarkdownUrl(project.primaryBtnUrl);
                                             setIsMarkdownModalOpen(true);
+                                        } else if (project.primaryBtnUrl.endsWith('.docx')) {
+                                            e.preventDefault();
+                                            setDocUrl(project.primaryBtnUrl);
+                                            setIsDocModalOpen(true);
                                         }
                                     }}
                                 >
                                     <FiCode size={16} />
                                     <span className="hidden md:inline">
                                         {project.primaryBtnLabel || 
-                                         (project.projectType === 'LANDING PAGE' ? 'SKILLS' : 
-                                          project.projectType === 'CASE STUDY' ? 'DOCX' : 
-                                          'DOCUMENTATION')}
+                                         (project.projectType === 'LANDING PAGE' ? 'SKILLS' : 'DOCUMENTATION')}
                                     </span>
                                 </a>
                             )}
@@ -512,6 +517,13 @@ const ProjectTemplate = ({
                 isOpen={isMarkdownModalOpen} 
                 onClose={() => setIsMarkdownModalOpen(false)} 
                 githubUrl={markdownUrl}
+                title={project.primaryBtnLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation')}
+            />
+
+            <DocViewerModal 
+                isOpen={isDocModalOpen}
+                onClose={() => setIsDocModalOpen(false)}
+                docUrl={docUrl}
                 title={project.primaryBtnLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation')}
             />
         </div>
