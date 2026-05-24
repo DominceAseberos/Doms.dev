@@ -105,6 +105,37 @@
               ]
             }
           ]
+        },
+        {
+          "id": "github-universe-goals",
+          "sectionTitle": "Mission & Challenges",
+          "layout": "2-equal",
+          "columns": [
+            {
+              "id": "github-universe-goal-col",
+              "columnTitle": "The Goal: A Cosmic Map",
+              "blocks": [
+                {
+                  "id": "github-universe-goal-text",
+                  "type": "text",
+                  "fontSize": "md",
+                  "content": "The primary objective is to map the vast, invisible landscape of the open-source community into a tangible, explorable cosmos. By treating GitHub not just as a database, but as a digital universe, the visualization allows users to navigate geographically—zooming seamlessly from a macro-galactic view of global countries down into specific cities, and eventually into the individual users (stars) and their repositories (satellites). It transforms raw, tabular API data into an interactive, spatial map of global software engineering density."
+                }
+              ]
+            },
+            {
+              "id": "github-universe-challenge-col",
+              "columnTitle": "The Challenge: Scale & API Limits",
+              "blocks": [
+                {
+                  "id": "github-universe-challenge-text",
+                  "type": "text",
+                  "fontSize": "md",
+                  "content": "The most formidable engineering hurdle was the sheer scale of data retrieval combined with GitHub's strict API rate limits. Scraping a global population sequentially takes an unfeasible amount of time, and the API hard-caps pagination at 1,000 results per query. To bypass this, the scraper was engineered with an advanced \"Query-Bucket Partitioning\" algorithm. By dynamically slicing search requests into granular sub-buckets (based on exact follower counts and account creation years), the system forces the API to expose deeper layers of hidden users. Additionally, a fault-tolerant state-resume mode was built to handle network drops over continuous multi-day scraping operations."
+                }
+              ]
+            }
+          ]
         }
       ],
       "primaryBtnUrl": "/assets/markdowns/github-universe-docs.md"
