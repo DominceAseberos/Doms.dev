@@ -12,11 +12,18 @@ The platform is divided into three core experiences:
 - **Staff (Mobile POS)**: Staff members use the Flutter mobile application to handle daily operations, manage walk-in/online orders, and process reservations directly from the shop floor.
 - **Admin (Web Dashboard)**: Store managers use the secure React web portal to oversee overall operations, update menus, view sales analytics, and manage staff accounts.
 
-### 🏗 Architecture & Infrastructure
+### 🏗 Architecture (3-Tier & Monorepo)
 
-- **Backend (`catsy-backend`)**: A high-performance Python **FastAPI** server that handles complex business logic, real-time WebSocket/SSE streams, and interfaces with a Supabase PostgreSQL database.
-- **Frontend (`catsy-web`)**: A modern **React + Vite** web application serving the Customer storefront and Admin dashboard.
-- **Mobile (`catsy_mobile`)**: A robust **Flutter** POS application built for staff. It ensures uninterrupted service with offline-first local SQLite persistence.
+Catsy Coffee follows a strict **3-Tier Architecture**, organized as a **Monorepo** (a single repository containing all projects, deployed separately to specialized hosting providers).
+
+- **Presentation Layer (Frontend)**: 
+  - **`catsy-web` (React + Vite)**: The responsive customer and admin web interface.
+  - **`catsy_mobile` (Flutter)**: The robust, offline-capable mobile POS for staff.
+- **Logic / Business Layer (Backend)**: 
+  - **`catsy-backend` (FastAPI)**: A high-performance Python server that handles core business logic, real-time WebSocket/SSE streams, and authentication handshakes.
+- **Data Layer (Database)**: 
+  - **Supabase (PostgreSQL)**: The central cloud database driving the entire ecosystem.
+  - **Drift (SQLite)**: The local database powering the offline-first Flutter mobile POS.
 
 ### ⚡ Key Features
 
