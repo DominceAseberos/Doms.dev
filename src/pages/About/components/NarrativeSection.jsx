@@ -15,6 +15,7 @@ import DocViewerModal from '../../../components/DocViewerModal';
 import humanPortrait from '../../../assets/human-cutout.png';
 import animePortrait from '../../../assets/anime-cutout.png';
 import useLoadingStore from '../../../store/useLoadingStore';
+import useLogoStore from '../../../store/useLogoStore';
 import './NarrativeSection.css';
 
 if (typeof window !== 'undefined') {
@@ -73,6 +74,7 @@ const NarrativeSection = forwardRef((props, ref) => {
     const heroRef = useRef(null);
     const stripesRef = useRef([]);
     const isLoading = useLoadingStore((state) => state.isLoading);
+    const setLogoFullView = useLogoStore((state) => state.setLogoFullView);
 
     // All content from aboutData.json — bundled default, refreshed from server
     const [data, setData] = useState(() => aboutDataDefault);
@@ -301,6 +303,13 @@ const NarrativeSection = forwardRef((props, ref) => {
                                         </a>
                                     ))}
                                 </div>
+                                <button 
+                                    onClick={() => setLogoFullView(true)}
+                                    className="btn-ghost ns-btn"
+                                    style={{ marginTop: '1rem', width: '100%', justifyContent: 'center' }}
+                                >
+                                    View Logo Animation
+                                </button>
                             </div>
                         )}
                     </aside>

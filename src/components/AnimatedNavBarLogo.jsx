@@ -1,8 +1,37 @@
 import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { Flip } from 'gsap/Flip';
+import useLogoStore from '../store/useLogoStore';
 import './AnimatedNavBarLogo.css';
+
+if (typeof window !== 'undefined') {
+    gsap.registerPlugin(Flip);
+}
 
 const AnimatedNavBarLogo = ({ className = "w-8 h-auto" }) => {
     const svgRef = useRef(null);
+    const wrapRef = useRef(null);
+    const isLogoFullView = useLogoStore((state) => state.isLogoFullView);
+    const setLogoFullView = useLogoStore((state) => state.setLogoFullView);
+
+    useEffect(() => {
+        if (!wrapRef.current) return;
+        
+        const state = Flip.getState(wrapRef.current);
+        
+        if (isLogoFullView) {
+            wrapRef.current.classList.add('logo-full-view');
+        } else {
+            wrapRef.current.classList.remove('logo-full-view');
+        }
+        
+        Flip.from(state, {
+            duration: 0.8,
+            ease: 'power3.inOut',
+            absolute: true,
+            zIndex: 99999,
+        });
+    }, [isLogoFullView]);
 
     useEffect(() => {
         if (!svgRef.current) return;
@@ -215,8 +244,13 @@ const AnimatedNavBarLogo = ({ className = "w-8 h-auto" }) => {
     }, []);
 
     return (
-        <div className={`animated-nav-logo-wrap ${className}`}>
-            <div className="animated-nav-logo-glow-bg"></div>
+        <>
+            <div 
+                className={`logo-full-view-backdrop ${isLogoFullView ? 'visible' : ''}`}
+                onClick={() => setLogoFullView(false)}
+            />
+            <div ref={wrapRef} className={`animated-nav-logo-wrap ${className}`}>
+                <div className="animated-nav-logo-glow-bg"></div>
             <svg id="logo-nav" ref={svgRef} width="100%" height="100%" viewBox="0 0 253 283" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ overflow: 'visible' }}>
                 {/* Suffixed IDs to isolate them from global hero logo animations */}
                 <path id="p0-nav" d="M0 0L8.09639 104H42L0 0Z" fill="url(#g4-nav)" />
@@ -269,7 +303,8 @@ const AnimatedNavBarLogo = ({ className = "w-8 h-auto" }) => {
                     <linearGradient id="g23-nav" x1="238.75" y1="23.5" x2="179.699" y2="132.016" gradientUnits="userSpaceOnUse"><stop stopColor="#C6D2DA" /><stop offset="1" stopColor="#9DB7D5" /></linearGradient>
                 </defs>
             </svg>
-        </div>
+            </div>
+        </>
     );
 };
 

@@ -56,3 +56,28 @@ html[data-theme='light'] .animated-nav-logo-wrap svg {
         transform: scale(1.08);
     }
 }
+
+.logo-full-view-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 99998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.logo-full-view-backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.animated-nav-logo-wrap.logo-full-view {
+    position: fixed !important;
+    inset: 0 !important;
+    margin: auto !important;
+    width: 60vh !important;
+    height: 60vh !important;
+    z-index: 99999 !important;
+}
