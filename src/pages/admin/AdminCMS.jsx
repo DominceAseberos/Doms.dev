@@ -143,6 +143,11 @@ const ProfileTab = () => {
     const addEdu = () => update(prev => ({ ...prev, education: [...(prev.education||[]), { institution:'', degree:'', period:'', skills:[] }] }));
     const setEdu = (i, p) => update(prev => { const a=[...(prev.education||[])]; a[i]={...a[i],...p}; return {...prev,education:a}; });
     const delEdu = (i) => update(prev => ({ ...prev, education: prev.education.filter((_,idx)=>idx!==i) }));
+
+    // Testimonials CRUD
+    const addTestimonial = () => update(prev => ({ ...prev, testimonials: [...(prev.testimonials||[]), { quote:'', author:'', role:'', company:'' }] }));
+    const setTestimonial = (i, p) => update(prev => { const a=[...(prev.testimonials||[])]; a[i]={...a[i],...p}; return {...prev,testimonials:a}; });
+    const delTestimonial = (i) => update(prev => ({ ...prev, testimonials: (prev.testimonials||[]).filter((_,idx)=>idx!==i) }));
     const hero   = d.hero   || {};
     const about  = d.about  || {};
     const contact= d.contact|| {};
@@ -280,6 +285,26 @@ const ProfileTab = () => {
                         </Field>
                         <div className="flex justify-end mt-2">
                             <button onClick={()=>delEdu(i)} className="flex items-center gap-1 px-3 py-1.5 text-xs bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-lg font-bold transition-all"><FiTrash2 size={12}/> Remove</button>
+                        </div>
+                    </div>
+                ))}
+            </Card>
+
+            {/* ── TESTIMONIALS ── */}
+            <Card title="Testimonials" icon={<FiMessageCircle />}>
+                <div className="flex justify-end mb-3">
+                    <button onClick={addTestimonial} className="flex items-center gap-1 px-3 py-1.5 text-[10px] bg-[#c8ff3e]/10 text-[#c8ff3e] hover:bg-[#c8ff3e] hover:text-black rounded-lg font-bold transition-all"><FiPlus size={10}/> Add Testimonial</button>
+                </div>
+                {(d.testimonials||[]).map((t,i)=>(
+                    <div key={i} className="mb-3 p-4 bg-black/30 rounded-xl border border-white/5">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
+                            <input value={t.author} onChange={ev=>setTestimonial(i,{author:ev.target.value})} className={inputCls} placeholder="Author Name" />
+                            <input value={t.role} onChange={ev=>setTestimonial(i,{role:ev.target.value})} className={inputCls} placeholder="Role / Position" />
+                            <input value={t.company} onChange={ev=>setTestimonial(i,{company:ev.target.value})} className={inputCls} placeholder="Company" />
+                        </div>
+                        <textarea value={t.quote} onChange={ev=>setTestimonial(i,{quote:ev.target.value})} rows={2} className={textareaCls} placeholder="Quote / Testimonial..." />
+                        <div className="flex justify-end mt-2">
+                            <button onClick={()=>delTestimonial(i)} className="flex items-center gap-1 px-3 py-1.5 text-xs bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-lg font-bold transition-all"><FiTrash2 size={12}/> Remove</button>
                         </div>
                     </div>
                 ))}
