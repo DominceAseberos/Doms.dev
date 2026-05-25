@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import puppeteer from 'puppeteer';
+import chromium from '@sparticuz/chromium';
 import express from 'express';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -36,11 +37,27 @@ async function prerender() {
         
         console.log(`Server running on ${baseUrl}`);
         console.log('Launching Puppeteer...');
+        const isVercel = process.env.VERCEL === '1';
+        let browser;
         
-        const browser = await puppeteer.launch({ 
-            headless: "new",
-            args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-        });
+        if (isVercel) {
+            console.log('Running on Vercel, using @sparticuz/chromium');
+            // Ensure chromium path is resolved correctly in serverless
+            chromium.setGraphicsMode = false;
+            browser = await puppeteer.launch({
+                args: chromium.args,
+                defaultViewport: chromium.defaultViewport,
+                executablePath: await chromium.executablePath(),
+                headless: chromium.headless,
+                ignoreHTTPSErrors: true,
+            });
+        } else {
+            console.log('Running locally, using standard puppeteer');
+            browser = await puppeteer.launch({ 
+                headless: "new",
+                args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+            });
+        }
         
         for (const route of routes) {
             console.log(`Prerendering ${route}...`);
