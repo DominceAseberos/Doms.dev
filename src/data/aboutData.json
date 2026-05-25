@@ -244,43 +244,43 @@
     ],
     "testimonials": [
         {
-            "quote": "Working with Domince on Catsy Coffee, our Tagalog-English NLP project, and the Banana Leaf detector was an absolute breeze. Later, when we co-founded and pitched GanapPH together, his execution of the AI job recommendation engine was top-tier. He took our conceptual ideas and built a fully working prototype that blew the panel away.",
+            "quote": "Working with Domince on multiple AI projects and GanapPH was incredible. He took conceptual ideas and built top-tier, fully working prototypes.",
             "author": "KYNDEL ROY SUAREZ",
             "role": "Partner & Collaborator (Catsy, NLP, Banana Leaf & GanapPH)",
             "company": "UM CS Projects"
         },
         {
-            "quote": "Domince was our anchor during the development of Catsy Coffee and the NLP language model. When we hit blockers with SQL queries and API endpoints, his backend problem-solving saved us days of debugging.",
+            "quote": "Domince was our anchor during Catsy Coffee and NLP development. His backend problem-solving saved us days of debugging.",
             "author": "ANGELO JABONITE",
             "role": "Collaborator (Catsy Coffee & NLP)",
             "company": "UM CS Projects"
         },
         {
-            "quote": "Doms is extremely detail-oriented. Collaborating on Catsy Coffee and the NLP project showed me his dedication to clean code structure. He didn't just build the features; he documented the API endpoints thoroughly so the team could iterate quickly.",
+            "quote": "Doms is extremely detail-oriented. His dedication to clean code structure and thorough API documentation made team iteration effortless.",
             "author": "NINA NILLAS",
             "role": "Collaborator (Catsy Coffee & NLP)",
             "company": "UM CS Projects"
         },
         {
-            "quote": "Building the Banana Leaf disease detector with Domince was a highlight of our semester. He took charge of training the KNN model and then wrapping it inside a smooth React app, making our machine learning project accessible and highly interactive.",
+            "quote": "He took charge of training the KNN model and wrapping it inside a smooth React app, making our ML project highly interactive.",
             "author": "JOVAN REGUYA",
             "role": "Collaborator (Banana Leaf)",
             "company": "UM CS Projects"
         },
         {
-            "quote": "Domince has a brilliant approach to fullstack development. Whether he's structuring a responsive frontend or building out complex database architectures, he always keeps clean logic and system performance in mind. He's my go-to friend for discussing tech stack implementations.",
+            "quote": "He has a brilliant approach to fullstack development, always keeping clean logic and system performance in mind. My go-to friend for tech stacks.",
             "author": "JAYVIEN MOCALLAY",
             "role": "Friend / Full Stack Developer",
             "company": "Freelance"
         },
         {
-            "quote": "Doms's eye for UI design is next-level. I've watched him iterate on animations and layout spacing—his obsession with 60fps animations and micro-interactions makes every site he touches feel incredibly premium.",
+            "quote": "Doms's eye for UI design is next-level. His obsession with 60fps animations and micro-interactions makes every site feel incredibly premium.",
             "author": "RYAN DENIEGA",
             "role": "Friend / UI Designer (Design Reviewer)",
             "company": "Freelance"
         },
         {
-            "quote": "Doms's portfolio speaks for itself, but working with him in person is even better. He understands both user experience and clean backend engineering.",
+            "quote": "His portfolio speaks for itself. He deeply understands both smooth user experiences and clean backend engineering.",
             "author": "VON ANNEX",
             "role": "Full Stack Engineer",
             "company": "Freelance Client"

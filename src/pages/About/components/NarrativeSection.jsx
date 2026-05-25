@@ -345,18 +345,20 @@ const NarrativeSection = forwardRef((props, ref) => {
                 <section className="ns-section" id="testimonials">
                     <p className="ui-sub-label ns-section-label ns-reveal">Endorsements</p>
                     <h2 className="ns-section-heading ns-reveal">Testimonials</h2>
-                    <div className="ns-testimonials-carousel">
-                        {testimonials.map((t, i) => (
-                            <div key={i} className="ns-testimonial-card ns-reveal">
-                                <p className="ns-testimonial-quote">“{t.quote}”</p>
-                                <div className="ns-testimonial-author">
-                                    <p className="ns-testimonial-name">{t.author}</p>
-                                    <p className="ns-testimonial-role ui-sub-label">
-                                        {t.role}{t.company ? `, ${t.company}` : ''}
-                                    </p>
+                    <div className="ns-testimonials-wrapper ns-reveal">
+                        <div className="ns-testimonials-track">
+                            {[...testimonials, ...testimonials].map((t, i) => (
+                                <div key={i} className="ns-testimonial-card">
+                                    <p className="ns-testimonial-quote">“{t.quote}”</p>
+                                    <div className="ns-testimonial-author">
+                                        <p className="ns-testimonial-name">{t.author}</p>
+                                        <p className="ns-testimonial-role ui-sub-label">
+                                            {t.role}{t.company ? `, ${t.company}` : ''}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </section>
             )}
