@@ -345,7 +345,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                 <section className="ns-section" id="testimonials">
                     <p className="ui-sub-label ns-section-label ns-reveal">Endorsements</p>
                     <h2 className="ns-section-heading ns-reveal">Testimonials</h2>
-                    <div className="ns-testimonials-grid">
+                    <div className="ns-testimonials-carousel">
                         {testimonials.map((t, i) => (
                             <div key={i} className="ns-testimonial-card ns-reveal">
                                 <p className="ns-testimonial-quote">“{t.quote}”</p>

@@ -938,16 +938,29 @@ html[data-theme='light'] .ns-footer-link:hover {
 }
 
 /* ── TESTIMONIALS ────────────────────────────────────────────────────────── */
-.ns-testimonials-grid {
-    display: grid;
-    grid-template-columns: 1fr;
+.ns-testimonials-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     gap: 1.5rem;
     margin-top: 1.5rem;
+    padding-bottom: 1rem;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.ns-testimonials-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.ns-testimonials-carousel .ns-testimonial-card {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
 }
 
 @media (min-width: 768px) {
-    .ns-testimonials-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .ns-testimonials-carousel .ns-testimonial-card {
+        flex: 0 0 45%;
     }
 }
 
