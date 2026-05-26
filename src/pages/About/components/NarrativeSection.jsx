@@ -248,6 +248,46 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </section>
 
+            {/* ══ RECENT PROJECTS ══════════════════════════════════════════ */}
+            {projects.length > 0 && (
+                <section className="ns-section" id="projects">
+                    <div className="ns-projects-header ns-reveal">
+                        <div>
+                            <p className="ui-sub-label ns-section-label">Selected Work</p>
+                            <h2 className="ns-section-heading">Projects</h2>
+                        </div>
+                        <Link to="/projects" className="ns-view-all">View All →</Link>
+                    </div>
+                    <div className="ns-projects-grid">
+                        {projects.map((p) => (
+                            <Link key={p.id} to={`/projects/${p.id}`} className="ns-project-card ns-reveal">
+                                {(p.mainImage || p.desktopImage) && !isPlaceholderImage(p.mainImage || p.desktopImage) ? (
+                                    <div className="ns-project-img-wrap">
+                                        <img src={p.mainImage || p.desktopImage} alt={p.title} className="ns-project-img" loading="lazy" />
+                                    </div>
+                                ) : (
+                                    <div className="ns-project-img-placeholder">
+                                        <span>{p.projectType || 'Case Study'}</span>
+                                        <strong>{p.title}</strong>
+                                    </div>
+                                )}
+                                <div className="ns-project-info">
+                                    <div className="ns-project-meta">
+                                        <span className="ui-sub-label ns-project-type">{p.projectType}</span>
+                                        <span className="ns-project-arrow">↗</span>
+                                    </div>
+                                    <h3 className="ns-project-title">{p.title}</h3>
+                                    <p className="ns-project-desc ui-body-copy">{p.shortDescription}</p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
+            <GithubContributionSection />
+
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
             <section className="ns-section" id="about">
                 <p className="ui-sub-label ns-section-label ns-reveal">About</p>
@@ -323,52 +363,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </section>
 
-            {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
-            {experience.length > 0 && (
-                <section className="ns-section" id="experience">
-                    <p className="ui-sub-label ns-section-label ns-reveal">Work History</p>
-                    <h2 className="ns-section-heading ns-reveal">Experience</h2>
-                    <div className="ns-timeline">
-                        {experience.map((item, i) => (
-                            <div key={i} className="ns-timeline-item ns-reveal">
-                                <div className="ns-timeline-dot" />
-                                <div className="ns-timeline-body">
-                                    <div className="ns-timeline-header">
-                                        <h3 className="ns-timeline-role">{item.role}</h3>
-                                        <span className="ns-timeline-period ui-sub-label">{item.period}</span>
-                                    </div>
-                                    <p className="ns-timeline-company">{item.company}</p>
-                                    <p className="ns-timeline-desc ui-body-copy">{item.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
-            {testimonials.length > 0 && (
-                <section className="ns-section" id="testimonials">
-                    <p className="ui-sub-label ns-section-label ns-reveal">Endorsements</p>
-                    <h2 className="ns-section-heading ns-reveal">Testimonials</h2>
-                    <div className="ns-testimonials-wrapper ns-reveal">
-                        <div className="ns-testimonials-track">
-                            {[...testimonials, ...testimonials].map((t, i) => (
-                                <div key={i} className="ns-testimonial-card">
-                                    <p className="ns-testimonial-quote">“{t.quote}”</p>
-                                    <div className="ns-testimonial-author">
-                                        <p className="ns-testimonial-name">{t.author}</p>
-                                        <p className="ns-testimonial-role ui-sub-label">
-                                            {t.role}{t.company ? `, ${t.company}` : ''}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-
             {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
             {techStack.length > 0 && (
                 <section className="ns-section" id="stack">
@@ -399,38 +393,24 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </section>
             )}
 
-            {/* ══ RECENT PROJECTS ══════════════════════════════════════════ */}
-            {projects.length > 0 && (
-                <section className="ns-section" id="projects">
-                    <div className="ns-projects-header ns-reveal">
-                        <div>
-                            <p className="ui-sub-label ns-section-label">Selected Work</p>
-                            <h2 className="ns-section-heading">Projects</h2>
-                        </div>
-                        <Link to="/projects" className="ns-view-all">View All →</Link>
-                    </div>
-                    <div className="ns-projects-grid">
-                        {projects.map((p) => (
-                            <Link key={p.id} to={`/projects/${p.id}`} className="ns-project-card ns-reveal">
-                                {(p.mainImage || p.desktopImage) && !isPlaceholderImage(p.mainImage || p.desktopImage) ? (
-                                    <div className="ns-project-img-wrap">
-                                        <img src={p.mainImage || p.desktopImage} alt={p.title} className="ns-project-img" loading="lazy" />
+            {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
+            {experience.length > 0 && (
+                <section className="ns-section" id="experience">
+                    <p className="ui-sub-label ns-section-label ns-reveal">Work History</p>
+                    <h2 className="ns-section-heading ns-reveal">Experience</h2>
+                    <div className="ns-timeline">
+                        {experience.map((item, i) => (
+                            <div key={i} className="ns-timeline-item ns-reveal">
+                                <div className="ns-timeline-dot" />
+                                <div className="ns-timeline-body">
+                                    <div className="ns-timeline-header">
+                                        <h3 className="ns-timeline-role">{item.role}</h3>
+                                        <span className="ns-timeline-period ui-sub-label">{item.period}</span>
                                     </div>
-                                ) : (
-                                    <div className="ns-project-img-placeholder">
-                                        <span>{p.projectType || 'Case Study'}</span>
-                                        <strong>{p.title}</strong>
-                                    </div>
-                                )}
-                                <div className="ns-project-info">
-                                    <div className="ns-project-meta">
-                                        <span className="ui-sub-label ns-project-type">{p.projectType}</span>
-                                        <span className="ns-project-arrow">↗</span>
-                                    </div>
-                                    <h3 className="ns-project-title">{p.title}</h3>
-                                    <p className="ns-project-desc ui-body-copy">{p.shortDescription}</p>
+                                    <p className="ns-timeline-company">{item.company}</p>
+                                    <p className="ns-timeline-desc ui-body-copy">{item.desc}</p>
                                 </div>
-                            </Link>
+                            </div>
                         ))}
                     </div>
                 </section>
@@ -439,8 +419,28 @@ const NarrativeSection = forwardRef((props, ref) => {
             {/* ══ EDUCATION ════════════════════════════════════════════════ */}
             <EducationSection />
 
-            {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
-            <GithubContributionSection />
+            {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
+            {testimonials.length > 0 && (
+                <section className="ns-section" id="testimonials">
+                    <p className="ui-sub-label ns-section-label ns-reveal">Endorsements</p>
+                    <h2 className="ns-section-heading ns-reveal">Testimonials</h2>
+                    <div className="ns-testimonials-wrapper ns-reveal">
+                        <div className="ns-testimonials-track">
+                            {[...testimonials, ...testimonials].map((t, i) => (
+                                <div key={i} className="ns-testimonial-card">
+                                    <p className="ns-testimonial-quote">“{t.quote}”</p>
+                                    <div className="ns-testimonial-author">
+                                        <p className="ns-testimonial-name">{t.author}</p>
+                                        <p className="ns-testimonial-role ui-sub-label">
+                                            {t.role}{t.company ? `, ${t.company}` : ''}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* ══ FEED ═════════════════════════════════════════════════════ */}
             <FeedSection />

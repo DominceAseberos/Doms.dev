@@ -1,3 +1,9 @@
+.animated-nav-logo-home {
+    display: inline-flex;
+    width: max-content;
+    height: max-content;
+}
+
 .animated-nav-logo-wrap {
     position: relative;
     /* Removed fixed sizes to let the wrapper scale relative to its parent */
@@ -75,9 +81,18 @@ html[data-theme='light'] .animated-nav-logo-wrap svg {
 
 .animated-nav-logo-wrap.logo-full-view {
     position: fixed !important;
-    inset: 0 !important;
-    margin: auto !important;
-    width: 60vh !important;
-    height: 60vh !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: min(58vmin, 520px) !important;
+    height: min(58vmin, 520px) !important;
+    margin: 0 !important;
+    transform: translate(-50%, -50%) !important;
     z-index: 99999 !important;
+}
+
+.animated-nav-logo-wrap.logo-full-view svg {
+    width: 100%;
+    height: 100%;
 }

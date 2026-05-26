@@ -11,18 +11,23 @@ if (typeof window !== 'undefined') {
 const AnimatedNavBarLogo = ({ className = "w-8 h-auto" }) => {
     const svgRef = useRef(null);
     const wrapRef = useRef(null);
+    const logoHomeRef = useRef(null);
     const isLogoFullView = useLogoStore((state) => state.isLogoFullView);
     const setLogoFullView = useLogoStore((state) => state.setLogoFullView);
 
     useEffect(() => {
         if (!wrapRef.current) return;
+        const logo = wrapRef.current;
+        const logoHome = logoHomeRef.current;
         
-        const state = Flip.getState(wrapRef.current);
+        const state = Flip.getState(logo);
         
         if (isLogoFullView) {
-            wrapRef.current.classList.add('logo-full-view');
-        } else {
-            wrapRef.current.classList.remove('logo-full-view');
+            document.body.appendChild(logo);
+            logo.classList.add('logo-full-view');
+        } else if (logoHome) {
+            logoHome.appendChild(logo);
+            logo.classList.remove('logo-full-view');
         }
         
         Flip.from(state, {
@@ -31,6 +36,13 @@ const AnimatedNavBarLogo = ({ className = "w-8 h-auto" }) => {
             absolute: true,
             zIndex: 99999,
         });
+
+        return () => {
+            if (logoHome && logo.parentElement === document.body) {
+                logoHome.appendChild(logo);
+                logo.classList.remove('logo-full-view');
+            }
+        };
     }, [isLogoFullView]);
 
     useEffect(() => {
@@ -249,6 +261,7 @@ const AnimatedNavBarLogo = ({ className = "w-8 h-auto" }) => {
                 className={`logo-full-view-backdrop ${isLogoFullView ? 'visible' : ''}`}
                 onClick={() => setLogoFullView(false)}
             />
+            <span ref={logoHomeRef} className="animated-nav-logo-home">
             <div ref={wrapRef} className={`animated-nav-logo-wrap ${className}`}>
                 <div className="animated-nav-logo-glow-bg"></div>
             <svg id="logo-nav" ref={svgRef} width="100%" height="100%" viewBox="0 0 253 283" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ overflow: 'visible' }}>
@@ -304,6 +317,7 @@ const AnimatedNavBarLogo = ({ className = "w-8 h-auto" }) => {
                 </defs>
             </svg>
             </div>
+            </span>
         </>
     );
 };
