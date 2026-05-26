@@ -37,9 +37,17 @@ html[data-theme='light'] .animated-nav-logo-wrap::before {
     z-index: 0;
 }
 
+html[data-theme='light'] .animated-nav-logo-wrap.logo-full-view::before {
+    display: none;
+}
+
 html[data-theme='light'] .animated-nav-logo-wrap svg {
     position: relative;
     z-index: 1;
+}
+
+html[data-theme='light'] .animated-nav-logo-wrap.logo-full-view svg path {
+    stroke: none;
 }
 
 .animated-nav-logo-glow-bg {
@@ -90,12 +98,15 @@ html[data-theme='light'] .animated-nav-logo-wrap svg {
     width: min(58vmin, 520px) !important;
     height: min(58vmin, 520px) !important;
     margin: 0 !important;
-    transform: translate(-50%, -50%) !important;
+    transform: translate3d(-50%, -50%, 0) !important;
     z-index: 2147483647 !important;
     pointer-events: auto;
+    backface-visibility: hidden;
 }
 
 .animated-nav-logo-wrap.logo-full-view svg {
     width: 100%;
     height: 100%;
+    filter: drop-shadow(0 24px 40px rgba(30, 70, 110, 0.18));
+    shape-rendering: geometricPrecision;
 }
