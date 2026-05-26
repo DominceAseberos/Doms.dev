@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { Flip } from 'gsap/Flip';
 import useLogoStore from '../store/useLogoStore';
@@ -257,10 +258,13 @@ const AnimatedNavBarLogo = ({ className = "w-8 h-auto" }) => {
 
     return (
         <>
-            <div 
-                className={`logo-full-view-backdrop ${isLogoFullView ? 'visible' : ''}`}
-                onClick={() => setLogoFullView(false)}
-            />
+            {typeof document !== 'undefined' && createPortal(
+                <div
+                    className={`logo-full-view-backdrop ${isLogoFullView ? 'visible' : ''}`}
+                    onClick={() => setLogoFullView(false)}
+                />,
+                document.body
+            )}
             <span ref={logoHomeRef} className="animated-nav-logo-home">
             <div ref={wrapRef} className={`animated-nav-logo-wrap ${className}`}>
                 <div className="animated-nav-logo-glow-bg"></div>
