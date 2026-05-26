@@ -10,7 +10,6 @@ import ProfileMorphCard from '../../../components/ProfileMorphCard';
 import EducationSection from './EducationSection';
 import GithubContributionSection from './GithubContributionSection';
 import FeedSection from './FeedSection';
-import CityscapeContact from '../../Contact/components/CityscapeContact';
 import DocViewerModal from '../../../components/DocViewerModal';
 import humanPortrait from '../../../assets/human-cutout.png';
 import animePortrait from '../../../assets/anime-cutout.png';
@@ -454,9 +453,9 @@ const NarrativeSection = forwardRef((props, ref) => {
                     {contact.subtext && (
                         <p className="ui-body-copy ns-contact-sub ns-reveal">{contact.subtext}</p>
                     )}
-                </div>
-                <div className="ns-cityscape-wrap">
-                    <CityscapeContact />
+                    <Link to="/contact" className="btn-primary ns-contact-cta ns-reveal">
+                        Start a Conversation
+                    </Link>
                 </div>
             </section>
 

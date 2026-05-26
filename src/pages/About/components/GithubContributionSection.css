@@ -106,7 +106,8 @@
     background: var(--gc-commit-bg);
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.75rem;
+    min-height: 300px;
 }
 
 .gc-card-eyebrow {
@@ -119,7 +120,7 @@
 
 .gc-card-title {
     margin: 0;
-    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    font-size: clamp(1.15rem, 1.7vw, 1.45rem);
     font-weight: 700;
     letter-spacing: 0.03em;
     color: var(--gc-card-title-color);
@@ -128,21 +129,37 @@
 .gc-commits-list {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 0.2rem;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.35rem;
+    flex: 1;
+    min-height: 210px;
 }
 
 .gc-commit-item {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    padding-bottom: 1.1rem;
-    border-bottom: 1px solid rgba(120, 180, 255, 0.08);
+    gap: 0.75rem;
+    min-height: 170px;
+    padding: 1rem;
+    border: 1px solid rgba(120, 180, 255, 0.1);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.025);
 }
 
 .gc-commit-item:last-child {
-    padding-bottom: 0;
-    border-bottom: none;
+    border-bottom: 1px solid rgba(120, 180, 255, 0.1);
+}
+
+.gc-commit-counter {
+    position: absolute;
+    top: 0.9rem;
+    right: 1rem;
+    color: var(--gc-muted-color);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
 }
 
 .gc-commit-repo {
@@ -161,22 +178,26 @@
 }
 
 .gc-commit-repo-link {
-    font-size: 0.7rem;
+    max-width: calc(100% - 4.5rem);
+    font-size: 0.78rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: rgba(160, 210, 255, 0.95);
     text-decoration: none;
     border-bottom: 1px solid rgba(120, 180, 255, 0.35);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .gc-commit-message {
     margin: 0;
-    font-size: 0.82rem;
-    line-height: 1.5;
+    font-size: clamp(1rem, 1.35vw, 1.2rem);
+    line-height: 1.55;
     color: var(--gc-message-color);
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     letter-spacing: 0.01em;
@@ -187,7 +208,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    font-size: 0.7rem;
+    margin-top: auto;
+    font-size: 0.78rem;
     color: var(--gc-muted-color);
 }
 
@@ -209,6 +231,32 @@
     color: var(--gc-cta-color);
     transition: color 0.2s;
     white-space: nowrap;
+}
+
+.gc-commit-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding-top: 0.1rem;
+}
+
+.gc-commit-page-dot {
+    width: 9px;
+    height: 9px;
+    border: 1px solid rgba(120, 180, 255, 0.45);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: width 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.gc-commit-page-dot.is-active {
+    width: 28px;
+    background: rgba(120, 220, 255, 0.85);
+    border-color: rgba(120, 220, 255, 0.95);
+    box-shadow: 0 0 10px rgba(120, 220, 255, 0.35);
 }
 
 .gc-card-cta:hover {
@@ -249,6 +297,10 @@
         align-items: flex-start;
         flex-direction: column;
         gap: 0.4rem;
+    }
+
+    .gc-commit-repo-link {
+        max-width: calc(100% - 3.7rem);
     }
 }
 

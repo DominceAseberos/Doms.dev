@@ -129,6 +129,7 @@ const GithubContributionSection = () => {
     const [status, setStatus] = useState('Loading GitHub activity...');
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [recentCommits, setRecentCommits] = useState([]);
+    const [activeCommitIndex, setActiveCommitIndex] = useState(0);
 
     async function loadLiveData(forceRefresh = false) {
         if (forceRefresh) clearGitHubActivityCache();
@@ -139,6 +140,7 @@ const GithubContributionSection = () => {
         try {
             const commits = await fetchRecentCommits();
             setRecentCommits(commits);
+            setActiveCommitIndex(0);
             setStatus('');
         } catch (err) {
             setRecentCommits([]);
@@ -151,6 +153,18 @@ const GithubContributionSection = () => {
     useEffect(() => {
         loadLiveData(false);
     }, []);
+
+    useEffect(() => {
+        if (recentCommits.length <= 1) return undefined;
+
+        const interval = window.setInterval(() => {
+            setActiveCommitIndex((index) => (index + 1) % recentCommits.length);
+        }, 4500);
+
+        return () => window.clearInterval(interval);
+    }, [recentCommits.length]);
+
+    const activeCommit = recentCommits[activeCommitIndex] || recentCommits[0] || null;
 
     return (
         <section className="github-contrib-wrap">
@@ -191,25 +205,28 @@ const GithubContributionSection = () => {
                     <div className="gc-card-eyebrow">Latest Commits</div>
                     <h3 className="gc-card-title">@{USERNAME}</h3>
                     <div className="gc-commits-list">
-                        {recentCommits.length > 0 ? (
-                            recentCommits.map((commit, idx) => (
-                                <div key={commit.sha || idx} className="gc-commit-item">
+                        {activeCommit ? (
+                            <>
+                                <article className="gc-commit-item">
+                                    <div className="gc-commit-counter">
+                                        {activeCommitIndex + 1} / {recentCommits.length}
+                                    </div>
                                     <div className="gc-commit-repo">
                                         <span className="gc-commit-dot" />
                                         <a
-                                            href={`https://github.com/${commit.repo}`}
+                                            href={`https://github.com/${activeCommit.repo}`}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="gc-commit-repo-link"
                                         >
-                                            {commit.repo}
+                                            {activeCommit.repo}
                                         </a>
                                     </div>
-                                    <p className="gc-commit-message">{commit.message.split('\n')[0]}</p>
+                                    <p className="gc-commit-message">{activeCommit.message.split('\n')[0]}</p>
                                     <div className="gc-commit-footer">
-                                        <span>{formatCommitTime(commit.time)}</span>
+                                        <span>{formatCommitTime(activeCommit.time)}</span>
                                         <a
-                                            href={commit.url}
+                                            href={activeCommit.url}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="gc-card-cta"
@@ -217,8 +234,22 @@ const GithubContributionSection = () => {
                                             View Commit <span className="gc-cta-arrow">↗</span>
                                         </a>
                                     </div>
-                                </div>
-                            ))
+                                </article>
+                                {recentCommits.length > 1 ? (
+                                    <div className="gc-commit-pagination" aria-label="Commit pagination">
+                                        {recentCommits.map((commit, index) => (
+                                            <button
+                                                key={commit.sha || index}
+                                                type="button"
+                                                className={`gc-commit-page-dot ${index === activeCommitIndex ? 'is-active' : ''}`}
+                                                onClick={() => setActiveCommitIndex(index)}
+                                                aria-label={`Show commit ${index + 1}`}
+                                                aria-current={index === activeCommitIndex}
+                                            />
+                                        ))}
+                                    </div>
+                                ) : null}
+                            </>
                         ) : (
                             <p className="gc-commit-unavailable">
                                 No recent public commits could be loaded from the linked project repositories.

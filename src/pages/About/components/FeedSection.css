@@ -5,6 +5,7 @@
     --feed-card-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
     --feed-title-color: rgba(255, 255, 255, 0.96);
     --feed-card-title-color: rgba(255, 255, 255, 0.96);
+    --feed-type-color: rgba(255, 255, 255, 0.58);
     --feed-media-border: rgba(255, 255, 255, 0.08);
     --feed-media-bg: rgba(255, 255, 255, 0.03);
     --feed-media-grid-border: rgba(255, 255, 255, 0.06);
@@ -95,7 +96,7 @@
 }
 
 .feed-type {
-    color: rgba(200, 255, 62, 0.82);
+    color: var(--feed-type-color);
 }
 
 .feed-card-copy {
@@ -464,6 +465,7 @@ html[data-theme='light'] .feed-section {
     --feed-card-shadow: 0 24px 80px rgba(0, 0, 0, 0.06);
     --feed-title-color: rgba(18, 18, 18, 0.96);
     --feed-card-title-color: rgba(18, 18, 18, 0.96);
+    --feed-type-color: rgba(18, 18, 18, 0.58);
     --feed-media-border: rgba(18, 18, 18, 0.08);
     --feed-media-bg: rgba(18, 18, 18, 0.03);
     --feed-media-grid-border: rgba(18, 18, 18, 0.06);
