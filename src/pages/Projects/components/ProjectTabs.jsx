@@ -251,7 +251,7 @@ const ProjectTabs = ({ onView }) => {
                         <div className="pg-stat">
                             <div>
                                 <div className="pg-stat-num">{projects.length}</div>
-                                <div className="pg-stat-label pg-label-lg">Projects Shipped</div>
+                                <div className="pg-stat-label pg-label-lg">Production-Grade Projects</div>
                             </div>
                             <div className="pg-stat-div"></div>
                             <div>

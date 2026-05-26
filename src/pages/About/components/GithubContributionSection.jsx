@@ -225,7 +225,9 @@ const GithubContributionSection = () => {
                                 </div>
                             ))
                         ) : (
-                            <p className="gc-commit-unavailable">No recent public commits found.</p>
+                            <p className="gc-commit-unavailable">
+                                Recent work includes private repositories. Public commits are available on GitHub when activity is visible.
+                            </p>
                         )}
                     </div>
                 </div>

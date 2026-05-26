@@ -7,5 +7,32 @@
         "createdAt": "2026-05-24",
         "tags": ["AI", "Agents", "Performance"],
         "images": ["/assets/uploads/feed-post/image.png"]
+    },
+    {
+        "id": "post-catsy-architecture-note",
+        "type": "text",
+        "title": "Catsy Coffee Architecture Note",
+        "body": "Shipped the Catsy Coffee case study as a full-stack build: React on the web, Flutter for POS/mobile, API-driven workflows, and real-time updates for ordering and operations.",
+        "createdAt": "2026-05-18",
+        "tags": ["Full Stack", "Flutter", "Realtime"],
+        "images": []
+    },
+    {
+        "id": "post-banana-leaf-active-learning",
+        "type": "text",
+        "title": "Banana Leaf Detector: Active Learning",
+        "body": "Documented the disease detector as more than a classifier. The case study now highlights feedback-driven correction, feature extraction, and local retraining so the model improves from user input.",
+        "createdAt": "2026-05-10",
+        "tags": ["Machine Learning", "Computer Vision", "Flask"],
+        "images": []
+    },
+    {
+        "id": "post-vayora-performance-pass",
+        "type": "text",
+        "title": "Vayora Performance Pass",
+        "body": "Refined the travel experience with responsive sections, animation polish, and clearer project documentation so recruiters can scan the product, stack, and design decisions quickly.",
+        "createdAt": "2026-05-02",
+        "tags": ["React", "Motion", "UI"],
+        "images": []
     }
 ]

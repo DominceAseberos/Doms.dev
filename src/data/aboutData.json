@@ -29,7 +29,7 @@
         },
         {
             "label": "EMAIL",
-            "href": "",
+            "href": "mailto:hello@domince.dev",
             "external": true
         }
     ],
@@ -48,9 +48,9 @@
                 "label": "Target Render"
             },
             {
-                "value": "4",
+                "value": "10",
                 "unit": "+",
-                "label": "Projects Shipped"
+                "label": "Production-Grade Projects"
             },
             {
                 "value": "3",
