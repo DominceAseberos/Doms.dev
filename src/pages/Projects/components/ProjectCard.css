@@ -1,1 +1,43 @@
-/* Card styles are defined in ProjectTabs.css */
+.pg-cover-fallback {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.45rem;
+    padding: 1.2rem;
+    background:
+        linear-gradient(135deg, rgba(200, 255, 62, 0.12), rgba(255, 255, 255, 0.03)),
+        radial-gradient(circle at 72% 24%, rgba(255, 255, 255, 0.16), transparent 34%);
+    color: var(--paper, #fff);
+}
+
+.pg-cover-fallback span,
+.pg-cover-fallback small {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.62;
+}
+
+.pg-cover-fallback strong {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.35rem, 3vw, 2.2rem);
+    line-height: 0.95;
+}
+
+.pg-proof-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.35rem;
+}
+
+.pg-proof-row span {
+    border: 1px solid rgba(200, 255, 62, 0.22);
+    border-radius: 999px;
+    padding: 0.25rem 0.5rem;
+    color: var(--paper, #fff);
+    font-size: 0.62rem;
+    line-height: 1;
+    opacity: 0.72;
+}

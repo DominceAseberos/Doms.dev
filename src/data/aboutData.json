@@ -24,7 +24,7 @@
         },
         {
             "label": "Facebook",
-            "href": "https://www.facebook.com/",
+            "href": "https://web.facebook.com/domince.aseberos",
             "external": true
         },
         {
@@ -36,9 +36,9 @@
     "hero": {
         "location": "📍 Tagum City, Philippines",
         "fullName": "Domince\nAseberos",
-        "role": "Full Stack Developer",
-        "bio": "I design and build production-grade web applications with a focus on performance, interaction quality, and scalable architecture. Available for freelance and full-time roles.",
-        "badges": [],
+        "role": "Full Stack Developer · Web, Mobile & AI",
+        "bio": "I build performant web, mobile, and AI-assisted products with production-grade architecture, polished interaction design, and clear case-study documentation.",
+        "badges": ["React", "Flutter", "FastAPI", "Machine Learning", "60fps UI"],
         "githubUrl": "https://github.com/DominceAseberos",
         "linkedinUrl": "https://www.linkedin.com/in/domincee/",
         "metrics": [
@@ -62,19 +62,19 @@
     "about": {
         "heading": "About",
         "headingAccent": "Me",
-        "intro": "I'm a Computer Science student and Full Stack Developer who thrives on conceptualizing and creating unique ideas. I have a growing passion for front-end design and story-driven landing pages, and I am constantly learning how to craft more immersive digital experiences.",
+        "intro": "I'm a Computer Science student from Tagum City focused on turning school, freelance, and team ideas into usable software. My strongest work sits at the intersection of full-stack engineering, mobile apps, motion-heavy interfaces, and practical AI/ML systems.",
         "blocks": [
             {
                 "title": "How I Build",
-                "body": "My core focus lies in full-stack development, bridging the gap between web and mobile applications. Whether I'm structuring a responsive frontend or designing a scalable backend architecture, my goal is to build pragmatic, real-world solutions."
+                "body": "I design the data flow first, then build the interface around real user workflows. Catsy Coffee, GanapPH, and Baylora all show this pattern: clear APIs, role-based flows, and frontends that stay understandable under real product complexity."
             },
             {
                 "title": "Creative Philosophy",
-                "body": "I believe that development is just as much about narrative as it is about code. I spend a lot of time thinking about how to weave unique stories into landing pages and user interfaces, experimenting with design to create memorable interactions."
+                "body": "I care about interface feel, but I treat motion as product feedback rather than decoration. My goal is a fast, readable UI that uses animation to guide attention without hiding the engineering underneath."
             },
             {
                 "title": "Always Learning",
-                "body": "While I'm still in school, my curiosity doesn't stop at standard coursework. I'm actively exploring machine learning and deep learning, constantly experimenting and finding new, practical ways to apply AI-driven features into my applications."
+                "body": "My ML work is practical: disease detection, multilingual NLP, and recommendation flows. I document the model choices, feedback loops, and limits so reviewers can see the actual engineering decisions."
             }
         ],
         "location": "Tagum City, Philippines · Open to Remote",
@@ -220,7 +220,7 @@
     ],
     "contact": {
         "heading": "Open to Opportunities",
-        "subtext": "Available for freelance projects, contract work, and full-time positions. If you have a role or project in mind, I'd like to hear about it."
+        "subtext": "Available for internships, freelance projects, contract work, and full-time junior roles across web, mobile, and AI-assisted product development."
     },
     "education": [
         {

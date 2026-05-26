@@ -9,6 +9,18 @@ import { ContentBuilder } from '../components/builder/ContentBuilder';
 import MarkdownViewerModal from '../components/MarkdownViewerModal';
 import DocViewerModal from '../../../components/DocViewerModal';
 
+const VIEW_IMAGE_FIELD = {
+    desktop: 'desktopImage',
+    tablet: 'tabletImage',
+    mobile: 'mobileImage',
+};
+
+const VIEW_GALLERY_FIELD = {
+    desktop: 'desktopGallery',
+    tablet: 'tabletGallery',
+    mobile: 'mobileGallery',
+};
+
 const ProjectTemplate = ({
     project,
     rootRef,
@@ -33,21 +45,11 @@ const ProjectTemplate = ({
         mobile: { icon: <FiSmartphone size={14} />, label: 'Mobile' }
     };
 
-    const VIEW_IMAGE_FIELD = {
-        desktop: 'desktopImage',
-        tablet: 'tabletImage',
-        mobile: 'mobileImage',
-    };
-
-    const VIEW_GALLERY_FIELD = {
-        desktop: 'desktopGallery',
-        tablet: 'tabletGallery',
-        mobile: 'mobileGallery',
-    };
-
     const heroMedia = useMemo(() => {
         const viewField = VIEW_IMAGE_FIELD[activeView];
         const viewImage = project[viewField];
+        const isPlaceholder = typeof viewImage === 'string' && /placehold\.co|placeholder/i.test(viewImage);
+        if (isPlaceholder) return '';
         if (viewImage && viewImage !== '') return viewImage;
         if (isAdminPreview) return '';
         return '';
@@ -64,7 +66,7 @@ const ProjectTemplate = ({
         }
         
         return [];
-    }, [project, activeView, isAdminPreview]);
+    }, [project, activeView]);
 
     const coverImage = useMemo(() => {
         if (!project) return '';
@@ -196,6 +198,15 @@ const ProjectTemplate = ({
                 .admin-editable {
                     min-height: 1.2em;
                 }
+                .cs-proof-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; max-width: 900px; margin: 2rem auto 0; }
+                .cs-proof-item { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.035); border-radius: 14px; padding: 0.9rem; text-align: left; }
+                .cs-proof-item__label { display: block; font-family: monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.48; margin-bottom: 0.35rem; }
+                .cs-proof-item__value { display: block; font-size: 0.86rem; line-height: 1.45; font-weight: 650; opacity: 0.88; }
+                .cs-unavailable-preview { display: flex; min-height: 320px; align-items: flex-end; justify-content: space-between; gap: 1.5rem; padding: clamp(1.25rem, 4vw, 2rem); border-radius: 22px; border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(135deg, rgba(200,255,62,0.1), rgba(255,255,255,0.025)), radial-gradient(circle at 78% 22%, rgba(255,255,255,0.14), transparent 32%); }
+                .cs-unavailable-preview__eyebrow { font-family: monospace; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.52; margin-bottom: 0.6rem; }
+                .cs-unavailable-preview__title { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 4vw, 3rem); line-height: 0.95; margin: 0 0 0.7rem; }
+                .cs-unavailable-preview__copy { max-width: 54ch; margin: 0; opacity: 0.64; line-height: 1.7; }
+                @media (max-width: 760px) { .cs-proof-grid { grid-template-columns: 1fr; } .cs-unavailable-preview { min-height: 260px; flex-direction: column; align-items: flex-start; justify-content: flex-end; } }
             `}} />
             <ParticleBackground />
             <NavBar />
@@ -246,7 +257,7 @@ const ProjectTemplate = ({
                                     <FiCode size={16} />
                                     <span className="hidden md:inline">
                                         {project.primaryBtnLabel || 
-                                         (project.projectType === 'LANDING PAGE' ? 'SKILLS' : 'DOCUMENTATION')}
+                                         (project.primaryBtnUrl?.endsWith('.md') ? 'Case Study' : 'Documentation')}
                                     </span>
                                 </a>
                             )}
@@ -261,7 +272,7 @@ const ProjectTemplate = ({
                                     onClick={e => isAdminPreview && e.preventDefault()}
                                 >
                                     <FiExternalLink size={16} />
-                                    <span className="hidden md:inline">{project.secondaryBtnLabel || 'Live View'}</span>
+                                    <span className="hidden md:inline">{project.secondaryBtnLabel || 'Live Demo'}</span>
                                 </a>
                             )}
 
@@ -323,6 +334,17 @@ const ProjectTemplate = ({
                                 placeholder="Add a short project introduction..."
                             />
                         </div>
+
+                        {Array.isArray(project.proofPoints) && project.proofPoints.length > 0 && (
+                            <div className="cs-proof-grid">
+                                {project.proofPoints.slice(0, 3).map((point, index) => (
+                                    <div className="cs-proof-item" key={`${point.label || 'proof'}-${index}`}>
+                                        <span className="cs-proof-item__label">{point.label}</span>
+                                        <span className="cs-proof-item__value">{point.value}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
 
                         <div className="flex items-center justify-center gap-1 mt-10">
                             {Object.entries(VIEW_META).map(([view, meta]) => {
@@ -412,11 +434,21 @@ const ProjectTemplate = ({
                             </div>
                         </div>
                     ) : !galleryMedia || galleryMedia.length === 0 ? (
-                        <div className={`p-12 text-center rounded-2xl border border-dashed ${
-                            isLight ? 'bg-black/5 border-black/10' : 'bg-white/2 border-white/10'
-                        }`}>
-                            <p className="text-sm font-mono uppercase tracking-widest opacity-40">Preview not available for {VIEW_META[activeView].label} view</p>
-                            <p className="text-xs opacity-30 mt-2">Switch views or visit the live site to see the full project.</p>
+                        <div className="cs-unavailable-preview">
+                            <div>
+                                <p className="cs-unavailable-preview__eyebrow">{project.demoStatus || 'Case study preview'}</p>
+                                <h3 className="cs-unavailable-preview__title">{project.title}</h3>
+                                <p className="cs-unavailable-preview__copy">
+                                    {project.liveUrl
+                                        ? 'Use the Live Demo button above to inspect the deployed experience.'
+                                        : 'This project is presented as a case study with source code and implementation notes because a public deployment is not currently available.'}
+                                </p>
+                            </div>
+                            {project.githubUrl && (
+                                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="cs-link-btn cs-link-btn--ghost">
+                                    Source Code
+                                </a>
+                            )}
                         </div>
                     ) : null}
 

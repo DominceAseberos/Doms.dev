@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import GitHubCalendar from 'react-github-calendar';
+import portfolioData from '../../../data/portfolioData.json';
 import './GithubContributionSection.css';
 
 const USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'DominceAseberos';
-const TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
 const CACHE_TTL = 15 * 60 * 1000;
 
 function buildHeaders() {
-    const headers = { Accept: 'application/vnd.github+json' };
-    if (TOKEN) headers.Authorization = 'Bearer ' + TOKEN;
-    return headers;
+    return { Accept: 'application/vnd.github+json' };
 }
 
 function cacheSet(k, d) {
@@ -50,61 +48,58 @@ async function ghFetch(path) {
     return data;
 }
 
+function getRepoFullName(githubUrl) {
+    if (!githubUrl || typeof githubUrl !== 'string') return null;
+
+    try {
+        const url = new URL(githubUrl);
+        if (!url.hostname.includes('github.com')) return null;
+
+        const [owner, repo] = url.pathname
+            .replace(/^\/+|\/+$/g, '')
+            .split('/');
+
+        if (!owner || !repo) return null;
+        return `${owner}/${repo.replace(/\.git$/, '')}`;
+    } catch (_) {
+        return null;
+    }
+}
+
+const PROJECT_REPOS = [
+    ...new Set(
+        (portfolioData.projects || [])
+            .map((project) => getRepoFullName(project.githubUrl))
+            .filter(Boolean)
+    ),
+];
+
 async function fetchRecentCommits() {
-    const cacheKey = `/recent-commits/${USERNAME}`;
+    const cacheKey = `/recent-project-commits/${PROJECT_REPOS.join(',')}`;
     const cached = cacheGet(cacheKey);
     if (cached) return cached;
 
-    let allCommits = [];
+    const commitsByRepo = await Promise.all(
+        PROJECT_REPOS.map(async (repoFullName) => {
+            try {
+                const rows = await ghFetch(`/repos/${repoFullName}/commits?per_page=3`);
+                if (!Array.isArray(rows)) return [];
+                return rows.map((item) => ({
+                    message: item?.commit?.message || 'No commit message',
+                    repo: repoFullName,
+                    sha: item.sha,
+                    time: item?.commit?.author?.date || item?.commit?.committer?.date,
+                    url: item?.html_url || `https://github.com/${repoFullName}/commit/${item.sha}`,
+                }));
+            } catch (_) {
+                return [];
+            }
+        })
+    );
 
-    if (TOKEN) {
-        const ownedRepos = await ghFetch('/user/repos?visibility=all&affiliation=owner&sort=pushed&per_page=20');
-        const ownLogin = USERNAME.toLowerCase();
-        const repos = Array.isArray(ownedRepos)
-            ? ownedRepos
-                .filter((repo) => !repo?.fork)
-                .filter((repo) => (repo?.owner?.login || '').toLowerCase() === ownLogin)
-                .slice(0, 8)
-            : [];
-
-        const commitsByRepo = await Promise.all(
-            repos.map(async (repo) => {
-                try {
-                    const rows = await ghFetch(`/repos/${repo.full_name}/commits?per_page=3`);
-                    if (!Array.isArray(rows)) return [];
-                    return rows.map((item) => ({
-                        message: item?.commit?.message || 'No commit message',
-                        repo: repo.full_name,
-                        sha: item.sha,
-                        time: item?.commit?.author?.date || item?.commit?.committer?.date,
-                        url: item?.html_url || `https://github.com/${repo.full_name}/commit/${item.sha}`,
-                    }));
-                } catch (_) {
-                    return [];
-                }
-            })
-        );
-
-        allCommits = commitsByRepo.flat().filter(Boolean);
-    } else {
-        const events = await ghFetch(`/users/${USERNAME}/events/public?per_page=40`);
-        if (Array.isArray(events)) {
-            events.forEach((event) => {
-                if (event?.type !== 'PushEvent' || !event?.payload?.commits || !event?.repo?.name) return;
-                event.payload.commits.forEach((commit) => {
-                    allCommits.push({
-                        message: commit.message || 'No commit message',
-                        repo: event.repo.name,
-                        sha: commit.sha,
-                        time: event.created_at,
-                        url: `https://github.com/${event.repo.name}/commit/${commit.sha}`,
-                    });
-                });
-            });
-        }
-    }
-
-    const sorted = allCommits
+    const sorted = commitsByRepo
+        .flat()
+        .filter(Boolean)
         .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
         .slice(0, 5);
 
@@ -162,7 +157,7 @@ const GithubContributionSection = () => {
             <div className="github-contrib-head">
                 <h2 className="github-contrib-title ns-reveal">GitHub Activity</h2>
                 <p className="github-contrib-subtitle ns-reveal">
-                    Contribution heat map and latest commits pulled from GitHub.
+                    Contribution heat map plus latest commits pulled directly from linked public project repositories.
                 </p>
             </div>
 
@@ -226,7 +221,7 @@ const GithubContributionSection = () => {
                             ))
                         ) : (
                             <p className="gc-commit-unavailable">
-                                Recent work includes private repositories. Public commits are available on GitHub when activity is visible.
+                                No recent public commits could be loaded from the linked project repositories.
                             </p>
                         )}
                     </div>

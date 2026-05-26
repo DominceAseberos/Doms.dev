@@ -4,6 +4,7 @@ import './ProjectCard.css';
 const ProjectCard = ({ project, onView }) => {
     const t = project.theme || {};
     const cardImage = project.mainImage || project.images?.[0] || project.image || '/assets/projects/cover/BananaLeaf.png';
+    const isPlaceholderImage = typeof cardImage === 'string' && /placehold\.co|placeholder/i.test(cardImage);
 
     return (
         <div
@@ -20,7 +21,15 @@ const ProjectCard = ({ project, onView }) => {
             <div className="pg-vis">
                 <div className="pg-vis-bg"></div>
                 <div className="pg-glow"></div>
-                <img src={cardImage} alt={`${project.title} preview`} className="pg-cover" loading="lazy" />
+                {isPlaceholderImage ? (
+                    <div className="pg-cover pg-cover-fallback">
+                        <span>{project.projectType || 'Case Study'}</span>
+                        <strong>{project.title}</strong>
+                        <small>{project.demoStatus || 'Case study available'}</small>
+                    </div>
+                ) : (
+                    <img src={cardImage} alt={`${project.title} preview`} className="pg-cover" loading="lazy" />
+                )}
                 <div className="pg-vignette"></div>
                 <div className="pg-date pg-label-lg">{project.displayDate}</div>
             </div>
@@ -39,6 +48,10 @@ const ProjectCard = ({ project, onView }) => {
                     {project.stacks?.map((s) => (
                         <span key={s} className="pg-pill pg-pill-lg">{s}</span>
                     ))}
+                </div>
+                <div className="pg-proof-row">
+                    {project.liveUrl ? <span>Live demo</span> : <span>Case study</span>}
+                    {project.githubUrl ? <span>Source</span> : null}
                 </div>
                 <div className="pg-arrow">↗</div>
             </div>

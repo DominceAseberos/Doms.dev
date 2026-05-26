@@ -139,7 +139,23 @@
                 }
             ],
             "primaryBtnUrl": "/assets/markdowns/github-universe-docs.md",
-            "featuredOnHome": false
+            "featuredOnHome": false,
+            "primaryBtnLabel": "Case Study",
+            "secondaryBtnLabel": "Live Demo",
+            "proofPoints": [
+                {
+                    "label": "Stack",
+                    "value": "React, Vite, GitHub API"
+                },
+                {
+                    "label": "Focus",
+                    "value": "Repository browsing and developer UX"
+                },
+                {
+                    "label": "Proof",
+                    "value": "Live deployment plus source code"
+                }
+            ]
         },
         {
             "id": "project-catsy",
@@ -285,7 +301,23 @@
                     ]
                 }
             ],
-            "featuredOnHome": true
+            "featuredOnHome": true,
+            "primaryBtnLabel": "Architecture Doc",
+            "secondaryBtnLabel": "Live Demo",
+            "proofPoints": [
+                {
+                    "label": "Platforms",
+                    "value": "Web app, API, and Flutter POS/mobile"
+                },
+                {
+                    "label": "Realtime",
+                    "value": "WebSocket-driven ordering and operations"
+                },
+                {
+                    "label": "Scope",
+                    "value": "3-tier system with role-based workflows"
+                }
+            ]
         },
         {
             "id": "project-ganapph",
@@ -432,7 +464,23 @@
                     ]
                 }
             ],
-            "featuredOnHome": false
+            "featuredOnHome": false,
+            "primaryBtnLabel": "Product Doc",
+            "secondaryBtnLabel": "Live Demo",
+            "proofPoints": [
+                {
+                    "label": "Domain",
+                    "value": "AI livelihood and opportunity guidance"
+                },
+                {
+                    "label": "Flow",
+                    "value": "Onboarding to personalized roadmap"
+                },
+                {
+                    "label": "Proof",
+                    "value": "Live pitch prototype and documentation"
+                }
+            ]
         },
         {
             "id": "project-baylora",
@@ -444,19 +492,19 @@
             "githubUrl": "https://github.com/DominceAseberos/Baylora",
             "primaryBtnUrl": "/assets/markdowns/baylora-skills.md",
             "featuredInTunnel": false,
-            "mainImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-            "desktopImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-            "tabletImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-            "mobileImage": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile",
+            "mainImage": "",
+            "desktopImage": "",
+            "tabletImage": "",
+            "mobileImage": "",
             "desktopGallery": [],
             "tabletGallery": [],
             "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
-                "desktop": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-                "tablet": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-                "mobile": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile"
+                "desktop": "",
+                "tablet": "",
+                "mobile": ""
             },
             "contentSections": [
                 {
@@ -514,7 +562,23 @@
                     ]
                 }
             ],
-            "featuredOnHome": false
+            "featuredOnHome": false,
+            "primaryBtnLabel": "Case Study",
+            "demoStatus": "Mobile build documented",
+            "proofPoints": [
+                {
+                    "label": "Platform",
+                    "value": "Flutter marketplace app"
+                },
+                {
+                    "label": "Backend",
+                    "value": "Supabase auth, storage, and PostgreSQL"
+                },
+                {
+                    "label": "Core Flow",
+                    "value": "Cash, trade, and mixed bidding transactions"
+                }
+            ]
         },
         {
             "id": "project-nlp",
@@ -526,19 +590,19 @@
             "githubUrl": "https://github.com/KyndelRoy/NLP-Project",
             "primaryBtnUrl": "/assets/markdowns/nlp-skills.md",
             "featuredInTunnel": false,
-            "mainImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-            "desktopImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-            "tabletImage": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-            "mobileImage": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile",
+            "mainImage": "",
+            "desktopImage": "",
+            "tabletImage": "",
+            "mobileImage": "",
             "desktopGallery": [],
             "tabletGallery": [],
             "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
-                "desktop": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-                "tablet": "https://placehold.co/800x600/1e1e1e/888888?text=Placeholder",
-                "mobile": "https://placehold.co/400x800/1e1e1e/888888?text=Mobile"
+                "desktop": "",
+                "tablet": "",
+                "mobile": ""
             },
             "contentSections": [
                 {
@@ -597,7 +661,23 @@
                     ]
                 }
             ],
-            "featuredOnHome": false
+            "featuredOnHome": false,
+            "primaryBtnLabel": "Case Study",
+            "demoStatus": "Research build documented",
+            "proofPoints": [
+                {
+                    "label": "Languages",
+                    "value": "English, Tagalog, and Cebuano"
+                },
+                {
+                    "label": "Models",
+                    "value": "BERTopic and BART-based classification"
+                },
+                {
+                    "label": "Output",
+                    "value": "Topic classification and language detection"
+                }
+            ]
         },
         {
             "id": "project-kernel",
@@ -782,7 +862,23 @@
                     ]
                 }
             ],
-            "featuredOnHome": false
+            "featuredOnHome": false,
+            "primaryBtnLabel": "Case Study",
+            "secondaryBtnLabel": "Live Demo",
+            "proofPoints": [
+                {
+                    "label": "Focus",
+                    "value": "Scroll-driven landing page craft"
+                },
+                {
+                    "label": "Motion",
+                    "value": "GSAP and responsive interaction polish"
+                },
+                {
+                    "label": "Proof",
+                    "value": "Live deployment with source code"
+                }
+            ]
         },
         {
             "id": "project-vayora",
@@ -978,7 +1074,23 @@
                     ]
                 }
             ],
-            "featuredOnHome": true
+            "featuredOnHome": true,
+            "primaryBtnLabel": "Case Study",
+            "secondaryBtnLabel": "Live Demo",
+            "proofPoints": [
+                {
+                    "label": "Product",
+                    "value": "Premium travel curation experience"
+                },
+                {
+                    "label": "UI",
+                    "value": "Responsive luxury layout and motion system"
+                },
+                {
+                    "label": "Stack",
+                    "value": "React, Vite, Radix UI, Tailwind"
+                }
+            ]
         },
         {
             "id": "project-banana-leaf-detector",
@@ -1217,7 +1329,23 @@
                     ]
                 }
             ],
-            "featuredOnHome": true
+            "featuredOnHome": true,
+            "primaryBtnLabel": "Case Study",
+            "demoStatus": "ML case study documented",
+            "proofPoints": [
+                {
+                    "label": "Model",
+                    "value": "KNN classifier with 59-dimensional features"
+                },
+                {
+                    "label": "Learning Loop",
+                    "value": "User corrections trigger local retraining"
+                },
+                {
+                    "label": "Speed",
+                    "value": "Background retraining under 200ms"
+                }
+            ]
         },
         {
             "id": "project-pixvault",
@@ -1486,7 +1614,23 @@
                     ]
                 }
             ],
-            "featuredOnHome": true
+            "featuredOnHome": true,
+            "primaryBtnLabel": "Case Study",
+            "secondaryBtnLabel": "Live Demo",
+            "proofPoints": [
+                {
+                    "label": "Product",
+                    "value": "Searchable design resource hub"
+                },
+                {
+                    "label": "Integrations",
+                    "value": "Reddit GIFs, Iconify, and shadcn/ui"
+                },
+                {
+                    "label": "UX",
+                    "value": "Copy/download flows without accounts"
+                }
+            ]
         }
     ],
     "customCategories": [

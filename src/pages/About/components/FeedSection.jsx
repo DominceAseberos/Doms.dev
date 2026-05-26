@@ -142,7 +142,7 @@ const FeedSection = () => {
                     <p className="ui-sub-label ns-reveal">Feed</p>
                     <h2 className="feed-title ns-reveal">Posts and updates from me.</h2>
                     <p className="feed-intro ui-body-copy ns-reveal">
-                        A blog-style section where I share whatever I want to publish, including text posts, images, and progress updates.
+                        Short build notes from project work, architecture decisions, ML experiments, and interface polish.
                     </p>
                 </div>
 

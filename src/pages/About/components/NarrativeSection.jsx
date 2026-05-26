@@ -166,6 +166,8 @@ const NarrativeSection = forwardRef((props, ref) => {
     const socials    = data.socials    || [];
 
     const STRIPE_COUNT = 20;
+    const isPlaceholderImage = (src) =>
+        typeof src === 'string' && /placehold\.co|placeholder/i.test(src);
 
     return (
         <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section">
@@ -207,8 +209,13 @@ const NarrativeSection = forwardRef((props, ref) => {
                                     onClick={(e) => { e.preventDefault(); setIsResumeModalOpen(true); }}
                                     className="btn-primary ns-btn"
                                 >
-                                    View CV
+                                    View Resume
                                 </button>
+                            )}
+                            {data.resume && (
+                                <a href={data.resume} download className="btn-ghost ns-btn">
+                                    Download Resume
+                                </a>
                             )}
                             <Link to="/projects" className="btn-ghost ns-btn">
                                 Projects
@@ -406,12 +413,15 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <div className="ns-projects-grid">
                         {projects.map((p) => (
                             <Link key={p.id} to={`/projects/${p.id}`} className="ns-project-card ns-reveal">
-                                {p.mainImage || p.desktopImage ? (
+                                {(p.mainImage || p.desktopImage) && !isPlaceholderImage(p.mainImage || p.desktopImage) ? (
                                     <div className="ns-project-img-wrap">
                                         <img src={p.mainImage || p.desktopImage} alt={p.title} className="ns-project-img" loading="lazy" />
                                     </div>
                                 ) : (
-                                    <div className="ns-project-img-placeholder" />
+                                    <div className="ns-project-img-placeholder">
+                                        <span>{p.projectType || 'Case Study'}</span>
+                                        <strong>{p.title}</strong>
+                                    </div>
                                 )}
                                 <div className="ns-project-info">
                                     <div className="ns-project-meta">
