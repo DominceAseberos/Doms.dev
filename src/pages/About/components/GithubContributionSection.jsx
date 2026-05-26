@@ -79,6 +79,20 @@ async function fetchRecentCommits() {
     const cached = cacheGet(cacheKey);
     if (cached) return cached;
 
+    try {
+        const params = new URLSearchParams({ repos: PROJECT_REPOS.join(',') });
+        const response = await fetch(`/api/github-commits?${params.toString()}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data.commits)) {
+                cacheSet(cacheKey, data.commits);
+                return data.commits;
+            }
+        }
+    } catch (_) {
+        // Fall back to direct public GitHub calls when running outside Vercel.
+    }
+
     const commitsByRepo = await Promise.all(
         PROJECT_REPOS.map(async (repoFullName) => {
             try {
