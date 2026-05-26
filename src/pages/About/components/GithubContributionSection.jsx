@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import GitHubCalendar from 'react-github-calendar';
 import portfolioData from '../../../data/portfolioData.json';
+import useThemeStore from '../../../store/useThemeStore';
 import './GithubContributionSection.css';
 
 const USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'DominceAseberos';
@@ -135,11 +136,12 @@ function formatCommitTime(value) {
 }
 
 const calendarTheme = {
-    dark: ['rgba(18, 24, 38, 0.72)', '#17324f', '#1f6ea7', '#39bce8', '#8be9ff'],
-    light: ['rgba(18, 18, 18, 0.08)', '#c9ecff', '#78cfff', '#2d91df', '#145fa9'],
+    dark: ['rgba(255, 255, 255, 0.08)', '#17324f', '#1f6ea7', '#39bce8', '#8be9ff'],
+    light: ['rgba(18, 18, 18, 0.06)', '#d9f2ee', '#9adbd4', '#53b8c7', '#247ea8'],
 };
 
 const GithubContributionSection = () => {
+    const theme = useThemeStore((state) => state.theme);
     const [status, setStatus] = useState('Loading GitHub activity...');
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [recentCommits, setRecentCommits] = useState([]);
@@ -206,7 +208,7 @@ const GithubContributionSection = () => {
                     <div className="gc-card-eyebrow">Contribution Heat Map</div>
                     <GitHubCalendar
                         username={USERNAME}
-                        colorScheme="dark"
+                        colorScheme={theme === 'light' ? 'light' : 'dark'}
                         theme={calendarTheme}
                         blockSize={12}
                         blockMargin={4}
