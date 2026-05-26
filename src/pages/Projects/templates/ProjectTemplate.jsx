@@ -21,6 +21,27 @@ const VIEW_GALLERY_FIELD = {
     mobile: 'mobileGallery',
 };
 
+const getPrimaryDocumentMeta = (project) => {
+    const url = project.primaryBtnUrl || '';
+    const explicitLabel = project.primaryBtnLabel?.trim();
+    const isMarkdown = url.toLowerCase().endsWith('.md');
+    const isSkills = isMarkdown && /(^|[-_/])skills\.md$/i.test(url);
+
+    if (isSkills) {
+        return {
+            label: 'Skills.md',
+            title: 'Skills.md',
+            isSkills: true,
+        };
+    }
+
+    return {
+        label: explicitLabel || (isMarkdown ? 'Case Study' : 'Documentation'),
+        title: explicitLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation'),
+        isSkills: project.projectType === 'LANDING PAGE',
+    };
+};
+
 const ProjectTemplate = ({
     project,
     rootRef,
@@ -38,6 +59,7 @@ const ProjectTemplate = ({
     const [markdownUrl, setMarkdownUrl] = useState('');
     const [isDocModalOpen, setIsDocModalOpen] = useState(false);
     const [docUrl, setDocUrl] = useState('');
+    const primaryDocumentMeta = getPrimaryDocumentMeta(project);
 
     const VIEW_META = {
         desktop: { icon: <FiMonitor size={14} />, label: 'Desktop' },
@@ -256,8 +278,7 @@ const ProjectTemplate = ({
                                 >
                                     <FiCode size={16} />
                                     <span className="hidden md:inline">
-                                        {project.primaryBtnLabel || 
-                                         (project.primaryBtnUrl?.endsWith('.md') ? 'Case Study' : 'Documentation')}
+                                        {primaryDocumentMeta.label}
                                     </span>
                                 </a>
                             )}
@@ -549,15 +570,15 @@ const ProjectTemplate = ({
                 isOpen={isMarkdownModalOpen} 
                 onClose={() => setIsMarkdownModalOpen(false)} 
                 githubUrl={markdownUrl}
-                title={project.primaryBtnLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation')}
-                isSkills={project.projectType === 'LANDING PAGE'}
+                title={primaryDocumentMeta.title}
+                isSkills={primaryDocumentMeta.isSkills}
             />
 
             <DocViewerModal 
                 isOpen={isDocModalOpen}
                 onClose={() => setIsDocModalOpen(false)}
                 docUrl={docUrl}
-                title={project.primaryBtnLabel || (project.projectType === 'LANDING PAGE' ? 'Skills' : 'Documentation')}
+                title={primaryDocumentMeta.title}
             />
         </div>
     );
