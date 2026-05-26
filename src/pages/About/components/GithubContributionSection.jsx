@@ -135,8 +135,8 @@ function formatCommitTime(value) {
 }
 
 const calendarTheme = {
-    dark: ['rgba(255,255,255,0.08)', '#375a32', '#5f8f3f', '#9acd5a', '#c8ff3e'],
-    light: ['rgba(18,18,18,0.08)', '#d8e8c4', '#a8ca70', '#76a83f', '#3f7c22'],
+    dark: ['rgba(18, 24, 38, 0.72)', '#17324f', '#1f6ea7', '#39bce8', '#8be9ff'],
+    light: ['rgba(18, 18, 18, 0.08)', '#c9ecff', '#78cfff', '#2d91df', '#145fa9'],
 };
 
 const GithubContributionSection = () => {
@@ -221,7 +221,10 @@ const GithubContributionSection = () => {
                     <div className="gc-commits-list">
                         {activeCommit ? (
                             <>
-                                <article className="gc-commit-item">
+                                <article
+                                    key={activeCommit.sha || activeCommitIndex}
+                                    className="gc-commit-item"
+                                >
                                     <div className="gc-commit-counter">
                                         {activeCommitIndex + 1} / {recentCommits.length}
                                     </div>

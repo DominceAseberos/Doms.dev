@@ -14,6 +14,11 @@
     --gc-cta-color: rgba(160, 210, 255, 0.85);
     --gc-message-color: rgba(255, 255, 255, 0.82);
     --gc-muted-color: rgba(255, 255, 255, 0.45);
+    --gc-active-commit-border: rgba(120, 220, 255, 0.28);
+    --gc-active-commit-bg: linear-gradient(180deg, rgba(120, 220, 255, 0.08), rgba(255, 255, 255, 0.03));
+    --gc-repo-color: rgba(170, 225, 255, 0.98);
+    --gc-dot-border: rgba(120, 180, 255, 0.45);
+    --gc-dot-active: rgba(120, 220, 255, 0.9);
 
     width: 100%;
     padding: 4rem 1.5rem 6rem;
@@ -134,6 +139,7 @@
     margin-top: 0.35rem;
     flex: 1;
     min-height: 210px;
+    perspective: 900px;
 }
 
 .gc-commit-item {
@@ -143,13 +149,17 @@
     gap: 0.75rem;
     min-height: 170px;
     padding: 1rem;
-    border: 1px solid rgba(120, 180, 255, 0.1);
+    border: 1px solid var(--gc-active-commit-border);
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.025);
+    background: var(--gc-active-commit-bg);
+    box-shadow: 0 18px 50px rgba(60, 130, 200, 0.12);
+    transform-origin: 50% 70%;
+    animation: gcCommitFlipIn 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    will-change: transform, opacity, filter;
 }
 
 .gc-commit-item:last-child {
-    border-bottom: 1px solid rgba(120, 180, 255, 0.1);
+    border-bottom: 1px solid var(--gc-active-commit-border);
 }
 
 .gc-commit-counter {
@@ -179,12 +189,13 @@
 
 .gc-commit-repo-link {
     max-width: calc(100% - 4.5rem);
-    font-size: 0.78rem;
+    font-size: 0.84rem;
+    font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgba(160, 210, 255, 0.95);
+    color: var(--gc-repo-color);
     text-decoration: none;
-    border-bottom: 1px solid rgba(120, 180, 255, 0.35);
+    border-bottom: 1px solid color-mix(in srgb, var(--gc-repo-color) 45%, transparent);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -192,8 +203,9 @@
 
 .gc-commit-message {
     margin: 0;
-    font-size: clamp(1rem, 1.35vw, 1.2rem);
-    line-height: 1.55;
+    font-size: clamp(1.08rem, 1.6vw, 1.35rem);
+    line-height: 1.5;
+    font-weight: 650;
     color: var(--gc-message-color);
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -244,7 +256,7 @@
 .gc-commit-page-dot {
     width: 9px;
     height: 9px;
-    border: 1px solid rgba(120, 180, 255, 0.45);
+    border: 1px solid var(--gc-dot-border);
     border-radius: 999px;
     background: transparent;
     cursor: pointer;
@@ -254,8 +266,8 @@
 
 .gc-commit-page-dot.is-active {
     width: 28px;
-    background: rgba(120, 220, 255, 0.85);
-    border-color: rgba(120, 220, 255, 0.95);
+    background: var(--gc-dot-active);
+    border-color: var(--gc-dot-active);
     box-shadow: 0 0 10px rgba(120, 220, 255, 0.35);
 }
 
@@ -270,6 +282,32 @@
 
 .gc-card-cta:hover .gc-cta-arrow {
     transform: translate(2px, -2px);
+}
+
+@keyframes gcCommitFlipIn {
+    0% {
+        opacity: 0;
+        filter: blur(8px);
+        transform: translate3d(0, 18px, -36px) rotateX(-14deg) scale(0.98);
+    }
+
+    58% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translate3d(0, -3px, 0) rotateX(2deg) scale(1.01);
+    }
+
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gc-commit-item {
+        animation: none;
+    }
 }
 
 @media (max-width: 900px) {
@@ -318,8 +356,17 @@ html[data-theme='light'] .github-contrib-wrap {
     --gc-eyebrow-color: rgba(18, 18, 18, 0.55);
     --gc-card-title-color: rgba(18, 18, 18, 0.95);
     --gc-cta-color: rgba(30, 100, 180, 0.88);
-    --gc-message-color: rgba(18, 18, 18, 0.82);
-    --gc-muted-color: rgba(18, 18, 18, 0.45);
+    --gc-message-color: rgba(18, 18, 18, 0.9);
+    --gc-muted-color: rgba(18, 18, 18, 0.55);
+    --gc-active-commit-border: rgba(30, 100, 180, 0.24);
+    --gc-active-commit-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(220, 232, 248, 0.55));
+    --gc-repo-color: rgba(25, 92, 168, 0.98);
+    --gc-dot-border: rgba(30, 100, 180, 0.35);
+    --gc-dot-active: rgba(30, 130, 220, 0.82);
+}
+
+html[data-theme='light'] .gc-commit-item {
+    box-shadow: 0 18px 50px rgba(30, 100, 180, 0.1);
 }
 
 html[data-theme='light'] .gc-card-cta:hover {
