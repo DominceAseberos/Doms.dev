@@ -1035,3 +1035,19 @@ html[data-theme='light'] .ns-testimonial-name {
     color: var(--gray);
     margin: 0;
 }
+
+/* ── WALKING GIF ─────────────────────────────────────────────────────────── */
+.ns-cat-peek {
+    position: absolute;
+    bottom: calc(100% - 25px); /* Overlap more behind the button top edge */
+    left: 50%;
+    transform: translateX(-50%);
+    height: 180px; /* Made the cat bigger */
+    width: auto;
+    z-index: 1; /* Behind the button which has zIndex: 2 */
+    pointer-events: none;
+    image-rendering: auto; /* Since it's from AI video, it might be smoother with auto */
+    transition: transform 0.3s ease;
+}
+
+

@@ -453,14 +453,17 @@ const NarrativeSection = forwardRef((props, ref) => {
                     {contact.subtext && (
                         <p className="ui-body-copy ns-contact-sub ns-reveal">{contact.subtext}</p>
                     )}
-                    <Link to="/contact" className="btn-primary ns-contact-cta ns-reveal">
-                        Start a Conversation
-                    </Link>
+                    <div className="ns-contact-cta-wrapper ns-reveal" style={{ position: 'relative', display: 'inline-block', marginTop: '10rem' }}>
+                        <img src="/assets/GIF/tobe-peek.gif" alt="cat peeking" className="ns-cat-peek" />
+                        <Link to="/contact" className="btn-primary ns-contact-cta" style={{ margin: 0, position: 'relative', zIndex: 2 }}>
+                            Start a Conversation
+                        </Link>
+                    </div>
                 </div>
             </section>
 
             {/* ══ FOOTER ═══════════════════════════════════════════════════ */}
-            <footer className="ns-footer">
+            <footer className="ns-footer" style={{ position: 'relative' }}>
                 <div className="ns-footer-inner">
                     <div className="ns-footer-left">
                         <p className="ns-footer-name">Domince Aseberos</p>
