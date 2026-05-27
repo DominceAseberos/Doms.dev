@@ -586,23 +586,29 @@
             "shortDescription": "A specialized machine learning pipeline for topic classification and language detection across English, Tagalog, and Cebuano using BERTopic and BART models.",
             "projectType": "MACHINE LEARNING",
             "dateCreated": "2026-04-01",
-            "liveUrl": "",
+            "liveUrl": "https://huggingface.co/spaces/Domince/NLP-Language-Detector",
             "githubUrl": "https://github.com/KyndelRoy/NLP-Project",
             "primaryBtnUrl": "/assets/markdowns/nlp-skills.md",
             "featuredInTunnel": false,
-            "mainImage": "",
-            "desktopImage": "",
-            "tabletImage": "",
-            "mobileImage": "",
-            "desktopGallery": [],
-            "tabletGallery": [],
-            "mobileGallery": [],
+            "mainImage": "/assets/uploads/project-nlp/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-nlp/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-nlp/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-nlp/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-nlp/imgs/desktop-2.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-nlp/imgs/tablet-2.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-nlp/imgs/mobile-2.webp"
+            ],
             "images": [],
             "galleryImages": [],
             "assets": {
-                "desktop": "",
-                "tablet": "",
-                "mobile": ""
+                "desktop": "/assets/uploads/project-nlp/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-nlp/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-nlp/imgs/mobile.webp"
             },
             "contentSections": [
                 {

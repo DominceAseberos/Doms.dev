@@ -1,5 +1,14 @@
 [
     {
+        "id": "post-banana-leaf-redesign",
+        "type": "image",
+        "title": "Banana Leaf Redesign",
+        "body": "Fresh UI overhaul featuring a sleek, high-fidelity scanner.",
+        "createdAt": "2026-05-27",
+        "tags": ["UI", "Redesign"],
+        "images": ["/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp"]
+    },
+    {
         "id": "post-1778610021314",
         "type": "image",
         "title": "Agent Performance Update",
