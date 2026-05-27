@@ -92,10 +92,11 @@ const main = async () => {
     
     if (projectSlug === 'banana-leaf-detector') {
       sections = [
-        { selector: '.hero-section', name: 'hero' },
-        { selector: '.container', name: 'app' },
-        { selector: '.history-section', name: 'history' },
-        { selector: '.dashboard-section', name: 'analytics' }
+        { progress: 0.0, name: 'hero' },
+        { progress: 0.20, name: 'context' },
+        { progress: 0.50, name: 'journey' },
+        { progress: 0.80, name: 'climax' },
+        { progress: 1.0, name: 'resolution' }
       ];
     } else if (projectSlug === 'pixvault') {
       sections = [

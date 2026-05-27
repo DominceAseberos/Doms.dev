@@ -1109,17 +1109,20 @@
             "desktopGallery": [
                 "/assets/uploads/project-banana-leaf-detector/imgs/desktop-2.webp",
                 "/assets/uploads/project-banana-leaf-detector/imgs/desktop-3.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-4.webp"
+                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-4.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-5.webp"
             ],
             "tabletGallery": [
                 "/assets/uploads/project-banana-leaf-detector/imgs/tablet-2.webp",
                 "/assets/uploads/project-banana-leaf-detector/imgs/tablet-3.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-4.webp"
+                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-4.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-5.webp"
             ],
             "mobileGallery": [
                 "/assets/uploads/project-banana-leaf-detector/imgs/mobile-2.webp",
                 "/assets/uploads/project-banana-leaf-detector/imgs/mobile-3.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-4.webp"
+                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-4.webp",
+                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-5.webp"
             ],
             "images": [],
             "galleryImages": [],
