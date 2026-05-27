@@ -90,13 +90,21 @@ const main = async () => {
     // We look for major sections or slice the page if none exist
     let sections = [];
     
-    // If it's Banana Leaf Detector, we know the exact selectors for perfect capture:
     if (projectSlug === 'banana-leaf-detector') {
       sections = [
         { selector: '.hero-section', name: 'hero' },
         { selector: '.container', name: 'app' },
         { selector: '.history-section', name: 'history' },
         { selector: '.dashboard-section', name: 'analytics' }
+      ];
+    } else if (projectSlug === 'pixvault') {
+      sections = [
+        { progress: 0.0, name: 'hero' },
+        { progress: 0.05, name: 'photos' },
+        { progress: 0.30, name: 'gifs' },
+        { progress: 0.48, name: 'inspo' },
+        { progress: 0.72, name: 'ui' },
+        { progress: 0.95, name: 'cta' }
       ];
     } else {
       // General fallbacks for other projects
@@ -136,6 +144,13 @@ const main = async () => {
           }
         }, section.selector);
         await new Promise(resolve => setTimeout(resolve, waitTime));
+      } else if (section.progress !== undefined) {
+        // Scroll to progress
+        await page.evaluate((prog) => {
+          const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+          window.scrollTo(0, pageHeight * prog);
+        }, section.progress);
+        await new Promise(resolve => setTimeout(resolve, 1500));
       } else if (section.fold !== undefined) {
         // Scroll to fold
         await page.evaluate((fold, height) => {
@@ -457,11 +472,27 @@ const main = async () => {
       portfolioData.projects = [];
     }
 
-    // Remove duplicates if the project already exists
-    portfolioData.projects = portfolioData.projects.filter(p => p.id !== `project-${projectSlug}`);
-
-    // Prepend the new project (appears first)
-    portfolioData.projects.unshift(projectMetadata);
+    // Check if the project already exists
+    const existingIndex = portfolioData.projects.findIndex(p => p.id === `project-${projectSlug}`);
+    
+    if (existingIndex !== -1) {
+      // Merge images into existing project
+      console.log(`♻️  Updating images for existing project: project-${projectSlug}`);
+      portfolioData.projects[existingIndex] = {
+        ...portfolioData.projects[existingIndex],
+        mainImage: projectMetadata.mainImage,
+        desktopImage: projectMetadata.desktopImage,
+        tabletImage: projectMetadata.tabletImage,
+        mobileImage: projectMetadata.mobileImage,
+        desktopGallery: projectMetadata.desktopGallery,
+        tabletGallery: projectMetadata.tabletGallery,
+        mobileGallery: projectMetadata.mobileGallery,
+        assets: projectMetadata.assets
+      };
+    } else {
+      // Prepend the new project (appears first)
+      portfolioData.projects.unshift(projectMetadata);
+    }
 
     // Save formatted back to disk
     fs.writeFileSync(dataFilePath, JSON.stringify(portfolioData, null, 4), 'utf8');

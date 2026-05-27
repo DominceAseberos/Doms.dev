@@ -1353,36 +1353,39 @@
             "shortDescription": "A premium design resource SPA aggregating GIFs, icons, UI components, and illustrations. Built with React 18 and a cyberpunk design system.",
             "images": [],
             "projectType": "WEB APPLICATION",
-            "mainImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
+            "mainImage": "/assets/uploads/project-pixvault/imgs/desktop.webp",
             "galleryImages": [],
             "assets": {
-                "desktop": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
-                "tablet": "/assets/uploads/project-pixvault/imgs/tablet.png",
-                "mobile": "/assets/uploads/project-pixvault/imgs/hero_mobile.png"
+                "desktop": "/assets/uploads/project-pixvault/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-pixvault/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-pixvault/imgs/mobile.webp"
             },
             "liveUrl": "https://live-pixvault.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
             "primaryBtnUrl": "/assets/markdowns/pixvault-docs.md",
-            "desktopImage": "/assets/uploads/project-pixvault/imgs/hero_desktop.png",
-            "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.png",
-            "mobileImage": "/assets/uploads/project-pixvault/imgs/hero_mobile.png",
+            "desktopImage": "/assets/uploads/project-pixvault/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-pixvault/imgs/mobile.webp",
             "desktopGallery": [
-                "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
-                "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
-                "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
-                "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
+                "/assets/uploads/project-pixvault/imgs/desktop-2.webp",
+                "/assets/uploads/project-pixvault/imgs/desktop-3.webp",
+                "/assets/uploads/project-pixvault/imgs/desktop-4.webp",
+                "/assets/uploads/project-pixvault/imgs/desktop-5.webp",
+                "/assets/uploads/project-pixvault/imgs/desktop-6.webp"
             ],
             "tabletGallery": [
-                "/assets/uploads/project-pixvault/imgs/desktop_sec2.png",
-                "/assets/uploads/project-pixvault/imgs/desktop_sec3.png",
-                "/assets/uploads/project-pixvault/imgs/desktop_sec4.png",
-                "/assets/uploads/project-pixvault/imgs/desktop_sec5.png"
+                "/assets/uploads/project-pixvault/imgs/tablet-2.webp",
+                "/assets/uploads/project-pixvault/imgs/tablet-3.webp",
+                "/assets/uploads/project-pixvault/imgs/tablet-4.webp",
+                "/assets/uploads/project-pixvault/imgs/tablet-5.webp",
+                "/assets/uploads/project-pixvault/imgs/tablet-6.webp"
             ],
             "mobileGallery": [
-                "/assets/uploads/project-pixvault/imgs/mobile_sec2.png",
-                "/assets/uploads/project-pixvault/imgs/mobile_sec3.png",
-                "/assets/uploads/project-pixvault/imgs/mobile_sec4.png",
-                "/assets/uploads/project-pixvault/imgs/mobile_sec5.png"
+                "/assets/uploads/project-pixvault/imgs/mobile-2.webp",
+                "/assets/uploads/project-pixvault/imgs/mobile-3.webp",
+                "/assets/uploads/project-pixvault/imgs/mobile-4.webp",
+                "/assets/uploads/project-pixvault/imgs/mobile-5.webp",
+                "/assets/uploads/project-pixvault/imgs/mobile-6.webp"
             ],
             "featuredInTunnel": true,
             "dateCreated": "2026-05-01",
