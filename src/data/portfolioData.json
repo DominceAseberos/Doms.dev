@@ -588,7 +588,7 @@
             "dateCreated": "2026-04-01",
             "liveUrl": "https://huggingface.co/spaces/Domince/NLP-Language-Detector",
             "githubUrl": "https://github.com/KyndelRoy/NLP-Project",
-            "primaryBtnUrl": "/assets/markdowns/nlp-skills.md",
+            "primaryBtnUrl": "/assets/markdowns/nlp-docs.md",
             "featuredInTunnel": false,
             "mainImage": "/assets/uploads/project-nlp/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-nlp/imgs/desktop.webp",
@@ -668,7 +668,7 @@
                 }
             ],
             "featuredOnHome": false,
-            "primaryBtnLabel": "Case Study",
+            "primaryBtnLabel": "Documentation",
             "demoStatus": "Research build documented",
             "proofPoints": [
                 {
