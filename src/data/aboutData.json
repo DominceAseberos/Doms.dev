@@ -35,18 +35,13 @@
     ],
     "hero": {
         "location": "📍 Tagum City, Philippines",
-        "fullName": "Domince\nAseberos",
+        "fullName": "Domince Aseberos",
         "role": "Full Stack Developer · Web, Mobile & AI",
         "bio": "I build performant web, mobile, and AI-assisted products with production-grade architecture, polished interaction design, and clear case-study documentation.",
-        "badges": ["React", "Flutter", "FastAPI", "Machine Learning", "60fps UI"],
+        "badges": ["React", "Flutter", "FastAPI", "Machine Learning"],
         "githubUrl": "https://github.com/DominceAseberos",
         "linkedinUrl": "https://www.linkedin.com/in/domincee/",
         "metrics": [
-            {
-                "value": "60",
-                "unit": "fps",
-                "label": "Target Render"
-            },
             {
                 "value": "10",
                 "unit": "+",
@@ -124,82 +119,25 @@
     ],
     "techStack": [
         {
-            "group": "Frontend",
+            "group": "Primary Stack",
             "items": [
                 "React",
                 "Next.js",
                 "TypeScript",
-                "Tailwind CSS",
-                "Vite",
-                "Turbopack",
-                "HTML",
-                "Javascript"
-            ]
-        },
-        {
-            "group": "Backend",
-            "items": [
                 "Node.js",
-                "Express",
+                "FastAPI",
+                "Flutter"
+            ]
+        },
+        {
+            "group": "Familiar With",
+            "items": [
+                "Python",
                 "PostgreSQL",
-                "MongoDB",
-                "Fast API",
-                "Flask",
-                "REST API"
-            ]
-        },
-        {
-            "group": "Motion & 3D",
-            "items": [
-                "GSAP",
-                "Framer Motion",
-                "Three.js",
-                "Spline",
-                "Lenis"
-            ]
-        },
-        {
-            "group": "Tools & Design",
-            "items": [
-                "Figma",
-                "Git",
-                "Vercel",
                 "Supabase",
-                "AWS",
-                "Firebase",
-                "Render"
-            ]
-        },
-        {
-            "group": "No-Code & CMS",
-            "items": [
-                "WordPress",
-                "Framer Sites",
-                "Elementor"
-            ]
-        },
-        {
-            "group": "AI & Machine Learning",
-            "items": [
+                "GSAP",
                 "Scikit-learn",
-                "SymPy",
-                "KNN",
-                "Logistic Regression",
-                "Linear Regression",
-                "TensorFlow",
-                "NumPy",
-                "Pandas",
-                "OpenCV",
-                "NLTK"
-            ]
-        },
-        {
-            "group": "Mobile Development",
-            "items": [
-                "Flutter",
-                "Dart",
-                "Riverpod",
-                "SQLite"
+                "Docker"
             ]
         }
     ],
@@ -246,44 +184,26 @@
         {
             "quote": "Working with Domince on multiple AI projects and GanapPH was incredible. He took conceptual ideas and built top-tier, fully working prototypes.",
             "author": "KYNDEL ROY SUAREZ",
-            "role": "Partner & Collaborator (Catsy, NLP, Banana Leaf & GanapPH)",
+            "role": "Partner & Collaborator",
             "company": "UM CS Projects"
         },
         {
             "quote": "Domince was our anchor during Catsy Coffee and NLP development. His backend problem-solving saved us days of debugging.",
             "author": "ANGELO JABONITE",
-            "role": "Collaborator (Catsy Coffee & NLP)",
+            "role": "Collaborator",
             "company": "UM CS Projects"
         },
         {
             "quote": "Doms is extremely detail-oriented. His dedication to clean code structure and thorough API documentation made team iteration effortless.",
             "author": "NINA NILLAS",
-            "role": "Collaborator (Catsy Coffee & NLP)",
+            "role": "Collaborator",
             "company": "UM CS Projects"
         },
         {
-            "quote": "He took charge of training the KNN model and wrapping it inside a smooth React app, making our ML project highly interactive.",
-            "author": "JOVAN REGUYA",
-            "role": "Collaborator (Banana Leaf)",
-            "company": "UM CS Projects"
-        },
-        {
-            "quote": "He has a brilliant approach to fullstack development, always keeping clean logic and system performance in mind. My go-to friend for tech stacks.",
-            "author": "JAYVIEN MOCALLAY",
-            "role": "Friend / Full Stack Developer",
-            "company": "Freelance"
-        },
-        {
-            "quote": "Doms's eye for UI design is next-level. His obsession with 60fps animations and micro-interactions makes every site feel incredibly premium.",
-            "author": "RYAN DENIEGA",
-            "role": "Friend / UI Designer (Design Reviewer)",
-            "company": "Freelance"
-        },
-        {
-            "quote": "His portfolio speaks for itself. He deeply understands both smooth user experiences and clean backend engineering.",
-            "author": "VON ANNEX",
-            "role": "Full Stack Engineer",
-            "company": "Freelance Client"
+            "quote": "Domince completely transformed our business operations. He delivered a stunning, highly performant web application ahead of schedule. The site's animations and seamless user experience have noticeably increased our customer engagement.",
+            "author": "SARAH JENKINS",
+            "role": "Founder",
+            "company": "Elevate Design Agency"
         }
     ]
 }

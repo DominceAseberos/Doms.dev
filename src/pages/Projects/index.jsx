@@ -10,7 +10,7 @@ const ProjectsPage = () => {
     return (
         <div className="relative min-h-screen">
             <Helmet>
-                <title>Projects - Domince Aseberos</title>
+                <title>Domince Aseberos — Creative Full Stack Developer</title>
                 <meta name="description" content="Explore my selected works, projects, and creative web development experiments." />
             </Helmet>
             <ParticleBackground />

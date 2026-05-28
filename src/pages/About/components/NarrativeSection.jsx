@@ -187,9 +187,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                             <p className="ns-hero-location ui-sub-label ns-reveal">{hero.location}</p>
                         )}
                         <h1 className="ns-hero-name ns-reveal">
-                            {(hero.fullName || 'Domince\nAseberos').split('\n').map((line, i, arr) => (
-                                <React.Fragment key={i}>{line}{i < arr.length - 1 && <br />}</React.Fragment>
-                            ))}
+                            {hero.fullName || 'Domince Aseberos'}
                         </h1>
                         {hero.role && <p className="ns-hero-role ns-reveal">{hero.role}</p>}
                         {hero.bio  && <p className="ns-hero-bio ui-body-copy ns-reveal">{hero.bio}</p>}

@@ -39,7 +39,7 @@ function App() {
       <Router>
         <InitialLoadTiming />
         <Helmet>
-          <title>Domince Aseberos - Portfolio</title>
+          <title>Domince Aseberos — Creative Full Stack Developer</title>
           <meta name="description" content="Domince Aseberos - Selected Work and Portfolio." />
         </Helmet>
         <GlobalLoader />
