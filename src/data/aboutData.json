@@ -127,7 +127,11 @@
                 "Node.js",
                 "FastAPI",
                 "Flutter",
-                "Supabase"
+                "Supabase",
+                "Zod",
+                "TanStack Query",
+                "shadcn/ui",
+                "Prisma"
             ]
         },
         {
@@ -137,25 +141,19 @@
                 "PostgreSQL",
                 "GSAP",
                 "Scikit-learn",
-                "Docker"
+                "Docker",
+                "GitHub Actions",
+                "LottieFiles",
+                "Framer",
+                "SVG Animation",
+                "React Hook Form",
+                "EmailJS",
+                "Lovable",
+                "UptimeRobot"
             ]
         }
     ],
-    "techStackExtra": [
-        "LottieFiles",
-        "Framer",
-        "SVG Animation",
-        "Docker",
-        "GitHub Actions",
-        "Prisma",
-        "Zod",
-        "React Hook Form",
-        "TanStack Query",
-        "shadcn/ui",
-        "EmailJS",
-        "Lovable",
-        "UptimeRobot"
-    ],
+    "techStackExtra": [],
     "contact": {
         "heading": "Open to Opportunities",
         "subtext": "Available for freelance projects, contract work, and full-time junior roles across web, mobile, and AI-assisted product development."

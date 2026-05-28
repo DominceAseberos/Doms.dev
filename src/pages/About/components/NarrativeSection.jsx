@@ -378,16 +378,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                             </div>
                         ))}
                     </div>
-                    {techExtra.length > 0 && (
-                        <div className="ns-stack-group ns-reveal" style={{ marginTop: '2.5rem', width: '100%' }}>
-                            <h3 className="ns-stack-group-title">Additional Tools & Libraries</h3>
-                            <div className="ns-pill-group">
-                                {techExtra.map((item) => (
-                                    <span key={item} className="ns-pill">{item}</span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </section>
             )}
 
