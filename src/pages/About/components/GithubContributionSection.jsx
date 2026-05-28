@@ -137,8 +137,8 @@ function formatCommitTime(value) {
 }
 
 const calendarTheme = {
-    dark: ['rgba(255, 255, 255, 0.08)', '#17324f', '#1f6ea7', '#39bce8', '#8be9ff'],
-    light: ['rgba(18, 18, 18, 0.06)', '#d9f2ee', '#9adbd4', '#53b8c7', '#247ea8'],
+    dark: ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'],
+    light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
 };
 
 const GithubContributionSection = () => {
