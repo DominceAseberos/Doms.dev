@@ -3,6 +3,7 @@ import GitHubCalendar from 'react-github-calendar';
 import portfolioData from '../../../data/portfolioData.json';
 import useThemeStore from '../../../store/useThemeStore';
 import './GithubContributionSection.css';
+import { MagicCard } from '../../../components/ui/magic-card';
 
 const USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'DominceAseberos';
 
@@ -217,7 +218,7 @@ const GithubContributionSection = () => {
                     />
                 </div>
 
-                <div className="gc-commit-card ns-reveal">
+                <MagicCard className="gc-commit-card ns-reveal" gradientColor={theme === 'light' ? 'rgba(30, 100, 180, 0.12)' : 'rgba(120, 180, 255, 0.15)'}>
                     <div className="gc-card-eyebrow">Latest Commits</div>
                     <h3 className="gc-card-title">@{USERNAME}</h3>
                     <div className="gc-commits-list">
@@ -275,7 +276,7 @@ const GithubContributionSection = () => {
                             </p>
                         )}
                     </div>
-                </div>
+                </MagicCard>
             </div>
         </section>
     );
