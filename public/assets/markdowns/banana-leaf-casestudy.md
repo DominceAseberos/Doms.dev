@@ -30,7 +30,11 @@ To solve the static knowledge problem, I built an Active Learning feedback loop:
 
 ## 📈 The Outcome
 
-The engineered feature matrix allowed the lightweight KNN model to achieve a **95% model accuracy** during testing, rivaling heavier CNNs on this specific task. 
+The engineered feature matrix allowed the lightweight KNN model to achieve a **91.13% test accuracy** across an evaluated subset of 451 samples, rivaling heavier CNNs on this specific task. 
+
+![Confusion Matrix](/assets/uploads/project-banana-leaf-detector/confusion-matrix.png)
+
+As demonstrated by the confusion matrix, the model achieves strong precision and recall (around 91-95%) across all three classes: Healthy Leaf, Unhealthy Leaf, and Non-leaf objects. 
 
 By avoiding deep learning dependencies, the active learning pipeline runs flawlessly on lightweight edge servers. The system essentially becomes a self-healing diagnostic tool—corrected predictions converge into the live model almost instantly, empowering users to teach the system on their own.
 

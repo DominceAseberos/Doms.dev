@@ -1183,59 +1183,42 @@
                     ]
                 },
                 {
-                    "id": "banana-leaf-detector-design",
-                    "sectionTitle": "Design System",
+                    "id": "banana-leaf-detector-metrics",
+                    "sectionTitle": "Model Metrics",
                     "layout": "2-equal",
                     "columns": [
                         {
-                            "id": "banana-leaf-detector-colors",
-                            "columnTitle": "Color Palette",
+                            "id": "banana-leaf-detector-metrics-data",
+                            "columnTitle": "Performance Statistics",
                             "blocks": [
                                 {
-                                    "id": "banana-leaf-detector-palette",
-                                    "type": "color-palette",
-                                    "colors": [
-                                        "#667eea",
-                                        "#764ba2",
-                                        "#e0e7ff",
-                                        "#27ae60",
-                                        "#c0392b",
-                                        "#f39c12"
+                                    "id": "banana-leaf-detector-metrics-stats",
+                                    "type": "list",
+                                    "items": [
+                                        "Test Accuracy: 91.13% (across 451 test samples)",
+                                        "Training Samples: 1802 (after class balancing)",
+                                        "Healthy Leaf Precision: 0.91, Recall: 0.95",
+                                        "Unhealthy Leaf Precision: 0.88, Recall: 0.90",
+                                        "Hyperparameters: K=5, distance weighting"
                                     ]
                                 },
                                 {
-                                    "id": "banana-leaf-detector-color-notes",
-                                    "type": "list",
-                                    "items": [
-                                        "#667eea — Brand Royal Blue (Primary actions, gradients)",
-                                        "#764ba2 — Deep Violet (Secondary accent)",
-                                        "#e0e7ff — Indigo Tint (Active state borders, tags)",
-                                        "#27ae60 — Forest Green (Healthy leaf status)",
-                                        "#c0392b — Crimson Red (Unhealthy disease status)",
-                                        "#f39c12 — Ochre Yellow (Active Learning correction warnings)"
-                                    ]
+                                    "id": "banana-leaf-detector-metrics-text",
+                                    "type": "text",
+                                    "content": "The K-Nearest Neighbors classifier demonstrates strong generalization, particularly in distinguishing healthy leaves from diseased ones without the overhead of deep learning architectures."
                                 }
                             ]
                         },
                         {
-                            "id": "banana-leaf-detector-type",
-                            "columnTitle": "Typography",
+                            "id": "banana-leaf-detector-metrics-graph",
+                            "columnTitle": "Confusion Matrix",
                             "blocks": [
                                 {
-                                    "id": "banana-leaf-detector-fonts",
-                                    "type": "font-preview",
-                                    "fonts": [
-                                        {
-                                            "name": "Inter",
-                                            "family": "'Inter', 'Segoe UI', sans-serif",
-                                            "role": "General content, interactive panels, analytics labels"
-                                        },
-                                        {
-                                            "name": "Segoe UI",
-                                            "family": "'Segoe UI', 'Helvetica Neue', Arial",
-                                            "role": "High-performance native UI fallbacks for smooth cross-device styling"
-                                        }
-                                    ]
+                                    "id": "banana-leaf-detector-graph-img",
+                                    "type": "media",
+                                    "mediaType": "image",
+                                    "url": "/assets/uploads/project-banana-leaf-detector/confusion-matrix.png",
+                                    "caption": "Confusion Matrix showing strong diagonal performance across all 3 classes."
                                 }
                             ]
                         }
