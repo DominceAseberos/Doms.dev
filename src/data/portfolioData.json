@@ -672,9 +672,8 @@
                             "blocks": [
                                 {
                                     "id": "nlp-metrics-img",
-                                    "type": "media",
-                                    "mediaType": "image",
-                                    "url": "/assets/uploads/project-nlp/nlp-metrics-chart.png",
+                                    "type": "image",
+                                    "src": "/assets/uploads/project-nlp/nlp-metrics-chart.png",
                                     "caption": "Comparative accuracy of supervised models in the pipeline."
                                 }
                             ]
@@ -1256,9 +1255,8 @@
                             "blocks": [
                                 {
                                     "id": "banana-leaf-detector-graph-img",
-                                    "type": "media",
-                                    "mediaType": "image",
-                                    "url": "/assets/uploads/project-banana-leaf-detector/confusion-matrix.png",
+                                    "type": "image",
+                                    "src": "/assets/uploads/project-banana-leaf-detector/confusion-matrix.png",
                                     "caption": "Confusion Matrix showing strong diagonal performance across all 3 classes."
                                 }
                             ]
