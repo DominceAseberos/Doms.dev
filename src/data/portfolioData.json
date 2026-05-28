@@ -662,7 +662,7 @@
                                 {
                                     "id": "nlp-metrics-text",
                                     "type": "text",
-                                    "content": "The custom supervised Language Detection model achieved highly reliable accuracy across English, Tagalog, and Cebuano texts, forming a solid baseline before text is routed to topic modeling."
+                                    "content": "Why the discrepancy? The traditional LDA model (62%) relies on simple word frequencies (bag-of-words), which severely struggles with short, code-switched text (Taglish/Bislish). In contrast, the BART model (100%) and our custom N-gram Language Detector (96%) leverage deep contextual embeddings, allowing them to perfectly understand semantic intent across multiple dialects. Finally, the 70% BERTopic assignment rate means the model successfully grouped 70% of the raw documents into highly coherent topics while filtering out the remaining 30% as low-quality noise."
                                 }
                             ]
                         },

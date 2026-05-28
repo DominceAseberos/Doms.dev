@@ -38,6 +38,9 @@ Rigorous evaluation across a multi-stage validation set yielded the following em
 - **Zero-Shot Classification (BART):** Demonstrated **100% accuracy** on the zero-shot evaluation sample, proving robust generalization to unseen code-switched topics.
 - **BERTopic (Trilingual Embeddings):** The trilingual topic model successfully processed 9,999 documents, identifying 215 distinct topics with a 70.22% document assignment rate and maintaining a high top-10 topic diversity index of 0.9153.
 
+### 5.1 Understanding the Discrepancy
+The significant discrepancy between the models—specifically why **LDA (62%)** underperformed while **BART (100%)** and **Language Detection (96%)** excelled—comes down to how they process unstructured language. Traditional LDA relies on simple word frequencies (bag-of-words), which severely struggles with short, sparse, code-switched text (Taglish/Bislish). In contrast, the BART model and our custom N-gram detector leverage deep contextual embeddings, allowing them to perfectly understand semantic intent across dialects. Finally, the **70% BERTopic assignment rate** means the model successfully grouped 70% of the raw documents into highly coherent topics while filtering out the remaining 30% as low-quality noise.
+
 ![NLP Model Accuracies](/assets/uploads/project-nlp/nlp-metrics-chart.png)
 
 ## 6. Conclusion
