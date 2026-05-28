@@ -639,6 +639,47 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "id": "nlp-metrics",
+                    "sectionTitle": "Model Metrics",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "nlp-metrics-stats-col",
+                            "columnTitle": "Performance Statistics",
+                            "blocks": [
+                                {
+                                    "id": "nlp-metrics-stats",
+                                    "type": "list",
+                                    "items": [
+                                        "Language Detection Accuracy: 96.67%",
+                                        "LDA Classification Accuracy: 62.00%",
+                                        "BART Zero-Shot Accuracy: 100.00%",
+                                        "Trilingual BERTopic assignment rate: 70.22%"
+                                    ]
+                                },
+                                {
+                                    "id": "nlp-metrics-text",
+                                    "type": "text",
+                                    "content": "The custom supervised Language Detection model achieved highly reliable accuracy across English, Tagalog, and Cebuano texts, forming a solid baseline before text is routed to topic modeling."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "nlp-metrics-graph",
+                            "columnTitle": "Accuracy Overview",
+                            "blocks": [
+                                {
+                                    "id": "nlp-metrics-img",
+                                    "type": "media",
+                                    "mediaType": "image",
+                                    "url": "/assets/uploads/project-nlp/nlp-metrics-chart.png",
+                                    "caption": "Comparative accuracy of supervised models in the pipeline."
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "featuredOnHome": false,
