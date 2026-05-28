@@ -126,7 +126,8 @@
                 "TypeScript",
                 "Node.js",
                 "FastAPI",
-                "Flutter"
+                "Flutter",
+                "Supabase"
             ]
         },
         {
@@ -134,7 +135,6 @@
             "items": [
                 "Python",
                 "PostgreSQL",
-                "Supabase",
                 "GSAP",
                 "Scikit-learn",
                 "Docker"
