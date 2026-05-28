@@ -1245,7 +1245,7 @@
                                 {
                                     "id": "banana-leaf-detector-metrics-text",
                                     "type": "text",
-                                    "content": "The K-Nearest Neighbors classifier demonstrates strong generalization, particularly in distinguishing healthy leaves from diseased ones without the overhead of deep learning architectures."
+                                    "content": "What do these metrics mean in practice? The 91.13% Test Accuracy indicates that out of 451 unseen images, the model correctly identified over 9 out of 10. The high Recall scores (0.95 for Healthy, 0.90 for Unhealthy) are crucial for farming diagnostics—it means the system successfully detects 90% of actual diseased leaves without missing them (low false negatives). By using Distance Weighting (K=5), the classifier looks at the 5 most mathematically similar leaf patterns in the database, prioritizing the closest matches to ensure robust predictions against visual outliers."
                                 }
                             ]
                         },

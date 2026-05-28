@@ -34,7 +34,10 @@ The engineered feature matrix allowed the lightweight KNN model to achieve a **9
 
 ![Confusion Matrix](/assets/uploads/project-banana-leaf-detector/confusion-matrix.png)
 
-As demonstrated by the confusion matrix, the model achieves strong precision and recall (around 91-95%) across all three classes: Healthy Leaf, Unhealthy Leaf, and Non-leaf objects. 
+### What Do These Metrics Mean in Practice?
+As demonstrated by the confusion matrix, the model achieves strong precision and recall (around 91-95%) across all three classes. 
+- **High Recall (0.95 Healthy, 0.90 Unhealthy):** This is crucial for farming diagnostics. It means the system successfully detects 90% of actual diseased leaves without missing them (low false negatives).
+- **Distance Weighting (K=5):** When analyzing a new photo, the classifier looks at the 5 most mathematically similar leaf patterns in its database. By prioritizing the closest matches, the system remains robust against visual outliers and tricky lighting conditions. 
 
 By avoiding deep learning dependencies, the active learning pipeline runs flawlessly on lightweight edge servers. The system essentially becomes a self-healing diagnostic tool—corrected predictions converge into the live model almost instantly, empowering users to teach the system on their own.
 
