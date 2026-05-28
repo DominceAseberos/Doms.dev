@@ -12,6 +12,7 @@ const ProjectsPage = () => {
             <Helmet>
                 <title>Domince Aseberos — Creative Full Stack Developer</title>
                 <meta name="description" content="Explore my selected works, projects, and creative web development experiments." />
+                <link rel="canonical" href="https://www.dominceaseberos.tech/projects" />
             </Helmet>
             <ParticleBackground />
             <NavBar />

@@ -466,19 +466,19 @@
             "githubUrl": "https://github.com/DominceAseberos/Baylora",
             "primaryBtnUrl": "/assets/markdowns/baylora-skills.md",
             "featuredInTunnel": false,
-            "mainImage": "placeholder",
-            "desktopImage": "placeholder",
-            "tabletImage": "placeholder",
-            "mobileImage": "placeholder",
+            "mainImage": "/assets/uploads/project-baylora/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-baylora/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-baylora/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-baylora/imgs/mobile.webp",
             "desktopGallery": [],
             "tabletGallery": [],
             "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
-                "desktop": "placeholder",
-                "tablet": "placeholder",
-                "mobile": "placeholder"
+                "desktop": "/assets/uploads/project-baylora/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-baylora/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-baylora/imgs/mobile.webp"
             },
             "contentSections": [
                 {

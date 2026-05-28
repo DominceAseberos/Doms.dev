@@ -11,6 +11,7 @@ const ContactPage = () => {
         <div className="relative min-h-screen">
             <Helmet>
                 <title>Domince Aseberos — Creative Full Stack Developer</title>
+                <link rel="canonical" href="https://www.dominceaseberos.tech/contact" />
             </Helmet>
             <ParticleBackground />
             <NavBar />
