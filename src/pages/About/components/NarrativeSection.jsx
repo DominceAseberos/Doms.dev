@@ -206,12 +206,12 @@ const NarrativeSection = forwardRef((props, ref) => {
                                     onClick={(e) => { e.preventDefault(); setIsResumeModalOpen(true); }}
                                     className="btn-primary ns-btn"
                                 >
-                                    View Resume
+                                    View CV
                                 </button>
                             )}
                             {data.resume && (
                                 <a href={data.resume} download className="btn-ghost ns-btn">
-                                    Download Resume
+                                    Download CV
                                 </a>
                             )}
                             <Link to="/projects" className="btn-ghost ns-btn">
