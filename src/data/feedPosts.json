@@ -1,5 +1,14 @@
 [
     {
+        "id": "post-hero-physics",
+        "type": "image",
+        "title": "Interactive Lighting",
+        "body": "Added a natural pendulum swing to the hero lighting. Pull the cord to toggle themes and watch it bounce!",
+        "createdAt": "2026-06-01",
+        "tags": ["Interaction", "Physics", "UI"],
+        "images": ["/assets/uploads/feed-post/hero-bulb-mobile.png"]
+    },
+    {
         "id": "post-banana-leaf-redesign",
         "type": "image",
         "title": "Banana Leaf Redesign",
