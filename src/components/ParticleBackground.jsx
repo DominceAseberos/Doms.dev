@@ -65,6 +65,30 @@ const ParticleBackground = () => {
         const handleResize = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 120); };
         window.addEventListener('resize', handleResize);
 
+        let mx = -1000;
+        let my = -1000;
+        const onMouseMove = (e) => {
+            mx = e.clientX;
+            my = e.clientY;
+        };
+        window.addEventListener('mousemove', onMouseMove);
+
+        const FIREFLY_COUNT = 30;
+        const fireflies = Array.from({ length: FIREFLY_COUNT }, () => ({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            vx: 0,
+            vy: 0,
+            offsetX: (Math.random() - 0.5) * 100,
+            offsetY: (Math.random() - 0.5) * 100,
+            speed: 0.015 + Math.random() * 0.02,
+            wobbleSpeed: 0.02 + Math.random() * 0.05,
+            wobblePhase: Math.random() * Math.PI * 2,
+            size: 1 + Math.random() * 1.5,
+            blinkSpeed: 0.01 + Math.random() * 0.03,
+            blinkPhase: Math.random() * Math.PI * 2,
+        }));
+
         const stars = [];
         function spawnStar() {
             const sx = Math.random() * W;
@@ -131,12 +155,70 @@ const ParticleBackground = () => {
                 ctx.arc(n.x, n.y, DOT_RADIUS, 0, Math.PI * 2);
                 ctx.fillStyle = palette.dot; ctx.fill();
             });
+
+            // Fireflies (Only in dark mode)
+            if (!isLightTheme) {
+                const hasMouse = mx !== -1000;
+                fireflies.forEach(f => {
+                    let targetX = hasMouse ? mx + f.offsetX : W / 2 + f.offsetX;
+                    let targetY = hasMouse ? my + f.offsetY : H / 2 + f.offsetY;
+                    
+                    // Drift offset slowly
+                    f.offsetX += (Math.random() - 0.5) * 1.5;
+                    f.offsetY += (Math.random() - 0.5) * 1.5;
+                    
+                    // Constrain offset
+                    const maxOffset = hasMouse ? 80 : 300;
+                    if (f.offsetX > maxOffset) f.offsetX = maxOffset;
+                    if (f.offsetX < -maxOffset) f.offsetX = -maxOffset;
+                    if (f.offsetY > maxOffset) f.offsetY = maxOffset;
+                    if (f.offsetY < -maxOffset) f.offsetY = -maxOffset;
+
+                    const dx = targetX - f.x;
+                    const dy = targetY - f.y;
+                    
+                    f.vx += dx * f.speed * 0.1;
+                    f.vy += dy * f.speed * 0.1;
+                    
+                    f.vx *= 0.92;
+                    f.vy *= 0.92;
+                    
+                    f.x += f.vx;
+                    f.y += f.vy;
+
+                    f.wobblePhase += f.wobbleSpeed;
+                    const wx = Math.cos(f.wobblePhase) * 3;
+                    const wy = Math.sin(f.wobblePhase) * 3;
+
+                    f.blinkPhase += f.blinkSpeed;
+                    const alpha = 0.4 + 0.6 * Math.abs(Math.sin(f.blinkPhase));
+
+                    const px = f.x + wx;
+                    const py = f.y + wy;
+
+                    const grd = ctx.createRadialGradient(px, py, 0, px, py, f.size * 6);
+                    grd.addColorStop(0, `rgba(200, 255, 62, ${alpha * 0.8})`);
+                    grd.addColorStop(0.3, `rgba(150, 255, 50, ${alpha * 0.3})`);
+                    grd.addColorStop(1, 'transparent');
+
+                    ctx.beginPath();
+                    ctx.arc(px, py, f.size * 6, 0, Math.PI * 2);
+                    ctx.fillStyle = grd;
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(px, py, f.size * 0.4, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                    ctx.fill();
+                });
+            }
         }
 
         tick();
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            window.removeEventListener('mousemove', onMouseMove);
             clearInterval(starInterval);
             cancelAnimationFrame(animFrame);
         };
