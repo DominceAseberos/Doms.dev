@@ -111,9 +111,21 @@ const ThemeBulb = () => {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
+  const clickSoundRef = useRef(null);
+  if (!clickSoundRef.current && typeof Audio !== 'undefined') {
+    clickSoundRef.current = new Audio('/assets/sound-effects/soundreality-switch-150130.mp3');
+    clickSoundRef.current.volume = 0.5; // Optional: don't make it too loud
+  }
+
   const handleToggle = () => {
     setIsPulling(true);
     toggleTheme();
+
+    // Play switch sound
+    if (clickSoundRef.current) {
+        clickSoundRef.current.currentTime = 0;
+        clickSoundRef.current.play().catch(e => console.warn('Audio play failed:', e));
+    }
 
     // Add a slight swing when pulled
     angularVelocity.current += 12; // Gives it a nice bump
