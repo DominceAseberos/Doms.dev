@@ -444,11 +444,18 @@ const NarrativeSection = forwardRef((props, ref) => {
                         <p className="ui-body-copy ns-contact-sub ns-reveal">{contact.subtext}</p>
                     )}
                     <div className="ns-contact-cta-wrapper ns-reveal" style={{ position: 'relative', display: 'inline-block', marginTop: '10rem' }}>
-                        {theme === 'dark' ? (
-                            <img src="/assets/GIF/tobe-sleep.gif" alt="toby sleeping" className="ns-cat-sleep-vid" />
-                        ) : (
-                            <img src="/assets/GIF/tobe-peek.gif" alt="cat peeking" className="ns-cat-peek" />
-                        )}
+                        <img 
+                            src="/assets/GIF/tobe-sleep.gif" 
+                            alt="toby sleeping" 
+                            className="ns-cat-sleep-vid" 
+                            style={{ opacity: theme === 'dark' ? 1 : 0 }} 
+                        />
+                        <img 
+                            src="/assets/GIF/tobe-peek.gif" 
+                            alt="cat peeking" 
+                            className="ns-cat-peek" 
+                            style={{ opacity: theme === 'light' ? 1 : 0 }} 
+                        />
                         <Link to="/contact" className="btn-primary ns-contact-cta" style={{ margin: 0, position: 'relative', zIndex: 2 }}>
                             Start a Conversation
                         </Link>

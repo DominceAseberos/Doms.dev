@@ -1056,20 +1056,20 @@ html[data-theme='light'] .ns-testimonial-name {
     z-index: 1; /* Behind the button which has zIndex: 2 */
     pointer-events: none;
     image-rendering: auto; /* Since it's from AI video, it might be smoother with auto */
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.25s ease;
 }
 
 .ns-cat-sleep-vid {
     position: absolute;
-    bottom: calc(100% - 55px); /* Push down significantly to hide the transparent gap */
+    bottom: calc(100% - 40px); /* Tucks the un-scaled smaller cat cleanly behind the button */
     left: 50%;
-    transform: translateX(-50%) scale(1.35); /* Make it slightly larger to match awake size */
+    transform: translateX(-50%); /* Removed scale so it's not too big */
     height: 180px;
     width: auto;
     z-index: 1;
     pointer-events: none;
     image-rendering: auto;
-    transition: transform 0.3s ease, bottom 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.25s ease;
 }
 
 
