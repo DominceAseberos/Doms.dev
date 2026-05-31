@@ -17,6 +17,7 @@ const FireflyCursor = () => {
         let mx = window.innerWidth / 2;
         let my = window.innerHeight / 2;
         let hasMouse = false;
+        let hoverElement = null;
 
         const FIREFLY_COUNT = 30;
         const fireflies = Array.from({ length: FIREFLY_COUNT }, () => ({
@@ -52,6 +53,7 @@ const FireflyCursor = () => {
             hasMouse = true;
             mx = e.clientX;
             my = e.clientY;
+            hoverElement = e.target.closest('a, button, [role="button"], input, select, textarea, .hoverable, .ns-contact-cta, .btn-primary');
         };
         window.addEventListener('mousemove', onMouseMove);
 
@@ -60,9 +62,28 @@ const FireflyCursor = () => {
             animFrame = requestAnimationFrame(tick);
             ctx.clearRect(0, 0, W, H);
 
+            let hx, hy, hw, hh;
+            if (hoverElement) {
+                const rect = hoverElement.getBoundingClientRect();
+                hx = rect.left;
+                hy = rect.top;
+                hw = rect.width;
+                hh = rect.height;
+            }
+
             fireflies.forEach(f => {
-                let targetX = hasMouse ? mx + f.offsetX : W / 2 + f.offsetX;
-                let targetY = hasMouse ? my + f.offsetY : H / 2 + f.offsetY;
+                let targetX, targetY;
+                if (hoverElement) {
+                    // Normalize the wandering offset to -1 to 1
+                    const normX = f.offsetX / 80;
+                    const normY = f.offsetY / 80;
+                    // Spread over the element's bounding box + 20px padding
+                    targetX = hx + hw / 2 + normX * (hw / 2 + 20);
+                    targetY = hy + hh / 2 + normY * (hh / 2 + 20);
+                } else {
+                    targetX = hasMouse ? mx + f.offsetX : W / 2 + f.offsetX;
+                    targetY = hasMouse ? my + f.offsetY : H / 2 + f.offsetY;
+                }
                 
                 f.offsetX += (Math.random() - 0.5) * 1.5;
                 f.offsetY += (Math.random() - 0.5) * 1.5;
