@@ -92,7 +92,10 @@ input[type="button"],
 .ls-btn,
 .ls-tag,
 .ls-win-dot,
-.ls-card-preview {
+.ls-card-preview,
+.ns-pill,
+.ns-ai-pill,
+.ui-pill {
     cursor: var(--cursor-hover) 12 12, pointer !important;
 }
 
