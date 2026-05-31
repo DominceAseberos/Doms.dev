@@ -10,8 +10,8 @@
 }
 
 #bulb-wrap {
-  /* By default (light mode), the bulb is hidden up in the ceiling (-94px) */
-  transform: translateY(-94px);
+  /* Hide higher up since the SVG bulb is taller (-160px) */
+  transform: translateY(-160px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,81 +26,65 @@
 }
 
 #bulb-wire {
-  width: 2px;
+  width: 4px;
   height: 44px;
-  background: #555;
+  background: repeating-linear-gradient(
+    45deg,
+    #5a4a35,
+    #5a4a35 2px,
+    #3b2f21 2px,
+    #3b2f21 4px
+  );
   margin: 0 auto;
-  transition: background 0.4s;
+  transition: opacity 0.4s;
 }
 
 [data-theme="dark"] #bulb-wire {
-  background: #333;
+  opacity: 0.6;
 }
 
 #bulb {
-  width: 38px;
-  height: 50px;
+  width: 64px;
+  height: 110px;
   display: flex;
   flex-direction: column;
   align-items: center;
   pointer-events: all;
   cursor: pointer;
+  margin-top: -2px; /* Pull it slightly into the wire */
 }
 
-/* bulb glass — OFF state (default light mode) */
-#bulb-glass {
-  width: 34px;
-  height: 36px;
-  background: radial-gradient(circle at 40% 35%, #d0cfc0 0%, #a0a090 50%, #7a7a70 100%);
-  border-radius: 50% 50% 40% 40%;
-  border: 1.5px solid #888;
-  box-shadow: none;
-  transition: all 0.5s;
+/* ── EDISON SVG STYLING ── */
+#glass-envelope {
+  transition: fill 0.6s, stroke 0.6s, filter 0.6s;
 }
 
-/* bulb glass — ON state in light mode (if we want an 'on' state, but light mode is default off-looking bulb per user spec, wait, original spec said: Light mode (bulb ON): normal bright theme. Dark mode (bulb OFF): this is where the magic is, wait, NO. "Light mode (bulb ON)... Dark mode (bulb OFF)... the bulb at the top emits a cone of warm yellow light downward"
-Wait, if dark mode has the light emitting, the bulb is ON in dark mode. 
-Let's read original prompt carefully:
-"Light mode (bulb ON): Normal bright theme... Dark mode (bulb OFF): This is where the magic is. The entire background goes dark... The bulb at the top emits a cone of warm yellow light"
-Wait, if it emits light in dark mode, it's ON in dark mode.
-Let's check original CSS:
-#room:not(.dark) #bulb-glass.on { ... } 
-#room.dark #bulb-glass.on { stronger glow }
-#room.dark #bulb-glass:not(.on) { off state }
-
-Ah, the original toggleLight() function:
-if (isDark) { room.classList.add('dark'); bulbGlass.classList.add('on'); } 
-So when it's dark, it's ON. When it's light, it's OFF (standard room lighting).
-
-Let's stick to the CSS logic provided:
-- Default `[data-theme="light"]`: Bulb is OFF visually (just a fixture), room is well lit.
-- `[data-theme="dark"]`: Bulb is ON visually, room is dark, emits cone.
-
-*/
-
-/* Light mode (Bulb visually OFF - room is lit by sun) */
-[data-theme="light"] #bulb-glass {
-  background: radial-gradient(circle at 40% 35%, #d0cfc0 0%, #a0a090 50%, #7a7a70 100%);
-  border: 1.5px solid #888;
-  box-shadow: none;
+#filament {
+  stroke-width: 1.5;
+  transition: stroke 0.6s, filter 0.6s;
 }
 
-/* Dark mode (Bulb visually ON - room is dark) */
-[data-theme="dark"] #bulb-glass {
-  background: radial-gradient(circle at 40% 35%, #fff8d0 0%, #ffd740 35%, #c8860a 100%);
-  border: 1.5px solid #c8860a;
-  box-shadow:
-    0 0 28px 14px rgba(255, 200, 60, 1.0),
-    0 0 70px 35px rgba(255, 140, 0, 0.7),
-    0 0 120px 60px rgba(255, 100, 0, 0.3);
+/* Light mode (Off) */
+[data-theme="light"] #glass-envelope {
+  fill: url(#glass-dark);
+  stroke: rgba(180,180,180,0.5);
 }
 
-#bulb-base {
-  width: 22px;
-  height: 10px;
-  background: linear-gradient(180deg, #aaa 0%, #888 100%);
-  border-radius: 0 0 4px 4px;
-  margin-top: -2px;
+[data-theme="light"] #filament {
+  stroke: #444; /* Cold wire */
+  filter: none;
+}
+
+/* Dark mode (On) */
+[data-theme="dark"] #glass-envelope {
+  fill: url(#glass-light);
+  stroke: rgba(255, 220, 100, 0.6);
+  filter: drop-shadow(0 0 12px rgba(255, 180, 50, 0.5));
+}
+
+[data-theme="dark"] #filament {
+  stroke: #fff4d0; /* Super hot white/yellow */
+  filter: drop-shadow(0 0 6px #ff8c00) drop-shadow(0 0 15px #ff5000);
 }
 
 /* ── PULL CORD ── */
@@ -110,36 +94,44 @@ Let's stick to the CSS logic provided:
   align-items: center;
   cursor: pointer;
   pointer-events: all;
+  margin-top: -8px; /* Pull it up so it visually connects to the bottom of the glass bulb */
+  z-index: -1; /* Keep the cord behind the glass bulb if they overlap */
 }
 
 #cord {
-  width: 2.5px;
-  height: 42px;
-  background: #888;
-  transition: background 0.4s;
+  width: 3px;
+  height: 48px;
+  background: repeating-linear-gradient(
+    45deg,
+    #5a4a35,
+    #5a4a35 2px,
+    #3b2f21 2px,
+    #3b2f21 4px
+  );
+  transition: opacity 0.4s;
 }
 
 [data-theme="dark"] #cord {
-  background: #554433;
+  opacity: 0.6;
 }
 
 #cord-pull {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #c0a060;
-  border: 2px solid #8a6820;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
+  background: transparent;
+  border: 4px solid #d1b46a; /* Brass colored ring */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 2px 4px rgba(0,0,0,0.4);
   transition: transform 0.15s;
+  margin-top: -2px;
 }
 
 [data-theme="dark"] #cord-pull {
-  background: #8a6010;
-  border-color: #5a3a08;
+  border-color: #8c7345;
 }
 
 #cord-pull.pull {
-  transform: translateY(10px);
+  transform: translateY(12px) scale(0.95);
 }
 
 /* ── LIGHT CONE CANVAS ── */
