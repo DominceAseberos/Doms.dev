@@ -445,7 +445,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     )}
                     <div className="ns-contact-cta-wrapper ns-reveal" style={{ position: 'relative', display: 'inline-block', marginTop: '10rem' }}>
                         {theme === 'dark' ? (
-                            <img src="/assets/GIF/tobe-sleep.gif" alt="toby sleeping" className="ns-cat-peek" />
+                            <img src="/assets/GIF/tobe-sleep.gif" alt="toby sleeping" className="ns-cat-sleep-vid" />
                         ) : (
                             <img src="/assets/GIF/tobe-peek.gif" alt="cat peeking" className="ns-cat-peek" />
                         )}
