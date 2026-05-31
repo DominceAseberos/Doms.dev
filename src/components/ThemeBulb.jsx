@@ -114,6 +114,9 @@ const ThemeBulb = () => {
   const handleToggle = () => {
     setIsPulling(true);
     toggleTheme();
+
+    // Add a slight swing when pulled
+    angularVelocity.current += 12; // Gives it a nice bump
     
     // Reset pull animation
     setTimeout(() => {
