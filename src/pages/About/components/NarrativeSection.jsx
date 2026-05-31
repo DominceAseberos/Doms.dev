@@ -182,7 +182,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             <section ref={heroRef} className="ns-hero-section" id="hero">
 
                 <div className="ns-hero-inner">
-                    <div className="ns-hero-text">
+                    <div className="ns-hero-text lit-content-block lit-transparent">
                         {hero.location && (
                             <p className="ns-hero-location ui-sub-label ns-reveal">{hero.location}</p>
                         )}
@@ -240,7 +240,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         )}
                     </div>
 
-                    <div className="ns-hero-card ns-reveal">
+                    <div className="ns-hero-card ns-reveal lit-content-block">
                         <ProfileMorphCard realSrc={humanPortrait} animeSrc={animePortrait} alt="Domince portrait" />
                     </div>
                 </div>
@@ -290,7 +290,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             <section className="ns-section" id="about">
                 <p className="ui-sub-label ns-section-label ns-reveal">About</p>
                 <div className="ns-about-grid">
-                    <div className="ns-about-main">
+                    <div className="ns-about-main lit-content-block lit-transparent">
                         <h2 className="ns-section-heading ns-reveal">
                             {about.heading || 'Engineering'}{' '}
                             <span className="ns-accent">{about.headingAccent || 'Digital Poetry'}</span>
@@ -300,7 +300,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         )}
                         <div className="ns-about-blocks">
                             {(about.blocks || []).map((block, i) => (
-                                <div key={i} className="ns-about-block ns-reveal lit-content-block">
+                                <div key={i} className="ns-about-block ns-reveal lit-content-block lit-transparent">
                                     <h3 className="ns-about-block-title">{block.title}</h3>
                                     <p className="ui-body-copy">{block.body}</p>
                                 </div>
@@ -310,13 +310,13 @@ const NarrativeSection = forwardRef((props, ref) => {
 
                     <aside className="ns-about-sidebar">
                         {about.location && (
-                            <div className="ns-sidebar-block ns-reveal lit-content-block">
+                            <div className="ns-sidebar-block ns-reveal lit-content-block lit-transparent">
                                 <p className="ns-sidebar-label ui-sub-label">Location</p>
                                 <p className="ns-sidebar-text">{about.location}</p>
                             </div>
                         )}
                         {(about.capabilities || []).length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal lit-content-block">
+                            <div className="ns-sidebar-block ns-reveal lit-content-block lit-transparent">
                                 <p className="ns-sidebar-label ui-sub-label">Capabilities</p>
                                 <div className="ns-pill-group">
                                     {about.capabilities.map((item) => (
@@ -326,7 +326,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                             </div>
                         )}
                         {(about.devTools || []).length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal lit-content-block">
+                            <div className="ns-sidebar-block ns-reveal lit-content-block lit-transparent">
                                 <p className="ns-sidebar-label ui-sub-label">Dev Tools</p>
                                 <div className="ns-pill-group">
                                     {about.devTools.map((tool) => (
@@ -336,7 +336,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                             </div>
                         )}
                         {socials.length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal lit-content-block">
+                            <div className="ns-sidebar-block ns-reveal lit-content-block lit-transparent">
                                 <p className="ns-sidebar-label ui-sub-label">Social</p>
                                 <div className="ns-social-links">
                                     {socials.map((link) => (
@@ -368,7 +368,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
                     <div className="ns-stack-grid">
                         {techStack.map((group) => (
-                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block">
+                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block lit-transparent">
                                 <h3 className="ns-stack-group-title">{group.group}</h3>
                                 <div className="ns-pill-group">
                                     {(group.items || []).map((item) => (
@@ -388,7 +388,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <h2 className="ns-section-heading ns-reveal">Experience</h2>
                     <div className="ns-timeline">
                         {experience.map((item, i) => (
-                            <div key={i} className="ns-timeline-item ns-reveal lit-content-block">
+                            <div key={i} className="ns-timeline-item ns-reveal lit-content-block lit-transparent">
                                 <div className="ns-timeline-dot" />
                                 <div className="ns-timeline-body">
                                     <div className="ns-timeline-header">
@@ -435,7 +435,7 @@ const NarrativeSection = forwardRef((props, ref) => {
 
             {/* ══ CONTACT ══════════════════════════════════════════════════ */}
             <section className="ns-contact-section" id="contact">
-                <div className="ns-contact-header">
+                <div className="ns-contact-header lit-content-block lit-transparent">
                     <p className="ui-sub-label ns-section-label ns-reveal">Contact</p>
                     <h2 className="ns-section-heading ns-reveal">{contact.heading || "Open to Opportunities"}</h2>
                     {contact.subtext && (

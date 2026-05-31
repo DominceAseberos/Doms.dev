@@ -23,8 +23,8 @@ const LightEnvironment = () => {
     const drawCone = () => {
       // Set canvas to full width (max a bit to cover screen)
       const w = window.innerWidth;
-      // Height can be enough to cover the top portion where cone fades out
-      const h = Math.min(window.innerHeight, 700); 
+      // Height must cover the full viewport so the 1400px glow doesn't get cut off!
+      const h = window.innerHeight; 
       
       canvas.width = w;
       canvas.height = h;
@@ -32,22 +32,18 @@ const LightEnvironment = () => {
       ctx.clearRect(0, 0, w, h);
 
       const cx = w / 2;
-      const cy = 0; // Bulb is at top 90px but we position canvas top 90px
+      const cy = 90; // Center of bulb on screen
 
-      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 480);
-      grd.addColorStop(0.00, 'rgba(255, 220, 100, 0.24)');
-      grd.addColorStop(0.28, 'rgba(255, 180,  60, 0.13)');
-      grd.addColorStop(0.60, 'rgba(255, 140,  20, 0.05)');
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 1400);
+      grd.addColorStop(0.00, 'rgba(255, 240, 150, 0.40)');
+      grd.addColorStop(0.20, 'rgba(255, 200,  80, 0.20)');
+      grd.addColorStop(0.50, 'rgba(255, 140,  20, 0.08)');
       grd.addColorStop(1.00, 'rgba(0,     0,   0, 0.00)');
 
       ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(cx - 360, h);
-      ctx.lineTo(cx + 360, h);
-      ctx.closePath();
       ctx.fillStyle = grd;
-      ctx.fill();
+      // Fill the entire canvas area to create a perfect spherical bare-bulb glow
+      ctx.fillRect(0, 0, w, h);
       ctx.restore();
     };
 

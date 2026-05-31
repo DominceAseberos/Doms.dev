@@ -132,7 +132,7 @@ Let's stick to the CSS logic provided:
 /* ── LIGHT CONE CANVAS ── */
 #light-cone-canvas {
   position: fixed;
-  top: 90px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;

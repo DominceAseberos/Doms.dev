@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiMoon, FiSun } from 'react-icons/fi';
 import useLoadingStore from '../store/useLoadingStore';
-import useThemeStore from '../store/useThemeStore';
 import AnimatedNavBarLogo from './AnimatedNavBarLogo';
 
 const NavBar = () => {
@@ -10,8 +8,6 @@ const NavBar = () => {
     const location = useLocation();
     const currentPath = location.pathname;
     const [isScrolled, setIsScrolled] = useState(false);
-    const theme = useThemeStore((state) => state.theme);
-    const toggleTheme = useThemeStore((state) => state.toggleTheme);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -56,16 +52,6 @@ const NavBar = () => {
                         <li key={item.to}>{renderLink(item.to, item.label)}</li>
                     ))}
                 </ul>
-                <button
-                    type="button"
-                    className="theme-toggle"
-                    onClick={toggleTheme}
-                    aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-                    title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-                >
-                    {theme === 'dark' ? <FiSun size={16} /> : <FiMoon size={16} />}
-                    <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
-                </button>
             </div>
         </nav>
     );

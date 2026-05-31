@@ -178,10 +178,8 @@ body.nav-hidden-in-hallway nav:focus-within {
 }
 
 .main-nav.nav-scrolled {
-    background: var(--nav-scrolled-bg);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--nav-scrolled-border);
+    background: transparent;
+    border-bottom: transparent;
 }
 
 .nav-logo {

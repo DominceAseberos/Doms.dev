@@ -23,8 +23,7 @@ const EducationSection = () => {
     return (
         <section className="education-section relative w-full bg-transparent flex items-center justify-center z-10 py-16">
             <div className="relative z-10 text-white px-6 md:px-16 w-full max-w-[1400px] flex flex-col items-start gap-10">
-
-                <div>
+                <div className="lit-content-block lit-transparent">
                     <h2
                         className="font-bold uppercase tracking-tight text-[var(--accent)] ns-reveal"
                         style={{ fontSize: 'clamp(1.2rem, 2vw, 1.6rem)', lineHeight: 1.15 }}
@@ -35,7 +34,7 @@ const EducationSection = () => {
                 </div>
 
                 {education.map((entry, i) => (
-                    <div key={i} className="w-full grid grid-cols-1 lg:grid-cols-[minmax(280px,480px)_1fr] gap-8 lg:gap-14 items-center">
+                    <div key={i} className="w-full grid grid-cols-1 lg:grid-cols-[minmax(280px,480px)_1fr] gap-8 lg:gap-14 items-center lit-content-block lit-transparent">
                         {/* Logo / visual */}
                         <div className="es-logo-card w-full rounded-3xl p-5 md:p-6 ns-reveal">
                             <img

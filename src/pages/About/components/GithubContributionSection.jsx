@@ -185,14 +185,14 @@ const GithubContributionSection = () => {
 
     return (
         <section className="github-contrib-wrap">
-            <div className="github-contrib-head">
+            <div className="github-contrib-head lit-content-block lit-transparent">
                 <h2 className="github-contrib-title ns-reveal">GitHub Activity</h2>
                 <p className="github-contrib-subtitle ns-reveal">
                     Contribution heat map plus latest commits pulled directly from linked public project repositories.
                 </p>
             </div>
 
-            <div className="github-contrib-actions ns-reveal">
+            <div className="github-contrib-actions ns-reveal lit-content-block lit-transparent">
                 {status ? <p className="github-contrib-status">{status}</p> : <span />}
                 <button
                     type="button"
@@ -205,7 +205,7 @@ const GithubContributionSection = () => {
             </div>
 
             <div className="github-activity-grid">
-                <div className="gc-heatmap-card ns-reveal">
+                <div className="gc-heatmap-card ns-reveal lit-content-block">
                     <div className="gc-card-eyebrow">Contribution Heat Map</div>
                     <GitHubCalendar
                         username={USERNAME}
@@ -218,7 +218,7 @@ const GithubContributionSection = () => {
                     />
                 </div>
 
-                <MagicCard className="gc-commit-card ns-reveal" gradientColor={theme === 'light' ? 'rgba(30, 100, 180, 0.12)' : 'rgba(120, 180, 255, 0.15)'}>
+                <MagicCard className="gc-commit-card ns-reveal lit-content-block" gradientColor={theme === 'light' ? 'rgba(30, 100, 180, 0.12)' : 'rgba(120, 180, 255, 0.15)'}>
                     <div className="gc-card-eyebrow">Latest Commits</div>
                     <h3 className="gc-card-title">@{USERNAME}</h3>
                     <div className="gc-commits-list">
