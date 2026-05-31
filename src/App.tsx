@@ -29,6 +29,7 @@ function InitialLoadTiming() {
 
 import ThemeBulb from './components/ThemeBulb';
 import LightEnvironment from './components/LightEnvironment';
+import FireflyCursor from './components/FireflyCursor';
 
 function App() {
   const initTheme = useThemeStore((state: { initTheme: () => void }) => state.initTheme);
@@ -50,6 +51,7 @@ function App() {
         {/* Physics-Based Light Theme Components */}
         <LightEnvironment />
         <ThemeBulb />
+        <FireflyCursor />
 
         <div className="nav-hover-zone" aria-hidden="true" />
         <div id="smooth-wrapper" className="min-h-screen selection:bg-red-500/30">
