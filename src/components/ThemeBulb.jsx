@@ -118,22 +118,20 @@ const ThemeBulb = () => {
   }
 
   const handleToggle = () => {
+    // 1. Instantly show pull state and play sound
     setIsPulling(true);
-    toggleTheme();
 
-    // Play switch sound
     if (clickSoundRef.current) {
         clickSoundRef.current.currentTime = 0;
         clickSoundRef.current.play().catch(e => console.warn('Audio play failed:', e));
     }
 
-    // Add a slight swing when pulled
-    angularVelocity.current += 12; // Gives it a nice bump
-    
-    // Reset pull animation
+    // 2. Delay the actual light switch and physics snap to sync with the 2nd audio bounce
     setTimeout(() => {
-      setIsPulling(false);
-    }, 150);
+      toggleTheme();
+      setIsPulling(false); // Snap back up
+      angularVelocity.current += 12; // Physics bump happens on the snap back
+    }, 280);
   };
 
   return (
@@ -144,7 +142,7 @@ const ThemeBulb = () => {
         <EdisonBulbSVG />
       </div>
       <div id="cord-wrap" onClick={handleToggle}>
-        <div id="cord"></div>
+        <div id="cord" className={isPulling ? 'pull' : ''}></div>
         <div id="cord-pull" className={isPulling ? 'pull' : ''} title="Pull to toggle light"></div>
       </div>
       

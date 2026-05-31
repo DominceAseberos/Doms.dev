@@ -110,11 +110,15 @@
     #3b2f21 2px,
     #3b2f21 4px
   );
-  transition: opacity 0.4s;
+  transition: opacity 0.4s, height 0.15s;
 }
 
 [data-theme="dark"] #cord {
   opacity: 0.6;
+}
+
+#cord.pull {
+  height: 72px; /* Pull the cord down further */
 }
 
 #cord-pull {
@@ -133,7 +137,7 @@
 }
 
 #cord-pull.pull {
-  transform: translateY(12px) scale(0.95);
+  transform: scale(0.95); /* translateY is removed since cord height handles it */
 }
 
 /* ── LIGHT CONE CANVAS ── */
