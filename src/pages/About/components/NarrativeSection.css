@@ -1059,4 +1059,22 @@ html[data-theme='light'] .ns-testimonial-name {
     transition: transform 0.3s ease;
 }
 
+.ns-cat-sleep {
+    position: absolute;
+    bottom: calc(100% - 25px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230.4px;  /* 204.8 * (180/160) */
+    height: 180px;
+    background: url('/assets/GIF/tobe-sleep-sprite.png') left center no-repeat;
+    background-size: 1152px 180px; /* 5 frames * 230.4px */
+    animation: toby-sleep-anim 2.5s steps(5) infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes toby-sleep-anim {
+    100% { background-position: -1152px center; }
+}
+
 

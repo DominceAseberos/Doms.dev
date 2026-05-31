@@ -15,6 +15,7 @@ import humanPortrait from '../../../assets/human-cutout.png';
 import animePortrait from '../../../assets/anime-cutout.png';
 import useLoadingStore from '../../../store/useLoadingStore';
 import useLogoStore from '../../../store/useLogoStore';
+import useThemeStore from '../../../store/useThemeStore';
 import './NarrativeSection.css';
 
 if (typeof window !== 'undefined') {
@@ -74,6 +75,7 @@ const NarrativeSection = forwardRef((props, ref) => {
     const stripesRef = useRef([]);
     const isLoading = useLoadingStore((state) => state.isLoading);
     const setLogoFullView = useLogoStore((state) => state.setLogoFullView);
+    const theme = useThemeStore((state) => state.theme);
 
     // All content from aboutData.json — bundled default, refreshed from server
     const [data, setData] = useState(() => aboutDataDefault);
@@ -442,7 +444,11 @@ const NarrativeSection = forwardRef((props, ref) => {
                         <p className="ui-body-copy ns-contact-sub ns-reveal">{contact.subtext}</p>
                     )}
                     <div className="ns-contact-cta-wrapper ns-reveal" style={{ position: 'relative', display: 'inline-block', marginTop: '10rem' }}>
-                        <img src="/assets/GIF/tobe-peek.gif" alt="cat peeking" className="ns-cat-peek" />
+                        {theme === 'dark' ? (
+                            <div className="ns-cat-sleep" title="Toby is sleeping"></div>
+                        ) : (
+                            <img src="/assets/GIF/tobe-peek.gif" alt="cat peeking" className="ns-cat-peek" />
+                        )}
                         <Link to="/contact" className="btn-primary ns-contact-cta" style={{ margin: 0, position: 'relative', zIndex: 2 }}>
                             Start a Conversation
                         </Link>
