@@ -10,6 +10,12 @@ import { saveProjectContent, fetchPortfolioData } from '../../../shared/portfoli
 import NotFoundPage from '../../NotFound/index';
 import './ProjectDetailsPage.css';
 
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+}
+
 const ProjectDetailsPage = ({ isAdmin = false }) => {
     const { projectId } = useParams();
     const { theme } = useThemeStore();
@@ -78,18 +84,38 @@ const ProjectDetailsPage = ({ isAdmin = false }) => {
 
     useLayoutEffect(() => {
         if (!rootRef.current) return;
-        const ctx = gsap.context(() => {
-            gsap.from('.cs-animate', {
-                y: 40,
-                opacity: 0,
-                duration: 1,
-                stagger: 0.15,
-                ease: 'power4.out',
-                clearProps: 'all'
-            });
-        }, rootRef.current);
-        return () => ctx.revert();
-    }, [projectId]);
+        
+        // Small RAF delay so the DOM has fully painted before measuring
+        const raf = requestAnimationFrame(() => {
+            const ctx = gsap.context(() => {
+                const els = gsap.utils.toArray('.cs-animate');
+                
+                // Set initial state
+                gsap.set(els, { opacity: 0, y: 40, immediateRender: true });
+                
+                // Batch trigger reveals when scrolled into view
+                ScrollTrigger.batch(els, {
+                    start: 'top 92%',
+                    onEnter: (batch) => {
+                        gsap.to(batch, {
+                            opacity: 1, 
+                            y: 0,
+                            duration: 1,
+                            stagger: 0.15,
+                            ease: 'power4.out',
+                            clearProps: 'all'
+                        });
+                    },
+                });
+                
+                ScrollTrigger.refresh();
+            }, rootRef.current);
+            
+            return () => ctx.revert();
+        });
+
+        return () => cancelAnimationFrame(raf);
+    }, [projectId, projectDraft]);
 
     if (loading) {
         return null; // Let GlobalLoader handle the initial wait if necessary
