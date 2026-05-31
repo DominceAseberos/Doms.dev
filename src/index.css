@@ -641,6 +641,11 @@ html[data-theme='light'] .cs-page {
 }
 
 @media (max-width: 768px) {
+    .ui-pill {
+        font-size: 0.55rem !important;
+        padding: 3px 8px !important;
+    }
+
     .main-nav {
         padding: 24px 20px;
         align-items: center;
