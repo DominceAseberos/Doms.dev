@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { FiX, FiDownload, FiExternalLink } from 'react-icons/fi';
 import useThemeStore from '../store/useThemeStore';
 
@@ -44,8 +45,8 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
 
     const iframeSrc = isPdf ? publicUrl : msViewerEmbedUrl;
 
-    return (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 md:p-12">
+    const modalContent = (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 md:p-12" style={{ position: 'fixed' }}>
             {/* Backdrop */}
             <div 
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
@@ -111,6 +112,8 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
             </div>
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 };
 
 export default DocViewerModal;
