@@ -823,6 +823,11 @@ html[data-theme='light'] .ns-stack-group-title {
         padding-right: clamp(16px, 4vw, 48px);
     }
 
+    .ns-contact-header .ns-section-heading {
+        font-size: clamp(1.6rem, 8vw, 2.4rem);
+        word-break: break-word;
+    }
+
     .ns-cityscape-wrap {
         height: auto;
         min-height: 100vh;
