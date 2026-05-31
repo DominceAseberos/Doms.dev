@@ -1061,7 +1061,7 @@ html[data-theme='light'] .ns-testimonial-name {
 
 .ns-cat-sleep-vid {
     position: absolute;
-    bottom: calc(100% - 40px); /* Tucks the un-scaled smaller cat cleanly behind the button */
+    bottom: calc(100% - 55px); /* Pushed back down to completely close the gap */
     left: 50%;
     transform: translateX(-50%); /* Removed scale so it's not too big */
     height: 180px;
