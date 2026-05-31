@@ -75,8 +75,8 @@ const ParticleBackground = () => {
 
         const FIREFLY_COUNT = 30;
         const fireflies = Array.from({ length: FIREFLY_COUNT }, () => ({
-            x: window.innerWidth / 2 + (Math.random() - 0.5) * 200,
-            y: window.innerHeight / 2 + (Math.random() - 0.5) * 200,
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
             vx: 0,
             vy: 0,
             offsetX: (Math.random() - 0.5) * 100,
@@ -168,7 +168,7 @@ const ParticleBackground = () => {
                     f.offsetY += (Math.random() - 0.5) * 1.5;
                     
                     // Constrain offset
-                    const maxOffset = hasMouse ? 80 : 200;
+                    const maxOffset = hasMouse ? 80 : 300;
                     if (f.offsetX > maxOffset) f.offsetX = maxOffset;
                     if (f.offsetX < -maxOffset) f.offsetX = -maxOffset;
                     if (f.offsetY > maxOffset) f.offsetY = maxOffset;
@@ -177,12 +177,11 @@ const ParticleBackground = () => {
                     const dx = targetX - f.x;
                     const dy = targetY - f.y;
                     
-                    // Increase speed significantly to make them responsive
-                    f.vx += dx * f.speed;
-                    f.vy += dy * f.speed;
+                    f.vx += dx * f.speed * 0.1;
+                    f.vy += dy * f.speed * 0.1;
                     
-                    f.vx *= 0.88; // Slightly more friction to prevent orbiting wildly
-                    f.vy *= 0.88;
+                    f.vx *= 0.92;
+                    f.vy *= 0.92;
                     
                     f.x += f.vx;
                     f.y += f.vy;
