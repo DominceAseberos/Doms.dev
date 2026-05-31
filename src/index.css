@@ -976,3 +976,8 @@ html[data-theme='light'] .cs-page {
         font-size: clamp(9px, 1vw, 13px);
     }
 }
+/* Firefly Hover Glow Effect */
+.firefly-glow, .firefly-glow * {
+    text-shadow: 0 0 8px rgba(200, 255, 62, 0.8), 0 0 15px rgba(200, 255, 62, 0.5) !important;
+    transition: text-shadow 0.3s ease;
+}

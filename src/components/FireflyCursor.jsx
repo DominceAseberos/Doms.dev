@@ -49,11 +49,22 @@ const FireflyCursor = () => {
         resize();
         window.addEventListener('resize', resize);
 
+        let previousHoverElement = null;
         const onMouseMove = (e) => {
             hasMouse = true;
             mx = e.clientX;
             my = e.clientY;
             hoverElement = e.target.closest('a, button, [role="button"], input, select, textarea, .hoverable, .ns-contact-cta, .btn-primary');
+
+            if (hoverElement !== previousHoverElement) {
+                if (previousHoverElement) {
+                    previousHoverElement.classList.remove('firefly-glow');
+                }
+                if (hoverElement) {
+                    hoverElement.classList.add('firefly-glow');
+                }
+                previousHoverElement = hoverElement;
+            }
         };
         window.addEventListener('mousemove', onMouseMove);
 
@@ -74,12 +85,22 @@ const FireflyCursor = () => {
             fireflies.forEach(f => {
                 let targetX, targetY;
                 if (hoverElement) {
-                    // Normalize the wandering offset to -1 to 1
-                    const normX = f.offsetX / 80;
-                    const normY = f.offsetY / 80;
-                    // Spread over the element's bounding box + 20px padding
-                    targetX = hx + hw / 2 + normX * (hw / 2 + 20);
-                    targetY = hy + hh / 2 + normY * (hh / 2 + 20);
+                    // Initialize orbiting variables if they don't exist
+                    if (f.orbitAngle === undefined) {
+                        f.orbitAngle = Math.random() * Math.PI * 2;
+                        f.orbitSpeed = (Math.random() - 0.5) * 0.08;
+                    }
+                    // Slowly orbit the button
+                    f.orbitAngle += f.orbitSpeed;
+                    
+                    // Calculate an ellipse around the button's bounding box
+                    const pad = 20; // Distance from the button edge
+                    targetX = hx + hw / 2 + Math.cos(f.orbitAngle) * (hw / 2 + pad);
+                    targetY = hy + hh / 2 + Math.sin(f.orbitAngle) * (hh / 2 + pad);
+                    
+                    // Add a tiny bit of swarming noise to the orbit
+                    targetX += (Math.random() - 0.5) * 15;
+                    targetY += (Math.random() - 0.5) * 15;
                 } else {
                     targetX = hasMouse ? mx + f.offsetX : W / 2 + f.offsetX;
                     targetY = hasMouse ? my + f.offsetY : H / 2 + f.offsetY;
@@ -139,6 +160,9 @@ const FireflyCursor = () => {
             window.removeEventListener('resize', resize);
             window.removeEventListener('mousemove', onMouseMove);
             cancelAnimationFrame(animFrame);
+            if (previousHoverElement) {
+                previousHoverElement.classList.remove('firefly-glow');
+            }
         };
     }, [theme, isLightTheme]);
 
