@@ -54,7 +54,7 @@ const FireflyCursor = () => {
             hasMouse = true;
             mx = e.clientX;
             my = e.clientY;
-            hoverElement = e.target.closest('a, button, [role="button"], input, select, textarea, .hoverable, .ns-contact-cta, .btn-primary');
+            hoverElement = e.target.closest('a, button, [role="button"], input, select, textarea, .hoverable, .ns-contact-cta, .btn-primary, .ui-pill, .ns-pill, .ns-ai-pill, .pg-pill, .ov-pill');
 
             if (hoverElement !== previousHoverElement) {
                 if (previousHoverElement) {
