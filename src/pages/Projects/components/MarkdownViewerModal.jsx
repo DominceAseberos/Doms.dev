@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { FiX, FiExternalLink, FiCopy, FiCheck } from 'react-icons/fi';
@@ -99,8 +100,8 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
 
     if (!isOpen) return null;
 
-    return (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6 md:p-12">
+    const modalContent = (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 md:p-12" style={{ position: 'fixed' }}>
             {/* Backdrop */}
             <div 
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
@@ -217,6 +218,8 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
             `}</style>
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 };
 
 export default MarkdownViewerModal;
