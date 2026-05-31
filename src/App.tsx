@@ -27,6 +27,9 @@ function InitialLoadTiming() {
   return null;
 }
 
+import ThemeBulb from './components/ThemeBulb';
+import LightEnvironment from './components/LightEnvironment';
+
 function App() {
   const initTheme = useThemeStore((state: { initTheme: () => void }) => state.initTheme);
 
@@ -43,6 +46,11 @@ function App() {
           <meta name="description" content="Domince Aseberos - Selected Work and Portfolio." />
         </Helmet>
         <GlobalLoader />
+        
+        {/* Physics-Based Light Theme Components */}
+        <LightEnvironment />
+        <ThemeBulb />
+
         <div className="nav-hover-zone" aria-hidden="true" />
         <div id="smooth-wrapper" className="min-h-screen selection:bg-red-500/30">
           <div id="smooth-content">

@@ -1,0 +1,180 @@
+/* ── BULB FIXTURE (sticky top center) ── */
+#bulb-wrap {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  width: 80px;
+}
+
+#bulb-wire {
+  width: 2px;
+  height: 44px;
+  background: #555;
+  margin: 0 auto;
+  transition: background 0.4s;
+}
+
+[data-theme="dark"] #bulb-wire {
+  background: #333;
+}
+
+#bulb {
+  width: 38px;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+/* bulb glass — OFF state (default light mode) */
+#bulb-glass {
+  width: 34px;
+  height: 36px;
+  background: radial-gradient(circle at 40% 35%, #d0cfc0 0%, #a0a090 50%, #7a7a70 100%);
+  border-radius: 50% 50% 40% 40%;
+  border: 1.5px solid #888;
+  box-shadow: none;
+  transition: all 0.5s;
+}
+
+/* bulb glass — ON state in light mode (if we want an 'on' state, but light mode is default off-looking bulb per user spec, wait, original spec said: Light mode (bulb ON): normal bright theme. Dark mode (bulb OFF): this is where the magic is, wait, NO. "Light mode (bulb ON)... Dark mode (bulb OFF)... the bulb at the top emits a cone of warm yellow light downward"
+Wait, if dark mode has the light emitting, the bulb is ON in dark mode. 
+Let's read original prompt carefully:
+"Light mode (bulb ON): Normal bright theme... Dark mode (bulb OFF): This is where the magic is. The entire background goes dark... The bulb at the top emits a cone of warm yellow light"
+Wait, if it emits light in dark mode, it's ON in dark mode.
+Let's check original CSS:
+#room:not(.dark) #bulb-glass.on { ... } 
+#room.dark #bulb-glass.on { stronger glow }
+#room.dark #bulb-glass:not(.on) { off state }
+
+Ah, the original toggleLight() function:
+if (isDark) { room.classList.add('dark'); bulbGlass.classList.add('on'); } 
+So when it's dark, it's ON. When it's light, it's OFF (standard room lighting).
+
+Let's stick to the CSS logic provided:
+- Default `[data-theme="light"]`: Bulb is OFF visually (just a fixture), room is well lit.
+- `[data-theme="dark"]`: Bulb is ON visually, room is dark, emits cone.
+
+*/
+
+/* Light mode (Bulb visually OFF - room is lit by sun) */
+[data-theme="light"] #bulb-glass {
+  background: radial-gradient(circle at 40% 35%, #d0cfc0 0%, #a0a090 50%, #7a7a70 100%);
+  border: 1.5px solid #888;
+  box-shadow: none;
+}
+
+/* Dark mode (Bulb visually ON - room is dark) */
+[data-theme="dark"] #bulb-glass {
+  background: radial-gradient(circle at 40% 35%, #fff8d0 0%, #ffd740 35%, #c8860a 100%);
+  border: 1.5px solid #c8860a;
+  box-shadow:
+    0 0 28px 14px rgba(255, 200, 60, 1.0),
+    0 0 70px 35px rgba(255, 140, 0, 0.7),
+    0 0 120px 60px rgba(255, 100, 0, 0.3);
+}
+
+#bulb-base {
+  width: 22px;
+  height: 10px;
+  background: linear-gradient(180deg, #aaa 0%, #888 100%);
+  border-radius: 0 0 4px 4px;
+  margin-top: -2px;
+}
+
+/* ── PULL CORD ── */
+#cord-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+#cord {
+  width: 2.5px;
+  height: 42px;
+  background: #888;
+  transition: background 0.4s;
+}
+
+[data-theme="dark"] #cord {
+  background: #554433;
+}
+
+#cord-pull {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #c0a060;
+  border: 2px solid #8a6820;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
+  transition: transform 0.15s;
+}
+
+[data-theme="dark"] #cord-pull {
+  background: #8a6010;
+  border-color: #5a3a08;
+}
+
+#cord-pull.pull {
+  transform: translateY(10px);
+}
+
+/* ── LIGHT CONE CANVAS ── */
+#light-cone-canvas {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s;
+  z-index: 100; /* above background, below content */
+}
+
+[data-theme="dark"] #light-cone-canvas {
+  opacity: 1;
+}
+
+/* ── AMBIENT OVERLAY (radial warm tint) ── */
+#room-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.6s;
+  background: radial-gradient(
+    ellipse 300px 380px at 50% 0px,
+    rgba(255, 180, 40, 0.10) 0%,
+    transparent 70%
+  );
+}
+
+[data-theme="dark"] #room-overlay {
+  opacity: 1;
+}
+
+/* ── CONTENT BLOCK OVERRIDES (transition setup) ── */
+.lit-content-block {
+  transition: background 0.5s, border-color 0.5s, box-shadow 0.5s, opacity 0.5s;
+}
+.lit-content-block h1,
+.lit-content-block h2,
+.lit-content-block h3,
+.lit-content-block p,
+.lit-content-block span {
+  transition: color 0.5s;
+}

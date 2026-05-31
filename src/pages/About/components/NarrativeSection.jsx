@@ -258,7 +258,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     </div>
                     <div className="ns-projects-grid">
                         {projects.map((p) => (
-                            <Link key={p.id} to={`/projects/${p.id}`} className="ns-project-card ns-reveal">
+                            <Link key={p.id} to={`/projects/${p.id}`} className="ns-project-card ns-reveal lit-content-block">
                                 {(p.mainImage || p.desktopImage) && !isPlaceholderImage(p.mainImage || p.desktopImage) ? (
                                     <div className="ns-project-img-wrap">
                                         <img src={p.mainImage || p.desktopImage} alt={p.title} className="ns-project-img" loading="lazy" />
@@ -300,7 +300,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         )}
                         <div className="ns-about-blocks">
                             {(about.blocks || []).map((block, i) => (
-                                <div key={i} className="ns-about-block ns-reveal">
+                                <div key={i} className="ns-about-block ns-reveal lit-content-block">
                                     <h3 className="ns-about-block-title">{block.title}</h3>
                                     <p className="ui-body-copy">{block.body}</p>
                                 </div>
@@ -310,13 +310,13 @@ const NarrativeSection = forwardRef((props, ref) => {
 
                     <aside className="ns-about-sidebar">
                         {about.location && (
-                            <div className="ns-sidebar-block ns-reveal">
+                            <div className="ns-sidebar-block ns-reveal lit-content-block">
                                 <p className="ns-sidebar-label ui-sub-label">Location</p>
                                 <p className="ns-sidebar-text">{about.location}</p>
                             </div>
                         )}
                         {(about.capabilities || []).length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal">
+                            <div className="ns-sidebar-block ns-reveal lit-content-block">
                                 <p className="ns-sidebar-label ui-sub-label">Capabilities</p>
                                 <div className="ns-pill-group">
                                     {about.capabilities.map((item) => (
@@ -326,7 +326,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                             </div>
                         )}
                         {(about.devTools || []).length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal">
+                            <div className="ns-sidebar-block ns-reveal lit-content-block">
                                 <p className="ns-sidebar-label ui-sub-label">Dev Tools</p>
                                 <div className="ns-pill-group">
                                     {about.devTools.map((tool) => (
@@ -336,7 +336,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                             </div>
                         )}
                         {socials.length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal">
+                            <div className="ns-sidebar-block ns-reveal lit-content-block">
                                 <p className="ns-sidebar-label ui-sub-label">Social</p>
                                 <div className="ns-social-links">
                                     {socials.map((link) => (
@@ -368,7 +368,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
                     <div className="ns-stack-grid">
                         {techStack.map((group) => (
-                            <div key={group.group} className="ns-stack-group ns-reveal">
+                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block">
                                 <h3 className="ns-stack-group-title">{group.group}</h3>
                                 <div className="ns-pill-group">
                                     {(group.items || []).map((item) => (
@@ -388,7 +388,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <h2 className="ns-section-heading ns-reveal">Experience</h2>
                     <div className="ns-timeline">
                         {experience.map((item, i) => (
-                            <div key={i} className="ns-timeline-item ns-reveal">
+                            <div key={i} className="ns-timeline-item ns-reveal lit-content-block">
                                 <div className="ns-timeline-dot" />
                                 <div className="ns-timeline-body">
                                     <div className="ns-timeline-header">
@@ -415,7 +415,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <div className="ns-testimonials-wrapper ns-reveal">
                         <div className="ns-testimonials-track">
                             {[...testimonials, ...testimonials].map((t, i) => (
-                                <div key={i} className="ns-testimonial-card">
+                                <div key={i} className="ns-testimonial-card lit-content-block">
                                     <p className="ns-testimonial-quote">“{t.quote}”</p>
                                     <div className="ns-testimonial-author">
                                         <p className="ns-testimonial-name">{t.author}</p>
