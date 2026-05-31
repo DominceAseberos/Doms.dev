@@ -805,6 +805,11 @@ html[data-theme='light'] .ns-stack-group-title {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .ns-pill, .ns-ai-pill {
+        padding: 3px 8px;
+        font-size: 0.55rem;
+    }
+
     .ns-timeline {
         padding-left: 20px;
     }
