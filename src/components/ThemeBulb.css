@@ -190,7 +190,7 @@
 @media (max-width: 768px) {
   #bulb-wrap {
     transform-origin: top center;
-    transform: translateY(-160px) scale(0.8);
+    transform: translateY(-128px) scale(0.8);
   }
   [data-theme="dark"] #bulb-wrap {
     transform: translateY(0) scale(0.8);
@@ -200,7 +200,7 @@
 @media (max-width: 480px) {
   #bulb-wrap {
     transform-origin: top center;
-    transform: translateY(-160px) scale(0.65);
+    transform: translateY(-104px) scale(0.65);
   }
   [data-theme="dark"] #bulb-wrap {
     transform: translateY(0) scale(0.65);
