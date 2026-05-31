@@ -1048,7 +1048,7 @@ html[data-theme='light'] .ns-testimonial-name {
 /* ── WALKING GIF ─────────────────────────────────────────────────────────── */
 .ns-cat-peek {
     position: absolute;
-    bottom: calc(100% - 25px); /* Overlap more behind the button top edge */
+    bottom: calc(100% - 35px); /* Adjusted to remove the small gap */
     left: 50%;
     transform: translateX(-50%);
     height: 180px; /* Made the cat bigger */
