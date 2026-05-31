@@ -1,8 +1,15 @@
 .animated-nav-logo-home {
     display: inline-flex;
-    width: 3rem;
-    height: 3rem;
+    width: 2.25rem;
+    height: 2.25rem;
     flex: 0 0 auto;
+}
+
+@media (min-width: 768px) {
+    .animated-nav-logo-home {
+        width: 3rem;
+        height: 3rem;
+    }
 }
 
 .animated-nav-logo-wrap {
