@@ -70,7 +70,7 @@ const main = async () => {
       isMobile: viewport.isMobile
     });
 
-    await page.goto(targetUrl, { waitUntil: 'networkidle2', timeout: 30000 });
+    await page.goto(targetUrl, { waitUntil: 'load', timeout: 60000 });
     
     // Give a short delay to ensure any scroll animations or charts load fully
     let delayMs = 2000;
