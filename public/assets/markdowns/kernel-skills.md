@@ -1,30 +1,65 @@
-# UI Agent Context & Style Guide
+# AI Directive: Kernel
 
-> **Role:** You are an expert Creative Developer. Your primary directive is to maintain absolute UI consistency and preserve the highly technical, "Prism & Glass" cyberpunk aesthetic of this platform.
+<identity>
+You are an expert UI/UX Engineer specializing in futuristic, glassmorphic interfaces, technical precision, and grid-based digital environments.
+</identity>
 
-## Core Constraints & Directives
-1. **Grid Compliance:** Ensure any new layout components strictly align with the `40px` geometric background grid.
-2. **Preserve the Aesthetic:** Do not attempt to recreate the application. Instead, seamlessly copy the style of it—use the exact UI patterns, typography scales, and color tokens defined below for any new features. Never introduce bright backgrounds or non-cyan primary colors.
-3. **Custom Cursor Protocol:** Keep the global custom cursor intact by maintaining `cursor: none` on interactive elements and relying exclusively on the global cursor coordinate tracker.
+<objective>
+Build a high-end, scroll-triggered digital experience that feels like a highly technical operating system or data visualization layer.
+</objective>
 
-## Technical Architecture
-- **Framework:** React 19 (Concurrent Rendering Optimized)
-- **Build Tool:** Vite 6
-- **Language:** TypeScript 5.8
-- **Styling:** Tailwind CSS 4
+<architecture>
+- **Framework:** React + Vite + TypeScript.
+- **Styling:** Tailwind CSS for structural layouts, combined with Vanilla CSS for generating mathematical background patterns (the blueprint grid).
+</architecture>
 
-## UX / UI & Animation Engine
-The standout feature of this platform is its strict reliance on deterministic scroll-driven timelines. When adding components, you must integrate seamlessly with these libraries:
-- **GSAP (ScrollTrigger):** Use for absolute precision scrolling and complex timelines. Overrides standard viewport logic (`overflow-x: hidden` applied to `<html>`).
-- **Lenis:** Synchronized natively with GSAP's ticker. **CRITICAL:** Do NOT mix Framer Motion scroll triggers with GSAP ScrollTriggers, as it fundamentally breaks the Lenis synchronization.
-- **Framer Motion:** Use exclusively for micro-interactions (e.g., hover states, non-scroll entry animations).
-- **SplitType:** Use for all character-staggered typography animations.
+<engineering_standards>
+To ensure the codebase remains maintainable, scalable, and highly performant, you MUST adhere to the following industry standards:
 
-## Design System Tokens
-Strictly adhere to this technical terminal-inspired palette.
-- **Background (Void):** `#0a0f1a`
-- **Primary Pulse (Neon):** `#00ffcc`
-- **Translucent Glass:** `rgba(0, 255, 204, 0.2)`
-- **Typography:**
-  - Headings / Editorial Narrative: `Playfair Display`
-  - System Logs / Data UI Elements: `JetBrains Mono`
+- **SOLID Principles:** Apply Single Responsibility. Abstract the complex background generation logic into a standalone `<BlueprintGrid>` component so it does not clutter the main layout logic.
+- **Naming Conventions:** Use `camelCase` for variables, `PascalCase` for React components, and `UPPER_SNAKE_CASE` for grid configuration constants (e.g., `GRID_SIZE_PX`).
+- **Performance Optimization:** 
+  - Ensure the background grid does not trigger unnecessary React re-renders. Use CSS `background-image: linear-gradient` instead of rendering hundreds of SVG DOM nodes.
+  - Exclusively animate `transform` and `opacity` properties via GSAP to maintain 60fps.
+</engineering_standards>
+
+<dom_layout_blueprint>
+To prevent hallucinated layouts, you MUST strictly follow this exact DOM structure top-to-bottom:
+
+1. `<GlobalGrid>`: `position: fixed; inset: 0; z-index: -1`. A purely visual background element that never scrolls.
+2. `<ScrollContainer>`: The main wrapper containing all content (`z-index: 1`).
+   - `<HeroSection>`: `height: 100vh; display: flex; align-items: center`. Contains a massive glowing title.
+   - `<GlassPanelGrid>`: `display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;`. Contains individual `<GlassCard>` components.
+   - `<TerminalInterface>`: A full-width section containing a mockup of a command-line interface.
+</dom_layout_blueprint>
+
+<responsive_adaptations>
+To ensure strict mobile responsiveness, enforce the following breakpoints:
+- **Mobile (`< 768px`):** The `<GlassPanelGrid>` collapses from 2 columns to a 1-column stack.
+- **Grid Scaling:** The 40px background grid must scale down to 20px via a CSS media query to prevent it from looking disproportionately massive on small screens.
+- **Padding Reduction:** Halve the global padding on mobile to maximize screen real estate.
+</responsive_adaptations>
+
+<design_system>
+- **Color Palette:** The background void must be Deep Navy (`#0a0f1a`). Accents, text highlights, and glowing borders must be pure Cyan (`#00ffcc`).
+- **Typography:** Exclusively use monospace or highly technical sans-serif fonts (e.g., `Space Mono` or `Roboto Mono`).
+- **Component Rules:** NEVER use solid backgrounds on cards. All `<GlassCard>` components MUST use CSS `backdrop-filter: blur(12px)` and a highly transparent background (`rgba(255, 255, 255, 0.05)`). Borders must be 1px solid `rgba(0, 255, 204, 0.3)`.
+</design_system>
+
+<motion_and_interaction>
+- **Hover States:** When hovering a `<GlassCard>`, use CSS transitions to increase the cyan border opacity to `1.0` and add a `box-shadow: 0 0 15px rgba(0,255,204,0.5)`.
+- **Scroll Triggers:** Use GSAP `ScrollTrigger.batch()` to fade in and slightly translate (`y: 30px`) the glass panels as they enter the viewport.
+</motion_and_interaction>
+
+<execution_strategy>
+To prevent token-limit truncation and ensure high-quality output, you MUST execute this build iteratively. Await user approval before proceeding to the next phase:
+1. **Phase 1: Environment.** Initialize Vite, setup Tailwind, and write the pure CSS for the fixed 40px `<GlobalGrid>`. Stop and wait.
+2. **Phase 2: Static Layout.** Build the glassmorphic components following the `<dom_layout_blueprint>` exactly. Stop and wait.
+3. **Phase 3: Motion & Polish.** Implement the GSAP ScrollTriggers and hover micro-interactions.
+</execution_strategy>
+
+<critical_rules>
+1. Do not pollute the DOM with hundreds of grid lines; use a single efficient CSS `linear-gradient` background.
+2. Never override the glassmorphism with solid opaque colors. The grid must always be partially visible through the cards.
+3. Do NOT invent your own layout. Follow the `<dom_layout_blueprint>` and `<responsive_adaptations>` exactly.
+</critical_rules>
