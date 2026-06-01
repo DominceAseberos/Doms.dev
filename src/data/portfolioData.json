@@ -6,6 +6,714 @@
     ],
     "projects": [
         {
+            "id": "project-deep-sea",
+            "title": "DEEP SEA",
+            "shortDescription": "An immersive aquatic-themed scrollytelling experience utilizing dynamic visual elements and fluid animations to simulate a deep-dive narrative.",
+            "projectType": "LANDING PAGE",
+            "dateCreated": "2026-06-01",
+            "liveUrl": "https://web-deep-sea.vercel.app",
+            "githubUrl": "",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-deep-sea/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-deep-sea/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-deep-sea/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-deep-sea/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-deep-sea/imgs/desktop-2.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-3.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-4.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-5.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-6.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-7.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-8.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-9.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-10.webp",
+                "/assets/uploads/project-deep-sea/imgs/desktop-11.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-deep-sea/imgs/tablet-2.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-3.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-4.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-5.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-6.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-7.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-8.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-9.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-10.webp",
+                "/assets/uploads/project-deep-sea/imgs/tablet-11.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-deep-sea/imgs/mobile-2.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-3.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-4.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-5.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-6.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-7.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-8.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-9.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-10.webp",
+                "/assets/uploads/project-deep-sea/imgs/mobile-11.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-deep-sea/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-deep-sea/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-deep-sea/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "deep-sea-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "deep-sea-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "deep-sea-overview-text",
+                                    "type": "text",
+                                    "content": "Deep-Sea serves as an exploration of immersive, aquatic-themed scrollytelling, utilizing dynamic visual elements and video playback to simulate a deep-dive experience into the ocean's depths."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "deep-sea-arch",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "deep-sea-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "deep-sea-core",
+                                    "type": "chips",
+                                    "items": [
+                                        "React",
+                                        "TypeScript",
+                                        "Vite",
+                                        "Tailwind CSS",
+                                        "GSAP"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "deep-sea-arch-right",
+                            "columnTitle": "Design System",
+                            "blocks": [
+                                {
+                                    "id": "deep-sea-colors",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#0a0540",
+                                        "#26c2e6",
+                                        "#b31a33"
+                                    ]
+                                },
+                                {
+                                    "id": "deep-sea-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Cormorant Garamond",
+                                            "family": "'Cormorant Garamond', serif",
+                                            "role": "Story Titles"
+                                        },
+                                        {
+                                            "name": "Space Mono",
+                                            "family": "'Space Mono', monospace",
+                                            "role": "Depth Meters & HUD"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "deep-sea-features",
+                    "sectionTitle": "Key Features",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "deep-sea-feat-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "deep-sea-feat-list",
+                                    "type": "list",
+                                    "items": [
+                                        "Theme: Atmospheric Oceanic Depth",
+                                        "Motion: Synchronized GSAP Scroll Tracking",
+                                        "Effects: Pure CSS Particle Bubbles & Creature Animations"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "project-deep-sea-ai-context",
+                    "sectionTitle": "Applied AI Engineering",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "project-deep-sea-ai-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "project-deep-sea-ai-text",
+                                    "type": "text",
+                                    "content": "This project serves as an exercise in rapid prototyping via strict LLM constraint prompting. To prevent AI component hallucination, a rigorous Master System Prompt was engineered to lock the model into specific DOM architectures, responsive breakpoints, and motion physics. You can view the raw AI Directive used for this build by clicking the Skills.md button at the top of this case study."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "primaryBtnUrl": "/deep-sea-skills.md",
+            "githubBtnUrl": "",
+            "githubBtnLabel": "Private Repo"
+        },
+        {
+            "id": "project-peak",
+            "title": "PEAK",
+            "shortDescription": "A high-end scrollytelling experience designed to explore peak athletic performance through smooth micro-interactions and cohesive visual branding.",
+            "projectType": "LANDING PAGE",
+            "dateCreated": "2026-06-01",
+            "liveUrl": "https://shop-apex.vercel.app",
+            "githubUrl": "",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-peak/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-peak/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-peak/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-peak/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-peak/imgs/desktop-2.webp",
+                "/assets/uploads/project-peak/imgs/desktop-3.webp",
+                "/assets/uploads/project-peak/imgs/desktop-4.webp",
+                "/assets/uploads/project-peak/imgs/desktop-5.webp",
+                "/assets/uploads/project-peak/imgs/desktop-6.webp",
+                "/assets/uploads/project-peak/imgs/desktop-7.webp",
+                "/assets/uploads/project-peak/imgs/desktop-8.webp",
+                "/assets/uploads/project-peak/imgs/desktop-9.webp",
+                "/assets/uploads/project-peak/imgs/desktop-10.webp",
+                "/assets/uploads/project-peak/imgs/desktop-11.webp",
+                "/assets/uploads/project-peak/imgs/desktop-12.webp",
+                "/assets/uploads/project-peak/imgs/desktop-13.webp",
+                "/assets/uploads/project-peak/imgs/desktop-14.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-peak/imgs/tablet-2.webp",
+                "/assets/uploads/project-peak/imgs/tablet-3.webp",
+                "/assets/uploads/project-peak/imgs/tablet-4.webp",
+                "/assets/uploads/project-peak/imgs/tablet-5.webp",
+                "/assets/uploads/project-peak/imgs/tablet-6.webp",
+                "/assets/uploads/project-peak/imgs/tablet-7.webp",
+                "/assets/uploads/project-peak/imgs/tablet-8.webp",
+                "/assets/uploads/project-peak/imgs/tablet-9.webp",
+                "/assets/uploads/project-peak/imgs/tablet-10.webp",
+                "/assets/uploads/project-peak/imgs/tablet-11.webp",
+                "/assets/uploads/project-peak/imgs/tablet-12.webp",
+                "/assets/uploads/project-peak/imgs/tablet-13.webp",
+                "/assets/uploads/project-peak/imgs/tablet-14.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-peak/imgs/mobile-2.webp",
+                "/assets/uploads/project-peak/imgs/mobile-3.webp",
+                "/assets/uploads/project-peak/imgs/mobile-4.webp",
+                "/assets/uploads/project-peak/imgs/mobile-5.webp",
+                "/assets/uploads/project-peak/imgs/mobile-6.webp",
+                "/assets/uploads/project-peak/imgs/mobile-7.webp",
+                "/assets/uploads/project-peak/imgs/mobile-8.webp",
+                "/assets/uploads/project-peak/imgs/mobile-9.webp",
+                "/assets/uploads/project-peak/imgs/mobile-10.webp",
+                "/assets/uploads/project-peak/imgs/mobile-11.webp",
+                "/assets/uploads/project-peak/imgs/mobile-12.webp",
+                "/assets/uploads/project-peak/imgs/mobile-13.webp",
+                "/assets/uploads/project-peak/imgs/mobile-14.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-peak/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-peak/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-peak/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "peak-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "peak-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "peak-overview-text",
+                                    "type": "text",
+                                    "content": "Peak Performance Lab explores immersive, high-end scrollytelling experiences using modern web technologies. The project leverages smooth micro-interactions and cohesive visual branding to deliver a premium user experience."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "peak-arch",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "peak-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "peak-core",
+                                    "type": "chips",
+                                    "items": [
+                                        "React",
+                                        "TypeScript",
+                                        "Vite",
+                                        "Tailwind CSS",
+                                        "shadcn/ui",
+                                        "GSAP"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "peak-arch-right",
+                            "columnTitle": "Design System",
+                            "blocks": [
+                                {
+                                    "id": "peak-colors",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#020817",
+                                        "#1E293B",
+                                        "#3B82F6",
+                                        "#F59E0B"
+                                    ]
+                                },
+                                {
+                                    "id": "peak-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Instrument Sans",
+                                            "family": "'Instrument Sans', sans-serif",
+                                            "role": "Primary Body"
+                                        },
+                                        {
+                                            "name": "Cormorant Garamond",
+                                            "family": "'Cormorant Garamond', serif",
+                                            "role": "Display Titles"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "peak-features",
+                    "sectionTitle": "Key Features",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "peak-feat-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "peak-feat-list",
+                                    "type": "list",
+                                    "items": [
+                                        "Aesthetic: Premium Athletic Performance UI",
+                                        "Components: Accessible shadcn/ui foundations",
+                                        "Interaction: Bespoke micro-interactions & GSAP triggers"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "project-peak-ai-context",
+                    "sectionTitle": "Applied AI Engineering",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "project-peak-ai-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "project-peak-ai-text",
+                                    "type": "text",
+                                    "content": "This project serves as an exercise in rapid prototyping via strict LLM constraint prompting. To prevent AI component hallucination, a rigorous Master System Prompt was engineered to lock the model into specific DOM architectures, responsive breakpoints, and motion physics. You can view the raw AI Directive used for this build by clicking the Skills.md button at the top of this case study."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "primaryBtnUrl": "/peak-skills.md",
+            "githubBtnUrl": "",
+            "githubBtnLabel": "Private Repo"
+        },
+        {
+            "id": "project-velocity",
+            "title": "VELOCITY",
+            "shortDescription": "A premium, high-performance private car collection interface featuring cinematic video panels and immersive dark-mode scrollytelling.",
+            "projectType": "LANDING PAGE",
+            "dateCreated": "2026-06-01",
+            "liveUrl": "https://cars-veloce.vercel.app",
+            "githubUrl": "",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-velocity/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-velocity/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-velocity/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-velocity/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-velocity/imgs/desktop-2.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-3.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-4.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-5.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-6.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-7.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-8.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-9.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-10.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-11.webp",
+                "/assets/uploads/project-velocity/imgs/desktop-12.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-velocity/imgs/tablet-2.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-3.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-4.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-5.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-6.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-7.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-8.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-9.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-10.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-11.webp",
+                "/assets/uploads/project-velocity/imgs/tablet-12.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-velocity/imgs/mobile-2.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-3.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-4.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-5.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-6.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-7.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-8.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-9.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-10.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-11.webp",
+                "/assets/uploads/project-velocity/imgs/mobile-12.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-velocity/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-velocity/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-velocity/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "velocity-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "velocity-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "velocity-overview-text",
+                                    "type": "text",
+                                    "content": "VELOCE is designed around a premium, high-performance private car collection, focusing on cinematic video panels and immersive scrollytelling. It features dark mode textures like carbon fiber, gold accents, and elegant typography to deliver a luxury aesthetic."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "velocity-arch",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "velocity-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "velocity-core",
+                                    "type": "chips",
+                                    "items": [
+                                        "React",
+                                        "TypeScript",
+                                        "Vite",
+                                        "Tailwind CSS",
+                                        "GSAP",
+                                        "Lenis"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "velocity-arch-right",
+                            "columnTitle": "Design System",
+                            "blocks": [
+                                {
+                                    "id": "velocity-colors",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#1A1A1A",
+                                        "#F1C40F",
+                                        "#BDC3C7",
+                                        "#2C3E50"
+                                    ]
+                                },
+                                {
+                                    "id": "velocity-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Playfair Display",
+                                            "family": "'Playfair Display', serif",
+                                            "role": "Primary Display"
+                                        },
+                                        {
+                                            "name": "DM Mono",
+                                            "family": "'DM Mono', monospace",
+                                            "role": "Technical Details"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "velocity-features",
+                    "sectionTitle": "Key Features",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "velocity-feat-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "velocity-feat-list",
+                                    "type": "list",
+                                    "items": [
+                                        "Aesthetic: High-Performance Luxury Carbon & Gold",
+                                        "Motion: Lenis hardware-accelerated scroll + Infinite Marquees",
+                                        "Media: Cinematic Video Panel Scrollytelling"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "project-velocity-ai-context",
+                    "sectionTitle": "Applied AI Engineering",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "project-velocity-ai-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "project-velocity-ai-text",
+                                    "type": "text",
+                                    "content": "This project serves as an exercise in rapid prototyping via strict LLM constraint prompting. To prevent AI component hallucination, a rigorous Master System Prompt was engineered to lock the model into specific DOM architectures, responsive breakpoints, and motion physics. You can view the raw AI Directive used for this build by clicking the Skills.md button at the top of this case study."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "primaryBtnUrl": "/velocity-skills.md",
+            "githubBtnUrl": "",
+            "githubBtnLabel": "Private Repo"
+        },
+        {
+            "id": "project-fashion",
+            "title": "FASHION SHOP",
+            "shortDescription": "An immersive, editorial-style fashion storefront focusing on 'quiet luxury' with smooth scrollytelling and high-end visual pacing.",
+            "projectType": "LANDING PAGE",
+            "dateCreated": "2026-06-01",
+            "liveUrl": "https://shop-cheq.vercel.app/",
+            "githubUrl": "",
+            "featuredInTunnel": true,
+            "mainImage": "/assets/uploads/project-fashion/imgs/desktop.webp",
+            "desktopImage": "/assets/uploads/project-fashion/imgs/desktop.webp",
+            "tabletImage": "/assets/uploads/project-fashion/imgs/tablet.webp",
+            "mobileImage": "/assets/uploads/project-fashion/imgs/mobile.webp",
+            "desktopGallery": [
+                "/assets/uploads/project-fashion/imgs/desktop-2.webp",
+                "/assets/uploads/project-fashion/imgs/desktop-3.webp",
+                "/assets/uploads/project-fashion/imgs/desktop-4.webp",
+                "/assets/uploads/project-fashion/imgs/desktop-5.webp",
+                "/assets/uploads/project-fashion/imgs/desktop-6.webp",
+                "/assets/uploads/project-fashion/imgs/desktop-7.webp",
+                "/assets/uploads/project-fashion/imgs/desktop-8.webp"
+            ],
+            "tabletGallery": [
+                "/assets/uploads/project-fashion/imgs/tablet-2.webp",
+                "/assets/uploads/project-fashion/imgs/tablet-3.webp",
+                "/assets/uploads/project-fashion/imgs/tablet-4.webp",
+                "/assets/uploads/project-fashion/imgs/tablet-5.webp",
+                "/assets/uploads/project-fashion/imgs/tablet-6.webp",
+                "/assets/uploads/project-fashion/imgs/tablet-7.webp",
+                "/assets/uploads/project-fashion/imgs/tablet-8.webp"
+            ],
+            "mobileGallery": [
+                "/assets/uploads/project-fashion/imgs/mobile-2.webp",
+                "/assets/uploads/project-fashion/imgs/mobile-3.webp",
+                "/assets/uploads/project-fashion/imgs/mobile-4.webp",
+                "/assets/uploads/project-fashion/imgs/mobile-5.webp",
+                "/assets/uploads/project-fashion/imgs/mobile-6.webp",
+                "/assets/uploads/project-fashion/imgs/mobile-7.webp",
+                "/assets/uploads/project-fashion/imgs/mobile-8.webp"
+            ],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "/assets/uploads/project-fashion/imgs/desktop.webp",
+                "tablet": "/assets/uploads/project-fashion/imgs/tablet.webp",
+                "mobile": "/assets/uploads/project-fashion/imgs/mobile.webp"
+            },
+            "contentSections": [
+                {
+                    "id": "fashion-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "fashion-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "fashion-overview-text",
+                                    "type": "text",
+                                    "content": "The Fashion Storefront is a personal project built for practicing storytelling website development. It focuses on creating an immersive, editorial-style experience with smooth scrollytelling and high-end visual pacing, emphasizing a 'quiet luxury' aesthetic."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "fashion-arch",
+                    "sectionTitle": "Architecture",
+                    "layout": "2-equal",
+                    "columns": [
+                        {
+                            "id": "fashion-arch-left",
+                            "columnTitle": "Tech Stack",
+                            "blocks": [
+                                {
+                                    "id": "fashion-core",
+                                    "type": "chips",
+                                    "items": [
+                                        "React",
+                                        "TypeScript",
+                                        "Vite",
+                                        "Tailwind CSS",
+                                        "GSAP"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": "fashion-arch-right",
+                            "columnTitle": "Design System",
+                            "blocks": [
+                                {
+                                    "id": "fashion-colors",
+                                    "type": "color-palette",
+                                    "colors": [
+                                        "#F4F1EC",
+                                        "#0E0E0E",
+                                        "#3A1A1A",
+                                        "#A89684"
+                                    ]
+                                },
+                                {
+                                    "id": "fashion-fonts",
+                                    "type": "font-preview",
+                                    "fonts": [
+                                        {
+                                            "name": "Cormorant Garamond",
+                                            "family": "'Cormorant Garamond', serif",
+                                            "role": "Display & Headings"
+                                        },
+                                        {
+                                            "name": "Inter",
+                                            "family": "'Inter', sans-serif",
+                                            "role": "Body & UI"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "fashion-features",
+                    "sectionTitle": "Key Features",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "fashion-feat-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "fashion-feat-list",
+                                    "type": "list",
+                                    "items": [
+                                        "Aesthetic: 'Quiet Luxury' Editorial Design",
+                                        "Motion: GSAP Scrollytelling Pacing",
+                                        "Layout: High-end Visual Merchandising"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "project-fashion-ai-context",
+                    "sectionTitle": "Applied AI Engineering",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "project-fashion-ai-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "project-fashion-ai-text",
+                                    "type": "text",
+                                    "content": "This project serves as an exercise in rapid prototyping via strict LLM constraint prompting. To prevent AI component hallucination, a rigorous Master System Prompt was engineered to lock the model into specific DOM architectures, responsive breakpoints, and motion physics. You can view the raw AI Directive used for this build by clicking the Skills.md button at the top of this case study."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "primaryBtnUrl": "/fashion-skills.md",
+            "githubBtnUrl": "",
+            "githubBtnLabel": "Private Repo"
+        },
+        {
             "id": "project-github-universe",
             "title": "GITHUB UNIVERSE",
             "shortDescription": "An interactive GitHub data visualization universe built with a static-data pipeline. It features a 4-level drill-down (Galaxy -> Country -> Users -> Repositories) driven by deep scraping and query-bucket partitioning.",
@@ -880,6 +1588,24 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "id": "project-kernel-ai-context",
+                    "sectionTitle": "Applied AI Engineering",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "project-kernel-ai-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "project-kernel-ai-text",
+                                    "type": "text",
+                                    "content": "This project serves as an exercise in rapid prototyping via strict LLM constraint prompting. To prevent AI component hallucination, a rigorous Master System Prompt was engineered to lock the model into specific DOM architectures, responsive breakpoints, and motion physics. You can view the raw AI Directive used for this build by clicking the Skills.md button at the top of this case study."
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "featuredOnHome": false,
@@ -1088,6 +1814,24 @@
                                             "role": "Premium, editorial body copy"
                                         }
                                     ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "project-vayora-ai-context",
+                    "sectionTitle": "Applied AI Engineering",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "project-vayora-ai-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "project-vayora-ai-text",
+                                    "type": "text",
+                                    "content": "This project serves as an exercise in rapid prototyping via strict LLM constraint prompting. To prevent AI component hallucination, a rigorous Master System Prompt was engineered to lock the model into specific DOM architectures, responsive breakpoints, and motion physics. You can view the raw AI Directive used for this build by clicking the Skills.md button at the top of this case study."
                                 }
                             ]
                         }
