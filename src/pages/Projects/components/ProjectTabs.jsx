@@ -79,59 +79,6 @@ const FILTERS = [
     ...dynamicCategories.map(cat => ({ id: cat, label: cat }))
 ];
 
-// Mock data for category testing: landing-page only for now.
-const MOCK_LABEL_DATA = {
-    landing: {
-        label: 'Landing Page',
-        keywords: 'landing page marketing campaign hero cta conversion funnel',
-        sample: 'Landing-page narrative focused on hero messaging and CTA conversion.',
-    },
-};
-
-const MOCK_PROJECT_LABELS = {
-    'banana-leaf-detection': ['landing'],
-    'focus-quest': ['landing'],
-    'baylora': ['landing'],
-    'templyx': ['landing'],
-    'ai-text-summarizer': ['landing'],
-};
-
-function detectProjectMeta(project, themeCat, mockSignalText = '') {
-    const source = [
-        project.title,
-        project.projectType,
-        project.shortDescription,
-        project.about,
-        (project.stacks || []).join(' '),
-        mockSignalText,
-    ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-
-    const categories = new Set(['all']);
-    const labels = [];
-
-    const add = (category, label) => {
-        if (!categories.has(category)) categories.add(category);
-        if (!labels.includes(label)) labels.push(label);
-    };
-
-    if (themeCat) categories.add(themeCat);
-
-    if (/(landing|marketing|campaign|promo|hero section|cta)/.test(source)) add('landing', 'Landing Page');
-
-    if (labels.length === 0) {
-        add('landing', 'Landing Page');
-    }
-
-    return {
-        categories: Array.from(categories),
-        labels,
-        displayType: labels.slice(0, 2).join(' · ') || project.projectType,
-    };
-}
-
 // ── Format date → "NOV 2023" ──────────────────────────────────────────────
 function fmtDate(dateStr) {
     if (!dateStr) return 'TBA';
@@ -148,17 +95,9 @@ function fmtOverlayDate(dateStr) {
 
 // ── Enrich projects with theme + index ────────────────────────────────────
 const projects = portfolioData.projects.map((p, i) => {
-    const mockLabels = MOCK_PROJECT_LABELS[p.id] || [];
-    const mockLabelPayload = mockLabels.map((label) => MOCK_LABEL_DATA[label]).filter(Boolean);
-    const mockSignalText = mockLabelPayload
-        .map((item) => `${item.keywords} ${item.sample}`)
-        .join(' ');
-
     return {
         ...p,
         theme: PROJECT_THEMES[p.id] || {},
-        mockLabelPayload,
-        ...detectProjectMeta(p, PROJECT_THEMES[p.id]?.cat, mockSignalText),
         num: String(i + 1).padStart(2, '0'),
         displayDate: fmtDate(p.dateCreated),
         overlayDate: fmtOverlayDate(p.dateCreated),

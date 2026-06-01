@@ -298,17 +298,24 @@ const ProjectTemplate = ({
                             )}
 
                             {/* GitHub Button */}
-                            {(project.githubBtnUrl || project.githubUrl) && (
-                                <a 
-                                    href={isAdminPreview ? undefined : (project.githubBtnUrl || project.githubUrl)} 
-                                    target={isAdminPreview ? undefined : "_blank"} 
-                                    rel="noopener noreferrer" 
-                                    className="cs-top-link cs-top-link--ghost flex items-center gap-2"
-                                    onClick={e => isAdminPreview && e.preventDefault()}
-                                >
-                                    <FiGithub size={16} />
-                                    <span className="hidden md:inline">{project.githubBtnLabel || 'GitHub'}</span>
-                                </a>
+                            {(project.githubBtnUrl || project.githubUrl || project.githubBtnLabel) && (
+                                (project.githubBtnUrl || project.githubUrl) ? (
+                                    <a 
+                                        href={isAdminPreview ? undefined : (project.githubBtnUrl || project.githubUrl)} 
+                                        target={isAdminPreview ? undefined : "_blank"} 
+                                        rel="noopener noreferrer" 
+                                        className="cs-top-link cs-top-link--ghost flex items-center gap-2"
+                                        onClick={e => isAdminPreview && e.preventDefault()}
+                                    >
+                                        <FiGithub size={16} />
+                                        <span className="hidden md:inline">{project.githubBtnLabel || 'GitHub'}</span>
+                                    </a>
+                                ) : (
+                                    <div className="cs-top-link cs-top-link--ghost flex items-center gap-2 opacity-50 cursor-not-allowed">
+                                        <FiGithub size={16} />
+                                        <span className="hidden md:inline">{project.githubBtnLabel}</span>
+                                    </div>
+                                )
                             )}
                         </div>
                     </div>

@@ -50,8 +50,9 @@ const ProjectCard = ({ project, onView }) => {
                     ))}
                 </div>
                 <div className="pg-proof-row">
-                    {project.liveUrl ? <span>Live demo</span> : <span>Case study</span>}
-                    {project.githubUrl ? <span>Source</span> : null}
+                    {project.primaryBtnUrl && project.primaryBtnUrl.includes('skills.md') && <span>Skills.md</span>}
+                    {project.liveUrl ? <span>Live demo</span> : (!project.primaryBtnUrl?.includes('skills.md') && <span>Case study</span>)}
+                    {project.githubBtnLabel ? <span>{project.githubBtnLabel}</span> : (project.githubUrl ? <span>Source</span> : null)}
                 </div>
                 <div className="pg-arrow">↗</div>
             </div>
