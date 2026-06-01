@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import useThemeStore from '../../../store/useThemeStore';
+import Mermaid from '../../../components/Mermaid';
 
 export const EditableText = ({ 
     value, 
@@ -86,8 +87,19 @@ export const EditableText = ({
     // Public / Non-Admin view
     if (!isAdminPreview) {
         return (
-            <div className={`prose-custom inline-block ${className}`} style={style}>
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <div className={`prose-custom inline-block max-w-none ${className}`} style={style}>
+                <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                        code({node, inline, className, children, ...props}) {
+                            const match = /language-(\w+)/.exec(className || '');
+                            if (!inline && match && match[1] === 'mermaid') {
+                                return <Mermaid chart={String(children).replace(/\n$/, '')} isLight={isLight} />;
+                            }
+                            return <code className={className} {...props}>{children}</code>;
+                        }
+                    }}
+                >
                     {value || ""}
                 </ReactMarkdown>
             </div>
@@ -98,7 +110,7 @@ export const EditableText = ({
     if (!isEditing) {
         return (
             <div 
-                className={`prose-custom cursor-text ${className} ${isLight ? 'hover:bg-black/5' : 'hover:bg-white/5'} rounded transition-shadow min-h-[1.5rem] admin-editable inline-block w-full`}
+                className={`prose-custom cursor-text ${className} ${isLight ? 'hover:bg-black/5' : 'hover:bg-white/5'} rounded transition-shadow min-h-[1.5rem] admin-editable inline-block max-w-none`}
                 style={style}
                 onClick={() => {
                     setIsEditing(true);
@@ -107,7 +119,18 @@ export const EditableText = ({
                 }}
             >
                 {value ? (
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    <ReactMarkdown 
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                            code({node, inline, className, children, ...props}) {
+                                const match = /language-(\w+)/.exec(className || '');
+                                if (!inline && match && match[1] === 'mermaid') {
+                                    return <Mermaid chart={String(children).replace(/\n$/, '')} isLight={isLight} />;
+                                }
+                                return <code className={className} {...props}>{children}</code>;
+                            }
+                        }}
+                    >
                         {value}
                     </ReactMarkdown>
                 ) : (

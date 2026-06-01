@@ -571,6 +571,9 @@ video.cs-media-thumb {
 }
 
 .cs-chip {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
     font-family: 'DM Mono', monospace;
     font-size: 12px;
     letter-spacing: 0.1em;

@@ -40,57 +40,106 @@ The automated script provides a solid structural foundation, but the JSON entry 
    - **Features**: Highlight 2-3 core features.
 4. **Update Proof Points**: Add 3 core proof points relevant to the project (e.g., Accuracy, Performance, Frameworks).
 
-## Step 3: Creating the AI Directive (`skills.md`)
+## Step 3: Creating the Documentation
 
-For every new project, a specific `skills.md` must be created in the `public/` directory (e.g., `public/<slug>-skills.md`). This document is not a generic article; it is a **Master System Prompt** designed to instruct an AI exactly how to build the project without hallucinating.
+Every project in the portfolio MUST belong to one of three **Documentation Archetypes**. Choose the archetype that fits the project category and write the corresponding markdown/PDF document.
 
-It MUST follow this exact XML structure:
+### Archetype 1: The AI Prototype (Frontend / Visual)
+**Categories:** `LANDING PAGE`, `DATA VISUALIZATION`
+**Document:** `skills.md` (The AI Directive)
 
-```markdown
+This document is a **Master System Prompt** designed to instruct an AI exactly how to build the UI prototype without hallucinating. It MUST follow this exact XML structure:
+
+<details>
+<summary>View skills.md XML Blueprint</summary>
+
+```xml
 # AI Directive: [Project Name]
 
-<identity>
-Define the AI persona (e.g., "Expert WebGL Developer" or "Component Architect").
-</identity>
-
-<objective>
-Define the core vibe and aesthetic goal of the project.
-</objective>
-
-<architecture>
-Define the Framework (React, Vite) and Styling (BEM, Tailwind, Vanilla CSS).
-</architecture>
-
-<engineering_standards>
-Enforce SOLID principles, 60fps optimization rules (only animating transform/opacity), variable naming consistency, and simplicity over complexity.
-</engineering_standards>
-
-<dom_layout_blueprint>
-Explicitly map out the exact DOM hierarchy section-by-section to prevent the AI from inventing a generic layout.
-</dom_layout_blueprint>
-
-<responsive_adaptations>
-Define exact breakpoints and how complex elements (like grids or GSAP pins) must gracefully degrade on mobile.
-</responsive_adaptations>
-
-<design_system>
-Define precise Color Hex codes, Font Families, and component rules (e.g., "no borders, sharp corners").
-</design_system>
-
-<motion_and_interaction>
-Detail the specific GSAP/Lenis physics, scroll triggers, and tactile hover states.
-</motion_and_interaction>
-
-<execution_strategy>
-To prevent token-limit truncation, command the AI to build iteratively. Define 3-4 phases and explicitly state: "Stop and wait for user approval before proceeding to the next phase."
-</execution_strategy>
-
-<critical_rules>
-List 3 hard boundaries the AI must never cross (e.g., "Never use global CSS", "Always use useGSAP for cleanup").
-</critical_rules>
+<identity>Define the AI persona (e.g., "Expert WebGL Developer").</identity>
+<objective>Define the core vibe and aesthetic goal of the project.</objective>
+<architecture>Define the Framework and Styling constraints.</architecture>
+<engineering_standards>Enforce SOLID principles, 60fps rules, and variable naming.</engineering_standards>
+<dom_layout_blueprint>Explicitly map out the exact DOM hierarchy section-by-section.</dom_layout_blueprint>
+<responsive_adaptations>Define exact breakpoints and degradation rules.</responsive_adaptations>
+<design_system>Define precise Colors, Fonts, and component rules.</design_system>
+<motion_and_interaction>Detail GSAP/Lenis physics and scroll triggers.</motion_and_interaction>
+<execution_strategy>Define iterative phases and command the AI to wait for approval between phases.</execution_strategy>
+<critical_rules>List 3 hard boundaries the AI must never cross.</critical_rules>
 ```
+</details>
 
-After creating this file, ensure the `primaryBtnUrl` in `portfolioData.json` points to it (e.g., `/<slug>-skills.md`).
+### Archetype 2: The Engineered System (Backend / Full-Stack)
+**Categories:** `WEB APPLICATION`, `FULL-STACK APPLICATION`, `MOBILE APPLICATION`
+**Document:** `architecture.md` (System Architecture Document)
+
+**Mandatory AI Instruction:** Before writing this document, the AI Agent MUST use its tools to navigate into the project's local directory and read the actual source code (e.g., `package.json`, database schemas, routing logic, and state management files). Do not hallucinate the architecture; extract it directly from the codebase.
+
+This document proves systems-level thinking for Senior Engineers and Tech Leads. Focus on the *why* rather than the *how*.
+
+<details>
+<summary>View architecture.md Blueprint</summary>
+
+```markdown
+# System Architecture: [Project Name]
+
+## 1. High-Level Architecture
+Explain the Client -> Server -> Database flow. Include a mermaid diagram if possible.
+
+## 2. Tech Stack & Trade-offs
+List the core technologies and *defend* the choices. (e.g., "Why PostgreSQL over MongoDB for this specific use case?")
+
+## 3. State Management & Security
+Explain the authentication flow, JWT handling, and how complex state is managed across the client.
+
+## 4. Core Business Logic
+A deep-dive into the most complex feature or algorithm written for the app.
+
+## 5. Deployment & CI/CD
+Explain how the system is hosted, scaled, and deployed.
+```
+</details>
+
+### Archetype 3: The Academic Case Study (Data / Research)
+**Categories:** `MACHINE LEARNING`, `CASE STUDY`
+**Document:** `case-study.pdf` or `case-study.md` (Research Case Study)
+
+**Mandatory AI Instruction:** Before writing this document, the AI Agent MUST use its tools to read the actual project codebase (e.g., Python scripts, Jupyter notebooks, model evaluation scripts). The AI must extract real metrics, accuracy scores, algorithms used, and engineering bottlenecks directly from the source code. Do not invent metrics.
+
+This document proves analytical and problem-solving skills for Data Scientists and Product Managers. It should be formatted like an academic or professional whitepaper.
+
+<details>
+<summary>View case-study.md Blueprint</summary>
+
+```markdown
+# Research Case Study: [Project Name]
+
+## 1. Statement of the Problem
+What is the real-world issue being solved?
+
+## 2. The Goal
+What is the desired outcome or hypothesis?
+
+## 3. Data Pipeline & Preprocessing
+Where was the dataset sourced? How was it cleaned and prepared?
+
+## 4. The Solution & Model Architecture
+What algorithm/model was chosen (e.g., CNN, Random Forest) and why?
+
+## 5. Engineering Challenges
+What bottlenecks occurred during training or inference? (e.g., Overfitting).
+
+## 6. Performance Metrics
+A breakdown of the true metrics generated directly from reading the codebase (e.g., Accuracy graphs, F1 Scores, Inference Speed).
+
+## 7. Conclusion
+Final explanation of the results.
+```
+</details>
+
+*Note on PDFs:* If you choose to write Archetype 2 or 3 as a formal `.pdf` or `.docx` file instead of Markdown, simply place the file in `public/assets/docs/` and link it. The portfolio's `DocViewerModal` natively supports rendering PDFs and Word docs inline!
+
+After creating the appropriate document, ensure the `primaryBtnUrl` in `portfolioData.json` points to it (e.g., `/assets/docs/banana-leaf.pdf` or `/vayora-skills.md`).
 
 ## Step 4: Verification
 

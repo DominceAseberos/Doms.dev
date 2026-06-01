@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { FiX, FiExternalLink, FiCopy, FiCheck } from 'react-icons/fi';
 import useThemeStore from '../../../store/useThemeStore';
+import Mermaid from '../../../components/Mermaid';
 
 /**
  * Converts a standard GitHub URL to a raw user content URL
@@ -183,7 +184,18 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
                         </div>
                     ) : (
                         <div className="prose-custom w-full max-w-none">
-                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                    code({node, inline, className, children, ...props}) {
+                                        const match = /language-(\w+)/.exec(className || '');
+                                        if (!inline && match && match[1] === 'mermaid') {
+                                            return <Mermaid chart={String(children).replace(/\n$/, '')} isLight={isLight} />;
+                                        }
+                                        return <code className={className} {...props}>{children}</code>;
+                                    }
+                                }}
+                            >
                                 {markdownContent}
                             </ReactMarkdown>
                         </div>

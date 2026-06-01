@@ -6,6 +6,69 @@
     ],
     "projects": [
         {
+            "id": "project-serveflow",
+            "title": "SERVEFLOW POS",
+            "shortDescription": "An offline-first, open-source Point of Sale ecosystem designed for cafés and restaurants, built with React, Vite, and IndexedDB.",
+            "projectType": "FULL-STACK APPLICATION",
+            "dateCreated": "2026-06-01",
+            "liveUrl": "",
+            "githubUrl": "https://github.com/DominceAseberos/POS",
+            "primaryBtnUrl": "/assets/markdowns/serveflow-architecture.md",
+            "featuredInTunnel": true,
+            "mainImage": "",
+            "desktopImage": "",
+            "tabletImage": "",
+            "mobileImage": "",
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
+            "images": [],
+            "galleryImages": [],
+            "assets": {
+                "desktop": "",
+                "tablet": "",
+                "mobile": ""
+            },
+            "contentSections": [
+                {
+                    "id": "serveflow-overview",
+                    "sectionTitle": "Overview",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "serveflow-overview-col",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "serveflow-overview-text",
+                                    "type": "text",
+                                    "content": "ServeFlow POS is an aggressively offline-first, open-source Point of Sale ecosystem designed for cafés and restaurants. Unlike traditional POS systems that rely on constant server connectivity, ServeFlow runs entirely in the browser using a local-first repository pattern powered by IndexedDB (Dexie.js). It strictly enforces separation of concerns via Zustand state management and robust feature services."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "appended-arch-project-serveflow",
+                    "sectionTitle": "System Documentation",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "col-1-project-serveflow",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "block-1-project-serveflow",
+                                    "type": "text",
+                                    "content": "# System Architecture: ServeFlow POS\n\n## 1. High-Level Architecture\nServeFlow POS is an aggressively offline-first, open-source Point of Sale ecosystem designed for cafés and restaurants. Unlike traditional POS systems that rely on constant server connectivity, ServeFlow runs entirely in the browser using a local-first repository pattern.\n\n```mermaid\ngraph TD\n    UI[\"React Components\"] -->|State Management| Zustand[\"Zustand Store\"]\n    UI -->|Business Logic| Hooks[\"Feature Hooks\"]\n    Hooks -->|Data Operations| Service[\"Feature Service\"]\n    Service -->|Abstracts DB| Repo[\"Repository Layer\"]\n    Repo -->|Persistence| Dexie[(\"IndexedDB / Dexie.js\")]\n```\n\n## 2. Tech Stack & Trade-offs\n*   **React + Vite + TypeScript**\n    *   *Trade-off:* Chosen over Next.js because Server-Side Rendering (SSR) is irrelevant for an offline-first POS application. Vite provides an exceptionally fast build process, and TypeScript ensures strict typings for critical business entities (like `Order`, `Payment`, and `InventoryMovement`).\n*   **IndexedDB (Dexie.js)**\n    *   *Trade-off:* Relational databases (like PostgreSQL) require a server. IndexedDB provides robust, asynchronous, local storage directly in the browser, allowing the restaurant to process sales, adjust inventory, and view menus without internet. Dexie.js wraps IndexedDB to provide a much simpler API.\n*   **Zustand**\n    *   *Trade-off:* Selected over Redux to avoid boilerplate. Zustand allows for fast, decoupled, global state management (e.g., active cart items, current cashier session) without slowing down rendering loops.\n*   **vite-plugin-pwa**\n    *   *Trade-off:* Allows the web app to be \"installed\" locally on Android tablets or Windows machines, bypassing the need for native wrappers (initially) while still providing a native app feel.\n\n## 3. State Management & Security\nBecause ServeFlow is offline-first, the architecture heavily relies on the **Repository Pattern** and **Dependency Inversion** to manage state securely. React views NEVER call the database directly. \n\n*   **Data Integrity:** The system uses a strict flow: `UI -> Hook -> Service -> Repository -> Dexie`. This ensures that business logic (like checking if an item is out of stock) happens in the Service layer before it ever reaches the database.\n*   **Sync Queue:** While the app operates completely offline, actions that modify data (like placing an order) push a serialized payload to a `sync_queue` table. When the internet is restored, a background worker processes this queue to sync with an external cloud provider (like Supabase).\n\n## 4. Core Business Logic: Plugin Architecture\nThe system strictly adheres to the **Open/Closed Principle**. The core POS is deliberately kept simple: it handles products, categories, cart management, and receipts.\n\nTo prevent the core codebase from becoming bloated, advanced functionalities (like Loyalty Stamps, Mini-Games, or QR Ordering) are engineered as isolated **Plugins**. The core system exposes hookable events (e.g., `onOrderComplete`), which plugins can listen to without modifying the core POS logic. \n\n## 5. Deployment & Cross-Platform Scaling\nThe foundational build is a Progressive Web App (PWA) distributed via standard static hosting (e.g., Vercel/Netlify).\n\nHowever, the repository pattern ensures that the storage engine can be swapped. The roadmap scales this architecture to multiple native platforms without rewriting business logic:\n*   **Desktop:** Packaged via **Tauri** (swapping IndexedDB for a local SQLite file).\n*   **Mobile:** Wrapped via **Capacitor** for Android/iOS native hardware access (e.g., thermal printers and barcode scanners).\n*   **Cloud:** Synced via **Supabase** for multi-branch restaurant management.\n"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "project-deep-sea",
             "title": "DEEP SEA",
             "shortDescription": "An immersive aquatic-themed scrollytelling experience utilizing dynamic visual elements and fluid animations to simulate a deep-dive narrative.",
@@ -873,7 +936,7 @@
             "dateCreated": "2025-10-15",
             "liveUrl": "https://catsy-coffee.vercel.app/",
             "githubUrl": "https://github.com/Domincee/CATSY",
-            "primaryBtnUrl": "/assets/docs/catsy.docx",
+            "primaryBtnUrl": "/assets/markdowns/catsy-architecture.md",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
@@ -977,6 +1040,24 @@
                                     "type": "text",
                                     "fontSize": "md",
                                     "content": "The system successfully eliminated data loss from dropped connections. It reliably processes 50+ orders per day without downtime. The customer-facing React storefront loads in under 1.2s, and leveraging Firebase Cloud Messaging (FCM), staff receive instant background notifications for new orders across all devices, streamlining the entire service flow."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "appended-arch-project-catsy",
+                    "sectionTitle": "System Documentation",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "col-1-project-catsy",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "block-1-project-catsy",
+                                    "type": "text",
+                                    "content": "# System Architecture: Catsy Coffee\n\n## 1. High-Level Architecture\nCatsy Coffee operates on a robust, multi-client ecosystem. It features a React-based web storefront for customers, a Flutter-based mobile POS application for staff, and a centralized FastAPI backend. All clients interface with a shared Supabase instance for authentication and relational data storage.\n\n```mermaid\ngraph TD\n    Client_Web[\"catsy-web (React/Vite)\"] -->|HTTP/REST| API[\"catsy-backend (FastAPI)\"]\n    Client_Mobile[\"catsy_mobile (Flutter)\"] -->|HTTP/REST| API\n    Client_Mobile -->|Direct Sync| DB[(\"Supabase DB\")]\n    API -->|Service Role| DB\n    API -->|Auth| Auth[\"Supabase Auth\"]\n    Client_Web -->|Auth| Auth\n```\n\n## 2. Tech Stack & Trade-offs\n*   **Backend: Python (FastAPI)**\n    *   *Trade-off:* Chosen over Node/Express due to Python's strict type-hinting via Pydantic and rapid API generation (automatic Swagger docs). It natively handles complex asynchronous task queues (like SSE streaming for order updates) with `asyncio`.\n*   **Web: React + Vite 7**\n    *   *Trade-off:* React provides a massive component ecosystem, while Vite ensures instant Hot Module Replacement (HMR). Next.js was intentionally avoided to keep the storefront as an aggressively cached Single Page Application (SPA), lowering server rendering costs.\n*   **Mobile: Flutter (Dart)**\n    *   *Trade-off:* Allows a single codebase to compile to both iOS and Android natively. Used specifically for the staff POS to leverage native device features like hardware barcode scanning and push notifications.\n*   **Database: Supabase (PostgreSQL)**\n    *   *Trade-off:* Provides out-of-the-box Row Level Security (RLS), JWT-based authentication, and realtime webhooks. It acts as both the database and the auth provider, reducing architectural fragmentation.\n\n## 3. State Management & Security\n**Authentication Flow:**\nAuthentication is decoupled from the FastAPI backend. Both the web and mobile clients authenticate directly via **Supabase Auth** to receive a JWT. The backend API is secured using middleware that decodes and validates this JWT on every request, verifying the user's role (Customer vs. Staff) before allowing database mutations.\n\n**Mobile Local State (Drift & Freezed):**\nThe Flutter POS app requires offline resilience. It uses `Drift` (a SQLite wrapper for Dart) to cache the menu and active tables locally. Complex state models are strongly typed and made immutable using `Freezed`.\n\n## 4. Core Business Logic: Network Independence\nThe most complex architectural challenge was ensuring the Flutter POS app could seamlessly connect to the FastAPI backend dynamically, regardless of the network environment (Local Dev, Physical Phone on Wi-Fi, or Production).\n*   **Dynamic API Bridging:** The app injects `--dart-define=API_BRIDGE_BASE_URL` at compile-time to allow developers to hot-swap between `localhost`, a physical `LAN IP`, or the production `Render` URL without changing hardcoded strings.\n*   **Order Streaming:** The POS uses Server-Sent Events (SSE) from FastAPI to receive instant updates when a customer places an order via the React web app.\n\n## 5. Deployment & CI/CD\nThe ecosystem is deployed across three distinct platforms:\n1.  **Frontend (catsy-web):** Deployed to **Vercel** as a static build, optimizing edge-caching for customer assets.\n2.  **Backend (catsy-backend):** Deployed to **Render** via a Blueprint `render.yaml` configuration, exposing the Python Uvicorn server on `$PORT`.\n3.  **Database:** Managed securely via **Supabase cloud**, utilizing `public.device_tokens` for FCM push notifications across staff devices.\n"
                                 }
                             ]
                         }
@@ -1172,7 +1253,7 @@
             "dateCreated": "2025-11-15",
             "liveUrl": "",
             "githubUrl": "https://github.com/DominceAseberos/Baylora",
-            "primaryBtnUrl": "/assets/markdowns/baylora-skills.md",
+            "primaryBtnUrl": "/assets/markdowns/baylora-architecture.md",
             "featuredInTunnel": false,
             "mainImage": "/assets/uploads/project-baylora/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-baylora/imgs/desktop.webp",
@@ -1238,6 +1319,24 @@
                                     "type": "text",
                                     "fontSize": "md",
                                     "content": "The application heavily utilizes Supabase as a Backend-as-a-Service (BaaS) to manage relational PostgreSQL data, securely authenticate users, and store media uploads efficiently, allowing the frontend logic to be cleanly managed by Riverpod."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "appended-arch-project-baylora",
+                    "sectionTitle": "System Documentation",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "col-1-project-baylora",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "block-1-project-baylora",
+                                    "type": "text",
+                                    "content": "# System Architecture: Baylora\n\n## 1. High-Level Architecture\nBaylora is a mobile-first marketplace and trading platform designed for fast, real-time user bidding. It operates on a robust Backend-as-a-Service (BaaS) architecture using Supabase, which provides a seamless pipeline from the PostgreSQL database directly to the Flutter client without needing a middle-layer API server for CRUD operations.\n\n```mermaid\ngraph TD\n    Client[\"Baylora Mobile App (Flutter)\"] -->|Real-time Subscriptions| Supabase[(\"Supabase Platform\")]\n    Client -->|REST / PostgREST| Supabase\n    Supabase -->|Authentication| Auth[\"Supabase Auth\"]\n    Supabase -->|Media| Storage[\"Supabase Storage\"]\n    Supabase -->|Relational Data| DB[(\"PostgreSQL\")]\n```\n\n## 2. Tech Stack & Trade-offs\n*   **Frontend: Flutter (Dart)**\n    *   *Trade-off:* Chosen over React Native for its highly customized rendering engine (Impeller/Skia) which ensures smooth, 60fps scrolling through heavy image grids (item listings). It compiles to native code for both iOS and Android from a single codebase.\n*   **State Management: Riverpod**\n    *   *Trade-off:* Riverpod is used over traditional Provider to guarantee compile-time safety when listening to complex state streams, such as live bidding updates or active user authentication status. It prevents common memory leaks associated with listening to real-time WebSockets.\n*   **Backend: Supabase (PostgreSQL)**\n    *   *Trade-off:* By bypassing a custom backend (like Node.js or Python) and going straight to Supabase, the app leverages Row Level Security (RLS) directly in the database. This drastically reduces development time for the MVP while ensuring that users can only modify their own active listings and bids.\n\n## 3. State Management & Security\n**Authentication & Media:**\nUser profiles are securely managed via **Supabase Auth**. Once authenticated, users interact with **Supabase Storage** to upload item images. The storage bucket is secured via RLS policies so that only authenticated users can upload media, but anyone can view the public URLs.\n\n**Real-time Bidding (WebSockets):**\nThe `offers` table is the core of the marketplace. When a user submits an offer on a listing, Supabase's real-time PostgreSQL replication pushes that event immediately to the seller's device via WebSockets, allowing the UI to instantly display the new bid without requiring pull-to-refresh.\n\n## 4. Core Business Logic: Multi-Type Transactions\nThe marketplace supports three complex transaction types: Cash, Trade, or Mixed. \n*   **Data Integrity:** The `items` table utilizes strict foreign key relationships (`profiles_id`) to link listings to verified sellers. \n*   **Offer Lifecycle:** The `offers` table tracks state transitions (`pending` -> `accepted` or `rejected`). When an offer is accepted, the item's `status` transitions from `active` to `sold`, automatically triggering a UI update for all users currently viewing that listing.\n\n## 5. Deployment & CI/CD\nThe mobile client is packaged into native `.apk` and `.ipa` artifacts. The backend infrastructure is fully serverless, with Supabase handling horizontal scaling, database backups, and secure asset delivery over a global CDN.\n"
                                 }
                             ]
                         }
@@ -1864,7 +1963,7 @@
             "dateCreated": "2025-10-09",
             "liveUrl": "https://banana-leaf-detector.onrender.com/",
             "githubUrl": "https://github.com/Domincee/Banana-Leaf-Detector",
-            "primaryBtnUrl": "/assets/markdowns/banana-leaf-casestudy.md",
+            "primaryBtnUrl": "/assets/markdowns/banana-leaf-case-study.md",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
@@ -2093,7 +2192,7 @@
             },
             "liveUrl": "https://live-pixvault.vercel.app/",
             "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
-            "primaryBtnUrl": "/assets/markdowns/pixvault-docs.md",
+            "primaryBtnUrl": "/assets/markdowns/pixvault-architecture.md",
             "desktopImage": "/assets/uploads/project-pixvault/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-pixvault/imgs/mobile.webp",
@@ -2342,6 +2441,24 @@
                                         "Framer Motion animations use transform/opacity only — no layout triggers",
                                         "Deployed on Vercel with edge CDN — sub-100ms TTFB globally"
                                     ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "appended-arch-project-pixvault",
+                    "sectionTitle": "System Documentation",
+                    "layout": "full",
+                    "columns": [
+                        {
+                            "id": "col-1-project-pixvault",
+                            "columnTitle": "",
+                            "blocks": [
+                                {
+                                    "id": "block-1-project-pixvault",
+                                    "type": "text",
+                                    "content": "# System Architecture: Pixvault\n\n## 1. High-Level Architecture\nPixvault is a high-performance Single Page Application (SPA) that aggregates and curates design resources (GIFs, icons, UI components). It is engineered to dynamically pull content from live external APIs while providing a lightning-fast, highly accessible frontend experience.\n\n```mermaid\ngraph TD\n    Client[\"Pixvault SPA (React/Vite)\"] -->|State Management| TanStack[\"TanStack Query\"]\n    Client -->|Routing| Router[\"React Router\"]\n    TanStack -->|Live Fetching| API1[\"External GIF API\"]\n    TanStack -->|Live Fetching| API2[\"External Design APIs\"]\n    Client -->|Styling Engine| Tailwind[\"Tailwind CSS\"]\n    Client -->|Component Library| Shadcn[\"shadcn/ui\"]\n```\n\n## 2. Tech Stack & Trade-offs\n*   **Frontend: React 18 + Vite**\n    *   *Trade-off:* Vite replaces Create React App (CRA) or Webpack to provide near-instant Hot Module Replacement (HMR). The application avoids SSR (Server-Side Rendering) frameworks like Next.js because its primary purpose is client-side API aggregation, allowing it to be hosted statically for free on CDNs.\n*   **State Management: TanStack Query (React Query)**\n    *   *Trade-off:* Standard React state (`useEffect` + `useState`) is inadequate for managing complex loading states, error handling, and caching of external API data. TanStack Query automatically handles background fetching, caching, and request deduplication.\n*   **Styling: Tailwind CSS + shadcn/ui**\n    *   *Trade-off:* Shadcn/ui provides highly accessible (WCAG compliant) Radix UI primitives that are directly copied into the source code rather than installed as an opaque npm package. This gives complete structural control while Tailwind handles rapid, utility-first styling.\n*   **Animations: Framer Motion**\n    *   *Trade-off:* Used for complex layout transitions and micro-interactions that CSS alone cannot handle gracefully (e.g., smoothly animating the masonry grid of GIFs or UI components).\n\n## 3. Data Flow & Network Independence\nPixvault does not possess a traditional proprietary database. Instead, it acts as a highly optimized curation layer over existing live APIs.\n*   **Caching Strategy:** TanStack Query caches API responses in memory. If a user navigates away from the \"GIF Showcase\" and returns, the UI renders instantly from the cache while a background re-fetch ensures the data is not stale.\n*   **Pagination & Search:** The application handles dynamic search queries and infinite scrolling by manipulating URL parameters via React Router, keeping the UI state perfectly synced with the browser's history stack.\n\n## 4. UI/UX Engineering\nBecause the application targets designers and developers, the UI architecture is heavily scrutinized for quality:\n*   **Strict Typings:** Every UI component is strictly typed using TypeScript and validated using Zod, preventing runtime crashes from unpredictable external API payloads.\n*   **Modular Organization:** The `src/components` directory is rigidly separated into `ui/` (dumb primitive components from shadcn) and Feature Components (`GifShowcase.tsx`, `HeroSection.tsx`), adhering to the Single Responsibility Principle.\n\n## 5. Build & Deployment\nPixvault's architecture allows it to be compiled into a pure bundle of HTML, CSS, and JS (`index-[hash].js`). This output (`dist/`) is deployed to edge networks like Vercel or Cloudflare Pages, resulting in zero-server maintenance and sub-second Time To Interactive (TTI) metrics.\n"
                                 }
                             ]
                         }
