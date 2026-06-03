@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './NotFound.css';
 
 const NotFoundPage = () => {
@@ -38,8 +37,8 @@ const NotFoundPage = () => {
                         Our astronaut is out there searching for it — but even he can't find this page. Head back home.
                     </p>
                     <div className="nf-actions">
-                        <Link to="/" className="nf-btn-primary">GO HOME</Link>
-                        <Link to="/projects" className="nf-btn-ghost">VIEW PROJECTS</Link>
+                        <a href="/" className="nf-btn-primary">GO HOME</a>
+                        <a href="/projects" className="nf-btn-ghost">VIEW PROJECTS</a>
                     </div>
                 </div>
 

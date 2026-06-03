@@ -145,6 +145,7 @@ const GithubContributionSection = () => {
     const theme = useThemeStore((state) => state.theme);
     const [status, setStatus] = useState('Loading GitHub activity...');
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const [recentCommits, setRecentCommits] = useState([]);
     const [activeCommitIndex, setActiveCommitIndex] = useState(0);
 
@@ -168,6 +169,7 @@ const GithubContributionSection = () => {
     }
 
     useEffect(() => {
+        setMounted(true);
         loadLiveData(false);
     }, []);
 
@@ -207,15 +209,17 @@ const GithubContributionSection = () => {
             <div className="github-activity-grid">
                 <div className="gc-heatmap-card ns-reveal lit-content-block">
                     <div className="gc-card-eyebrow">Contribution Heat Map</div>
-                    <GitHubCalendar
-                        username={USERNAME}
-                        colorScheme={theme === 'light' ? 'light' : 'dark'}
-                        theme={calendarTheme}
-                        blockSize={12}
-                        blockMargin={4}
-                        fontSize={12}
-                        showWeekdayLabels
-                    />
+                    {mounted && (
+                        <GitHubCalendar
+                            username={USERNAME}
+                            colorScheme={theme === 'light' ? 'light' : 'dark'}
+                            theme={calendarTheme}
+                            blockSize={12}
+                            blockMargin={4}
+                            fontSize={12}
+                            showWeekdayLabels
+                        />
+                    )}
                 </div>
 
                 <MagicCard className="gc-commit-card ns-reveal lit-content-block" gradientColor={theme === 'light' ? 'rgba(30, 100, 180, 0.12)' : 'rgba(120, 180, 255, 0.15)'}>

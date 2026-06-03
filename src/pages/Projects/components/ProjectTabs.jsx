@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useNavigate } from 'react-router-dom';
 import ProjectCard from './ProjectCard';
 import portfolioData from '../../../data/portfolioData.json';
 import '../Projects.css';
@@ -106,7 +105,6 @@ const projects = portfolioData.projects.map((p, i) => {
 
 // ── Component ─────────────────────────────────────────────────────────────
 const ProjectTabs = ({ onView }) => {
-    const navigate = useNavigate();
     const [activeFilter, setActiveFilter] = useState('all');
     const gridRef = useRef(null);
 
@@ -123,7 +121,7 @@ const ProjectTabs = ({ onView }) => {
             onView(project);
             return;
         }
-        navigate(`/projects/${project.id}`);
+        window.location.href = `/projects/${project.id}`;
     };
 
     // GSAP card reveal on scroll

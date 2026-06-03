@@ -1,6 +1,6 @@
 import React from 'react';
 import './Projects.css';
-import { Helmet } from 'react-helmet-async';
+import './Projects.css';
 
 import ParticleBackground from '../../components/ParticleBackground';
 import NavBar from '../../components/NavBar';
@@ -9,11 +9,7 @@ import ProjectTabs from './components/ProjectTabs';
 const ProjectsPage = () => {
     return (
         <div className="relative min-h-screen">
-            <Helmet>
-                <title>Domince Aseberos — Creative Full Stack Developer</title>
-                <meta name="description" content="Explore my selected works, projects, and creative web development experiments." />
-                <link rel="canonical" href="https://www.dominceaseberos.tech/projects" />
-            </Helmet>
+
             <ParticleBackground />
             <NavBar />
 

@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdminCMS from '../../pages/admin/_AdminCMS.jsx';
+import ProjectDetailsPage from '../../pages/Projects/components/ProjectDetailsPage.jsx';
+import portfolioData from '../../data/portfolioData.json';
+
+export function getStaticPaths() {
+  const paths = portfolioData.projects.map((project) => ({
+    params: { slug: `projects/${project.id}` },
+    props: { projectDraft: project, isEditor: true },
+  }));
+  
+  paths.push({
+    params: { slug: undefined },
+    props: { isEditor: false },
+  });
+  
+  return paths;
+}
+
+const { isEditor, projectDraft } = Astro.props;
+---
+
+<Layout title="Admin CMS">
+  {isEditor ? (
+    <ProjectDetailsPage initialProject={projectDraft} isAdmin={true} client:only="react" />
+  ) : (
+    <AdminCMS client:only="react" />
+  )}
+</Layout>

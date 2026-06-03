@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import {
     FiUser, FiCheckSquare, FiMessageCircle,
     FiPlus, FiTrash2, FiUpload, FiGlobe,
@@ -432,7 +431,7 @@ const ProjectsTab = () => {
                         </div>
                         <div className="flex items-center gap-2">
                             {p.liveUrl && <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} className="text-[#c8ff3e] hover:text-white"><FiExternalLink size={13}/></a>}
-                            <Link to={`/admin/projects/${p.id}`} onClick={e=>e.stopPropagation()} className="text-xs text-gray-400 hover:text-white px-2 py-1 bg-white/5 rounded-lg">Full Editor</Link>
+                            <a href={`/admin/projects/${p.id}`} onClick={e=>e.stopPropagation()} className="text-xs text-gray-400 hover:text-white px-2 py-1 bg-white/5 rounded-lg">Full Editor</a>
                             <button onClick={e=>{e.stopPropagation();removeProject(i);}} className="text-red-400 hover:text-red-300 p-1"><FiTrash2 size={13}/></button>
                             {expanded===i ? <FiChevronUp size={14} className="text-gray-400"/> : <FiChevronDown size={14} className="text-gray-400"/>}
                         </div>
@@ -474,9 +473,9 @@ const ProjectsTab = () => {
                             </div>
 
                             <div className="mt-3 text-center">
-                                <Link to={`/admin/projects/${p.id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-[#c8ff3e]/10 text-[#c8ff3e] hover:bg-[#c8ff3e] hover:text-black rounded-lg text-xs font-bold transition-all">
+                                <a href={`/admin/projects/${p.id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-[#c8ff3e]/10 text-[#c8ff3e] hover:bg-[#c8ff3e] hover:text-black rounded-lg text-xs font-bold transition-all">
                                     <FiExternalLink size={12}/> Open Full Content Builder
-                                </Link>
+                                </a>
                             </div>
                         </div>
                     )}

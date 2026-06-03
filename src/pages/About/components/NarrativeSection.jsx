@@ -1,5 +1,4 @@
 import React, { forwardRef, useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { fetchAboutData } from '../../../shared/aboutService';
@@ -216,9 +215,9 @@ const NarrativeSection = forwardRef((props, ref) => {
                                     Download CV
                                 </a>
                             )}
-                            <Link to="/projects" className="btn-ghost ns-btn">
+                            <a href="/projects" className="btn-ghost ns-btn">
                                 Projects
-                            </Link>
+                            </a>
                         </div>
 
                         {(hero.metrics || []).length > 0 && (
@@ -256,11 +255,11 @@ const NarrativeSection = forwardRef((props, ref) => {
                             <p className="ui-sub-label ns-section-label">Selected Work</p>
                             <h2 className="ns-section-heading">Projects</h2>
                         </div>
-                        <Link to="/projects" className="ns-view-all">View All →</Link>
+                        <a href="/projects" className="ns-view-all">View All →</a>
                     </div>
                     <div className="ns-projects-grid">
                         {projects.map((p) => (
-                            <Link key={p.id} to={`/projects/${p.id}`} className="ns-project-card ns-reveal lit-content-block">
+                            <a key={p.id} href={`/projects/${p.id}`} className="ns-project-card ns-reveal lit-content-block">
                                 {(p.mainImage || p.desktopImage) && !isPlaceholderImage(p.mainImage || p.desktopImage) ? (
                                     <div className="ns-project-img-wrap">
                                         <img src={p.mainImage || p.desktopImage} alt={p.title} className="ns-project-img" loading="lazy" />
@@ -279,7 +278,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                                     <h3 className="ns-project-title">{p.title}</h3>
                                     <p className="ns-project-desc ui-body-copy">{p.shortDescription}</p>
                                 </div>
-                            </Link>
+                            </a>
                         ))}
                     </div>
                 </section>
@@ -456,9 +455,9 @@ const NarrativeSection = forwardRef((props, ref) => {
                             className="ns-cat-peek" 
                             style={{ opacity: theme === 'light' ? 1 : 0 }} 
                         />
-                        <Link to="/contact" className="btn-primary ns-contact-cta" style={{ margin: 0, position: 'relative', zIndex: 2 }}>
+                        <a href="/contact" className="btn-primary ns-contact-cta" style={{ margin: 0, position: 'relative', zIndex: 2 }}>
                             Start a Conversation
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -471,8 +470,8 @@ const NarrativeSection = forwardRef((props, ref) => {
                         <p className="ns-footer-role">{hero.role || 'Full Stack Developer'}</p>
                     </div>
                     <nav className="ns-footer-links" aria-label="Footer navigation">
-                        <Link to="/projects" className="ns-footer-link">Projects</Link>
-                        <Link to="/contact" className="ns-footer-link">Contact</Link>
+                        <a href="/projects" className="ns-footer-link">Projects</a>
+                        <a href="/contact" className="ns-footer-link">Contact</a>
                         {hero.githubUrl && (
                             <a href={hero.githubUrl} target="_blank" rel="noopener noreferrer" className="ns-footer-link">GitHub</a>
                         )}

@@ -1,5 +1,4 @@
 import React, { useLayoutEffect, useMemo, useRef, useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { FiMonitor, FiTablet, FiSmartphone } from 'react-icons/fi';
 
@@ -16,19 +15,21 @@ if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const ProjectDetailsPage = ({ isAdmin = false }) => {
-    const { projectId } = useParams();
+const ProjectDetailsPage = ({ isAdmin = false, initialProject = null }) => {
+    const projectId = initialProject ? initialProject.id : (typeof window !== 'undefined' ? window.location.pathname.split('/').pop() : null);
     const { theme } = useThemeStore();
     const isLight = theme === 'light';
     const rootRef = useRef(null);
 
     // Initial project state from the JSON import
-    const [projectDraft, setProjectDraft] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [projectDraft, setProjectDraft] = useState(initialProject);
+    const [loading, setLoading] = useState(!initialProject);
     const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
 
     // Sync from disk on mount to ensure we have the most up-to-date content
     useEffect(() => {
+        if (initialProject) return; // Skip if Astro pre-fetched it
+        
         const fetchProject = async () => {
             setLoading(true);
             try {
@@ -44,7 +45,7 @@ const ProjectDetailsPage = ({ isAdmin = false }) => {
             }
         };
         fetchProject();
-    }, [projectId]);
+    }, [projectId, initialProject]);
 
     const onUpdateField = (fieldPath, value) => {
         setProjectDraft(prev => {

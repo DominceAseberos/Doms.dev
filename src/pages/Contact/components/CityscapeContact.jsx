@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import emailjs from '@emailjs/browser';
-import ReCAPTCHA from 'react-google-recaptcha';
+
 import '../css/CityscapeContact.css';
 import useThemeStore from '../../../store/useThemeStore';
 import useLoadingStore from '../../../store/useLoadingStore';
@@ -366,17 +366,7 @@ const CityscapeContact = () => {
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                   />
                 </div>
-                {RECAPTCHA_SITE_KEY && (
-                  <div className="cc-recaptcha">
-                    <ReCAPTCHA
-                      ref={recaptchaRef}
-                      sitekey={RECAPTCHA_SITE_KEY}
-                      onChange={(token) => setCaptchaToken(token || '')}
-                      onExpired={() => setCaptchaToken('')}
-                      theme={isDay ? 'light' : 'dark'}
-                    />
-                  </div>
-                )}
+
                 {status.state === 'error' && (
                   <p className="cc-form-error" role="alert">{status.message}</p>
                 )}

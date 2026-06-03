@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FiMonitor, FiTablet, FiSmartphone, FiArrowLeft, FiLink2, FiCode, FiExternalLink, FiGithub } from 'react-icons/fi';
+import { FiMonitor, FiTablet, FiSmartphone, FiArrowLeft, FiCode, FiExternalLink, FiGithub } from 'react-icons/fi';
 import ParticleBackground from '../../../components/ParticleBackground';
 import NavBar from '../../../components/NavBar';
 import useThemeStore from '../../../store/useThemeStore';
@@ -136,8 +135,8 @@ const ProjectTemplate = ({
                     </p>
                 </div>
                 <div className="cs-bottom-footer__actions">
-                    <Link to="/contact" className="cs-link-btn">Get in Touch</Link>
-                    <Link to="/projects" className="cs-link-btn cs-link-btn--ghost">Back to Projects</Link>
+                    <a href="/contact" className="cs-link-btn">Get in Touch</a>
+                    <a href="/projects" className="cs-link-btn cs-link-btn--ghost">Back to Projects</a>
                 </div>
             </div>
         </section>
@@ -247,10 +246,10 @@ const ProjectTemplate = ({
             <main className="cs-page relative z-10" ref={rootRef}>
                 <section className="cs-shell cs-landing-top cs-animate">
                     <div className="flex justify-between items-center w-full mb-12">
-                        <Link to={isAdminPreview ? "/admin/projects" : "/projects"} className="cs-top-link cs-top-link--ghost flex items-center gap-2">
+                        <a href={isAdminPreview ? "/admin/projects" : "/projects"} className="cs-top-link cs-top-link--ghost flex items-center gap-2">
                             <FiArrowLeft size={16} />
                             <span className="hidden md:inline">{isAdminPreview ? "Dashboard" : "Back"}</span>
-                        </Link>
+                        </a>
                         
                         <div className="flex items-center gap-4">
                             {/* Primary Button */}
