@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { fetchAboutData } from '../../../shared/aboutService';
@@ -74,7 +74,15 @@ const NarrativeSection = forwardRef((props, ref) => {
     const stripesRef = useRef([]);
     const isLoading = useLoadingStore((state) => state.isLoading);
     const setLogoFullView = useLogoStore((state) => state.setLogoFullView);
-    const theme = useThemeStore((state) => state.theme);
+    const themeStoreVal = useThemeStore((state) => state.theme);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // Ensure server and first client render both use 'dark' to prevent hydration mismatches
+    const theme = isMounted ? themeStoreVal : 'dark';
 
     // All content from aboutData.json — bundled default, refreshed from server
     const [data, setData] = useState(() => aboutDataDefault);
@@ -93,7 +101,7 @@ const NarrativeSection = forwardRef((props, ref) => {
     useScrubReveal(containerRef, dataReady);
 
     // ── Stripe intro ──────────────────────────────────────────────────────
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (isLoading || !heroRef.current) return;
         const stripes = stripesRef.current.filter(Boolean);
         if (!stripes.length) return;
@@ -119,7 +127,7 @@ const NarrativeSection = forwardRef((props, ref) => {
     }, [isLoading]);
 
     // ── Parallax on hero card ─────────────────────────────────────────────
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!heroRef.current) return;
         const ctx = gsap.context(() => {
             gsap.to('.ns-hero-card', {
@@ -170,7 +178,7 @@ const NarrativeSection = forwardRef((props, ref) => {
         typeof src === 'string' && /placehold\.co|placeholder/i.test(src);
 
     return (
-        <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section">
+        <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" suppressHydrationWarning>
 
             {/* ══ STRIPE OVERLAY — fixed full-viewport, removed after animation ══ */}
             <div className="ns-stripes-overlay" aria-hidden>
@@ -183,15 +191,15 @@ const NarrativeSection = forwardRef((props, ref) => {
             <section ref={heroRef} className="ns-hero-section" id="hero">
 
                 <div className="ns-hero-inner">
-                    <div className="ns-hero-text lit-content-block lit-transparent">
+                    <div className="ns-hero-text lit-content-block lit-transparent" suppressHydrationWarning>
                         {hero.location && (
-                            <p className="ns-hero-location ui-sub-label ns-reveal">{hero.location}</p>
+                            <p className="ns-hero-location ui-sub-label ns-reveal" suppressHydrationWarning suppressHydrationWarning>{hero.location}</p>
                         )}
-                        <h1 className="ns-hero-name ns-reveal">
+                        <h1 className="ns-hero-name ns-reveal" suppressHydrationWarning>
                             {hero.fullName || 'Domince Aseberos'}
                         </h1>
-                        {hero.role && <p className="ns-hero-role ns-reveal">{hero.role}</p>}
-                        {hero.bio  && <p className="ns-hero-bio ui-body-copy ns-reveal">{hero.bio}</p>}
+                        {hero.role && <p className="ns-hero-role ns-reveal" suppressHydrationWarning suppressHydrationWarning>{hero.role}</p>}
+                        {hero.bio  && <p className="ns-hero-bio ui-body-copy ns-reveal" suppressHydrationWarning suppressHydrationWarning>{hero.bio}</p>}
 
                         {(hero.badges || []).length > 0 && (
                             <div className="ns-hero-badges ns-reveal">
@@ -289,7 +297,7 @@ const NarrativeSection = forwardRef((props, ref) => {
 
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
             <section className="ns-section" id="about">
-                <p className="ui-sub-label ns-section-label ns-reveal">About</p>
+                <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
                 <div className="ns-about-grid">
                     <div className="ns-about-main lit-content-block lit-transparent">
                         <h2 className="ns-section-heading ns-reveal">
@@ -297,7 +305,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                             <span className="ns-accent">{about.headingAccent || 'Digital Poetry'}</span>
                         </h2>
                         {about.intro && (
-                            <p className="ns-body-lg ui-body-copy ns-reveal">{about.intro}</p>
+                            <p className="ns-body-lg ui-body-copy ns-reveal" suppressHydrationWarning>{about.intro}</p>
                         )}
                         <div className="ns-about-blocks">
                             {(about.blocks || []).map((block, i) => (
@@ -365,7 +373,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
             {techStack.length > 0 && (
                 <section className="ns-section" id="stack">
-                    <p className="ui-sub-label ns-section-label ns-reveal">Technical Skills</p>
+                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Technical Skills</p>
                     <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
                     <div className="ns-stack-grid">
                         {techStack.map((group) => (
@@ -385,7 +393,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
             {experience.length > 0 && (
                 <section className="ns-section" id="experience">
-                    <p className="ui-sub-label ns-section-label ns-reveal">Work History</p>
+                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Work History</p>
                     <h2 className="ns-section-heading ns-reveal">Experience</h2>
                     <div className="ns-timeline">
                         {experience.map((item, i) => (
@@ -411,7 +419,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
             {testimonials.length > 0 && (
                 <section className="ns-section" id="testimonials">
-                    <p className="ui-sub-label ns-section-label ns-reveal">Endorsements</p>
+                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Endorsements</p>
                     <h2 className="ns-section-heading ns-reveal">Testimonials</h2>
                     <div className="ns-testimonials-wrapper ns-reveal">
                         <div className="ns-testimonials-track">
@@ -437,10 +445,10 @@ const NarrativeSection = forwardRef((props, ref) => {
             {/* ══ CONTACT ══════════════════════════════════════════════════ */}
             <section className="ns-contact-section" id="contact">
                 <div className="ns-contact-header lit-content-block lit-transparent">
-                    <p className="ui-sub-label ns-section-label ns-reveal">Contact</p>
+                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Contact</p>
                     <h2 className="ns-section-heading ns-reveal">{contact.heading || "Open to Opportunities"}</h2>
                     {contact.subtext && (
-                        <p className="ui-body-copy ns-contact-sub ns-reveal">{contact.subtext}</p>
+                        <p className="ui-body-copy ns-contact-sub ns-reveal" suppressHydrationWarning>{contact.subtext}</p>
                     )}
                     <div className="ns-contact-cta-wrapper ns-reveal" style={{ position: 'relative', display: 'inline-block', marginTop: '10rem' }}>
                         <img 

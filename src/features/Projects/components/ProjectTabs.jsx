@@ -179,7 +179,7 @@ const ProjectTabs = ({ onView }) => {
             {/* ── Grid ── */}
             <div className="proj-grid" ref={gridRef}>
                 {filteredProjects.map((p) => (
-                    <ProjectCard key={p.id} project={p} onView={handleProjectView} />
+                    <ProjectCard key={p.id} project={p} />
                 ))}
 
                 {/* Stat cell */}

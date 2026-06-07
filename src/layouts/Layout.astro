@@ -61,6 +61,22 @@ const {
     <ClientRouter />
 
     <script is:inline>
+        // Prevent Flash of Unstyled Content by applying theme immediately
+        (function() {
+            try {
+                const savedTheme = localStorage.getItem('doms-dev-theme');
+                const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+                const theme = savedTheme === 'light' || savedTheme === 'dark' 
+                    ? savedTheme 
+                    : (prefersLight ? 'light' : 'dark');
+                
+                document.documentElement.dataset.theme = theme;
+                document.documentElement.style.colorScheme = theme;
+            } catch (e) {}
+        })();
+    </script>
+
+    <script is:inline>
         // Inline theme initialization (from old index.html)
         (function () {
             try {

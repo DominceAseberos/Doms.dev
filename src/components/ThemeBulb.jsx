@@ -56,9 +56,15 @@ const EdisonBulbSVG = () => (
 );
 
 const ThemeBulb = () => {
-  const { theme, toggleTheme } = useThemeStore();
+  const { theme, toggleTheme, initTheme, initialized } = useThemeStore();
   const [isPulling, setIsPulling] = useState(false);
   const pendulumRef = useRef(null);
+
+  useEffect(() => {
+    if (!initialized) {
+        initTheme();
+    }
+  }, [initialized, initTheme]);
 
   const angle = useRef(0);
   const angularVelocity = useRef(0);

@@ -233,6 +233,64 @@ video.cs-media-thumb {
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.cs-frame--composite {
+    /* Allow the floating frame to break out of the bottom bounds without clipping */
+    overflow: visible;
+}
+
+.cs-mobile-floating-frame {
+    position: absolute;
+    bottom: -8%;
+    left: 4%;
+    width: 22%;
+    min-width: 140px;
+    max-width: 260px;
+    background: #0a0a08;
+    border-radius: clamp(16px, 3vw, 32px);
+    padding: clamp(4px, 0.6vw, 10px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 
+                0 0 0 1px rgba(255, 255, 255, 0.08), 
+                inset 0 0 0 2px rgba(255, 255, 255, 0.15);
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+
+html[data-theme='light'] .cs-mobile-floating-frame {
+    background: #ffffff;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 
+                0 0 0 1px rgba(0, 0, 0, 0.04), 
+                inset 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+.cs-mobile-floating-inner {
+    border-radius: clamp(12px, 2.5vw, 24px);
+    overflow: hidden;
+    background: var(--cs-img-bg);
+    width: 100%;
+    /* Phone aspect ratio approx 19.5:9 */
+    aspect-ratio: 9 / 19.5; 
+}
+
+.cs-mobile-floating-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+@media (max-width: 767px) {
+    .cs-mobile-floating-frame {
+        width: 28%;
+        bottom: -5%;
+        left: 3%;
+        padding: 4px;
+        border-radius: 14px;
+    }
+    .cs-mobile-floating-inner {
+        border-radius: 10px;
+    }
+}
+
 .cs-heading {
     font-family: 'Syne', sans-serif;
     font-size: clamp(1.1rem, 1.8vw, 1.5rem);

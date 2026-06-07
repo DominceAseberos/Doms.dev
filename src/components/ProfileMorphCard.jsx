@@ -5,6 +5,9 @@ import useThemeStore from '../store/useThemeStore';
 const DEBRIS_COUNT = 4;
 
 const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime.png', alt = 'Profile portrait' }) => {
+    const actualRealSrc = typeof realSrc === 'object' && realSrc !== null ? (realSrc.src || realSrc.toString()) : String(realSrc);
+    const initialAnimeSrc = typeof animeSrc === 'object' && animeSrc !== null ? (animeSrc.src || animeSrc.toString()) : String(animeSrc);
+
     const theme = useThemeStore((state) => state.theme);
     const isLight = theme === 'light';
     const stageRef = useRef(null);
@@ -13,7 +16,7 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
     const debrisRefs = useRef([]);
     const turbulenceRef = useRef(null);
     const [animeFallback, setAnimeFallback] = useState(false);
-    const [animeRenderSrc, setAnimeRenderSrc] = useState(animeSrc);
+    const [animeRenderSrc, setAnimeRenderSrc] = useState(initialAnimeSrc);
 
     const uid = useId().replace(/:/g, '');
     const filterId = `profile-slime-filter-${uid}`;
@@ -116,7 +119,7 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
         >
             <div className="absolute inset-0 z-[1]">
                 <img
-                    src={realSrc}
+                    src={actualRealSrc}
                     alt={alt}
                     draggable="false"
                     onContextMenu={(e) => e.preventDefault()}
@@ -138,8 +141,8 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
                     draggable="false"
                     onContextMenu={(e) => e.preventDefault()}
                     onError={() => {
-                        if (animeRenderSrc !== realSrc) {
-                            setAnimeRenderSrc(realSrc);
+                        if (animeRenderSrc !== actualRealSrc) {
+                            setAnimeRenderSrc(actualRealSrc);
                             setAnimeFallback(true);
                         }
                     }}

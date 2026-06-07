@@ -10,6 +10,13 @@ const AboutPage = () => {
     const isLoading = useLoadingStore((state) => state.isLoading);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            useLoadingStore.getState().setLoading(false);
+        }, 600);
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
         if (!isLoading) {
             window.scrollTo(0, 0);
             if (window.lenis) {

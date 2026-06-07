@@ -38,7 +38,7 @@ const EducationSection = () => {
                         {/* Logo / visual */}
                         <div className="es-logo-card w-full rounded-3xl p-5 md:p-6 ns-reveal">
                             <img
-                                src={umtcLogo}
+                                src={typeof umtcLogo === 'object' ? umtcLogo.src : umtcLogo}
                                 alt={entry.institution}
                                 className="es-logo-img w-full rounded-xl"
                             />

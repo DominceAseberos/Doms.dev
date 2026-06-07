@@ -10,13 +10,11 @@ import DocViewerModal from '../../../components/DocViewerModal';
 
 const VIEW_IMAGE_FIELD = {
     desktop: 'desktopImage',
-    tablet: 'tabletImage',
     mobile: 'mobileImage',
 };
 
 const VIEW_GALLERY_FIELD = {
     desktop: 'desktopGallery',
-    tablet: 'tabletGallery',
     mobile: 'mobileGallery',
 };
 
@@ -62,7 +60,6 @@ const ProjectTemplate = ({
 
     const VIEW_META = {
         desktop: { icon: <FiMonitor size={14} />, label: 'Desktop' },
-        tablet: { icon: <FiTablet size={14} />, label: 'Tablet' },
         mobile: { icon: <FiSmartphone size={14} />, label: 'Mobile' }
     };
 
@@ -81,12 +78,7 @@ const ProjectTemplate = ({
         const viewGallery = project[galleryField];
         if (viewGallery && viewGallery.length > 0) return viewGallery;
         
-        // Fallback: If tablet is empty, show desktop gallery
-        if (activeView === 'tablet') {
-            return project.desktopGallery || project.images || [];
-        }
-        
-        return [];
+        return project.images || [];
     }, [project, activeView]);
 
     const coverImage = useMemo(() => {
@@ -107,7 +99,8 @@ const ProjectTemplate = ({
 
     const renderMedia = (source, alt, className) => {
         if (!source || source === '') return null;
-        const isVideo = source.match(/\.(mp4|webm|ogg)$/i);
+        const actualSource = typeof source === 'object' && source !== null ? (source.src || source.toString()) : String(source);
+        const isVideo = actualSource.match(/\.(mp4|webm|ogg)$/i);
         if (isVideo) {
             return (
                 <video 
@@ -121,7 +114,7 @@ const ProjectTemplate = ({
                 />
             );
         }
-        return <img src={source} alt={alt} className={className} loading="lazy" />;
+        return <img src={actualSource} alt={alt} className={className} loading="lazy" />;
     };
 
     const caseStudyFooter = (
@@ -411,10 +404,19 @@ const ProjectTemplate = ({
 
                 <section className="cs-shell cs-landing-media cs-animate">
                     {heroMedia ? (
-                        <div className="cs-frame relative group">
+                        <div className={`cs-frame relative group ${activeView === 'desktop' && project.mobileImage && !isAdminPreview ? 'cs-frame--composite' : ''}`}>
                             {renderMedia(heroMedia, `${project.title} ${activeView} view`, 'cs-main-image cs-main-image--landing')}
+                            
+                            {activeView === 'desktop' && project.mobileImage && !isAdminPreview && (
+                                <div className="cs-mobile-floating-frame">
+                                    <div className="cs-mobile-floating-inner">
+                                        {renderMedia(project.mobileImage, `${project.title} mobile view`, 'cs-mobile-floating-img')}
+                                    </div>
+                                </div>
+                            )}
+
                             {isAdminPreview && (
-                                <div className="absolute top-4 right-4 flex gap-2">
+                                <div className="absolute top-4 right-4 flex gap-2 z-20">
                                     <button 
                                         onClick={() => triggerUpload(VIEW_IMAGE_FIELD[activeView])}
                                         disabled={!!uploading}

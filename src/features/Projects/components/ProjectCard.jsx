@@ -7,15 +7,21 @@ const ProjectCard = ({ project, onView }) => {
     const isPlaceholderImage = typeof cardImage === 'string' && /placehold\.co|placeholder/i.test(cardImage);
 
     return (
-        <div
-            className={`pg-card ${t.gridClass || 'pg-half'}`}
+        <a
+            href={`/projects/${project.id}`}
+            className={`pg-card ${t.gridClass || 'pg-half'} block`}
             data-cat={t.cat || 'all'}
             style={{
                 '--c1': t.c1 || '#111',
                 '--c2': t.c2 || '#1a1a1a',
                 '--glow': t.glow || 'rgba(200,255,62,.06)',
             }}
-            onClick={() => onView?.(project)}
+            onClick={(e) => {
+                if (onView) {
+                    e.preventDefault();
+                    onView(project);
+                }
+            }}
         >
             {/* ── Visual zone ── */}
             <div className="pg-vis">
@@ -69,7 +75,7 @@ const ProjectCard = ({ project, onView }) => {
                 </div>
 
             </div>
-        </div>
+        </a>
     );
 };
 

@@ -9,6 +9,15 @@ const GlobalLoader = () => {
 
     useEffect(() => {
         if (isLoading) {
+            const timer = setTimeout(() => {
+                useLoadingStore.getState().setLoading(false);
+            }, 800);
+            return () => clearTimeout(timer);
+        }
+    }, [isLoading]);
+
+    useEffect(() => {
+        if (isLoading) {
             setRenderLoader(true);
             setFade(false); // Make it visible instantly when loading is true
         } else {

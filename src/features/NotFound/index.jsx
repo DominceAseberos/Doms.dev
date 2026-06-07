@@ -78,7 +78,7 @@ const NotFoundPage = () => {
                                 xmlns="http://www.w3.org/2000/svg">
                                 {/* Helmet */}
                                 <ellipse cx="36" cy="28" rx="22" ry="24" fill="#e8e8e8" />
-                                <ellipse cx="36" cy="28" rx="22" ry="24" fill="none" stroke="#bbb" stroke-width="1.5" />
+                                <ellipse cx="36" cy="28" rx="22" ry="24" fill="none" stroke="#bbb" strokeWidth="1.5" />
                                 {/* Visor */}
                                 <ellipse cx="36" cy="27" rx="14" ry="13" fill="#111c35" />
                                 <ellipse cx="36" cy="27" rx="14" ry="13" fill="url(#visorGrad)" opacity="0.6" />
@@ -89,7 +89,7 @@ const NotFoundPage = () => {
                                 <ellipse cx="36" cy="49" rx="20" ry="5" fill="#ccc" />
                                 {/* Body suit */}
                                 <rect x="16" y="48" width="40" height="34" rx="8" fill="#ddd" />
-                                <rect x="16" y="48" width="40" height="34" rx="8" fill="none" stroke="#bbb" stroke-width="1" />
+                                <rect x="16" y="48" width="40" height="34" rx="8" fill="none" stroke="#bbb" strokeWidth="1" />
                                 {/* Chest panel */}
                                 <rect x="27" y="55" width="18" height="12" rx="3" fill="#c8c8c8" />
                                 {/* Chest lights */}
@@ -99,30 +99,30 @@ const NotFoundPage = () => {
                                 </circle>
                                 <circle cx="41" cy="59" r="2" fill="#5599ff" />
                                 {/* Left arm */}
-                                <rect x="2" y="50" width="14" height="22" rx="7" fill="#ddd" stroke="#bbb" stroke-width="1" />
+                                <rect x="2" y="50" width="14" height="22" rx="7" fill="#ddd" stroke="#bbb" strokeWidth="1" />
                                 {/* Right arm (waving) */}
                                 <g style={{ transformOrigin: '58px 55px', animation: 'wave 1.8s ease-in-out infinite' }}>
                                     <rect x="56" y="48" width="14" height="22" rx="7" fill="#ddd" stroke="#bbb"
-                                        stroke-width="1" />
+                                        strokeWidth="1" />
                                     {/* Glove right */}
-                                    <ellipse cx="63" cy="71" rx="7" ry="5.5" fill="#ccc" stroke="#bbb" stroke-width="1" />
+                                    <ellipse cx="63" cy="71" rx="7" ry="5.5" fill="#ccc" stroke="#bbb" strokeWidth="1" />
                                 </g>
                                 {/* Left glove */}
-                                <ellipse cx="9" cy="73" rx="7" ry="5.5" fill="#ccc" stroke="#bbb" stroke-width="1" />
+                                <ellipse cx="9" cy="73" rx="7" ry="5.5" fill="#ccc" stroke="#bbb" strokeWidth="1" />
                                 {/* Legs */}
                                 <rect x="19" y="78" width="14" height="18" rx="6" fill="#d5d5d5" stroke="#bbb"
-                                    stroke-width="1" />
+                                    strokeWidth="1" />
                                 <rect x="39" y="78" width="14" height="18" rx="6" fill="#d5d5d5" stroke="#bbb"
-                                    stroke-width="1" />
+                                    strokeWidth="1" />
                                 {/* Boots */}
                                 <ellipse cx="26" cy="96" rx="9" ry="5" fill="#bbb" />
                                 <ellipse cx="46" cy="96" rx="9" ry="5" fill="#bbb" />
                                 {/* Backpack */}
-                                <rect x="54" y="52" width="10" height="20" rx="4" fill="#ccc" stroke="#bbb" stroke-width="1" />
+                                <rect x="54" y="52" width="10" height="20" rx="4" fill="#ccc" stroke="#bbb" strokeWidth="1" />
                                 <defs>
                                     <radialGradient id="visorGrad" cx="40%" cy="35%">
-                                        <stop offset="0%" stop-color="#5588ff" stop-opacity="0.4" />
-                                        <stop offset="100%" stop-color="#000820" stop-opacity="0" />
+                                        <stop offset="0%" stopColor="#5588ff" stopOpacity="0.4" />
+                                        <stop offset="100%" stopColor="#000820" stopOpacity="0" />
                                     </radialGradient>
                                 </defs>
                             </svg>
