@@ -148,7 +148,12 @@ input[type="button"],
     justify-content: space-between;
     padding: 28px 48px;
     mix-blend-mode: normal;
-    transition: background-color 0.25s ease, backdrop-filter 0.25s ease, border-color 0.25s ease;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+}
+
+.main-nav.nav-hidden {
+    transform: translateY(-100%);
+    pointer-events: none;
 }
 
 .nav-hover-zone {
@@ -181,8 +186,11 @@ body.nav-hidden-in-hallway nav:focus-within {
 }
 
 .main-nav.nav-scrolled {
-    background: transparent;
-    border-bottom: transparent;
+    background: var(--nav-scrolled-bg);
+    border-bottom: 1px solid var(--nav-scrolled-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 20px 48px;
 }
 
 .nav-logo {
@@ -655,6 +663,10 @@ html[data-theme='light'] .cs-page {
         justify-content: space-between;
         flex-direction: row;
         width: 100%;
+    }
+
+    .main-nav.nav-scrolled {
+        padding: 16px 20px;
     }
 
     .nav-logo {

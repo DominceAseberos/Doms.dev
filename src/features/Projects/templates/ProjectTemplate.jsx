@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { FiMonitor, FiTablet, FiSmartphone, FiArrowLeft, FiCode, FiExternalLink, FiGithub } from 'react-icons/fi';
 import ParticleBackground from '../../../components/ParticleBackground';
-import NavBar from '../../../components/NavBar';
 import useThemeStore from '../../../store/useThemeStore';
 import { EditableText } from '../components/EditableText';
 import LiveIframePreview from '../components/LiveIframePreview';
@@ -274,7 +273,6 @@ const ProjectTemplate = ({
                 @media (max-width: 760px) { .cs-proof-grid { grid-template-columns: 1fr; } .cs-unavailable-preview { min-height: 260px; flex-direction: column; align-items: flex-start; justify-content: flex-end; } }
             `}} />
             <ParticleBackground />
-            <NavBar />
 
             {isAdminPreview && (
                 <input 
@@ -490,24 +488,56 @@ const ProjectTemplate = ({
                                 </button>
                             </div>
                         </div>
-                    ) : !galleryMedia || galleryMedia.length === 0 ? (
-                        <div className="cs-unavailable-preview">
-                            <div>
-                                <p className="cs-unavailable-preview__eyebrow">{project.demoStatus || 'Case study preview'}</p>
-                                <h3 className="cs-unavailable-preview__title">{project.title}</h3>
-                                <p className="cs-unavailable-preview__copy">
-                                    {project.liveUrl
-                                        ? 'Use the Live Demo button above to inspect the deployed experience.'
-                                        : 'This project is presented as a case study with source code and implementation notes because a public deployment is not currently available.'}
-                                </p>
-                            </div>
+                    ) : (
+                        <div className="cs-frame w-full relative overflow-hidden" style={{
+                            aspectRatio: '16/8',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-end',
+                            gap: '0.75rem',
+                            padding: '3rem',
+                            background: 'linear-gradient(135deg, rgba(200, 255, 62, 0.12), rgba(255, 255, 255, 0.03)), radial-gradient(circle at 72% 24%, rgba(255, 255, 255, 0.16), transparent 34%)',
+                            color: '#fff',
+                            borderRadius: '14px',
+                            border: '1px solid var(--cs-line)'
+                        }}>
+                            <div className="absolute inset-0 bg-[#111] -z-10"></div>
+                            <span style={{ 
+                                fontFamily: 'var(--font-mono, monospace)', 
+                                fontSize: '0.85rem', 
+                                textTransform: 'uppercase', 
+                                letterSpacing: '0.12em', 
+                                opacity: 0.6 
+                            }}>
+                                {project.projectType || 'Case Study'}
+                            </span>
+                            <h2 style={{ 
+                                fontFamily: 'Syne, sans-serif', 
+                                fontSize: 'clamp(2.5rem, 5vw, 4rem)', 
+                                lineHeight: 0.95, 
+                                margin: 0 
+                            }}>
+                                {project.title}
+                            </h2>
+                            <small style={{ 
+                                fontFamily: 'var(--font-mono, monospace)', 
+                                fontSize: '0.85rem', 
+                                textTransform: 'uppercase', 
+                                letterSpacing: '0.12em', 
+                                opacity: 0.5 
+                            }}>
+                                {project.demoStatus || 'Case study available'}
+                            </small>
+                            
                             {project.githubUrl && (
-                                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="cs-link-btn cs-link-btn--ghost">
-                                    Source Code
-                                </a>
+                                <div className="mt-4">
+                                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="cs-link-btn cs-link-btn--ghost inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/20 hover:border-[#c8ff3e]/50 hover:bg-[#c8ff3e]/10 hover:text-white transition-all text-sm font-bold tracking-wide">
+                                        Source Code
+                                    </a>
+                                </div>
                             )}
                         </div>
-                    ) : null}
+                    )}
 
                     {galleryMedia && galleryMedia.length > 0 ? (
                         <div className="cs-media-grid mt-6">

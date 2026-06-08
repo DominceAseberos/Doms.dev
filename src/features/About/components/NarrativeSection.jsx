@@ -292,9 +292,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </section>
             )}
 
-            {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
-            <GithubContributionSection />
-
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
             <section className="ns-section" id="about">
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
@@ -370,26 +367,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </section>
 
-            {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
-            {techStack.length > 0 && (
-                <section className="ns-section" id="stack">
-                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Technical Skills</p>
-                    <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
-                    <div className="ns-stack-grid">
-                        {techStack.map((group) => (
-                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block lit-transparent">
-                                <h3 className="ns-stack-group-title">{group.group}</h3>
-                                <div className="ns-pill-group">
-                                    {(group.items || []).map((item) => (
-                                        <span key={item} className="ns-pill">{item}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
-
             {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
             {experience.length > 0 && (
                 <section className="ns-section" id="experience">
@@ -416,6 +393,32 @@ const NarrativeSection = forwardRef((props, ref) => {
             {/* ══ EDUCATION ════════════════════════════════════════════════ */}
             <EducationSection />
 
+            {/* ══ FEED ═════════════════════════════════════════════════════ */}
+            <FeedSection />
+
+            {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
+            <GithubContributionSection />
+
+            {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
+            {techStack.length > 0 && (
+                <section className="ns-section" id="stack">
+                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Technical Skills</p>
+                    <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
+                    <div className="ns-stack-grid">
+                        {techStack.map((group) => (
+                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block lit-transparent">
+                                <h3 className="ns-stack-group-title">{group.group}</h3>
+                                <div className="ns-pill-group">
+                                    {(group.items || []).map((item) => (
+                                        <span key={item} className="ns-pill">{item}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
             {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
             {testimonials.length > 0 && (
                 <section className="ns-section" id="testimonials">
@@ -438,9 +441,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                     </div>
                 </section>
             )}
-
-            {/* ══ FEED ═════════════════════════════════════════════════════ */}
-            <FeedSection />
 
             {/* ══ CONTACT ══════════════════════════════════════════════════ */}
             <section className="ns-contact-section" id="contact">

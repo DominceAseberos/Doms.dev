@@ -4,6 +4,8 @@ import GlobalLoader from '../components/GlobalLoader';
 import LightEnvironment from '../components/LightEnvironment';
 import ThemeBulb from '../components/ThemeBulb';
 import FireflyCursor from '../components/FireflyCursor';
+import NavBar from '../components/NavBar';
+import SmoothScroll from '../components/SmoothScroll';
 
 import '../index.css';
 
@@ -62,7 +64,7 @@ const {
 
     <script is:inline>
         // Prevent Flash of Unstyled Content by applying theme immediately
-        (function() {
+        const applyTheme = () => {
             try {
                 const savedTheme = localStorage.getItem('doms-dev-theme');
                 const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
@@ -73,12 +75,14 @@ const {
                 document.documentElement.dataset.theme = theme;
                 document.documentElement.style.colorScheme = theme;
             } catch (e) {}
-        })();
+        };
+        applyTheme();
+        document.addEventListener('astro:after-swap', applyTheme);
     </script>
 
     <script is:inline>
         // Inline theme initialization (from old index.html)
-        (function () {
+        const initBgColors = () => {
             try {
                 const stored = localStorage.getItem('theme-storage');
                 if (stored) {
@@ -118,15 +122,19 @@ const {
                     root.style.setProperty('--box-Linear-2-rgb', `${Math.round(lr)} ${Math.round(lg)} ${Math.round(lb)}`);
                 }
             } catch (e) {}
-        })();
+        };
+        initBgColors();
+        document.addEventListener('astro:after-swap', initBgColors);
     </script>
 </head>
 <body>
     <GlobalLoader client:load />
+    <SmoothScroll client:load />
     <LightEnvironment client:load />
     <ThemeBulb client:load />
     <FireflyCursor client:load />
     <div class="nav-hover-zone" aria-hidden="true" ></div>
+    <NavBar client:load />
     
     <div id="smooth-wrapper" class="min-h-screen selection:bg-red-500/30">
         <div id="smooth-content">

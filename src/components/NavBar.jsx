@@ -6,6 +6,8 @@ const NavBar = () => {
     const isLoading = useLoadingStore((state) => state.isLoading);
     const [currentPath, setCurrentPath] = useState('');
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isHidden, setIsHidden] = useState(false);
+    const lastScrollY = React.useRef(0);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -15,7 +17,18 @@ const NavBar = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            const currentScrollY = window.scrollY;
+            
+            setIsScrolled(currentScrollY > 20);
+            
+            // Hide on scroll down past 100px, show on scroll up
+            if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+                setIsHidden(true);
+            } else if (currentScrollY < lastScrollY.current) {
+                setIsHidden(false);
+            }
+            
+            lastScrollY.current = currentScrollY;
         };
 
         handleScroll();
@@ -44,7 +57,7 @@ const NavBar = () => {
     };
 
     return (
-        <nav className={`main-nav transition-opacity duration-1000 ease-in-out ${isScrolled ? 'nav-scrolled' : ''} ${isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <nav className={`main-nav transition-all duration-500 ease-in-out ${isScrolled ? 'nav-scrolled' : ''} ${isHidden ? 'nav-hidden' : ''} ${isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <div className="nav-logo">
                 <a href="/" className="nav-link" aria-label="Go to home page">
                     <AnimatedNavBarLogo className="w-9 h-9 md:w-12 md:h-12" />
