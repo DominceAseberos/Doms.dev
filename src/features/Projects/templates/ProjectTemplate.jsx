@@ -74,6 +74,27 @@ const ProjectTemplate = ({
         return '';
     }, [project, activeView, isAdminPreview]);
 
+    const initialLoadDone = useRef(false);
+
+    // Dynamically extract the primary font family for the current project
+    const getProjectTitleFont = () => {
+        if (!project || !project.contentSections) return undefined;
+        for (const section of project.contentSections) {
+            for (const col of section.columns || []) {
+                for (const block of col.blocks || []) {
+                    if (block.type === 'font-preview' && block.fonts && block.fonts.length > 0) {
+                        return block.fonts[0].family;
+                    }
+                }
+            }
+        }
+        return undefined;
+    };
+    
+    const titleFont = getProjectTitleFont();
+
+
+
     const galleryMedia = useMemo(() => {
         const galleryField = VIEW_GALLERY_FIELD[activeView];
         const viewGallery = project[galleryField];
@@ -351,7 +372,14 @@ const ProjectTemplate = ({
                                 placeholder="Platform Type"
                             />
                         </div>
-                        <div className="cs-title cs-title--center">
+                        <div 
+                            className={`cs-title cs-title--center ${titleFont ? 'tracking-wider' : ''}`}
+                            style={{ 
+                                fontFamily: titleFont || undefined,
+                                fontWeight: titleFont?.includes('Garamond') || titleFont?.includes('Playfair') || titleFont?.includes('Baskerville') ? 400 : undefined,
+                                textTransform: 'uppercase'
+                            }}
+                        >
                             <EditableText 
                                 value={project.title} 
                                 onSave={(val) => onUpdateField('title', val)} 
