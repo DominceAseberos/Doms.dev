@@ -4,7 +4,7 @@
     "socials": [
         {
             "label": "LinkedIn",
-            "href": "https://www.linkedin.com/in/domincee/",
+            "href": "https://www.linkedin.com/in/dominceaseberos/",
             "external": true
         },
         {
@@ -29,7 +29,7 @@
         },
         {
             "label": "EMAIL",
-            "href": "mailto:hello@domince.dev",
+            "href": "mailto:daseberos@gmail.com",
             "external": true
         }
     ],
@@ -40,7 +40,7 @@
         "bio": "I build performant web, mobile, and AI-assisted products with production-grade architecture, polished interaction design, and clear case-study documentation.",
         "badges": ["React", "Flutter", "FastAPI", "Machine Learning"],
         "githubUrl": "https://github.com/DominceAseberos",
-        "linkedinUrl": "https://www.linkedin.com/in/domincee/",
+        "linkedinUrl": "https://www.linkedin.com/in/dominceaseberos/",
         "metrics": [
             {
                 "value": "10",
