@@ -118,10 +118,15 @@ const ThemeBulb = () => {
   }, []);
 
   const clickSoundRef = useRef(null);
-  if (!clickSoundRef.current && typeof Audio !== 'undefined') {
-    clickSoundRef.current = new Audio('/assets/sound-effects/soundreality-switch-150130.mp3');
-    clickSoundRef.current.volume = 0.5; // Optional: don't make it too loud
-  }
+  
+  useEffect(() => {
+    if (!clickSoundRef.current && typeof Audio !== 'undefined') {
+      const audio = new Audio('/assets/sound-effects/soundreality-switch-150130.mp3');
+      audio.preload = 'auto'; // Force browser to fetch and decode immediately
+      audio.volume = 0.5;
+      clickSoundRef.current = audio;
+    }
+  }, []);
 
   const handleToggle = () => {
     // 1. Instantly show pull state and play sound
@@ -132,12 +137,16 @@ const ThemeBulb = () => {
         clickSoundRef.current.play().catch(e => console.warn('Audio play failed:', e));
     }
 
-    // 2. Delay the actual light switch and physics snap to sync with the 2nd audio bounce
+    // 2. Snap the cord back up first
+    setTimeout(() => {
+      setIsPulling(false); 
+      angularVelocity.current += 12; // Physics bump
+    }, 250);
+
+    // 3. Delay the actual background, font, and light gradient change
     setTimeout(() => {
       toggleTheme();
-      setIsPulling(false); // Snap back up
-      angularVelocity.current += 12; // Physics bump happens on the snap back
-    }, 280);
+    }, 600);
   };
 
   return (

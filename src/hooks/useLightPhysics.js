@@ -124,14 +124,20 @@ const useLightPhysics = () => {
       });
     };
 
+    let timeoutId;
+    let physicsEnabled = false;
+
     if (isDark) {
-      applyPhysics();
+      timeoutId = setTimeout(() => {
+        physicsEnabled = true;
+        applyPhysics();
+      }, 400); // Wait for CSS theme background transition to finish
     } else {
       resetPhysics();
     }
 
     const handleScroll = () => {
-      if (isDark) applyPhysics();
+      if (isDark && physicsEnabled) applyPhysics();
     };
 
     if (lenis) {
@@ -142,6 +148,7 @@ const useLightPhysics = () => {
     window.addEventListener('resize', handleScroll);
 
     return () => {
+      clearTimeout(timeoutId);
       if (lenis) {
           lenis.off('scroll', handleScroll);
       } else {

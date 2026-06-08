@@ -47,11 +47,16 @@ const LightEnvironment = () => {
       ctx.restore();
     };
 
-    drawCone();
+    let timeoutId = setTimeout(() => {
+      drawCone();
+    }, 400); // Wait for the theme CSS transition to finish before doing heavy canvas drawing
     
     // Redraw on resize
     window.addEventListener('resize', drawCone);
-    return () => window.removeEventListener('resize', drawCone);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', drawCone);
+    };
   }, [theme]);
 
   return (

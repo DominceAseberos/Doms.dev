@@ -57,7 +57,7 @@ const NavBar = () => {
     };
 
     return (
-        <nav className={`main-nav transition-all duration-500 ease-in-out ${isScrolled ? 'nav-scrolled' : ''} ${isHidden ? 'nav-hidden' : ''} ${isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <nav className={`main-nav ${isScrolled ? 'nav-scrolled' : ''} ${isHidden ? 'nav-hidden opacity-0' : 'opacity-100'} ${isLoading ? 'hidden pointer-events-none' : ''}`}>
             <div className="nav-logo">
                 <a href="/" className="nav-link" aria-label="Go to home page">
                     <AnimatedNavBarLogo className="w-9 h-9 md:w-12 md:h-12" />

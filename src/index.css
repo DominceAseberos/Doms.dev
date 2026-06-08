@@ -35,6 +35,8 @@
     --surface: rgba(255, 255, 255, 0.04);
     --nav-scrolled-bg: rgba(5, 8, 20, 0.65);
     --nav-scrolled-border: rgba(255, 255, 255, 0.05);
+    --nav-transparent-bg: rgba(5, 8, 20, 0);
+    --nav-transparent-border: rgba(255, 255, 255, 0);
     --title-outline: rgba(242, 240, 237, 0.4);
     --cursor-hover: url('./assets/cursor-hover.svg');
 }
@@ -53,6 +55,8 @@ html[data-theme='light'] {
     --surface: rgba(0, 0, 0, 0.035);
     --nav-scrolled-bg: rgba(245, 241, 234, 0.74);
     --nav-scrolled-border: rgba(18, 18, 18, 0.08);
+    --nav-transparent-bg: rgba(245, 241, 234, 0);
+    --nav-transparent-border: rgba(18, 18, 18, 0);
     --title-outline: rgba(18, 18, 18, 0.35);
     --cursor-hover: url('./assets/cursor-hover-dark.svg');
 }
@@ -74,7 +78,7 @@ body {
     margin: 0;
     padding: 0;
     scrollbar-gutter: stable;
-    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 
 #root {
@@ -148,11 +152,13 @@ input[type="button"],
     justify-content: space-between;
     padding: 28px 48px;
     mix-blend-mode: normal;
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+    background-color: var(--nav-transparent-bg);
+    border-bottom: 1px solid var(--nav-transparent-border);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease, padding 0.4s ease, opacity 0.4s ease;
 }
 
 .main-nav.nav-hidden {
-    transform: translateY(-100%);
+    transform: translateY(calc(-100% - 2px));
     pointer-events: none;
 }
 
@@ -987,9 +993,4 @@ html[data-theme='light'] .cs-page {
     .metric-lbl {
         font-size: clamp(9px, 1vw, 13px);
     }
-}
-/* Firefly Hover Glow Effect */
-.firefly-glow, .firefly-glow * {
-    text-shadow: 0 0 8px rgba(200, 255, 62, 0.8), 0 0 15px rgba(200, 255, 62, 0.5) !important;
-    transition: text-shadow 0.3s ease;
 }
