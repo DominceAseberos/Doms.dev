@@ -37,28 +37,6 @@
   font-family: 'Syne', sans-serif;
 }
 
-/* ═══════════════════════════════════════════════════════
-   PHASE A — Fullscreen cityscape stage
-═══════════════════════════════════════════════════════ */
-
-.cc-stage-wrap {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24px;
-  /* no background — ParticleBackground from ContactPage shows through */
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  z-index: 10;
-}
-
-.cc-stage-wrap--exit {
-  opacity: 0;
-  transform: scale(0.94);
-  pointer-events: none;
-}
-
 /* Environment layer — transparent so ParticleBackground shows through */
 .cc-env-layer {
   position: absolute;
@@ -104,6 +82,32 @@
 .cc-root.cc-day .cc-sun {
   opacity: 1;
   transform: scale(1) translateY(0);
+}
+
+/* Moon */
+.cc-moon {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 56px;
+  height: 56px;
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity var(--cc-transition), transform var(--cc-transition);
+  z-index: 2;
+  color: #e2e8f0;
+}
+
+.cc-moon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  filter: drop-shadow(0 0 12px rgba(226, 232, 240, 0.5));
+}
+
+.cc-root.cc-day .cc-moon {
+  opacity: 0;
+  transform: scale(0.3) translateY(40px);
 }
 
 .cc-sun::after {
@@ -267,64 +271,6 @@
   to {
     transform: translateX(1300px);
   }
-}
-
-/* ── When env-layer is teleported into the form-right card ── */
-.cc-form-right .cc-env-layer {
-  display: block !important;
-  /* override any inline display:none */
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-/* Clouds inside the card use a shorter drift distance */
-.cc-form-right .cc-cloud {
-  animation-name: cc-drift-cloud-card;
-}
-
-@keyframes cc-drift-cloud-card {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(700px);
-  }
-}
-
-/* Scale down clouds slightly so they fit the card proportions */
-.cc-form-right .cc-cloud--1 {
-  top: 8%;
-  animation-duration: 22s;
-}
-
-.cc-form-right .cc-cloud--2 {
-  top: 20%;
-  animation-duration: 30s;
-}
-
-.cc-form-right .cc-cloud--3 {
-  top: 4%;
-  animation-duration: 38s;
-}
-
-/* Sun stays top-right, already relative to nearest positioned parent */
-.cc-form-right .cc-sun {
-  top: 8%;
-  right: 8%;
-  width: 44px;
-  height: 44px;
-}
-
-/* Day overlay fills the card */
-.cc-form-right .cc-day-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
 }
 
 /* Day overlay tint */
@@ -533,6 +479,34 @@
 
 .cc-form-title-accent {
   color: var(--cc-lime);
+}
+
+/* Morphing Text */
+.cc-morph-wrap {
+  display: inline-grid;
+  vertical-align: bottom;
+  justify-items: start;
+}
+
+.cc-morph-text {
+  grid-area: 1 / 1;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              filter 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, filter, transform;
+}
+
+.cc-morph-text--in {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0) scale(1);
+}
+
+.cc-morph-text--out {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(12px) scale(0.95);
+  pointer-events: none;
 }
 
 /* Sub */
@@ -892,4 +866,55 @@
     opacity: 0.55;
     fill: #c8ff60;
   }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Social Bubbles Overlay
+═══════════════════════════════════════════════════════ */
+
+.cc-social-bubble {
+  opacity: 0;
+  transform: scale(0) translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+.cc-social-bubble--visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.cc-social-bg {
+  fill: var(--cc-card-bg);
+  stroke: var(--cc-border);
+  stroke-width: 2px;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.cc-social-bubble:hover .cc-social-circle {
+  fill: var(--cc-lime);
+  stroke: var(--cc-lime);
+}
+
+.cc-social-icon {
+  fill: var(--white);
+  transition: fill 0.3s ease;
+}
+
+.cc-social-bubble:hover .cc-social-icon {
+  fill: #111;
+}
+
+.cc-root.cc-day .cc-social-bg {
+  fill: #fff;
+  stroke: #eee;
+}
+
+.cc-root.cc-day .cc-social-icon {
+  fill: #111;
+}
+
+.cc-root.cc-day .cc-social-bubble:hover .cc-social-circle {
+  fill: var(--cc-lime);
+  stroke: var(--cc-lime);
 }

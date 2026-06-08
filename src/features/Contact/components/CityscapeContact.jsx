@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import emailjs from '@emailjs/browser';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import '../css/CityscapeContact.css';
 import useThemeStore from '../../../store/useThemeStore';
@@ -62,10 +63,9 @@ function shuffle(arr) {
 
 // ─── CityscapeContact ──────────────────────────────────────────────────────
 const CityscapeContact = () => {
-  const [phase, setPhase] = useState('idle');   // idle | animating | exiting | form
-  const [formVisible, setFormVisible] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [lit, setLit] = useState(false);   // windows-lit after submit
+  const [morphWord, setMorphWord] = useState('LAUNCH');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [website, setWebsite] = useState('');
   const [captchaToken, setCaptchaToken] = useState('');
@@ -80,8 +80,6 @@ const CityscapeContact = () => {
   const hasStartedRef = useRef(false);
 
   const svgRef = useRef(null);
-  const stageRef = useRef(null);
-  const formRightRef = useRef(null);
   const recaptchaRef = useRef(null);
   const timersRef = useRef([]);
   const formMountedAtRef = useRef(Date.now());
@@ -89,6 +87,14 @@ const CityscapeContact = () => {
   // Clear all pending timers on unmount
   useEffect(() => {
     return () => timersRef.current.forEach(clearTimeout);
+  }, []);
+
+  // ── Morph Word Timer ────────────────────────────────────────────────────
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMorphWord(prev => prev === 'LAUNCH' ? 'CONNECT' : 'LAUNCH');
+    }, 3500);
+    return () => clearInterval(interval);
   }, []);
 
 
@@ -119,8 +125,6 @@ const CityscapeContact = () => {
 
   // ── Trigger the full animation sequence ─────────────────────────────────
   const triggerBuild = useCallback(() => {
-    if (phase !== 'idle') return;
-    setPhase('animating');
 
     resetAll();
     let t = 0.1;
@@ -140,42 +144,7 @@ const CityscapeContact = () => {
     scheduleAnimate('g-shadow', t);
     t += 0.6 + PHASE_GAP;
 
-    // Morph into form
-    addTimer(() => morphToForm(), t * 1000);
-  }, [phase, resetAll, scheduleAnimate]);
-
-  // ── Move SVG into the form right panel ──────────────────────────────────
-  const morphToForm = useCallback(() => {
-    // Step 1: fade out the fullscreen stage
-    setPhase('exiting');
-
-    addTimer(() => {
-      const svg = svgRef.current;
-      const stage = stageRef.current;
-      const target = formRightRef.current;
-
-      if (stage && target) {
-        // Step 2a: teleport env-layer (sun + clouds) into the card
-        const envLayer = stage.querySelector('.cc-env-layer');
-        const dayOverlay = stage.querySelector('.cc-day-overlay');
-        if (envLayer) target.appendChild(envLayer);
-        if (dayOverlay) target.appendChild(dayOverlay);
-
-        // Step 2b: teleport the SVG on top (z-index keeps buildings above sky)
-        if (svg) {
-          svg.classList.add('cc-svg--card');
-          target.appendChild(svg);
-        }
-      }
-
-      // Step 3: fully hide the now-empty stage wrap
-      if (stage) stage.style.display = 'none';
-
-      // Step 4: show the form
-      setPhase('form');
-      addTimer(() => setFormVisible(true), 60);
-    }, 520);
-  }, [addTimer, setPhase]);
+  }, [resetAll, scheduleAnimate]);
 
   // ── Auto-start animation when loading finishes ──────────────────────────
   useEffect(() => {
@@ -283,35 +252,33 @@ const CityscapeContact = () => {
   return (
     <div className={`cc-root ${isDay ? 'cc-day' : ''}`}>
 
-      {/* ══ PHASE A: Fullscreen cityscape ══ */}
-      <div
-        ref={stageRef}
-        className={`cc-stage-wrap ${phase === 'exiting' || phase === 'form' ? 'cc-stage-wrap--exit' : ''}`}
-        aria-hidden={phase === 'form'}
-      >
-        {/* Environment */}
-        <div className="cc-env-layer">
-          <div className="cc-sun" />
-          <div className="cc-sunbeam" />
-          <div className="cc-cloud cc-cloud--1"><div className="cc-cloud-body" /></div>
-          <div className="cc-cloud cc-cloud--2"><div className="cc-cloud-body" /></div>
-          <div className="cc-cloud cc-cloud--3"><div className="cc-cloud-body" /></div>
+      {/* Environment (Full screen behind the form) */}
+      <div className="cc-env-layer">
+        <div className="cc-sun" />
+        <div className="cc-moon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.53 15.93c-.16-.27-.61-.69-1.73-.49a8.46 8.46 0 01-1.88.13 8.409 8.409 0 01-5.91-2.82 8.068 8.068 0 01-1.44-8.66c.44-1.01.13-1.54-.09-1.76s-.77-.55-1.83-.11a10.318 10.318 0 00-6.32 10.21 10.475 10.475 0 007.04 8.99 10 10 0 002.89.55c.16.01.32.02.48.02a10.5 10.5 0 008.47-4.27c.67-.93.49-1.51.32-1.79z" fill="currentColor"/>
+          </svg>
         </div>
-        <div className="cc-day-overlay" />
-
-        {/* SVG Cityscape — no CTA button, auto-starts on mount */}
-        <CityscapeSVG svgRef={svgRef} lit={lit} />
+        <div className="cc-sunbeam" />
+        <div className="cc-cloud cc-cloud--1"><div className="cc-cloud-body" /></div>
+        <div className="cc-cloud cc-cloud--2"><div className="cc-cloud-body" /></div>
+        <div className="cc-cloud cc-cloud--3"><div className="cc-cloud-body" /></div>
       </div>
+      <div className="cc-day-overlay" />
 
-      {/* ══ PHASE B: Two-column form ══ */}
-      <div className="cc-form-wrap" aria-hidden={phase !== 'form'}>
-        <div className={`cc-form-shell ${formVisible ? 'cc-form-shell--visible' : ''}`}>
+      {/* ══ Two-column form ══ */}
+      <div className="cc-form-wrap">
+        <div className="cc-form-shell cc-form-shell--visible">
 
           {/* Left: form fields */}
           <div className="cc-form-left">
             <h2 className="cc-form-title">
-              Let's Build<br />
-              <span className="cc-form-title-accent">&amp;</span> Launch
+              Let's Build <span className="cc-form-title-accent">&amp;</span>{' '}
+              <span className="cc-morph-wrap">
+                <span className={`cc-morph-text ${morphWord === 'LAUNCH' ? 'cc-morph-text--in' : 'cc-morph-text--out'}`}>LAUNCH</span>
+                <span className={`cc-morph-text ${morphWord === 'CONNECT' ? 'cc-morph-text--in' : 'cc-morph-text--out'}`}>CONNECT</span>
+              </span>
             </h2>
             <p className="cc-form-sub">· PROJECT INQUIRY ·</p>
 
@@ -366,6 +333,14 @@ const CityscapeContact = () => {
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                   />
                 </div>
+                <div className="cc-field" style={{ minHeight: '78px', display: 'flex', justifyContent: 'center' }}>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={RECAPTCHA_SITE_KEY}
+                    theme={isDay ? "light" : "dark"}
+                    onChange={(token) => setCaptchaToken(token)}
+                  />
+                </div>
 
                 {status.state === 'error' && (
                   <p className="cc-form-error" role="alert">{status.message}</p>
@@ -390,9 +365,10 @@ const CityscapeContact = () => {
             )}
           </div>
 
-          {/* Right: live city card (SVG teleports here) */}
-          <div className="cc-form-right" ref={formRightRef}>
+          {/* Right: live city card */}
+          <div className="cc-form-right">
             <span className="cc-preview-label">Live Preview</span>
+            <CityscapeSVG svgRef={svgRef} lit={lit} />
           </div>
 
         </div>
@@ -406,7 +382,7 @@ const CityscapeSVG = ({ svgRef, lit }) => (
   <svg
     ref={svgRef}
     id="cc-city-svg"
-    className={`cc-city-svg${lit ? ' cc-city-svg--lit' : ''}`}
+    className={`cc-city-svg cc-svg--card${lit ? ' cc-city-svg--lit' : ''}`}
     viewBox="0 0 1000 700"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -709,7 +685,71 @@ const CityscapeSVG = ({ svgRef, lit }) => (
       <rect className="cc-win cc-win--d1" x="851" y="334" width="6" height="8" rx="1" />
 
     </g>
+    {/* Social Popup Bubbles */}
+    <g className="cc-socials-layer" style={{ zIndex: 50 }}>
+      {SOCIAL_SPOTS.map(spot => (
+        <SocialBubble key={spot.id} spot={spot} />
+      ))}
+    </g>
   </svg>
 );
+
+// ─── Social Bubble Implementation ──────────────────────────────────────────
+
+const SOCIAL_SPOTS = [
+  { id: 'github', href: 'https://github.com/DominceAseberos', cx: 204, cy: 110, d: 'M12 2C6.475 2 2 6.475 2 12a9.994 9.994 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12c0-5.525-4.475-10-10-10z' },
+  { id: 'instagram', href: 'https://instagram.com/doms.dev', cx: 318, cy: 170, d: 'M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772c-.5.508-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z' },
+  { id: 'x', href: 'https://x.com/domsdev', cx: 428, cy: 240, d: 'M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z' },
+  { id: 'linkedin', href: 'https://linkedin.com/in/domince', cx: 694, cy: 220, d: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z' },
+  { id: 'facebook', href: 'https://facebook.com/domince', cx: 831, cy: 210, d: 'M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z' }
+];
+
+const SocialBubble = ({ spot }) => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    let hideTimer;
+    let showTimer;
+
+    const runCycle = () => {
+      setVisible(true);
+      const visibleTime = 3000 + Math.random() * 4000; // 3 to 7 sec visible
+      hideTimer = setTimeout(() => {
+        setVisible(false);
+        const hiddenTime = 2000 + Math.random() * 7000; // 2 to 9 sec hidden
+        showTimer = setTimeout(runCycle, hiddenTime);
+      }, visibleTime);
+    };
+
+    // Stagger initial appearances so they don't all pop at once
+    const initialDelay = 1500 + Math.random() * 5000;
+    const startTimer = setTimeout(runCycle, initialDelay);
+
+    return () => {
+      clearTimeout(startTimer);
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+    };
+  }, []);
+
+  return (
+    <a 
+      href={spot.href} 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className={`cc-social-bubble ${visible ? 'cc-social-bubble--visible' : ''}`}
+      style={{
+        transformOrigin: `${spot.cx}px ${spot.cy}px`,
+        pointerEvents: visible ? 'all' : 'none'
+      }}
+    >
+      <path d={`M${spot.cx} ${spot.cy+36} L${spot.cx-8} ${spot.cy+26} L${spot.cx+8} ${spot.cy+26} Z`} className="cc-social-bg" />
+      <circle cx={spot.cx} cy={spot.cy} r="28" className="cc-social-bg cc-social-circle" />
+      <g transform={`translate(${spot.cx - 18}, ${spot.cy - 18}) scale(1.5)`}>
+        <path d={spot.d} className="cc-social-icon" />
+      </g>
+    </a>
+  );
+};
 
 export default CityscapeContact;
