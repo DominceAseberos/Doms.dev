@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { FiX, FiDownload, FiExternalLink } from 'react-icons/fi';
+import { FiX, FiDownload, FiExternalLink, FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 import useThemeStore from '../store/useThemeStore';
 
 const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
     const { theme } = useThemeStore();
     const isLight = theme === 'light';
     const [publicUrl, setPublicUrl] = useState('');
+    const [isMaximized, setIsMaximized] = useState(false);
 
     useEffect(() => {
         if (docUrl) {
@@ -55,7 +56,11 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
 
             {/* Modal Container */}
             <div 
-                className={`relative w-full max-w-5xl h-[85vh] flex flex-col rounded-2xl shadow-2xl overflow-hidden border ${
+                className={`relative flex flex-col rounded-2xl shadow-2xl overflow-hidden border transition-all duration-300 ${
+                    isMaximized 
+                        ? 'w-[98vw] h-[98vh] max-w-none' 
+                        : 'w-full max-w-5xl h-[85vh]'
+                } ${
                     isLight 
                         ? 'bg-[#F9F7F1] border-black/10' 
                         : 'bg-[#1a1a1a] border-white/10'
@@ -83,17 +88,30 @@ const DocViewerModal = ({ isOpen, onClose, docUrl, title }) => {
                         </a>
                     </div>
                     
-                    <button 
-                        type="button"
-                        onClick={onClose}
-                        className={`relative z-10 p-2 -mr-2 rounded-full cursor-pointer transition-colors ${
-                            isLight ? 'hover:bg-black/5 text-black' : 'hover:bg-white/5 text-white'
-                        }`}
-                        style={{ pointerEvents: 'auto' }}
-                        aria-label="Close modal"
-                    >
-                        <FiX size={20} />
-                    </button>
+                    <div className="flex items-center gap-1">
+                        <button 
+                            type="button"
+                            onClick={() => setIsMaximized(!isMaximized)}
+                            className={`relative z-10 p-2 rounded-full cursor-pointer transition-colors ${
+                                isLight ? 'hover:bg-black/5 text-black' : 'hover:bg-white/5 text-white'
+                            }`}
+                            style={{ pointerEvents: 'auto' }}
+                            title={isMaximized ? "Restore down" : "Maximize"}
+                        >
+                            {isMaximized ? <FiMinimize2 size={18} /> : <FiMaximize2 size={18} />}
+                        </button>
+                        <button 
+                            type="button"
+                            onClick={onClose}
+                            className={`relative z-10 p-2 -mr-2 rounded-full cursor-pointer transition-colors ${
+                                isLight ? 'hover:bg-black/5 text-black' : 'hover:bg-white/5 text-white'
+                            }`}
+                            style={{ pointerEvents: 'auto' }}
+                            aria-label="Close modal"
+                        >
+                            <FiX size={20} />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Content Area */}

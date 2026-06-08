@@ -4,6 +4,7 @@ import ParticleBackground from '../../../components/ParticleBackground';
 import NavBar from '../../../components/NavBar';
 import useThemeStore from '../../../store/useThemeStore';
 import { EditableText } from '../components/EditableText';
+import LiveIframePreview from '../components/LiveIframePreview';
 import { ContentBuilder } from '../components/builder/ContentBuilder';
 import MarkdownViewerModal from '../components/MarkdownViewerModal';
 import DocViewerModal from '../../../components/DocViewerModal';
@@ -128,8 +129,37 @@ const ProjectTemplate = ({
                     </p>
                 </div>
                 <div className="cs-bottom-footer__actions">
-                    <a href="/contact" className="cs-link-btn">Get in Touch</a>
+                    {project.primaryBtnUrl && (
+                        <button 
+                            onClick={(e) => {
+                                if (isAdminPreview) return;
+                                if (project.primaryBtnUrl.endsWith('.md')) {
+                                    setMarkdownUrl(project.primaryBtnUrl);
+                                    setIsMarkdownModalOpen(true);
+                                } else {
+                                    setDocUrl(project.primaryBtnUrl);
+                                    setIsDocModalOpen(true);
+                                }
+                            }}
+                            className="cs-link-btn"
+                        >
+                            {primaryDocumentMeta.label}
+                        </button>
+                    )}
+                    
+                    {(project.githubBtnUrl || project.githubUrl) && (
+                        <a 
+                            href={isAdminPreview ? undefined : (project.githubBtnUrl || project.githubUrl)} 
+                            target={isAdminPreview ? undefined : "_blank"} 
+                            rel="noopener noreferrer" 
+                            className="cs-link-btn"
+                            onClick={e => isAdminPreview && e.preventDefault()}
+                        >
+                            {project.githubBtnLabel || 'GitHub'}
+                        </a>
+                    )}
                     <a href="/projects" className="cs-link-btn cs-link-btn--ghost">Back to Projects</a>
+                    <a href="/contact" className="cs-link-btn cs-link-btn--ghost">Get in Touch</a>
                 </div>
             </div>
         </section>
@@ -276,16 +306,16 @@ const ProjectTemplate = ({
                             )}
 
                             {/* Secondary Button */}
-                            {(project.secondaryBtnUrl || project.liveUrl) && (
+                            {project.secondaryBtnUrl && (
                                 <a 
-                                    href={isAdminPreview ? undefined : (project.secondaryBtnUrl || project.liveUrl)} 
+                                    href={isAdminPreview ? undefined : project.secondaryBtnUrl} 
                                     target={isAdminPreview ? undefined : "_blank"} 
                                     rel="noopener noreferrer" 
                                     className="cs-top-link flex items-center gap-2"
                                     onClick={e => isAdminPreview && e.preventDefault()}
                                 >
                                     <FiExternalLink size={16} />
-                                    <span className="hidden md:inline">{project.secondaryBtnLabel || 'Live Demo'}</span>
+                                    <span className="hidden md:inline">{project.secondaryBtnLabel || 'Link'}</span>
                                 </a>
                             )}
 
@@ -366,44 +396,14 @@ const ProjectTemplate = ({
                             </div>
                         )}
 
-                        <div className="flex items-center justify-center gap-1 mt-10">
-                            {Object.entries(VIEW_META).map(([view, meta]) => {
-                                const field = VIEW_IMAGE_FIELD[view];
-                                const hasImage = !!project[field];
-                                const isActive = activeView === view;
-                                return (
-                                    <button
-                                        key={view}
-                                        onClick={() => setActiveView(view)}
-                                        title={meta.label}
-                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                                            isActive
-                                                ? isLight
-                                                    ? 'bg-black text-white'
-                                                    : 'bg-[#c8ff3e] text-black'
-                                                : isLight
-                                                    ? 'text-black/40 hover:text-black hover:bg-black/10'
-                                                    : 'text-white/40 hover:text-white hover:bg-white/10'
-                                        }`}
-                                    >
-                                        {meta.icon}
-                                        <span>{meta.label}</span>
-                                        {hasImage && (
-                                            <span className={`w-1.5 h-1.5 rounded-full ${
-                                                isActive
-                                                    ? isLight ? 'bg-white' : 'bg-black'
-                                                    : 'bg-[#c8ff3e]'
-                                            }`} />
-                                        )}
-                                    </button>
-                                );
-                            })}
-                        </div>
+
                     </div>
                 </section>
 
-                <section className="cs-shell cs-landing-media cs-animate">
-                    {heroMedia ? (
+                <section className={`${project.useLiveIframe && project.liveUrl && !isAdminPreview ? 'w-full max-w-[1400px] mx-auto px-4 lg:px-8' : 'cs-shell'} cs-landing-media cs-animate`}>
+                    {project.useLiveIframe && project.liveUrl && !isAdminPreview ? (
+                        <LiveIframePreview key={project.id} project={project} activeView={activeView} />
+                    ) : heroMedia ? (
                         <div className={`cs-frame relative group ${activeView === 'desktop' && project.mobileImage && !isAdminPreview ? 'cs-frame--composite' : ''}`}>
                             {renderMedia(heroMedia, `${project.title} ${activeView} view`, 'cs-main-image cs-main-image--landing')}
                             

@@ -21,7 +21,7 @@ const BLOCK_TYPES = [
 
 const getGridClass = (layout) => {
     switch (layout) {
-        case 'full': return 'grid grid-cols-1';
+        case 'full': return 'grid grid-cols-1 gap-y-12';
         case '2-equal':
         case '2-stack': return 'grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-[clamp(32px,6vw,100px)] items-start';
         case 'left-big':

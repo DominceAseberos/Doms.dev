@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { FiX, FiExternalLink, FiCopy, FiCheck } from 'react-icons/fi';
+import { FiX, FiExternalLink, FiCopy, FiCheck, FiMaximize2, FiMinimize2 } from 'react-icons/fi';
 import useThemeStore from '../../../store/useThemeStore';
 import Mermaid from '../../../components/Mermaid';
 
@@ -29,6 +29,7 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isCopied, setIsCopied] = useState(false);
+    const [isMaximized, setIsMaximized] = useState(false);
 
     const handleCopy = async () => {
         try {
@@ -111,7 +112,11 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
 
             {/* Modal Container */}
             <div 
-                className={`relative w-full max-w-4xl max-h-[90vh] flex flex-col rounded-2xl shadow-2xl overflow-hidden border ${
+                className={`relative flex flex-col rounded-2xl shadow-2xl overflow-hidden border transition-all duration-300 ${
+                    isMaximized 
+                        ? 'w-[98vw] h-[98vh] max-w-none max-h-none' 
+                        : 'w-full max-w-4xl max-h-[90vh]'
+                } ${
                     isLight 
                         ? 'bg-[#FAF6EF] border-black/10' 
                         : 'bg-[#0f1115] border-white/10'
@@ -151,20 +156,33 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
                             </button>
                         )}
                     </div>
-                    <button 
-                        type="button"
-                        onClick={onClose}
-                        className={`relative z-10 p-2 -mr-2 rounded-full cursor-pointer transition-colors ${
-                            isLight ? 'hover:bg-black/5' : 'hover:bg-white/5'
-                        }`}
-                        style={{ pointerEvents: 'auto' }}
-                    >
-                        <FiX size={20} />
-                    </button>
+                    <div className="flex items-center gap-1">
+                        <button 
+                            type="button"
+                            onClick={() => setIsMaximized(!isMaximized)}
+                            className={`relative z-10 p-2 rounded-full cursor-pointer transition-colors ${
+                                isLight ? 'hover:bg-black/5 text-black' : 'hover:bg-white/5 text-white'
+                            }`}
+                            style={{ pointerEvents: 'auto' }}
+                            title={isMaximized ? "Restore down" : "Maximize"}
+                        >
+                            {isMaximized ? <FiMinimize2 size={18} /> : <FiMaximize2 size={18} />}
+                        </button>
+                        <button 
+                            type="button"
+                            onClick={onClose}
+                            className={`relative z-10 p-2 -mr-2 rounded-full cursor-pointer transition-colors ${
+                                isLight ? 'hover:bg-black/5' : 'hover:bg-white/5'
+                            }`}
+                            style={{ pointerEvents: 'auto' }}
+                        >
+                            <FiX size={20} />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Content Area */}
-                <div className="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
+                <div className={`flex-1 min-h-0 overflow-y-auto custom-scrollbar transition-all duration-300 ${isMaximized ? 'p-8 md:p-16 lg:p-24' : 'p-6 md:p-10'}`}>
                     {isLoading ? (
                         <div className="flex flex-col items-center justify-center h-40 gap-4 opacity-50">
                             <div className={`w-8 h-8 rounded-full border-2 border-t-transparent animate-spin ${isLight ? 'border-black/50' : 'border-white/50'}`} />
@@ -183,7 +201,7 @@ const MarkdownViewerModal = ({ isOpen, onClose, githubUrl, title = "Documentatio
                             </a>
                         </div>
                     ) : (
-                        <div className="prose-custom w-full max-w-none">
+                        <div className={`prose-custom w-full max-w-none transition-all duration-300 ${isMaximized ? 'text-lg md:text-xl' : 'text-base'}`}>
                             <ReactMarkdown 
                                 remarkPlugins={[remarkGfm]}
                                 components={{

@@ -75,48 +75,16 @@
             "projectType": "LANDING PAGE",
             "dateCreated": "2026-06-01",
             "liveUrl": "https://web-deep-sea.vercel.app",
+            "useLiveIframe": true,
             "githubUrl": "",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-deep-sea/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-deep-sea/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-deep-sea/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-deep-sea/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-deep-sea/imgs/desktop-2.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-3.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-4.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-5.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-6.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-7.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-8.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-9.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-10.webp",
-                "/assets/uploads/project-deep-sea/imgs/desktop-11.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-deep-sea/imgs/tablet-2.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-3.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-4.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-5.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-6.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-7.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-8.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-9.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-10.webp",
-                "/assets/uploads/project-deep-sea/imgs/tablet-11.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-deep-sea/imgs/mobile-2.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-3.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-4.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-5.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-6.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-7.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-8.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-9.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-10.webp",
-                "/assets/uploads/project-deep-sea/imgs/mobile-11.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -146,7 +114,7 @@
                 {
                     "id": "deep-sea-arch",
                     "sectionTitle": "Architecture",
-                    "layout": "2-equal",
+                    "layout": "full",
                     "columns": [
                         {
                             "id": "deep-sea-arch-left",
@@ -160,7 +128,8 @@
                                         "TypeScript",
                                         "Vite",
                                         "Tailwind CSS",
-                                        "GSAP"
+                                        "GSAP",
+                                        "Vercel"
                                     ]
                                 }
                             ]
@@ -250,57 +219,16 @@
             "projectType": "LANDING PAGE",
             "dateCreated": "2026-06-01",
             "liveUrl": "https://shop-apex.vercel.app",
+            "useLiveIframe": true,
             "githubUrl": "",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-peak/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-peak/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-peak/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-peak/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-peak/imgs/desktop-2.webp",
-                "/assets/uploads/project-peak/imgs/desktop-3.webp",
-                "/assets/uploads/project-peak/imgs/desktop-4.webp",
-                "/assets/uploads/project-peak/imgs/desktop-5.webp",
-                "/assets/uploads/project-peak/imgs/desktop-6.webp",
-                "/assets/uploads/project-peak/imgs/desktop-7.webp",
-                "/assets/uploads/project-peak/imgs/desktop-8.webp",
-                "/assets/uploads/project-peak/imgs/desktop-9.webp",
-                "/assets/uploads/project-peak/imgs/desktop-10.webp",
-                "/assets/uploads/project-peak/imgs/desktop-11.webp",
-                "/assets/uploads/project-peak/imgs/desktop-12.webp",
-                "/assets/uploads/project-peak/imgs/desktop-13.webp",
-                "/assets/uploads/project-peak/imgs/desktop-14.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-peak/imgs/tablet-2.webp",
-                "/assets/uploads/project-peak/imgs/tablet-3.webp",
-                "/assets/uploads/project-peak/imgs/tablet-4.webp",
-                "/assets/uploads/project-peak/imgs/tablet-5.webp",
-                "/assets/uploads/project-peak/imgs/tablet-6.webp",
-                "/assets/uploads/project-peak/imgs/tablet-7.webp",
-                "/assets/uploads/project-peak/imgs/tablet-8.webp",
-                "/assets/uploads/project-peak/imgs/tablet-9.webp",
-                "/assets/uploads/project-peak/imgs/tablet-10.webp",
-                "/assets/uploads/project-peak/imgs/tablet-11.webp",
-                "/assets/uploads/project-peak/imgs/tablet-12.webp",
-                "/assets/uploads/project-peak/imgs/tablet-13.webp",
-                "/assets/uploads/project-peak/imgs/tablet-14.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-peak/imgs/mobile-2.webp",
-                "/assets/uploads/project-peak/imgs/mobile-3.webp",
-                "/assets/uploads/project-peak/imgs/mobile-4.webp",
-                "/assets/uploads/project-peak/imgs/mobile-5.webp",
-                "/assets/uploads/project-peak/imgs/mobile-6.webp",
-                "/assets/uploads/project-peak/imgs/mobile-7.webp",
-                "/assets/uploads/project-peak/imgs/mobile-8.webp",
-                "/assets/uploads/project-peak/imgs/mobile-9.webp",
-                "/assets/uploads/project-peak/imgs/mobile-10.webp",
-                "/assets/uploads/project-peak/imgs/mobile-11.webp",
-                "/assets/uploads/project-peak/imgs/mobile-12.webp",
-                "/assets/uploads/project-peak/imgs/mobile-13.webp",
-                "/assets/uploads/project-peak/imgs/mobile-14.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -330,7 +258,7 @@
                 {
                     "id": "peak-arch",
                     "sectionTitle": "Architecture",
-                    "layout": "2-equal",
+                    "layout": "full",
                     "columns": [
                         {
                             "id": "peak-arch-left",
@@ -345,7 +273,8 @@
                                         "Vite",
                                         "Tailwind CSS",
                                         "shadcn/ui",
-                                        "GSAP"
+                                        "GSAP",
+                                        "Vercel"
                                     ]
                                 }
                             ]
@@ -436,51 +365,16 @@
             "projectType": "LANDING PAGE",
             "dateCreated": "2026-06-01",
             "liveUrl": "https://cars-veloce.vercel.app",
+            "useLiveIframe": true,
             "githubUrl": "",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-velocity/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-velocity/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-velocity/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-velocity/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-velocity/imgs/desktop-2.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-3.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-4.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-5.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-6.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-7.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-8.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-9.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-10.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-11.webp",
-                "/assets/uploads/project-velocity/imgs/desktop-12.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-velocity/imgs/tablet-2.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-3.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-4.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-5.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-6.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-7.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-8.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-9.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-10.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-11.webp",
-                "/assets/uploads/project-velocity/imgs/tablet-12.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-velocity/imgs/mobile-2.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-3.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-4.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-5.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-6.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-7.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-8.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-9.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-10.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-11.webp",
-                "/assets/uploads/project-velocity/imgs/mobile-12.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -510,7 +404,7 @@
                 {
                     "id": "velocity-arch",
                     "sectionTitle": "Architecture",
-                    "layout": "2-equal",
+                    "layout": "full",
                     "columns": [
                         {
                             "id": "velocity-arch-left",
@@ -525,7 +419,8 @@
                                         "Vite",
                                         "Tailwind CSS",
                                         "GSAP",
-                                        "Lenis"
+                                        "Lenis",
+                                        "Vercel"
                                     ]
                                 }
                             ]
@@ -616,39 +511,16 @@
             "projectType": "LANDING PAGE",
             "dateCreated": "2026-06-01",
             "liveUrl": "https://shop-cheq.vercel.app/",
+            "useLiveIframe": true,
             "githubUrl": "",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-fashion/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-fashion/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-fashion/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-fashion/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-fashion/imgs/desktop-2.webp",
-                "/assets/uploads/project-fashion/imgs/desktop-3.webp",
-                "/assets/uploads/project-fashion/imgs/desktop-4.webp",
-                "/assets/uploads/project-fashion/imgs/desktop-5.webp",
-                "/assets/uploads/project-fashion/imgs/desktop-6.webp",
-                "/assets/uploads/project-fashion/imgs/desktop-7.webp",
-                "/assets/uploads/project-fashion/imgs/desktop-8.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-fashion/imgs/tablet-2.webp",
-                "/assets/uploads/project-fashion/imgs/tablet-3.webp",
-                "/assets/uploads/project-fashion/imgs/tablet-4.webp",
-                "/assets/uploads/project-fashion/imgs/tablet-5.webp",
-                "/assets/uploads/project-fashion/imgs/tablet-6.webp",
-                "/assets/uploads/project-fashion/imgs/tablet-7.webp",
-                "/assets/uploads/project-fashion/imgs/tablet-8.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-fashion/imgs/mobile-2.webp",
-                "/assets/uploads/project-fashion/imgs/mobile-3.webp",
-                "/assets/uploads/project-fashion/imgs/mobile-4.webp",
-                "/assets/uploads/project-fashion/imgs/mobile-5.webp",
-                "/assets/uploads/project-fashion/imgs/mobile-6.webp",
-                "/assets/uploads/project-fashion/imgs/mobile-7.webp",
-                "/assets/uploads/project-fashion/imgs/mobile-8.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -678,7 +550,7 @@
                 {
                     "id": "fashion-arch",
                     "sectionTitle": "Architecture",
-                    "layout": "2-equal",
+                    "layout": "full",
                     "columns": [
                         {
                             "id": "fashion-arch-left",
@@ -692,7 +564,8 @@
                                         "TypeScript",
                                         "Vite",
                                         "Tailwind CSS",
-                                        "GSAP"
+                                        "GSAP",
+                                        "Vercel"
                                     ]
                                 }
                             ]
@@ -783,21 +656,16 @@
             "projectType": "DATA VISUALIZATION",
             "dateCreated": "2026-03-14",
             "liveUrl": "https://gremote-universe.vercel.app/",
+            "useLiveIframe": true,
             "githubUrl": "https://github.com/DominceAseberos/github-universe",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-github-universe/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-github-universe/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-github-universe/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-github-universe/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-github-universe/imgs/desktop-2.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-github-universe/imgs/tablet-2.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-github-universe/imgs/mobile-2.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -935,34 +803,17 @@
             "projectType": "FULL-STACK APPLICATION",
             "dateCreated": "2025-10-15",
             "liveUrl": "https://catsy-coffee.vercel.app/",
+            "useLiveIframe": true,
             "githubUrl": "https://github.com/Domincee/CATSY",
-            "primaryBtnUrl": "/assets/markdowns/catsy-architecture.md",
+            "primaryBtnUrl": "/assets/docs/Catsy-Coffee-Documentation.pdf",
             "featuredInTunnel": true,
             "mainImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
             "desktopImage": "/assets/uploads/project-catsy/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-catsy/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-catsy/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-catsy/imgs/desktop-2.webp",
-                "/assets/uploads/project-catsy/imgs/desktop-3.webp",
-                "/assets/uploads/project-catsy/imgs/desktop-4.webp",
-                "/assets/uploads/project-catsy/imgs/desktop-5.webp",
-                "/assets/uploads/project-catsy/imgs/desktop-6.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-catsy/imgs/tablet-2.webp",
-                "/assets/uploads/project-catsy/imgs/tablet-3.webp",
-                "/assets/uploads/project-catsy/imgs/tablet-4.webp",
-                "/assets/uploads/project-catsy/imgs/tablet-5.webp",
-                "/assets/uploads/project-catsy/imgs/tablet-6.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-catsy/imgs/mobile-2.webp",
-                "/assets/uploads/project-catsy/imgs/mobile-3.webp",
-                "/assets/uploads/project-catsy/imgs/mobile-4.webp",
-                "/assets/uploads/project-catsy/imgs/mobile-5.webp",
-                "/assets/uploads/project-catsy/imgs/mobile-6.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -1057,7 +908,7 @@
                                 {
                                     "id": "block-1-project-catsy",
                                     "type": "text",
-                                    "content": "# System Architecture: Catsy Coffee\n\n## 1. High-Level Architecture\nCatsy Coffee operates on a robust, multi-client ecosystem. It features a React-based web storefront for customers, a Flutter-based mobile POS application for staff, and a centralized FastAPI backend. All clients interface with a shared Supabase instance for authentication and relational data storage.\n\n```mermaid\ngraph TD\n    Client_Web[\"catsy-web (React/Vite)\"] -->|HTTP/REST| API[\"catsy-backend (FastAPI)\"]\n    Client_Mobile[\"catsy_mobile (Flutter)\"] -->|HTTP/REST| API\n    Client_Mobile -->|Direct Sync| DB[(\"Supabase DB\")]\n    API -->|Service Role| DB\n    API -->|Auth| Auth[\"Supabase Auth\"]\n    Client_Web -->|Auth| Auth\n```\n\n## 2. Tech Stack & Trade-offs\n*   **Backend: Python (FastAPI)**\n    *   *Trade-off:* Chosen over Node/Express due to Python's strict type-hinting via Pydantic and rapid API generation (automatic Swagger docs). It natively handles complex asynchronous task queues (like SSE streaming for order updates) with `asyncio`.\n*   **Web: React + Vite 7**\n    *   *Trade-off:* React provides a massive component ecosystem, while Vite ensures instant Hot Module Replacement (HMR). Next.js was intentionally avoided to keep the storefront as an aggressively cached Single Page Application (SPA), lowering server rendering costs.\n*   **Mobile: Flutter (Dart)**\n    *   *Trade-off:* Allows a single codebase to compile to both iOS and Android natively. Used specifically for the staff POS to leverage native device features like hardware barcode scanning and push notifications.\n*   **Database: Supabase (PostgreSQL)**\n    *   *Trade-off:* Provides out-of-the-box Row Level Security (RLS), JWT-based authentication, and realtime webhooks. It acts as both the database and the auth provider, reducing architectural fragmentation.\n\n## 3. State Management & Security\n**Authentication Flow:**\nAuthentication is decoupled from the FastAPI backend. Both the web and mobile clients authenticate directly via **Supabase Auth** to receive a JWT. The backend API is secured using middleware that decodes and validates this JWT on every request, verifying the user's role (Customer vs. Staff) before allowing database mutations.\n\n**Mobile Local State (Drift & Freezed):**\nThe Flutter POS app requires offline resilience. It uses `Drift` (a SQLite wrapper for Dart) to cache the menu and active tables locally. Complex state models are strongly typed and made immutable using `Freezed`.\n\n## 4. Core Business Logic: Network Independence\nThe most complex architectural challenge was ensuring the Flutter POS app could seamlessly connect to the FastAPI backend dynamically, regardless of the network environment (Local Dev, Physical Phone on Wi-Fi, or Production).\n*   **Dynamic API Bridging:** The app injects `--dart-define=API_BRIDGE_BASE_URL` at compile-time to allow developers to hot-swap between `localhost`, a physical `LAN IP`, or the production `Render` URL without changing hardcoded strings.\n*   **Order Streaming:** The POS uses Server-Sent Events (SSE) from FastAPI to receive instant updates when a customer places an order via the React web app.\n\n## 5. Deployment & CI/CD\nThe ecosystem is deployed across three distinct platforms:\n1.  **Frontend (catsy-web):** Deployed to **Vercel** as a static build, optimizing edge-caching for customer assets.\n2.  **Backend (catsy-backend):** Deployed to **Render** via a Blueprint `render.yaml` configuration, exposing the Python Uvicorn server on `$PORT`.\n3.  **Database:** Managed securely via **Supabase cloud**, utilizing `public.device_tokens` for FCM push notifications across staff devices.\n"
+                                    "content": "# System Architecture: Catsy Coffee\n\n## 1. High-Level Architecture\nCatsy Coffee operates on a robust, multi-client ecosystem. It features a React-based web storefront for customers, a Flutter-based mobile POS application for staff, and a centralized FastAPI backend. All clients interface with a shared Supabase instance for authentication and relational data storage.\n\n```mermaid\ngraph TD\n    Client_Web[\"catsy-web (React/Vite)\"] -->|HTTP/REST| API[\"catsy-backend (FastAPI)\"]\n    Client_Mobile[\"catsy_mobile (Flutter)\"] -->|HTTP/REST| API\n    Client_Mobile -->|Direct Sync| DB[(\"Supabase DB\")]\n    API -->|Service Role| DB\n    API -->|Auth| Auth[\"Supabase Auth\"]\n    Client_Web -->|Auth| Auth\n```\n\n## 2. System Architecture\n![System Architecture](/assets/uploads/project-catsy/imgs/architecture.png)\n\n## 3. Data Flow Diagram\n![Data Flow Diagram](/assets/uploads/project-catsy/imgs/dataflow.png)\n\n\n## 4. Tech Stack & Trade-offs\n*   **Backend: Python (FastAPI)**\n    *   *Trade-off:* Chosen over Node/Express due to Python's strict type-hinting via Pydantic and rapid API generation (automatic Swagger docs). It natively handles complex asynchronous task queues (like SSE streaming for order updates) with `asyncio`.\n*   **Web: React + Vite 7**\n    *   *Trade-off:* React provides a massive component ecosystem, while Vite ensures instant Hot Module Replacement (HMR). Next.js was intentionally avoided to keep the storefront as an aggressively cached Single Page Application (SPA), lowering server rendering costs.\n*   **Mobile: Flutter (Dart)**\n    *   *Trade-off:* Allows a single codebase to compile to both iOS and Android natively. Used specifically for the staff POS to leverage native device features like hardware barcode scanning and push notifications.\n*   **Database: Supabase (PostgreSQL)**\n    *   *Trade-off:* Provides out-of-the-box Row Level Security (RLS), JWT-based authentication, and realtime webhooks. It acts as both the database and the auth provider, reducing architectural fragmentation.\n\n## 5. State Management & Security\n**Authentication Flow:**\nAuthentication is decoupled from the FastAPI backend. Both the web and mobile clients authenticate directly via **Supabase Auth** to receive a JWT. The backend API is secured using middleware that decodes and validates this JWT on every request, verifying the user's role (Customer vs. Staff) before allowing database mutations.\n\n**Mobile Local State (Drift & Freezed):**\nThe Flutter POS app requires offline resilience. It uses `Drift` (a SQLite wrapper for Dart) to cache the menu and active tables locally. Complex state models are strongly typed and made immutable using `Freezed`.\n\n## 6. Core Business Logic: Network Independence\nThe most complex architectural challenge was ensuring the Flutter POS app could seamlessly connect to the FastAPI backend dynamically, regardless of the network environment (Local Dev, Physical Phone on Wi-Fi, or Production).\n*   **Dynamic API Bridging:** The app injects `--dart-define=API_BRIDGE_BASE_URL` at compile-time to allow developers to hot-swap between `localhost`, a physical `LAN IP`, or the production `Render` URL without changing hardcoded strings.\n*   **Order Streaming:** The POS uses Server-Sent Events (SSE) from FastAPI to receive instant updates when a customer places an order via the React web app.\n\n## 7. Deployment & CI/CD\nThe ecosystem is deployed across three distinct platforms:\n1.  **Frontend (catsy-web):** Deployed to **Vercel** as a static build, optimizing edge-caching for customer assets.\n2.  **Backend (catsy-backend):** Deployed to **Render** via a Blueprint `render.yaml` configuration, exposing the Python Uvicorn server on `$PORT`.\n3.  **Database:** Managed securely via **Supabase cloud**, utilizing `public.device_tokens` for FCM push notifications across staff devices.\n"
                                 }
                             ]
                         }
@@ -1089,6 +940,7 @@
             "projectType": "CASE STUDY",
             "dateCreated": "2026-02-10",
             "liveUrl": "https://ganapph.vercel.app/",
+            "useLiveIframe": true,
             "githubUrl": "https://github.com/DominceAseberos/GanapPH",
             "primaryBtnUrl": "/assets/docs/GanapPH.docx",
             "featuredInTunnel": false,
@@ -1096,30 +948,9 @@
             "desktopImage": "/assets/uploads/project-ganapph/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-ganapph/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-ganapph/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-ganapph/imgs/desktop-2.webp",
-                "/assets/uploads/project-ganapph/imgs/desktop-3.webp",
-                "/assets/uploads/project-ganapph/imgs/desktop-4.webp",
-                "/assets/uploads/project-ganapph/imgs/desktop-5.webp",
-                "/assets/uploads/project-ganapph/imgs/desktop-6.webp",
-                "/assets/uploads/project-ganapph/imgs/desktop-7.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-ganapph/imgs/tablet-2.webp",
-                "/assets/uploads/project-ganapph/imgs/tablet-3.webp",
-                "/assets/uploads/project-ganapph/imgs/tablet-4.webp",
-                "/assets/uploads/project-ganapph/imgs/tablet-5.webp",
-                "/assets/uploads/project-ganapph/imgs/tablet-6.webp",
-                "/assets/uploads/project-ganapph/imgs/tablet-7.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-ganapph/imgs/mobile-2.webp",
-                "/assets/uploads/project-ganapph/imgs/mobile-3.webp",
-                "/assets/uploads/project-ganapph/imgs/mobile-4.webp",
-                "/assets/uploads/project-ganapph/imgs/mobile-5.webp",
-                "/assets/uploads/project-ganapph/imgs/mobile-6.webp",
-                "/assets/uploads/project-ganapph/imgs/mobile-7.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -1368,6 +1199,7 @@
             "projectType": "MACHINE LEARNING",
             "dateCreated": "2026-04-01",
             "liveUrl": "https://huggingface.co/spaces/Domince/NLP-Language-Detector",
+            "useLiveIframe": true,
             "githubUrl": "https://github.com/KyndelRoy/NLP-Project",
             "primaryBtnUrl": "/assets/markdowns/nlp-docs.md",
             "featuredInTunnel": false,
@@ -1375,15 +1207,9 @@
             "desktopImage": "/assets/uploads/project-nlp/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-nlp/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-nlp/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-nlp/imgs/desktop-2.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-nlp/imgs/tablet-2.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-nlp/imgs/mobile-2.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -1513,6 +1339,7 @@
             "projectType": "LANDING PAGE",
             "dateCreated": "2026-03-22",
             "liveUrl": "https://kernelprism.vercel.app/",
+            "useLiveIframe": true,
             "githubUrl": "https://github.com/DominceAseberos/Refokus",
             "primaryBtnUrl": "/assets/markdowns/kernel-skills.md",
             "featuredInTunnel": true,
@@ -1520,33 +1347,9 @@
             "desktopImage": "/assets/uploads/project-kernel/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-kernel/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-kernel/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-kernel/imgs/desktop-2.webp",
-                "/assets/uploads/project-kernel/imgs/desktop-3.webp",
-                "/assets/uploads/project-kernel/imgs/desktop-4.webp",
-                "/assets/uploads/project-kernel/imgs/desktop-5.webp",
-                "/assets/uploads/project-kernel/imgs/desktop-6.webp",
-                "/assets/uploads/project-kernel/imgs/desktop-7.webp",
-                "/assets/uploads/project-kernel/imgs/desktop-8.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-kernel/imgs/tablet-2.webp",
-                "/assets/uploads/project-kernel/imgs/tablet-3.webp",
-                "/assets/uploads/project-kernel/imgs/tablet-4.webp",
-                "/assets/uploads/project-kernel/imgs/tablet-5.webp",
-                "/assets/uploads/project-kernel/imgs/tablet-6.webp",
-                "/assets/uploads/project-kernel/imgs/tablet-7.webp",
-                "/assets/uploads/project-kernel/imgs/tablet-8.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-kernel/imgs/mobile-2.webp",
-                "/assets/uploads/project-kernel/imgs/mobile-3.webp",
-                "/assets/uploads/project-kernel/imgs/mobile-4.webp",
-                "/assets/uploads/project-kernel/imgs/mobile-5.webp",
-                "/assets/uploads/project-kernel/imgs/mobile-6.webp",
-                "/assets/uploads/project-kernel/imgs/mobile-7.webp",
-                "/assets/uploads/project-kernel/imgs/mobile-8.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -1590,7 +1393,8 @@
                                         "React 19",
                                         "TypeScript",
                                         "Vite 6",
-                                        "Tailwind CSS 4"
+                                        "Tailwind CSS 4",
+                                        "Vercel"
                                     ]
                                 },
                                 {
@@ -1605,7 +1409,8 @@
                                         "GSAP 3.14",
                                         "Lenis",
                                         "Framer Motion",
-                                        "SplitType"
+                                        "SplitType",
+                                        "Vercel"
                                     ]
                                 }
                             ]
@@ -1732,6 +1537,7 @@
             "projectType": "LANDING PAGE",
             "dateCreated": "2026-01-14",
             "liveUrl": "https://vayora.vercel.app/",
+            "useLiveIframe": true,
             "githubUrl": "https://github.com/DominceAseberos/Vayora",
             "primaryBtnUrl": "/assets/markdowns/vayora-skills.md",
             "featuredInTunnel": true,
@@ -1739,42 +1545,9 @@
             "desktopImage": "/assets/uploads/project-vayora/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-vayora/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-vayora/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-vayora/imgs/desktop-2.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-3.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-4.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-5.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-6.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-7.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-8.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-9.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-10.webp",
-                "/assets/uploads/project-vayora/imgs/desktop-11.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-vayora/imgs/tablet-2.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-3.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-4.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-5.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-6.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-7.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-8.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-9.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-10.webp",
-                "/assets/uploads/project-vayora/imgs/tablet-11.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-vayora/imgs/mobile-2.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-3.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-4.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-5.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-6.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-7.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-8.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-9.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-10.webp",
-                "/assets/uploads/project-vayora/imgs/mobile-11.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -1819,7 +1592,8 @@
                                         "TypeScript",
                                         "Vite",
                                         "Tailwind CSS",
-                                        "shadcn/ui (Radix)"
+                                        "shadcn/ui (Radix)",
+                                        "Vercel"
                                     ]
                                 },
                                 {
@@ -1834,7 +1608,8 @@
                                         "Framer Motion",
                                         "Embla Carousel",
                                         "Vaul (Drawers)",
-                                        "Sonner (Toasts)"
+                                        "Sonner (Toasts)",
+                                        "Vercel"
                                     ]
                                 }
                             ]
@@ -1962,6 +1737,7 @@
             "projectType": "CASE STUDY",
             "dateCreated": "2025-10-09",
             "liveUrl": "https://banana-leaf-detector.onrender.com/",
+            "useLiveIframe": true,
             "githubUrl": "https://github.com/Domincee/Banana-Leaf-Detector",
             "primaryBtnUrl": "/assets/markdowns/banana-leaf-case-study.md",
             "featuredInTunnel": true,
@@ -1969,24 +1745,9 @@
             "desktopImage": "/assets/uploads/project-banana-leaf-detector/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-banana-leaf-detector/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-banana-leaf-detector/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-2.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-3.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-4.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/desktop-5.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-2.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-3.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-4.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/tablet-5.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-2.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-3.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-4.webp",
-                "/assets/uploads/project-banana-leaf-detector/imgs/mobile-5.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "images": [],
             "galleryImages": [],
             "assets": {
@@ -2191,32 +1952,15 @@
                 "mobile": "/assets/uploads/project-pixvault/imgs/mobile.webp"
             },
             "liveUrl": "https://live-pixvault.vercel.app/",
+            "useLiveIframe": true,
             "githubUrl": "https://github.com/DominceAseberos/live-pixvault",
             "primaryBtnUrl": "/assets/markdowns/pixvault-architecture.md",
             "desktopImage": "/assets/uploads/project-pixvault/imgs/desktop.webp",
             "tabletImage": "/assets/uploads/project-pixvault/imgs/tablet.webp",
             "mobileImage": "/assets/uploads/project-pixvault/imgs/mobile.webp",
-            "desktopGallery": [
-                "/assets/uploads/project-pixvault/imgs/desktop-2.webp",
-                "/assets/uploads/project-pixvault/imgs/desktop-3.webp",
-                "/assets/uploads/project-pixvault/imgs/desktop-4.webp",
-                "/assets/uploads/project-pixvault/imgs/desktop-5.webp",
-                "/assets/uploads/project-pixvault/imgs/desktop-6.webp"
-            ],
-            "tabletGallery": [
-                "/assets/uploads/project-pixvault/imgs/tablet-2.webp",
-                "/assets/uploads/project-pixvault/imgs/tablet-3.webp",
-                "/assets/uploads/project-pixvault/imgs/tablet-4.webp",
-                "/assets/uploads/project-pixvault/imgs/tablet-5.webp",
-                "/assets/uploads/project-pixvault/imgs/tablet-6.webp"
-            ],
-            "mobileGallery": [
-                "/assets/uploads/project-pixvault/imgs/mobile-2.webp",
-                "/assets/uploads/project-pixvault/imgs/mobile-3.webp",
-                "/assets/uploads/project-pixvault/imgs/mobile-4.webp",
-                "/assets/uploads/project-pixvault/imgs/mobile-5.webp",
-                "/assets/uploads/project-pixvault/imgs/mobile-6.webp"
-            ],
+            "desktopGallery": [],
+            "tabletGallery": [],
+            "mobileGallery": [],
             "featuredInTunnel": true,
             "dateCreated": "2026-05-01",
             "contentSections": [

@@ -13,7 +13,13 @@ graph TD
     Client_Web -->|Auth| Auth
 ```
 
-## 2. Tech Stack & Trade-offs
+## 2. System Architecture
+![System Architecture](/assets/uploads/project-catsy/imgs/architecture.png)
+
+## 3. Data Flow Diagram
+![Data Flow Diagram](/assets/uploads/project-catsy/imgs/dataflow.png)
+
+## 4. Tech Stack & Trade-offs
 *   **Backend: Python (FastAPI)**
     *   *Trade-off:* Chosen over Node/Express due to Python's strict type-hinting via Pydantic and rapid API generation (automatic Swagger docs). It natively handles complex asynchronous task queues (like SSE streaming for order updates) with `asyncio`.
 *   **Web: React + Vite 7**
@@ -23,19 +29,19 @@ graph TD
 *   **Database: Supabase (PostgreSQL)**
     *   *Trade-off:* Provides out-of-the-box Row Level Security (RLS), JWT-based authentication, and realtime webhooks. It acts as both the database and the auth provider, reducing architectural fragmentation.
 
-## 3. State Management & Security
+## 5. State Management & Security
 **Authentication Flow:**
 Authentication is decoupled from the FastAPI backend. Both the web and mobile clients authenticate directly via **Supabase Auth** to receive a JWT. The backend API is secured using middleware that decodes and validates this JWT on every request, verifying the user's role (Customer vs. Staff) before allowing database mutations.
 
 **Mobile Local State (Drift & Freezed):**
 The Flutter POS app requires offline resilience. It uses `Drift` (a SQLite wrapper for Dart) to cache the menu and active tables locally. Complex state models are strongly typed and made immutable using `Freezed`.
 
-## 4. Core Business Logic: Network Independence
+## 6. Core Business Logic: Network Independence
 The most complex architectural challenge was ensuring the Flutter POS app could seamlessly connect to the FastAPI backend dynamically, regardless of the network environment (Local Dev, Physical Phone on Wi-Fi, or Production).
 *   **Dynamic API Bridging:** The app injects `--dart-define=API_BRIDGE_BASE_URL` at compile-time to allow developers to hot-swap between `localhost`, a physical `LAN IP`, or the production `Render` URL without changing hardcoded strings.
 *   **Order Streaming:** The POS uses Server-Sent Events (SSE) from FastAPI to receive instant updates when a customer places an order via the React web app.
 
-## 5. Deployment & CI/CD
+## 7. Deployment & CI/CD
 The ecosystem is deployed across three distinct platforms:
 1.  **Frontend (catsy-web):** Deployed to **Vercel** as a static build, optimizing edge-caching for customer assets.
 2.  **Backend (catsy-backend):** Deployed to **Render** via a Blueprint `render.yaml` configuration, exposing the Python Uvicorn server on `$PORT`.
