@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef, useState, useEffect } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { FiMonitor, FiTablet, FiSmartphone } from 'react-icons/fi';
 
@@ -83,7 +83,7 @@ const ProjectDetailsPage = ({ isAdmin = false, initialProject = null }) => {
         }
     };
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!rootRef.current) return;
         
         // Small RAF delay so the DOM has fully painted before measuring

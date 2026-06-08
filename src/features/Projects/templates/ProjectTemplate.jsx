@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { FiMonitor, FiTablet, FiSmartphone, FiArrowLeft, FiCode, FiExternalLink, FiGithub } from 'react-icons/fi';
 import ParticleBackground from '../../../components/ParticleBackground';
 import NavBar from '../../../components/NavBar';
