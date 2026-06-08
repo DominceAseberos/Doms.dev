@@ -3,8 +3,8 @@ import './ProjectCard.css';
 
 const ProjectCard = ({ project, onView }) => {
     const t = project.theme || {};
-    const cardImage = project.mainImage || project.images?.[0] || project.image || '/assets/projects/cover/BananaLeaf.png';
-    const isPlaceholderImage = typeof cardImage === 'string' && /placehold\.co|placeholder/i.test(cardImage);
+    const cardImage = project.mainImage || project.images?.[0] || project.image || '';
+    const isPlaceholderImage = !cardImage || (typeof cardImage === 'string' && /placehold\.co|placeholder/i.test(cardImage));
 
     return (
         <a
