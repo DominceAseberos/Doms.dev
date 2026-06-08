@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 
 const LiveIframePreview = ({ project, activeView }) => {
     const [isIframeInteractive, setIsIframeInteractive] = useState(false);
@@ -29,6 +30,21 @@ const LiveIframePreview = ({ project, activeView }) => {
         document.addEventListener('astro:before-preparation', resetState);
         return () => document.removeEventListener('astro:before-preparation', resetState);
     }, [project?.id]);
+
+    // Magic Card Glow State
+    const mouseX = useMotionValue(-500);
+    const mouseY = useMotionValue(-500);
+
+    const handleMouseMoveGlow = (e) => {
+        const { left, top } = e.currentTarget.getBoundingClientRect();
+        mouseX.set(e.clientX - left);
+        mouseY.set(e.clientY - top);
+    };
+
+    const handleMouseLeaveGlow = () => {
+        mouseX.set(-500);
+        mouseY.set(-500);
+    };
 
     const handlePointerDown = (e) => {
         setIsDragging(true);
@@ -129,29 +145,43 @@ const LiveIframePreview = ({ project, activeView }) => {
                     </button>
                 </div>
             )}
-            <div className="relative group p-0 overflow-hidden bg-black w-full" style={{ height: '75vh', minHeight: '600px', borderRadius: '24px' }}>
-                <iframe 
-                    ref={desktopIframeRef}
-                    src={project.liveUrl} 
-                    title={`${project.title} Live Preview`}
-                    className="h-full border-none"
-                    loading="lazy"
-                    style={{ 
-                        width: 'calc(100% + 20px)',
-                        pointerEvents: isIframeInteractive ? 'auto' : 'none' 
+            {/* Desktop View container */}
+            <div 
+                className={`hoverable transition-all duration-500 w-full ${isIframeInteractive ? 'opacity-100' : 'opacity-80 cursor-pointer'} aspect-video relative rounded-[34px] shadow-[0_0_50px_rgba(0,0,0,0.6)] bg-white/5 group p-[2px]`}
+                onMouseMove={handleMouseMoveGlow}
+                onMouseLeave={handleMouseLeaveGlow}
+            >
+                {/* Magic Card Glowing Border Effect */}
+                <motion.div
+                    className="pointer-events-none absolute inset-0 rounded-[34px] opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-0"
+                    style={{
+                        background: useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(200, 255, 62, 0.8), transparent 100%)`,
                     }}
                 />
-                {!isIframeInteractive && (
-                    <div 
-                        className="absolute inset-0 z-10 flex items-center justify-center transition-all cursor-pointer bg-black/10 hover:bg-black/30 backdrop-blur-[1px] hover:backdrop-blur-[2px]" 
-                        onClick={() => setIsIframeInteractive(true)}
-                    >
-                        <button className="px-6 py-3 bg-[#c8ff3e] text-black font-bold rounded-full shadow-[0_0_20px_rgba(200,255,62,0.3)] flex items-center gap-2 transform hover:scale-105 transition-transform uppercase tracking-wider text-sm">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            Live Interact
-                        </button>
-                    </div>
-                )}
+
+                <div className="relative z-10 w-full h-full rounded-[32px] overflow-hidden bg-black">
+                    <iframe 
+                        ref={desktopIframeRef}
+                        src={project.liveUrl} 
+                        title={`${project.title} Desktop Preview`}
+                        className="w-full h-full border-none bg-white"
+                        loading="lazy"
+                        style={{ pointerEvents: isIframeInteractive ? 'auto' : 'none' }}
+                    />
+                    
+                    {/* Interaction Overlay */}
+                    {!isIframeInteractive && (
+                        <div 
+                            className="absolute inset-0 z-20 flex items-center justify-center transition-all group-hover:bg-black/40 backdrop-blur-[2px] group-hover:backdrop-blur-md"
+                            onClick={() => setIsIframeInteractive(true)}
+                        >
+                            <button className="px-6 py-3 bg-[#c8ff3e] text-black font-bold uppercase tracking-wider rounded-full shadow-[0_0_30px_rgba(200,255,62,0.4)] transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                Live Interact
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
             
             {/* Mobile Composite Iframe - Draggable Wrapper */}
@@ -170,36 +200,51 @@ const LiveIframePreview = ({ project, activeView }) => {
                 </div>
 
                 {/* The Mobile Phone */}
-                <div className="w-[430px] h-[932px] rounded-[50px] border-[16px] border-[#121212] shadow-2xl bg-black overflow-hidden relative">
-                    {/* Dynamic Island Drag Handle */}
-                    <div 
-                        className="absolute top-2 left-1/2 -translate-x-1/2 w-[120px] h-[35px] bg-black rounded-full z-50 cursor-grab active:cursor-grabbing flex items-center justify-center hover:bg-[#1a1a1a] transition-colors shadow-inner group"
-                        onPointerDown={handlePointerDown}
-                        onPointerMove={handlePointerMove}
-                        onPointerUp={handlePointerUp}
-                        onPointerCancel={handlePointerUp}
-                        title="Drag to move"
-                    >
-                        <div className="w-10 h-1.5 bg-[#333] rounded-full group-hover:bg-[#666] transition-colors" />
-                    </div>
-
-                    <iframe 
-                        ref={mobileIframeRef}
-                        src={project.liveUrl} 
-                        title={`${project.title} Mobile Preview`}
-                        className="h-full border-none bg-white"
-                        loading="lazy"
-                        style={{ 
-                            width: 'calc(100% + 20px)',
-                            pointerEvents: isIframeInteractive ? 'auto' : 'none' 
+                <div 
+                    className="hoverable w-[430px] h-[932px] rounded-[50px] shadow-2xl bg-[#121212] relative group p-[16px]"
+                    onMouseMove={handleMouseMoveGlow}
+                    onMouseLeave={handleMouseLeaveGlow}
+                >
+                    {/* Magic Card Glowing Bezel Effect */}
+                    <motion.div
+                        className="pointer-events-none absolute inset-0 rounded-[50px] opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-0"
+                        style={{
+                            background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(200, 255, 62, 0.4), transparent 100%)`,
                         }}
                     />
-                    {!isIframeInteractive && (
+
+                    {/* Phone Inner Container */}
+                    <div className="relative w-full h-full rounded-[34px] overflow-hidden bg-black z-10 border border-white/5">
+                        {/* Dynamic Island Drag Handle */}
                         <div 
-                            className="absolute inset-0 z-10 flex items-center justify-center transition-all cursor-pointer bg-black/10 hover:bg-black/30 backdrop-blur-[1px] hover:backdrop-blur-[2px]" 
-                            onClick={() => setIsIframeInteractive(true)}
+                            className="absolute top-2 left-1/2 -translate-x-1/2 w-[120px] h-[35px] bg-black rounded-full z-50 cursor-grab active:cursor-grabbing flex items-center justify-center hover:bg-[#1a1a1a] transition-colors shadow-inner group/handle"
+                            onPointerDown={handlePointerDown}
+                            onPointerMove={handlePointerMove}
+                            onPointerUp={handlePointerUp}
+                            onPointerCancel={handlePointerUp}
+                            title="Drag to move"
+                        >
+                            <div className="w-10 h-1.5 bg-[#333] rounded-full group-hover/handle:bg-[#666] transition-colors" />
+                        </div>
+
+                        <iframe 
+                            ref={mobileIframeRef}
+                            src={project.liveUrl} 
+                            title={`${project.title} Mobile Preview`}
+                            className="h-full border-none bg-white"
+                            loading="lazy"
+                            style={{ 
+                                width: 'calc(100% + 20px)',
+                                pointerEvents: isIframeInteractive ? 'auto' : 'none' 
+                            }}
                         />
-                    )}
+                        {!isIframeInteractive && (
+                            <div 
+                                className="absolute inset-0 z-20 flex items-center justify-center transition-all cursor-pointer bg-black/10 hover:bg-black/30 backdrop-blur-[1px] hover:backdrop-blur-[2px]" 
+                                onClick={() => setIsIframeInteractive(true)}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
