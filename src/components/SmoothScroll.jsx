@@ -38,7 +38,14 @@ export default function SmoothScroll() {
         // Make lenis globally available for other components (e.g., useLightPhysics or AboutPage)
         window.lenis = lenis;
 
+        const handlePageLoad = () => {
+            lenis.scrollTo(0, { immediate: true });
+            ScrollTrigger.refresh();
+        };
+        document.addEventListener('astro:page-load', handlePageLoad);
+
         return () => {
+            document.removeEventListener('astro:page-load', handlePageLoad);
             window.lenis = null;
             gsap.ticker.remove((time) => {
                 lenis.raf(time * 1000);

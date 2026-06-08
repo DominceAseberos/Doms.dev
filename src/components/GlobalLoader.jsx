@@ -1,34 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import AnimatedLogo from './AnimatedLogo';
-import useLoadingStore from '../store/useLoadingStore';
 
 const GlobalLoader = () => {
-    const isLoading = useLoadingStore((state) => state.isLoading);
-    const [renderLoader, setRenderLoader] = useState(isLoading);
-    const [fade, setFade] = useState(!isLoading);
+    // We start as loading initially until Astro's page-load event tells us we are ready.
+    const [renderLoader, setRenderLoader] = useState(true);
+    const [fade, setFade] = useState(false);
 
     useEffect(() => {
-        if (isLoading) {
-            const timer = setTimeout(() => {
-                useLoadingStore.getState().setLoading(false);
-            }, 800);
-            return () => clearTimeout(timer);
-        }
-    }, [isLoading]);
-
-    useEffect(() => {
-        if (isLoading) {
+        const handleStart = () => {
             setRenderLoader(true);
-            setFade(false); // Make it visible instantly when loading is true
-        } else {
-            // Initiate fade out when loading becomes false
+            setFade(false); // Instantly show
+        };
+
+        const handleStop = () => {
+            // Trigger fade out
             setFade(true);
-            const timer = setTimeout(() => {
-                setRenderLoader(false); // Remove from DOM after fade completes
-            }, 500);
-            return () => clearTimeout(timer);
+            // Remove from DOM after transition completes
+            setTimeout(() => setRenderLoader(false), 500);
+        };
+
+        // If we are already loaded when this runs, hide it.
+        // For the very first load, the browser might have already fired DOMContentLoaded
+        if (document.readyState === 'complete') {
+            handleStop();
         }
-    }, [isLoading]);
+
+        document.addEventListener('astro:before-preparation', handleStart);
+        document.addEventListener('astro:page-load', handleStop);
+
+        // Fallback for initial load if not caught by page-load
+        window.addEventListener('load', handleStop);
+
+        return () => {
+            document.removeEventListener('astro:before-preparation', handleStart);
+            document.removeEventListener('astro:page-load', handleStop);
+            window.removeEventListener('load', handleStop);
+        };
+    }, []);
 
     if (!renderLoader) return null;
 

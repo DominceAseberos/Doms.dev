@@ -127,12 +127,12 @@ const {
     </script>
 </head>
 <body>
-    <GlobalLoader client:load />
-    <SmoothScroll client:load />
-    <LightEnvironment client:load />
-    <ThemeBulb client:load />
+    <GlobalLoader client:load transition:persist="loader" />
+    <SmoothScroll client:load transition:persist="scroll" />
+    <LightEnvironment client:load transition:persist="light" />
+    <ThemeBulb client:load transition:persist="bulb" />
     <div class="nav-hover-zone" aria-hidden="true" ></div>
-    <NavBar client:load />
+    <NavBar client:load transition:persist="nav" />
     
     <div id="smooth-wrapper" class="min-h-screen selection:bg-red-500/30">
         <div id="smooth-content">

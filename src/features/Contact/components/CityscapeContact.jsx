@@ -30,10 +30,10 @@ const MID_IDS = ['m-teal-office', 'm-green-step', 'm-dark-apt', 'm-office-grid',
 const SML_IDS = ['s-pillar', 's-left-h', 's-brick-t', 's-thin', 's-teal-low', 's-corner',
   's-sheds', 's-light', 's-roof', 's-cyan', 's-teal-strip', 's-hr-strip',
   's-cyan-br', 's-pale-apt', 's-blue-bridge'];
-const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-const EMAILJS_OWNER_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_OWNER_TEMPLATE_ID;
-const EMAILJS_AUTOREPLY_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID;
+const EMAILJS_SERVICE_ID = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_PUBLIC_KEY = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const EMAILJS_OWNER_TEMPLATE_ID = import.meta.env.PUBLIC_EMAILJS_OWNER_TEMPLATE_ID || import.meta.env.VITE_EMAILJS_OWNER_TEMPLATE_ID;
+const EMAILJS_AUTOREPLY_TEMPLATE_ID = import.meta.env.PUBLIC_EMAILJS_AUTOREPLY_TEMPLATE_ID || import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID;
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6Le-rPksAAAAAGjZyU9RoImL18m2WCc9m0UxsKiR';
 const MIN_SUBMIT_DELAY_MS = 2500;
 const SUBMIT_COOLDOWN_MS = 60_000;
