@@ -1,0 +1,420 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif}
+.wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;padding:8px 0}
+.card{position:relative;border-radius:20px;padding:28px;min-height:260px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;cursor:pointer;background:#0b0b0d;border:1px solid rgba(255,255,255,0.06);transition:transform 0.5s cubic-bezier(0.23,1,0.32,1),border-color 0.4s ease}
+.card:hover{transform:translateY(-6px) scale(1.01)}
+.bg-canvas{position:absolute;inset:0;border-radius:20px;overflow:hidden;pointer-events:none}
+canvas.bg{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.6s ease}
+.card:hover canvas.bg{opacity:1}
+.noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.4}
+.top-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;position:relative;z-index:2}
+.badge{font-size:10px;font-weight:600;letter-spacing:0.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase}
+.b1{background:rgba(56,139,229,0.15);color:#6ab0f5;border:0.5px solid rgba(56,139,229,0.3)}
+.b2{background:rgba(110,200,120,0.15);color:#7fcc88;border:0.5px solid rgba(110,200,120,0.3)}
+.b3{background:rgba(160,130,230,0.15);color:#c0a8f0;border:0.5px solid rgba(160,130,230,0.3)}
+.b4{background:rgba(240,170,60,0.15);color:#f5c060;border:0.5px solid rgba(240,170,60,0.3)}
+.num{font-size:11px;font-weight:500;color:rgba(255,255,255,0.18);letter-spacing:0.06em}
+.viz-zone{height:90px;position:relative;margin-bottom:18px;z-index:2}
+.title{font-size:17px;font-weight:500;color:#f2f2f5;margin-bottom:6px;position:relative;z-index:2;letter-spacing:-0.01em}
+.desc{font-size:12px;color:rgba(255,255,255,0.38);line-height:1.65;position:relative;z-index:2;font-weight:300}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;position:relative;z-index:2}
+.tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:12px;letter-spacing:0.03em;border:0.5px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);transition:color 0.3s,border-color 0.3s}
+.card:hover .tag{color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.15)}
+.c1:hover{border-color:rgba(56,139,229,0.35)}
+.c2:hover{border-color:rgba(110,200,120,0.35)}
+.c3:hover{border-color:rgba(160,130,230,0.35)}
+.c4:hover{border-color:rgba(240,170,60,0.35)}
+.line-anim{position:absolute;height:0.5px;background:linear-gradient(90deg,transparent,rgba(56,139,229,0.8),transparent);width:60%;left:-60%;top:0;animation:scanline 3s ease-in-out infinite;opacity:0}
+.card:hover .line-anim{opacity:1}
+@keyframes scanline{0%{left:-60%;top:20%}50%{left:110%;top:80%}100%{left:-60%;top:20%}}
+</style>
+
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Premium motion portfolio cards: 3-tier system, machine learning, NLP, and mobile app</h2>
+
+<div class="wrap" id="wrap">
+
+<div class="card c1" id="card1">
+  <div class="bg-canvas"><canvas class="bg" id="cv1"></canvas><div class="noise"></div><div class="line-anim"></div></div>
+  <div class="top-row"><span class="badge b1">Architecture</span><span class="num">01 / 04</span></div>
+  <div class="viz-zone" id="vz1"></div>
+  <div>
+    <div class="title">3-tier system</div>
+    <div class="desc">Fullstack architecture with presentation, business logic, and data layers each independently deployable.</div>
+    <div class="tags"><span class="tag">Frontend</span><span class="tag">Backend</span><span class="tag">Database</span><span class="tag">REST API</span></div>
+  </div>
+</div>
+
+<div class="card c2" id="card2">
+  <div class="bg-canvas"><canvas class="bg" id="cv2"></canvas><div class="noise"></div><div class="line-anim" style="background:linear-gradient(90deg,transparent,rgba(110,200,120,0.8),transparent)"></div></div>
+  <div class="top-row"><span class="badge b2">ML / AI</span><span class="num">02 / 04</span></div>
+  <div class="viz-zone" id="vz2"></div>
+  <div>
+    <div class="title">Machine learning</div>
+    <div class="desc">KNN and CNN models trained on real-world samples for visual disease classification.</div>
+    <div class="tags"><span class="tag">KNN</span><span class="tag">CNN</span><span class="tag">Computer vision</span><span class="tag">Dataset</span></div>
+  </div>
+</div>
+
+<div class="card c3" id="card3">
+  <div class="bg-canvas"><canvas class="bg" id="cv3"></canvas><div class="noise"></div><div class="line-anim" style="background:linear-gradient(90deg,transparent,rgba(160,130,230,0.8),transparent)"></div></div>
+  <div class="top-row"><span class="badge b3">NLP</span><span class="num">03 / 04</span></div>
+  <div class="viz-zone" id="vz3"></div>
+  <div>
+    <div class="title">NLP &amp; language modeling</div>
+    <div class="desc">Topic modeling across Tagalog, English, and Bisaya with multilingual token processing.</div>
+    <div class="tags"><span class="tag">Tagalog</span><span class="tag">English</span><span class="tag">Bisaya</span><span class="tag">Topic model</span></div>
+  </div>
+</div>
+
+<div class="card c4" id="card4">
+  <div class="bg-canvas"><canvas class="bg" id="cv4"></canvas><div class="noise"></div><div class="line-anim" style="background:linear-gradient(90deg,transparent,rgba(240,170,60,0.8),transparent)"></div></div>
+  <div class="top-row"><span class="badge b4">Mobile</span><span class="num">04 / 04</span></div>
+  <div class="viz-zone" id="vz4"></div>
+  <div>
+    <div class="title">Mobile app</div>
+    <div class="desc">Native mobile experience with fluid navigation, gesture-driven UI, and responsive components.</div>
+    <div class="tags"><span class="tag">UI / UX</span><span class="tag">Native</span><span class="tag">Gestures</span><span class="tag">Responsive</span></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const easeInOut = t => t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const easeOut = t => 1-Math.pow(1-t,3);
+const lerp = (a,b,t) => a+(b-a)*t;
+
+function initCard1() {
+  const zone = document.getElementById('vz1');
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','100%');svg.setAttribute('height','90');svg.setAttribute('viewBox','0 0 280 90');
+  svg.style.overflow='visible';
+  zone.appendChild(svg);
+
+  const layers = [
+    {y:5,label:'Presentation',color:'rgba(56,139,229,0.9)',bg:'rgba(56,139,229,0.12)',border:'rgba(56,139,229,0.4)'},
+    {y:34,label:'Business logic',color:'rgba(56,139,229,0.7)',bg:'rgba(56,139,229,0.08)',border:'rgba(56,139,229,0.25)'},
+    {y:63,label:'Data layer',color:'rgba(56,139,229,0.5)',bg:'rgba(56,139,229,0.05)',border:'rgba(56,139,229,0.18)'}
+  ];
+
+  const rects=[],texts=[],connLines=[];
+  layers.forEach((l,i)=>{
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x','0');r.setAttribute('y',l.y);r.setAttribute('width','280');r.setAttribute('height','22');
+    r.setAttribute('rx','5');r.setAttribute('fill',l.bg);r.setAttribute('stroke',l.border);r.setAttribute('stroke-width','0.5');
+    r.style.transition='all 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+    const tx = document.createElementNS('http://www.w3.org/2000/svg','text');
+    tx.setAttribute('x','14');tx.setAttribute('y',l.y+15);
+    tx.setAttribute('fill',l.color);tx.setAttribute('font-size','11');tx.setAttribute('font-weight','500');tx.setAttribute('font-family','Inter,sans-serif');
+    tx.textContent=l.label;
+    g.appendChild(r);g.appendChild(tx);svg.appendChild(g);
+    rects.push(r);texts.push(tx);
+
+    if(i<2){
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1','140');line.setAttribute('y1',l.y+22);line.setAttribute('x2','140');line.setAttribute('y2',l.y+29);
+      line.setAttribute('stroke','rgba(56,139,229,0.4)');line.setAttribute('stroke-width','0.5');
+      line.setAttribute('stroke-dasharray','3 2');
+      line.style.transformOrigin='140px '+(l.y+22)+'px';
+      line.style.transform='scaleY(0)';
+      line.style.transition='transform 0.3s ease';
+      svg.appendChild(line);connLines.push(line);
+    }
+
+    const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('cx','270');dot.setAttribute('cy',l.y+11);dot.setAttribute('r','3');
+    dot.setAttribute('fill',l.color);dot.setAttribute('opacity','0.6');
+    dot.style.transition='r 0.3s ease, opacity 0.3s ease';
+    svg.appendChild(dot);
+  });
+
+  const card = document.getElementById('card1');
+  let entered=false,seq=null;
+  card.addEventListener('mouseenter',()=>{
+    entered=true;
+    rects[0].setAttribute('transform','translate(0,-7)');texts[0].setAttribute('transform','translate(0,-7)');
+    rects[2].setAttribute('transform','translate(0,7)');texts[2].setAttribute('transform','translate(0,7)');
+    connLines.forEach(l=>l.style.transform='scaleY(1)');
+    setTimeout(()=>{
+      svg.querySelectorAll('circle').forEach(c=>{c.setAttribute('r','5');c.setAttribute('opacity','1')});
+    },200);
+  });
+  card.addEventListener('mouseleave',()=>{
+    entered=false;
+    rects[0].setAttribute('transform','translate(0,0)');texts[0].setAttribute('transform','translate(0,0)');
+    rects[2].setAttribute('transform','translate(0,0)');texts[2].setAttribute('transform','translate(0,0)');
+    connLines.forEach(l=>l.style.transform='scaleY(0)');
+    svg.querySelectorAll('circle').forEach(c=>{c.setAttribute('r','3');c.setAttribute('opacity','0.6')});
+  });
+}
+
+function initCard2() {
+  const zone = document.getElementById('vz2');
+  const canvas = document.createElement('canvas');
+  canvas.width=300;canvas.height=90;canvas.style.cssText='width:100%;height:90px;display:block';
+  zone.appendChild(canvas);
+  const ctx=canvas.getContext('2d');
+
+  const pts=[];
+  const clusters=[
+    {cx:60,cy:38,color:'rgba(110,200,120,',r:22,n:9},
+    {cx:150,cy:55,color:'rgba(56,139,229,',r:20,n:8},
+    {cx:240,cy:32,color:'rgba(160,130,230,',r:18,n:7}
+  ];
+
+  clusters.forEach(cl=>{
+    for(let i=0;i<cl.n;i++){
+      const angle=Math.random()*Math.PI*2;
+      const dist=Math.random()*cl.r;
+      pts.push({
+        ox:cl.cx+Math.cos(angle)*dist*2.5,
+        oy:cl.cy+Math.sin(angle)*dist*2.5,
+        tx:cl.cx+Math.cos(angle)*dist,
+        ty:cl.cy+Math.sin(angle)*dist,
+        x:0,y:0,
+        color:cl.color,
+        r:2.5+Math.random()*1.5
+      });
+    }
+  });
+  pts.forEach(p=>{p.x=p.ox;p.y=p.oy});
+
+  let prog=0,dir=0,raf=null,active=false;
+
+  function draw(){
+    ctx.clearRect(0,0,300,90);
+    pts.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color+'0.85)';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r+2,0,Math.PI*2);
+      ctx.strokeStyle=p.color+'0.2)';
+      ctx.lineWidth=1;
+      ctx.stroke();
+    });
+  }
+
+  function animate(){
+    if(active && prog<1) prog=Math.min(1,prog+0.02);
+    if(!active && prog>0) prog=Math.max(0,prog-0.015);
+    const t=easeInOut(prog);
+    pts.forEach(p=>{p.x=lerp(p.ox,p.tx,t);p.y=lerp(p.oy,p.ty,t)});
+    draw();
+    raf=requestAnimationFrame(animate);
+  }
+  animate();
+
+  const card=document.getElementById('card2');
+  card.addEventListener('mouseenter',()=>active=true);
+  card.addEventListener('mouseleave',()=>active=false);
+}
+
+function initCard3() {
+  const zone = document.getElementById('vz3');
+  const words=[
+    {text:'salita',lang:'tl',x:0,y:8},
+    {text:'word',lang:'en',x:90,y:8},
+    {text:'pulong',lang:'ceb',x:168,y:8},
+    {text:'modelo',lang:'tl',x:8,y:42},
+    {text:'language',lang:'en',x:82,y:42},
+    {text:'bisaya',lang:'ceb',x:196,y:42},
+    {text:'saloobin',lang:'tl',x:0,y:76},
+    {text:'topic',lang:'en',x:108,y:76},
+    {text:'buhat',lang:'ceb',x:172,y:76},
+  ];
+  const colors={tl:'rgba(160,130,230,',en:'rgba(100,170,240,',ceb:'rgba(200,140,180,'};
+
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','100%');svg.setAttribute('height','90');svg.setAttribute('viewBox','0 0 280 90');
+  zone.appendChild(svg);
+
+  const els=[];
+  words.forEach((w,i)=>{
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    const tx=document.createElementNS('http://www.w3.org/2000/svg','text');
+    const tw=w.text.length*7+16;
+    r.setAttribute('x',w.x);r.setAttribute('y',w.y);r.setAttribute('width',tw);r.setAttribute('height','20');
+    r.setAttribute('rx','10');r.setAttribute('fill',colors[w.lang]+'0.1)');r.setAttribute('stroke',colors[w.lang]+'0.3)');r.setAttribute('stroke-width','0.5');
+    tx.setAttribute('x',w.x+tw/2);tx.setAttribute('y',w.y+14);
+    tx.setAttribute('text-anchor','middle');tx.setAttribute('fill',colors[w.lang]+'0.9)');
+    tx.setAttribute('font-size','10');tx.setAttribute('font-weight','500');tx.setAttribute('font-family','Inter,sans-serif');
+    tx.textContent=w.text;
+    g.appendChild(r);g.appendChild(tx);
+    g.style.opacity='0.6';
+    g.style.transition=`opacity 0.4s ease ${i*40}ms, transform 0.4s cubic-bezier(0.34,1.56,0.64,1) ${i*40}ms`;
+    svg.appendChild(g);els.push(g);
+  });
+
+  let ticking=false;
+  const card=document.getElementById('card3');
+  card.addEventListener('mouseenter',()=>{
+    els.forEach((el,i)=>{
+      el.style.opacity='0';el.style.transform='translateY(-6px)';
+      setTimeout(()=>{el.style.opacity='1';el.style.transform='translateY(0)'},i*50+60);
+    });
+  });
+  card.addEventListener('mouseleave',()=>{
+    els.forEach(el=>{el.style.opacity='0.6'});
+  });
+}
+
+function initCard4() {
+  const zone=document.getElementById('vz4');
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','100%');svg.setAttribute('height','90');svg.setAttribute('viewBox','0 0 280 90');
+  zone.appendChild(svg);
+
+  const phoneW=44,phoneH=78,phoneX=118,phoneY=6,rx=7;
+  const frame=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  frame.setAttribute('x',phoneX);frame.setAttribute('y',phoneY);frame.setAttribute('width',phoneW);frame.setAttribute('height',phoneH);
+  frame.setAttribute('rx',rx);frame.setAttribute('fill','rgba(240,170,60,0.07)');
+  frame.setAttribute('stroke','rgba(240,170,60,0.5)');frame.setAttribute('stroke-width','1');
+  frame.style.transition='stroke 0.3s ease';
+  svg.appendChild(frame);
+
+  const notch=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  notch.setAttribute('x',phoneX+14);notch.setAttribute('y',phoneY+4);notch.setAttribute('width',16);notch.setAttribute('height',4);
+  notch.setAttribute('rx','2');notch.setAttribute('fill','rgba(240,170,60,0.3)');
+  svg.appendChild(notch);
+
+  const bars=[
+    {x:phoneX+6,y:phoneY+18,w:32,h:5,delay:0},
+    {x:phoneX+6,y:phoneY+29,w:24,h:4,delay:80},
+    {x:phoneX+6,y:phoneY+39,w:28,h:4,delay:160},
+    {x:phoneX+6,y:phoneY+49,w:20,h:4,delay:240},
+  ];
+  const barEls=[];
+  bars.forEach(b=>{
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',b.x);r.setAttribute('y',b.y);r.setAttribute('width',0);r.setAttribute('height',b.h);
+    r.setAttribute('rx','2');r.setAttribute('fill','rgba(240,170,60,0.55)');
+    r.style.transition=`width 0.4s cubic-bezier(0.34,1.56,0.64,1) ${b.delay}ms`;
+    svg.appendChild(r);barEls.push({el:r,w:b.w});
+  });
+
+  const homeBtn=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  homeBtn.setAttribute('cx',phoneX+phoneW/2);homeBtn.setAttribute('cy',phoneY+phoneH-7);homeBtn.setAttribute('r',0);
+  homeBtn.setAttribute('fill','rgba(240,170,60,0.4)');homeBtn.setAttribute('stroke','rgba(240,170,60,0.6)');homeBtn.setAttribute('stroke-width','0.5');
+  homeBtn.style.transition='r 0.35s cubic-bezier(0.34,1.56,0.64,1) 0.35s';
+  svg.appendChild(homeBtn);
+
+  const ripple=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  ripple.setAttribute('cx',phoneX+phoneW/2);ripple.setAttribute('cy',phoneY+phoneH/2);ripple.setAttribute('r',0);
+  ripple.setAttribute('fill','none');ripple.setAttribute('stroke','rgba(240,170,60,0.2)');ripple.setAttribute('stroke-width','1');
+  svg.appendChild(ripple);
+
+  const leftBars=[];
+  [[0,20,5],[0,32,5],[0,44,5],[0,56,5]].forEach((b,i)=>{
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',b[0]);r.setAttribute('y',b[1]);r.setAttribute('width',0);r.setAttribute('height',b[2]);
+    r.setAttribute('rx','2');r.setAttribute('fill','rgba(240,170,60,0.2)');
+    r.style.transition=`width 0.35s ease ${i*60+300}ms`;
+    svg.appendChild(r);leftBars.push({el:r,w:60+Math.random()*40});
+  });
+  const rightBars=[];
+  [[220,20,5],[220,32,5],[220,44,5]].forEach((b,i)=>{
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x',b[0]);r.setAttribute('y',b[1]);r.setAttribute('width',0);r.setAttribute('height',b[2]);
+    r.setAttribute('rx','2');r.setAttribute('fill','rgba(240,170,60,0.15)');
+    r.style.transition=`width 0.3s ease ${i*50+400}ms`;
+    svg.appendChild(r);rightBars.push({el:r,w:40+Math.random()*30});
+  });
+
+  const card=document.getElementById('card4');
+  let rippleRaf=null;
+  card.addEventListener('mouseenter',()=>{
+    frame.setAttribute('stroke','rgba(240,170,60,0.9)');
+    barEls.forEach(b=>b.el.setAttribute('width',b.w));
+    homeBtn.setAttribute('r',4);
+    leftBars.forEach(b=>b.el.setAttribute('width',b.w));
+    rightBars.forEach(b=>b.el.setAttribute('width',b.w));
+    let rr=0,maxR=70,start=null;
+    function animRipple(ts){
+      if(!start)start=ts;
+      rr=((ts-start)/800)*maxR;
+      const op=Math.max(0,0.3-(rr/maxR)*0.3);
+      ripple.setAttribute('r',rr);ripple.setAttribute('stroke-width',1-rr/maxR);
+      ripple.setAttribute('opacity',op);
+      if(rr<maxR)rippleRaf=requestAnimationFrame(animRipple);
+    }
+    rippleRaf=requestAnimationFrame(animRipple);
+  });
+  card.addEventListener('mouseleave',()=>{
+    frame.setAttribute('stroke','rgba(240,170,60,0.5)');
+    barEls.forEach(b=>b.el.setAttribute('width',0));
+    homeBtn.setAttribute('r',0);
+    leftBars.forEach(b=>b.el.setAttribute('width',0));
+    rightBars.forEach(b=>b.el.setAttribute('width',0));
+    cancelAnimationFrame(rippleRaf);
+    ripple.setAttribute('r',0);
+  });
+}
+
+function initBgCanvas(id,color){
+  const cv=document.getElementById(id);
+  const card=cv.parentElement.parentElement;
+  const W=card.offsetWidth||320,H=card.offsetHeight||260;
+  cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  const pts=[];
+  for(let i=0;i<12;i++){
+    pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,r:1+Math.random()*1.5});
+  }
+  let active=false;
+  card.addEventListener('mouseenter',()=>active=true);
+  card.addEventListener('mouseleave',()=>active=false);
+
+  function tick(){
+    if(!active){requestAnimationFrame(tick);return}
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=color.replace(')',',0.6)');ctx.fill();
+    });
+    pts.forEach((p,i)=>{
+      pts.forEach((q,j)=>{
+        if(j<=i)return;
+        const d=Math.hypot(p.x-q.x,p.y-q.y);
+        if(d<100){
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle=color.replace(')',','+(0.08*(1-d/100))+')');
+          ctx.lineWidth=0.5;ctx.stroke();
+        }
+      });
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function entranceAnim(){
+  const cards=document.querySelectorAll('.card');
+  cards.forEach((c,i)=>{
+    c.style.opacity='0';c.style.transform='translateY(28px) scale(0.97)';
+    setTimeout(()=>{
+      c.style.transition='opacity 0.6s cubic-bezier(0.23,1,0.32,1), transform 0.6s cubic-bezier(0.23,1,0.32,1)';
+      c.style.opacity='1';c.style.transform='translateY(0) scale(1)';
+      setTimeout(()=>{
+        c.style.transition='transform 0.5s cubic-bezier(0.23,1,0.32,1),border-color 0.4s ease';
+      },620);
+    },i*110+80);
+  });
+}
+
+initCard1();initCard2();initCard3();initCard4();
+initBgCanvas('cv1','rgba(56,139,229)');
+initBgCanvas('cv2','rgba(110,200,120)');
+initBgCanvas('cv3','rgba(160,130,230)');
+initBgCanvas('cv4','rgba(240,170,60)');
+entranceAnim();
+</script>

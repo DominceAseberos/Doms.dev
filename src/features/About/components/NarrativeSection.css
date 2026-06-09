@@ -146,23 +146,115 @@ html[data-theme='light'] .ns-section-label {
 .ns-hero-text {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+@keyframes underline-sweep {
+    0% {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+    45% {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+    50% {
+        transform: scaleX(1);
+        transform-origin: right;
+    }
+    95% {
+        transform: scaleX(0);
+        transform-origin: right;
+    }
+    100% {
+        transform: scaleX(0);
+        transform-origin: left;
+    }
 }
 
 .ns-hero-location {
-    color: var(--ns-sidebar-label);
-    opacity: 0.75;
-    margin: 0;
+    display: inline-block;
+    position: relative;
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.55rem, 1.5vw, 0.68rem);
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin: 0 0 -0.25rem 0;
+    padding-bottom: 0.4rem;
+    opacity: 0.9;
+    cursor: crosshair;
+}
+
+.ns-hero-location::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: underline-sweep 2.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+}
+
+html[data-theme='light'] .ns-hero-location {
+    color: #121212;
 }
 
 .ns-hero-name {
+    display: flex;
+    flex-direction: column;
     font-family: 'Syne', sans-serif;
-    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-size: clamp(3rem, 7vw, 6rem);
     font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.03em;
+    line-height: 0.78;
+    letter-spacing: -0.06em;
     color: var(--white);
-    margin: 0;
+    margin: 0.5rem 0;
+    text-transform: uppercase;
+}
+
+.name-first {
+    display: block;
+    margin-left: -0.05em;
+    color: #f3f3f3;
+    -webkit-text-fill-color: #f3f3f3;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+    text-shadow:
+        0 1px 0 #cdcdcd,
+        0 2px 0 #b8b8b8,
+        0 3px 0 #a2a2a2,
+        0 4px 0 #8c8c8c,
+        0 8px 20px rgba(0, 0, 0, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme='light'] .name-first {
+    color: #2a2a2a;
+    -webkit-text-fill-color: #2a2a2a;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    text-shadow:
+        0 1px 0 #555,
+        0 2px 0 #444,
+        0 3px 0 #333,
+        0 4px 0 #222,
+        0 8px 20px rgba(0, 0, 0, 0.12),
+        0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.name-last {
+    display: block;
+    margin-left: 0.58em;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 2px rgba(224, 214, 196, 0.95);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme='light'] .name-last {
+    -webkit-text-stroke: 2px #b7b0a0;
 }
 
 .ns-hero-role {
@@ -171,14 +263,14 @@ html[data-theme='light'] .ns-section-label {
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--gray-light);
-    margin: 0;
+    margin: 1.5rem 0 0 0;
 }
 
 .ns-hero-bio {
-    max-width: 46ch;
+    max-width: 60ch;
     margin: 0;
-    font-size: clamp(1.05rem, 0.98rem + 0.22vw, 1.22rem);
-    line-height: 1.75;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    line-height: 1.6;
 }
 
 /* Badges */
@@ -199,21 +291,22 @@ html[data-theme='light'] .ns-section-label {
 .ns-hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px;
     align-items: center;
-    margin-top: 0.35rem;
+    margin-top: 1.5rem;
 }
 
 .ns-btn {
-    font-size: clamp(0.82rem, 0.78rem + 0.12vw, 0.95rem) !important;
-    padding: 0.78rem 1.35rem !important;
+    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 1rem) !important;
+    padding: 1rem 1.75rem !important;
     border-radius: 4px;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 9px;
     line-height: 1;
-    letter-spacing: 0.14em;
-    min-height: 44px;
+    letter-spacing: 0.18em;
+    min-height: 52px;
 }
 
 .ns-btn svg {
@@ -227,11 +320,6 @@ html[data-theme='light'] .ns-section-label {
     color: var(--gray-light) !important;
 }
 
-.ns-btn-icon:hover {
-    color: var(--white) !important;
-    border-color: rgba(255,255,255,0.25) !important;
-}
-
 /* Metrics */
 .ns-metrics {
     display: flex;
@@ -239,19 +327,21 @@ html[data-theme='light'] .ns-section-label {
     gap: 0;
     border-top: 1px solid var(--ns-section-border);
     padding-top: 1.5rem;
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
+    width: min(100%, 600px);
+    justify-content: space-between;
 }
 
 .ns-metric {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding-right: 2rem;
+    gap: 6px;
+    padding-right: 0;
 }
 
 .ns-metric-val {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+    font-size: clamp(1.25rem, 2.2vw, 1.8rem);
     font-weight: 700;
     color: var(--ns-metric-val);
     line-height: 1;
@@ -269,17 +359,17 @@ html[data-theme='light'] .ns-section-label {
 
 .ns-metric-lbl {
     font-family: 'DM Mono', monospace;
-    font-size: clamp(0.68rem, 0.64rem + 0.1vw, 0.78rem);
-    letter-spacing: 0.18em;
+    font-size: clamp(0.72rem, 0.68rem + 0.1vw, 0.85rem);
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--ns-metric-lbl);
 }
 
 .ns-metric-div {
     width: 1px;
-    height: 2rem;
+    height: 2.5rem;
     background: var(--ns-metric-div);
-    margin: 0 1.5rem 0 0;
+    margin: 0;
     flex-shrink: 0;
 }
 
@@ -299,7 +389,7 @@ html[data-theme='light'] .ns-section-label {
 
 @media (min-width: 1024px) {
     .ns-about-grid {
-        grid-template-columns: 1fr 320px;
+        grid-template-columns: 1fr 380px;
     }
 }
 
@@ -394,19 +484,10 @@ html[data-theme='light'] .ns-sidebar-label {
     transition: color 0.2s;
 }
 
-.ns-social-link:hover {
-    color: var(--ns-link-hover);
-}
-
 .ns-arrow {
     opacity: 0;
     transition: opacity 0.2s, transform 0.2s;
     font-size: 0.8rem;
-}
-
-.ns-social-link:hover .ns-arrow {
-    opacity: 1;
-    transform: translate(2px, -2px);
 }
 
 /* Pills */
@@ -427,11 +508,6 @@ html[data-theme='light'] .ns-sidebar-label {
     letter-spacing: 0.06em;
     transition: background 0.2s, border-color 0.2s;
     cursor: default;
-}
-
-.ns-pill:hover {
-    background: var(--ns-pill-hover-bg);
-    border-color: var(--ns-pill-hover-border);
 }
 
 .ns-ai-pill {
@@ -604,11 +680,6 @@ html[data-theme='light'] .ns-stack-group-title {
     flex-shrink: 0;
 }
 
-.ns-view-all:hover {
-    color: var(--white);
-    border-bottom-color: var(--accent);
-}
-
 .ns-projects-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -632,12 +703,6 @@ html[data-theme='light'] .ns-stack-group-title {
     transition: background 0.25s, border-color 0.25s, transform 0.25s;
 }
 
-.ns-project-card:hover {
-    background: var(--ns-project-card-hover);
-    border-color: rgba(200, 255, 62, 0.3);
-    transform: translateY(-4px);
-}
-
 .ns-project-img-wrap {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -651,10 +716,6 @@ html[data-theme='light'] .ns-stack-group-title {
     object-fit: cover;
     display: block;
     transition: transform 0.4s ease;
-}
-
-.ns-project-card:hover .ns-project-img {
-    transform: scale(1.04);
 }
 
 .ns-project-img-placeholder {
@@ -708,11 +769,6 @@ html[data-theme='light'] .ns-stack-group-title {
     font-size: 0.85rem;
     color: var(--gray);
     transition: color 0.2s, transform 0.2s;
-}
-
-.ns-project-card:hover .ns-project-arrow {
-    color: var(--accent);
-    transform: translate(2px, -2px);
 }
 
 .ns-project-title {
@@ -923,10 +979,6 @@ html[data-theme='light'] .ns-stack-group-title {
     transition: color 0.2s;
 }
 
-.ns-footer-link:hover {
-    color: var(--white);
-}
-
 .ns-footer-copy {
     font-family: 'DM Mono', monospace;
     font-size: 0.62rem;
@@ -957,10 +1009,6 @@ html[data-theme='light'] .ns-footer-name {
     color: var(--white);
 }
 
-html[data-theme='light'] .ns-footer-link:hover {
-    color: var(--white);
-}
-
 /* ── TESTIMONIALS ────────────────────────────────────────────────────────── */
 .ns-testimonials-wrapper {
     overflow: hidden;
@@ -977,10 +1025,6 @@ html[data-theme='light'] .ns-footer-link:hover {
     gap: 1.5rem;
     animation: scroll-marquee 40s linear infinite;
     padding: 1rem 0;
-}
-
-.ns-testimonials-track:hover {
-    animation-play-state: paused;
 }
 
 .ns-testimonials-track .ns-testimonial-card {
@@ -1005,11 +1049,6 @@ html[data-theme='light'] .ns-footer-link:hover {
     justify-content: space-between;
     gap: 1.5rem;
     transition: transform 0.25s, border-color 0.25s;
-}
-
-.ns-testimonial-card:hover {
-    border-color: rgba(200, 255, 62, 0.3);
-    transform: translateY(-2px);
 }
 
 .ns-testimonial-quote {

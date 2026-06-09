@@ -1,6 +1,7 @@
 import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { FaLinkedinIn, FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
 import { fetchPortfolioData } from '../../../shared/portfolioService';
 import portfolioDataDefault from '../../../data/portfolioData.json';
@@ -9,6 +10,8 @@ import ProfileMorphCard from '../../../components/ProfileMorphCard';
 import EducationSection from './EducationSection';
 import GithubContributionSection from './GithubContributionSection';
 import FeedSection from './FeedSection';
+import PremiumMotionCards from './PremiumMotionCards';
+import PhilosophyCards from './PhilosophyCards';
 import DocViewerModal from '../../../components/DocViewerModal';
 import humanPortrait from '../../../assets/human-cutout.png';
 import animePortrait from '../../../assets/anime-cutout.png';
@@ -66,6 +69,17 @@ const LinkedInIcon = () => (
         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
 );
+
+const getSocialIcon = (label) => {
+    const l = label.toLowerCase();
+    if (l === 'linkedin') return <FaLinkedinIn />;
+    if (l === 'x' || l === 'twitter') return <FaXTwitter />;
+    if (l === 'threads') return <FaThreads />;
+    if (l === 'instagram') return <FaInstagram />;
+    if (l === 'facebook') return <FaFacebookF />;
+    if (l === 'email') return <FaEnvelope />;
+    return <span className="ns-arrow">↗</span>;
+};
 
 // ── Main component ────────────────────────────────────────────────────────
 const NarrativeSection = forwardRef((props, ref) => {
@@ -192,22 +206,25 @@ const NarrativeSection = forwardRef((props, ref) => {
 
                 <div className="ns-hero-inner">
                     <div className="ns-hero-text lit-content-block lit-transparent" suppressHydrationWarning>
-                        {hero.location && (
-                            <p className="ns-hero-location ui-sub-label ns-reveal" suppressHydrationWarning suppressHydrationWarning>{hero.location}</p>
-                        )}
-                        <h1 className="ns-hero-name ns-reveal" suppressHydrationWarning>
-                            {hero.fullName || 'Domince Aseberos'}
-                        </h1>
-                        {hero.role && <p className="ns-hero-role ns-reveal" suppressHydrationWarning suppressHydrationWarning>{hero.role}</p>}
-                        {hero.bio  && <p className="ns-hero-bio ui-body-copy ns-reveal" suppressHydrationWarning suppressHydrationWarning>{hero.bio}</p>}
-
-                        {(hero.badges || []).length > 0 && (
-                            <div className="ns-hero-badges ns-reveal">
-                                {hero.badges.map((b) => (
-                                    <span key={b} className="ui-pill ns-badge">{b}</span>
-                                ))}
+                        {hero.role && (
+                            <div className="ns-reveal" suppressHydrationWarning>
+                                <p className="ns-hero-location">{hero.role}</p>
                             </div>
                         )}
+                        <h1 className="ns-hero-name ns-reveal" suppressHydrationWarning>
+                            {(() => {
+                                const nameParts = (hero.fullName || 'Domince Aseberos').split(' ');
+                                const first = nameParts[0];
+                                const last = nameParts.slice(1).join(' ');
+                                return (
+                                    <>
+                                        <span className="name-first">{first}</span>
+                                        {last && <span className="name-last">{last}</span>}
+                                    </>
+                                );
+                            })()}
+                        </h1>
+                        {hero.bio  && <p className="ns-hero-bio ui-body-copy ns-reveal" style={{ marginTop: '1rem' }} suppressHydrationWarning>{hero.bio}</p>}
 
                         <div className="ns-hero-actions ns-reveal">
                             {data.resume && (
@@ -230,6 +247,15 @@ const NarrativeSection = forwardRef((props, ref) => {
 
                         {(hero.metrics || []).length > 0 && (
                             <div className="ns-metrics ns-reveal">
+                                {hero.location && (
+                                    <React.Fragment>
+                                        <div className="ns-metric">
+                                            <span className="ns-metric-val" style={{ fontSize: '1.2rem', marginTop: '0.1rem' }}>📍</span>
+                                            <span className="ns-metric-lbl">{hero.location.split(',')[0]}</span>
+                                        </div>
+                                        <div className="ns-metric-div" />
+                                    </React.Fragment>
+                                )}
                                 {hero.metrics.map((m, i) => {
                                     let displayValue = m.value;
                                     if (m.label && m.label.toLowerCase() === 'projects shipped') {
@@ -304,66 +330,56 @@ const NarrativeSection = forwardRef((props, ref) => {
                         {about.intro && (
                             <p className="ns-body-lg ui-body-copy ns-reveal" suppressHydrationWarning>{about.intro}</p>
                         )}
-                        <div className="ns-about-blocks">
-                            {(about.blocks || []).map((block, i) => (
-                                <div key={i} className="ns-about-block ns-reveal lit-content-block lit-transparent">
-                                    <h3 className="ns-about-block-title">{block.title}</h3>
-                                    <p className="ui-body-copy">{block.body}</p>
-                                </div>
-                            ))}
-                        </div>
+                        {/* Philosophy Cards will be rendered outside the grid below */}
                     </div>
-
-                    <aside className="ns-about-sidebar">
-                        {about.location && (
-                            <div className="ns-sidebar-block ns-reveal lit-content-block lit-transparent">
-                                <p className="ns-sidebar-label ui-sub-label">Location</p>
-                                <p className="ns-sidebar-text">{about.location}</p>
-                            </div>
-                        )}
-                        {(about.capabilities || []).length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal lit-content-block lit-transparent">
-                                <p className="ns-sidebar-label ui-sub-label">Capabilities</p>
-                                <div className="ns-pill-group">
-                                    {about.capabilities.map((item) => (
-                                        <span key={item} className="ns-pill">{item}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        {(about.devTools || []).length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal lit-content-block lit-transparent">
-                                <p className="ns-sidebar-label ui-sub-label">Dev Tools</p>
-                                <div className="ns-pill-group">
-                                    {about.devTools.map((tool) => (
-                                        <span key={tool} className="ns-pill">{tool}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        {socials.length > 0 && (
-                            <div className="ns-sidebar-block ns-reveal lit-content-block lit-transparent">
-                                <p className="ns-sidebar-label ui-sub-label">Social</p>
-                                <div className="ns-social-links">
+                    
+                    {/* Socials Column */}
+                    {socials.length > 0 && (
+                        <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
+                            <div className="ns-reveal lit-content-block lit-transparent">
+                                <p className="ui-sub-label" style={{ marginBottom: '1.25rem', letterSpacing: '0.22em' }}>Connect</p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'center' }}>
                                     {socials.map((link) => (
                                         <a key={link.label} href={link.href}
                                             target={link.external ? '_blank' : '_self'}
                                             rel={link.external ? 'noopener noreferrer' : ''}
-                                            className="ns-social-link">
-                                            {link.label} <span className="ns-arrow">↗</span>
+                                            className="ns-social-link" style={{ fontSize: '1.5rem', color: 'var(--ns-link-color)', display: 'inline-block' }} title={link.label}
+                                            onMouseEnter={(e) => { 
+                                                gsap.to(e.currentTarget, {
+                                                    y: -6,
+                                                    scale: 1.25,
+                                                    rotation: (Math.random() - 0.5) * 20,
+                                                    color: 'var(--accent-color)',
+                                                    duration: 0.35,
+                                                    ease: 'back.out(3)'
+                                                });
+                                            }}
+                                            onMouseLeave={(e) => { 
+                                                gsap.to(e.currentTarget, {
+                                                    y: 0,
+                                                    scale: 1,
+                                                    rotation: 0,
+                                                    color: 'var(--ns-link-color)',
+                                                    duration: 0.7,
+                                                    ease: 'elastic.out(1, 0.3)'
+                                                });
+                                            }}
+                                        >
+                                            {getSocialIcon(link.label)}
                                         </a>
                                     ))}
                                 </div>
-                                <button 
-                                    onClick={() => setLogoFullView(true)}
-                                    className="btn-ghost ns-btn"
-                                    style={{ marginTop: '1rem', width: '100%', justifyContent: 'center' }}
-                                >
-                                    View Logo Animation
-                                </button>
                             </div>
-                        )}
-                    </aside>
+                        </aside>
+                    )}
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '3rem' }}>
+                    {/* 3 Philosophy Cards Row */}
+                    <PhilosophyCards />
+
+                    {/* 4 Premium Motion Cards Row */}
+                    <PremiumMotionCards />
                 </div>
             </section>
 
