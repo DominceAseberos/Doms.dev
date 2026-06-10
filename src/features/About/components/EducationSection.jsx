@@ -21,7 +21,7 @@ const EducationSection = () => {
     if (!education.length) return null;
 
     return (
-        <section className="education-section relative w-full bg-transparent flex items-center justify-center z-10 py-16">
+        <section id="education" className="education-section relative w-full bg-transparent flex items-center justify-center z-10 py-16">
             <div className="relative z-10 text-white px-6 md:px-16 w-full max-w-[1400px] flex flex-col items-start gap-10">
                 <div className="lit-content-block lit-transparent">
                     <h2
@@ -74,4 +74,4 @@ const EducationSection = () => {
     );
 };
 
-export default EducationSection;
+export default React.memo(EducationSection);

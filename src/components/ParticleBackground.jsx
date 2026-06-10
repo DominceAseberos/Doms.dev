@@ -1,21 +1,37 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import useThemeStore from '../store/useThemeStore';
+
+const PALETTES = {
+    dark: {
+        dot: 'rgba(131, 10, 50, 0.5)',
+        lineRgb: '232, 0, 77',
+        glowRgb: '255, 80, 120',
+        trailRgb: '232, 0, 77',
+        coreRgb: '255, 200, 210',
+        grid: 'rgba(255, 255, 255, 0.028)',
+    },
+    light: {
+        dot: 'rgba(18, 18, 18, 0.52)',
+        lineRgb: '18, 18, 18',
+        glowRgb: '40, 40, 40',
+        trailRgb: '18, 18, 18',
+        coreRgb: '18, 18, 18',
+        grid: 'rgba(255, 255, 255, 0.4)',
+    },
+};
 
 const ParticleBackground = () => {
     const canvasRef = useRef(null);
     const gridRef = useRef(null);
     const theme = useThemeStore((state) => state.theme);
-    const isLightTheme = theme === 'light';
-    const palette = {
-        dot: isLightTheme ? 'rgba(18, 18, 18, 0.52)' : 'rgba(131, 10, 50, 0.5)',
-        lineRgb: isLightTheme ? '18, 18, 18' : '232, 0, 77',
-        glowRgb: isLightTheme ? '40, 40, 40' : '255, 80, 120',
-        trailRgb: isLightTheme ? '18, 18, 18' : '232, 0, 77',
-        coreRgb: isLightTheme ? '18, 18, 18' : '255, 200, 210',
-        grid: isLightTheme
-            ? 'rgba(255, 255, 255, 0.4)'
-            : 'rgba(255, 255, 255, 0.028)',
-    };
+    const palette = PALETTES[theme] || PALETTES.dark;
+
+    const gridStyle = useMemo(() => ({
+        backgroundImage: `
+            linear-gradient(${palette.grid} 1px, transparent 1px),
+            linear-gradient(90deg, ${palette.grid} 1px, transparent 1px)
+        `,
+    }), [palette.grid]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -68,8 +84,7 @@ const ParticleBackground = () => {
         const stars = [];
         function spawnStar() {
             const sx = Math.random() * W;
-            const sy = Math.random() * (H * 0.5); // Spawn mostly in the upper half so they can fall
-            // Angle between 0 and PI means it will go downwards in canvas (y increases downwards)
+            const sy = Math.random() * (H * 0.5);
             const angle = Math.random() * Math.PI;
             const spd = 6 + Math.random() * 6;
             stars.push({ x: sx, y: sy, vx: Math.cos(angle) * spd, vy: Math.sin(angle) * spd, trail: [], alpha: 0, fadeIn: true, life: 1 });
@@ -81,13 +96,15 @@ const ParticleBackground = () => {
         const dist = (ax, ay, bx, by) => { const dx = ax - bx, dy = ay - by; return Math.sqrt(dx * dx + dy * dy); };
         function drawLine(x1, y1, x2, y2, alpha, w = 0.8) {
             ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
-            ctx.strokeStyle = `rgba(${palette.lineRgb},${alpha})`; ctx.lineWidth = w; ctx.stroke();
+            const p = PALETTES[document.documentElement.dataset.theme || 'dark'];
+            ctx.strokeStyle = `rgba(${p.lineRgb},${alpha})`; ctx.lineWidth = w; ctx.stroke();
         }
 
         let animFrame;
         function tick() {
             animFrame = requestAnimationFrame(tick);
             ctx.clearRect(0, 0, W, H);
+            const p = PALETTES[document.documentElement.dataset.theme || 'dark'];
 
             nodes.forEach(n => {
                 n.x += n.vx; n.y += n.vy;
@@ -113,23 +130,23 @@ const ParticleBackground = () => {
                 if (s.life <= 0) { stars.splice(i, 1); continue; }
                 const ba = s.alpha * s.life;
                 for (let t = 1; t < s.trail.length; t++) {
-                    const p = t / s.trail.length, a = p * p * ba * 0.42;
+                    const pt = t / s.trail.length, a = pt * pt * ba * 0.42;
                     ctx.beginPath(); ctx.moveTo(s.trail[t - 1].x, s.trail[t - 1].y); ctx.lineTo(s.trail[t].x, s.trail[t].y);
-                    ctx.strokeStyle = `rgba(${palette.trailRgb},${a})`; ctx.lineWidth = p * 1.6; ctx.lineCap = 'round'; ctx.stroke();
+                    ctx.strokeStyle = `rgba(${p.trailRgb},${a})`; ctx.lineWidth = pt * 1.6; ctx.lineCap = 'round'; ctx.stroke();
                 }
                 const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 14);
-                grd.addColorStop(0, `rgba(${palette.glowRgb},${ba * 0.2})`);
-                grd.addColorStop(0.4, `rgba(${palette.trailRgb},${ba * 0.12})`);
+                grd.addColorStop(0, `rgba(${p.glowRgb},${ba * 0.2})`);
+                grd.addColorStop(0.4, `rgba(${p.trailRgb},${ba * 0.12})`);
                 grd.addColorStop(1, 'transparent');
                 ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(s.x, s.y, 14, 0, Math.PI * 2); ctx.fill();
                 ctx.beginPath(); ctx.arc(s.x, s.y, 2.5, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${palette.coreRgb},${ba * 0.58})`; ctx.fill();
+                ctx.fillStyle = `rgba(${p.coreRgb},${ba * 0.58})`; ctx.fill();
             }
 
             nodes.forEach(n => {
                 ctx.beginPath();
                 ctx.arc(n.x, n.y, DOT_RADIUS, 0, Math.PI * 2);
-                ctx.fillStyle = palette.dot; ctx.fill();
+                ctx.fillStyle = p.dot; ctx.fill();
             });
         }
 
@@ -140,7 +157,7 @@ const ParticleBackground = () => {
             clearInterval(starInterval);
             cancelAnimationFrame(animFrame);
         };
-    }, [theme]);
+    }, []);
 
     return (
         <div
@@ -150,16 +167,11 @@ const ParticleBackground = () => {
             <div
                 ref={gridRef}
                 className="fixed inset-0 pointer-events-none"
-                style={{
-                    backgroundImage: `
-                        linear-gradient(${palette.grid} 1px, transparent 1px),
-                        linear-gradient(90deg, ${palette.grid} 1px, transparent 1px)
-                    `
-                }}
+                style={gridStyle}
             ></div>
             <canvas ref={canvasRef} className="block fixed inset-0 pointer-events-none"></canvas>
         </div>
     );
 };
 
-export default ParticleBackground;
+export default React.memo(ParticleBackground);

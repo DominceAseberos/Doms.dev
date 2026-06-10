@@ -13,6 +13,7 @@ import FeedSection from './FeedSection';
 import PremiumMotionCards from './PremiumMotionCards';
 import PhilosophyCards from './PhilosophyCards';
 import DocViewerModal from '../../../components/DocViewerModal';
+import SectionProgressIndicator from '../../../components/SectionProgressIndicator';
 import humanPortrait from '../../../assets/human-cutout.png';
 import animePortrait from '../../../assets/anime-cutout.png';
 import useLoadingStore from '../../../store/useLoadingStore';
@@ -281,43 +282,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </section>
 
-            {/* ══ RECENT PROJECTS ══════════════════════════════════════════ */}
-            {projects.length > 0 && (
-                <section className="ns-section" id="projects">
-                    <div className="ns-projects-header ns-reveal">
-                        <div>
-                            <p className="ui-sub-label ns-section-label">Selected Work</p>
-                            <h2 className="ns-section-heading">Projects</h2>
-                        </div>
-                        <a href="/projects" className="ns-view-all">View All →</a>
-                    </div>
-                    <div className="ns-projects-grid">
-                        {projects.map((p) => (
-                            <a key={p.id} href={`/projects/${p.id}`} className="ns-project-card ns-reveal lit-content-block">
-                                {(p.mainImage || p.desktopImage) && !isPlaceholderImage(p.mainImage || p.desktopImage) ? (
-                                    <div className="ns-project-img-wrap">
-                                        <img src={p.mainImage || p.desktopImage} alt={p.title} className="ns-project-img" loading="lazy" />
-                                    </div>
-                                ) : (
-                                    <div className="ns-project-img-placeholder">
-                                        <span>{p.projectType || 'Case Study'}</span>
-                                        <strong>{p.title}</strong>
-                                    </div>
-                                )}
-                                <div className="ns-project-info">
-                                    <div className="ns-project-meta">
-                                        <span className="ui-sub-label ns-project-type">{p.projectType}</span>
-                                        <span className="ns-project-arrow">↗</span>
-                                    </div>
-                                    <h3 className="ns-project-title">{p.title}</h3>
-                                    <p className="ns-project-desc ui-body-copy">{p.shortDescription}</p>
-                                </div>
-                            </a>
-                        ))}
-                    </div>
-                </section>
-            )}
-
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
             <section className="ns-section" id="about">
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
@@ -383,6 +347,63 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </section>
 
+            {/* ══ RECENT PROJECTS ══════════════════════════════════════════ */}
+            {projects.length > 0 && (
+                <section className="ns-section" id="projects">
+                    <div className="ns-projects-header ns-reveal">
+                        <div>
+                            <p className="ui-sub-label ns-section-label">Selected Work</p>
+                            <h2 className="ns-section-heading">Projects</h2>
+                        </div>
+                        <a href="/projects" className="ns-view-all">View All →</a>
+                    </div>
+                    <div className="ns-projects-grid">
+                        {projects.map((p) => (
+                            <a key={p.id} href={`/projects/${p.id}`} className="ns-project-card ns-reveal lit-content-block">
+                                {(p.mainImage || p.desktopImage) && !isPlaceholderImage(p.mainImage || p.desktopImage) ? (
+                                    <div className="ns-project-img-wrap">
+                                        <img src={p.mainImage || p.desktopImage} alt={p.title} className="ns-project-img" loading="lazy" />
+                                    </div>
+                                ) : (
+                                    <div className="ns-project-img-placeholder">
+                                        <span>{p.projectType || 'Case Study'}</span>
+                                        <strong>{p.title}</strong>
+                                    </div>
+                                )}
+                                <div className="ns-project-info">
+                                    <div className="ns-project-meta">
+                                        <span className="ui-sub-label ns-project-type">{p.projectType}</span>
+                                        <span className="ns-project-arrow">↗</span>
+                                    </div>
+                                    <h3 className="ns-project-title">{p.title}</h3>
+                                    <p className="ns-project-desc ui-body-copy">{p.shortDescription}</p>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
+            {techStack.length > 0 && (
+                <section className="ns-section" id="stack">
+                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Technical Skills</p>
+                    <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
+                    <div className="ns-stack-grid">
+                        {techStack.map((group) => (
+                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block lit-transparent">
+                                <h3 className="ns-stack-group-title">{group.group}</h3>
+                                <div className="ns-pill-group">
+                                    {(group.items || []).map((item) => (
+                                        <span key={item} className="ns-pill">{item}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
             {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
             {experience.length > 0 && (
                 <section className="ns-section" id="experience">
@@ -414,26 +435,6 @@ const NarrativeSection = forwardRef((props, ref) => {
 
             {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
             <GithubContributionSection />
-
-            {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
-            {techStack.length > 0 && (
-                <section className="ns-section" id="stack">
-                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Technical Skills</p>
-                    <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
-                    <div className="ns-stack-grid">
-                        {techStack.map((group) => (
-                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block lit-transparent">
-                                <h3 className="ns-stack-group-title">{group.group}</h3>
-                                <div className="ns-pill-group">
-                                    {(group.items || []).map((item) => (
-                                        <span key={item} className="ns-pill">{item}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
 
             {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
             {testimonials.length > 0 && (
@@ -510,6 +511,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </footer>
 
+            <SectionProgressIndicator />
             <DocViewerModal 
                 isOpen={isResumeModalOpen} 
                 onClose={() => setIsResumeModalOpen(false)} 
@@ -521,4 +523,4 @@ const NarrativeSection = forwardRef((props, ref) => {
 });
 
 NarrativeSection.displayName = 'NarrativeSection';
-export default NarrativeSection;
+export default React.memo(NarrativeSection);

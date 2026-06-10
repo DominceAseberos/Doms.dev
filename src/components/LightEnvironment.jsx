@@ -12,10 +12,10 @@ const LightEnvironment = () => {
 
   useEffect(() => {
     if (theme !== 'dark') return;
-    
+
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -24,11 +24,11 @@ const LightEnvironment = () => {
       // Set canvas to full width (max a bit to cover screen)
       const w = window.innerWidth;
       // Height must cover the full viewport so the 1400px glow doesn't get cut off!
-      const h = window.innerHeight; 
-      
+      const h = window.innerHeight;
+
       canvas.width = w;
       canvas.height = h;
-      
+
       ctx.clearRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -50,7 +50,7 @@ const LightEnvironment = () => {
     let timeoutId = setTimeout(() => {
       drawCone();
     }, 400); // Wait for the theme CSS transition to finish before doing heavy canvas drawing
-    
+
     // Redraw on resize
     window.addEventListener('resize', drawCone);
     return () => {
@@ -58,6 +58,8 @@ const LightEnvironment = () => {
       window.removeEventListener('resize', drawCone);
     };
   }, [theme]);
+
+  if (theme !== 'dark') return null;
 
   return (
     <>

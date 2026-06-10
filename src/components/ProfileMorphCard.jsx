@@ -191,4 +191,4 @@ const ProfileMorphCard = ({ realSrc = '/profile.png', animeSrc = '/profile-anime
     );
 };
 
-export default ProfileMorphCard;
+export default React.memo(ProfileMorphCard);

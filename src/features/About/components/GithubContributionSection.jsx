@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import GitHubCalendar from 'react-github-calendar';
 import portfolioData from '../../../data/portfolioData.json';
 import useThemeStore from '../../../store/useThemeStore';
@@ -141,13 +141,34 @@ const calendarTheme = {
     light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
 };
 
-const GithubContributionSection = () => {
+const CalendarWidget = React.memo(({ mounted, handleTransformData }) => {
     const theme = useThemeStore((state) => state.theme);
+    return (
+        <div className="gc-heatmap-card ns-reveal lit-content-block">
+            <div className="gc-card-eyebrow">Contribution Heat Map</div>
+            {mounted && (
+                <GitHubCalendar
+                    username={USERNAME}
+                    colorScheme={theme === 'light' ? 'light' : 'dark'}
+                    theme={calendarTheme}
+                    blockSize={12}
+                    blockMargin={4}
+                    fontSize={12}
+                    showWeekdayLabels
+                    transformData={handleTransformData}
+                />
+            )}
+        </div>
+    );
+});
+
+const GithubContributionSection = () => {
     const [status, setStatus] = useState('Loading GitHub activity...');
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [recentCommits, setRecentCommits] = useState([]);
     const [activeCommitIndex, setActiveCommitIndex] = useState(0);
+    const [stats, setStats] = useState({ contributions: '—', repos: '—', streak: '—' });
 
     async function loadLiveData(forceRefresh = false) {
         if (forceRefresh) clearGitHubActivityCache();
@@ -168,6 +189,32 @@ const GithubContributionSection = () => {
         }
     }
 
+    const handleTransformData = useCallback((contributions) => {
+        const total = contributions.reduce((sum, d) => sum + (d.count || 0), 0);
+        let streak = 0;
+        let maxStreak = 0;
+        for (const d of contributions) {
+            if ((d.count || 0) > 0) {
+                streak++;
+                if (streak > maxStreak) maxStreak = streak;
+            } else {
+                streak = 0;
+            }
+        }
+        setStats((prev) => ({ ...prev, contributions: total, streak: maxStreak }));
+        return contributions;
+    }, []);
+
+    useEffect(() => {
+        ghFetch('/users/' + USERNAME)
+            .then((user) => {
+                if (user?.public_repos != null) {
+                    setStats((prev) => ({ ...prev, repos: user.public_repos }));
+                }
+            })
+            .catch(() => {});
+    }, []);
+
     useEffect(() => {
         setMounted(true);
         loadLiveData(false);
@@ -186,7 +233,7 @@ const GithubContributionSection = () => {
     const activeCommit = recentCommits[activeCommitIndex] || recentCommits[0] || null;
 
     return (
-        <section className="github-contrib-wrap">
+        <section id="github" className="github-contrib-wrap">
             <div className="github-contrib-head lit-content-block lit-transparent">
                 <h2 className="github-contrib-title ns-reveal">GitHub Activity</h2>
                 <p className="github-contrib-subtitle ns-reveal">
@@ -206,23 +253,27 @@ const GithubContributionSection = () => {
                 </button>
             </div>
 
-            <div className="github-activity-grid">
-                <div className="gc-heatmap-card ns-reveal lit-content-block">
-                    <div className="gc-card-eyebrow">Contribution Heat Map</div>
-                    {mounted && (
-                        <GitHubCalendar
-                            username={USERNAME}
-                            colorScheme={theme === 'light' ? 'light' : 'dark'}
-                            theme={calendarTheme}
-                            blockSize={12}
-                            blockMargin={4}
-                            fontSize={12}
-                            showWeekdayLabels
-                        />
-                    )}
+            <div className="gc-stats-row ns-reveal">
+                <div className="gc-stat">
+                    <span className="gc-stat-val">{stats.contributions}</span>
+                    <span className="gc-stat-lbl">contributions this year</span>
                 </div>
+                <div className="gc-stat-div" />
+                <div className="gc-stat">
+                    <span className="gc-stat-val">{stats.repos}</span>
+                    <span className="gc-stat-lbl">repositories</span>
+                </div>
+                <div className="gc-stat-div" />
+                <div className="gc-stat">
+                    <span className="gc-stat-val">{stats.streak}</span>
+                    <span className="gc-stat-lbl">longest streak (days)</span>
+                </div>
+            </div>
 
-                <MagicCard className="gc-commit-card ns-reveal lit-content-block" gradientColor={theme === 'light' ? 'rgba(30, 100, 180, 0.12)' : 'rgba(120, 180, 255, 0.15)'}>
+            <div className="github-activity-grid">
+                <CalendarWidget mounted={mounted} handleTransformData={handleTransformData} />
+
+                <MagicCard className="gc-commit-card ns-reveal lit-content-block">
                     <div className="gc-card-eyebrow">Latest Commits</div>
                     <h3 className="gc-card-title">@{USERNAME}</h3>
                     <div className="gc-commits-list">
@@ -286,4 +337,4 @@ const GithubContributionSection = () => {
     );
 };
 
-export default GithubContributionSection;
+export default React.memo(GithubContributionSection);

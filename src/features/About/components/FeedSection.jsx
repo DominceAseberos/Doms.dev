@@ -137,7 +137,7 @@ const FeedSection = () => {
     };
 
     return (
-        <section className="feed-section relative z-10">
+        <section id="feed" className="feed-section relative z-10">
             <div className="feed-shell mx-auto w-full">
                 <div className="feed-head">
                     <p className="ui-sub-label ns-reveal">Feed</p>
@@ -273,4 +273,4 @@ const FeedSection = () => {
     );
 };
 
-export default FeedSection;
+export default React.memo(FeedSection);
