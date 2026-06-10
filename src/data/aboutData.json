@@ -37,7 +37,7 @@
         "location": "📍 Tagum City, Philippines",
         "fullName": "Domince Aseberos",
         "role": "Full Stack Developer · Web, Mobile & AI",
-        "bio": "I build performant web, mobile, and AI-assisted products with production-grade architecture, polished interaction design, and clear case-study documentation.",
+        "bio": "I build performant web, mobile, and AI-assisted products with end-to-end architecture, polished interaction design, and clear case-study documentation.",
         "badges": ["React", "Flutter", "FastAPI", "Machine Learning"],
         "githubUrl": "https://github.com/DominceAseberos",
         "linkedinUrl": "https://www.linkedin.com/in/dominceaseberos/",
@@ -45,7 +45,7 @@
             {
                 "value": "10",
                 "unit": "+",
-                "label": "Production-Grade Projects"
+                "label": "Projects Built"
             },
             {
                 "value": "3",
