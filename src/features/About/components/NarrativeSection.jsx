@@ -16,9 +16,7 @@ import { Database, Layout, Webhook, Box, Code, Layers } from 'lucide-react';
 import portfolioDataDefault from '../../../data/portfolioData.json';
 import aboutDataDefault from '../../../data/aboutData.json';
 import ProfileMorphCard from '../../../components/ProfileMorphCard';
-import EducationSection from './EducationSection';
-import GithubContributionSection from './GithubContributionSection';
-import FeedSection from './FeedSection';
+import PinnedFeedPost from './PinnedFeedPost';
 import PremiumMotionCards from './PremiumMotionCards';
 import PhilosophyCards from './PhilosophyCards';
 import DocViewerModal from '../../../components/DocViewerModal';
@@ -548,37 +546,8 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </section>
             )}
 
-            {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
-            {experience.length > 0 && (
-                <section className="ns-section" id="experience">
-                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Work History</p>
-                    <h2 className="ns-section-heading ns-reveal">Experience</h2>
-                    <div className="ns-timeline">
-                        {experience.map((item, i) => (
-                            <div key={i} className="ns-timeline-item ns-reveal lit-content-block lit-transparent">
-                                <div className="ns-timeline-dot" />
-                                <div className="ns-timeline-body">
-                                    <div className="ns-timeline-header">
-                                        <h3 className="ns-timeline-role">{item.role}</h3>
-                                        <span className="ns-timeline-period ui-sub-label">{item.period}</span>
-                                    </div>
-                                    <p className="ns-timeline-company">{item.company}</p>
-                                    <p className="ns-timeline-desc ui-body-copy">{item.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {/* ══ EDUCATION ════════════════════════════════════════════════ */}
-            <EducationSection />
-
-            {/* ══ FEED ═════════════════════════════════════════════════════ */}
-            <FeedSection />
-
-            {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
-            <GithubContributionSection />
+            {/* ══ PINNED POST ══════════════════════════════════════════════ */}
+            <PinnedFeedPost />
 
             {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
             {techStack.length > 0 && (
