@@ -413,7 +413,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     
                     {/* Socials Column */}
                     {socials.length > 0 && (
-                        <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
+                        <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end' }}>
                             <div className="ns-reveal lit-content-block lit-transparent">
                                 <p className="ui-sub-label" style={{ marginBottom: '1.25rem', letterSpacing: '0.22em' }}>Connect</p>
                                 <SocialInteractionGrid socials={socials} />
