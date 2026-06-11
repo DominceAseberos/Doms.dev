@@ -83,9 +83,9 @@ const SocialInteractionGrid = ({ socials }) => {
             position: 'relative', 
             display: 'grid', 
             gridTemplateColumns: 'repeat(3, 1fr)', 
-            gap: '1rem', 
+            gap: '1.5rem', 
             width: '100%',
-            maxWidth: '240px'
+            maxWidth: '360px' // Increased max width to fill the sidebar better
         }}>
             {/* The Initial Menu Button */}
             <div 
@@ -96,14 +96,14 @@ const SocialInteractionGrid = ({ socials }) => {
                     transform: 'translate(-50%, -50%)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     color: 'var(--ns-link-color)',
-                    width: '60px', height: '60px',
+                    width: '80px', height: '80px', // Larger menu icon
                     background: 'var(--bg-card, rgba(20,20,20,0.5))',
                     border: '1px solid var(--border-color, rgba(255,255,255,0.1))',
-                    borderRadius: '16px',
+                    borderRadius: '24px',
                     zIndex: 10
                 }}
             >
-                <Grid size={28} />
+                <Grid size={40} />
             </div>
 
             {/* Simulated Cursor */}
@@ -119,7 +119,7 @@ const SocialInteractionGrid = ({ socials }) => {
                     filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))'
                 }}
             >
-                <MousePointer2 size={32} fill="var(--accent-color, #3B82F6)" />
+                <MousePointer2 size={40} fill="var(--accent-color, #3B82F6)" />
             </div>
 
             {/* The Actual Social Icons */}
@@ -133,14 +133,14 @@ const SocialInteractionGrid = ({ socials }) => {
                     title={link.label}
                     ref={el => iconsRef.current[idx] = el}
                     style={{ 
-                        fontSize: '1.5rem', 
+                        fontSize: '2.5rem', // Much larger social icons
                         color: 'var(--ns-link-color)', 
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         background: 'var(--bg-card, rgba(20,20,20,0.5))',
                         border: '1px solid var(--border-color, rgba(255,255,255,0.1))',
-                        borderRadius: '16px',
+                        borderRadius: '24px', // Rounder corners to match larger size
                         aspectRatio: '1',
                         opacity: 0,
                         transform: 'scale(0)' 
