@@ -79,7 +79,14 @@ const SocialInteractionGrid = ({ socials }) => {
     }, []);
 
     return (
-        <div ref={containerRef} style={{ position: 'relative', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'center', minHeight: '40px' }}>
+        <div ref={containerRef} style={{ 
+            position: 'relative', 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(3, 1fr)', 
+            gap: '1rem', 
+            width: '100%',
+            maxWidth: '240px'
+        }}>
             {/* The Initial Menu Button */}
             <div 
                 ref={menuIconRef}
@@ -88,10 +95,15 @@ const SocialInteractionGrid = ({ socials }) => {
                     top: '50%', left: '50%', 
                     transform: 'translate(-50%, -50%)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--ns-link-color)'
+                    color: 'var(--ns-link-color)',
+                    width: '60px', height: '60px',
+                    background: 'var(--bg-card, rgba(20,20,20,0.5))',
+                    border: '1px solid var(--border-color, rgba(255,255,255,0.1))',
+                    borderRadius: '16px',
+                    zIndex: 10
                 }}
             >
-                <Grid size={24} />
+                <Grid size={28} />
             </div>
 
             {/* Simulated Cursor */}
@@ -123,16 +135,23 @@ const SocialInteractionGrid = ({ socials }) => {
                     style={{ 
                         fontSize: '1.5rem', 
                         color: 'var(--ns-link-color)', 
-                        display: 'inline-block',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'var(--bg-card, rgba(20,20,20,0.5))',
+                        border: '1px solid var(--border-color, rgba(255,255,255,0.1))',
+                        borderRadius: '16px',
+                        aspectRatio: '1',
                         opacity: 0,
-                        transform: 'scale(0)' // GSAP handles the initial scale zero state effectively when used with .to
+                        transform: 'scale(0)' 
                     }}
                     onMouseEnter={(e) => { 
                         gsap.to(e.currentTarget, {
                             y: -6,
-                            scale: 1.25,
-                            rotation: (Math.random() - 0.5) * 20,
+                            scale: 1.1,
+                            rotation: (Math.random() - 0.5) * 10,
                             color: 'var(--accent-color)',
+                            borderColor: 'var(--accent-color)',
                             duration: 0.35,
                             ease: 'back.out(3)'
                         });
@@ -143,6 +162,7 @@ const SocialInteractionGrid = ({ socials }) => {
                             scale: 1,
                             rotation: 0,
                             color: 'var(--ns-link-color)',
+                            borderColor: 'var(--border-color, rgba(255,255,255,0.1))',
                             duration: 0.7,
                             ease: 'elastic.out(1, 0.3)'
                         });
