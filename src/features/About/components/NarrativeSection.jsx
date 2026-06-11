@@ -464,9 +464,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                 <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
                     <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
                         <div style={{ flex: '1 1 400px' }}>
-                            <h2 className="ns-section-heading">
-                                How I <span className="ns-accent">Build</span>
-                            </h2>
+                            <p className="ui-sub-label ns-section-label" suppressHydrationWarning>Process</p>
                             <LyricsScrubText 
                                 text="I don't just write code. I design systems. Here is my step-by-step pipeline for turning complex problems into working software."
                                 highlights={['design', 'systems', 'step-by-step', 'pipeline', 'complex', 'problems', 'working', 'software']}
