@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaLinkedinIn, FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope, FaHeart, FaRobot } from 'react-icons/fa6';
+import { FaLinkedinIn, FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope, FaHeart, FaRobot, FaPaw } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
 import { fetchPortfolioData } from '../../../shared/portfolioService';
 import HrmsPipelineMotionCards from './HrmsPipelineMotionCards';
@@ -12,7 +12,7 @@ import {
     SiShopify, SiJupyter, SiTurborepo, SiPython, SiPostgresql, SiGreensock, SiScikitlearn,
     SiDocker, SiFramer, SiSvg
 } from 'react-icons/si';
-import { Database, Layout, Webhook, Box, Code, Layers } from 'lucide-react';
+import { Database, Layout, Webhook, Box, Code, Layers, Droplet } from 'lucide-react';
 import portfolioDataDefault from '../../../data/portfolioData.json';
 import aboutDataDefault from '../../../data/aboutData.json';
 import ProfileMorphCard from '../../../components/ProfileMorphCard';
@@ -184,7 +184,8 @@ const getTechIcon = (name) => {
     if (n.includes('zod')) return <Code />;
     if (n.includes('tanstack')) return <Database />;
     if (n.includes('shadcn') || n.includes('base ui')) return <Layout />;
-    if (n.includes('zustand') || n.includes('riverpod')) return <Box />;
+    if (n.includes('zustand')) return <FaPaw />;
+    if (n.includes('riverpod')) return <Droplet />;
     if (n.includes('lenis')) return <Code />;
     if (n.includes('python')) return <SiPython />;
     if (n.includes('postgres')) return <SiPostgresql />;
