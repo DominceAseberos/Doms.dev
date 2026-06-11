@@ -546,9 +546,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </section>
             )}
 
-            {/* ══ PINNED POST ══════════════════════════════════════════════ */}
-            <PinnedFeedPost />
-
             {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
             {techStack.length > 0 && (
                 <section className="ns-section" id="stack">
@@ -580,6 +577,10 @@ const NarrativeSection = forwardRef((props, ref) => {
                     </div>
                 </section>
             )}
+
+            {/* ══ PINNED POST ══════════════════════════════════════════════ */}
+            <PinnedFeedPost />
+
 
             {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
             {testimonials.length > 0 && (
