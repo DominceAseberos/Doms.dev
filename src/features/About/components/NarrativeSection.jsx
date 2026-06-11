@@ -1,10 +1,11 @@
 import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaLinkedinIn, FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope, FaHeart, FaRobot, FaPaw } from 'react-icons/fa6';
+import { FaHeart, FaRobot, FaPaw } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
 import { fetchPortfolioData } from '../../../shared/portfolioService';
 import HrmsPipelineMotionCards from './HrmsPipelineMotionCards';
+import SocialInteractionGrid from './SocialInteractionGrid';
 import { 
     SiReact, SiNextdotjs, SiTypescript, SiNodedotjs, SiFastapi, SiFlutter, 
     SiSupabase, SiPrisma, SiVercel, SiFigma, SiRedux, SiTailwindcss, SiHuggingface, 
@@ -142,16 +143,7 @@ const LinkedInIcon = () => (
     </svg>
 );
 
-const getSocialIcon = (label) => {
-    const l = label.toLowerCase();
-    if (l === 'linkedin') return <FaLinkedinIn />;
-    if (l === 'x' || l === 'twitter') return <FaXTwitter />;
-    if (l === 'threads') return <FaThreads />;
-    if (l === 'instagram') return <FaInstagram />;
-    if (l === 'facebook') return <FaFacebookF />;
-    if (l === 'email') return <FaEnvelope />;
-    return <span className="ns-arrow">↗</span>;
-};
+
 
 
 const getTechIcon = (name) => {
@@ -424,37 +416,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                         <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
                             <div className="ns-reveal lit-content-block lit-transparent">
                                 <p className="ui-sub-label" style={{ marginBottom: '1.25rem', letterSpacing: '0.22em' }}>Connect</p>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'center' }}>
-                                    {socials.map((link) => (
-                                        <a key={link.label} href={link.href}
-                                            target={link.external ? '_blank' : '_self'}
-                                            rel={link.external ? 'noopener noreferrer' : ''}
-                                            className="ns-social-link" style={{ fontSize: '1.5rem', color: 'var(--ns-link-color)', display: 'inline-block' }} title={link.label}
-                                            onMouseEnter={(e) => { 
-                                                gsap.to(e.currentTarget, {
-                                                    y: -6,
-                                                    scale: 1.25,
-                                                    rotation: (Math.random() - 0.5) * 20,
-                                                    color: 'var(--accent-color)',
-                                                    duration: 0.35,
-                                                    ease: 'back.out(3)'
-                                                });
-                                            }}
-                                            onMouseLeave={(e) => { 
-                                                gsap.to(e.currentTarget, {
-                                                    y: 0,
-                                                    scale: 1,
-                                                    rotation: 0,
-                                                    color: 'var(--ns-link-color)',
-                                                    duration: 0.7,
-                                                    ease: 'elastic.out(1, 0.3)'
-                                                });
-                                            }}
-                                        >
-                                            {getSocialIcon(link.label)}
-                                        </a>
-                                    ))}
-                                </div>
+                                <SocialInteractionGrid socials={socials} />
                             </div>
                         </aside>
                     )}
