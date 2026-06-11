@@ -583,29 +583,6 @@ const NarrativeSection = forwardRef((props, ref) => {
             <PinnedFeedPost />
 
 
-            {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
-            {testimonials.length > 0 && (
-                <section className="ns-section" id="testimonials">
-                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Endorsements</p>
-                    <h2 className="ns-section-heading ns-reveal">Testimonials</h2>
-                    <div className="ns-testimonials-wrapper ns-reveal">
-                        <div className="ns-testimonials-track">
-                            {[...testimonials, ...testimonials].map((t, i) => (
-                                <div key={i} className="ns-testimonial-card lit-content-block">
-                                    <p className="ns-testimonial-quote">“{t.quote}”</p>
-                                    <div className="ns-testimonial-author">
-                                        <p className="ns-testimonial-name">{t.author}</p>
-                                        <p className="ns-testimonial-role ui-sub-label">
-                                            {t.role}{t.company ? `, ${t.company}` : ''}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-
             {/* ══ CONTACT ══════════════════════════════════════════════════ */}
             <section className="ns-contact-section" id="contact">
                 <div className="ns-contact-header lit-content-block lit-transparent">
