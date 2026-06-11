@@ -1,0 +1,277 @@
+/* 
+   TechHoverPhysics.css
+   Dedicated highly-optimized CSS animations for the Tech Stack icons.
+   Uses GPU-accelerated transforms and filters to guarantee zero lag on theme changes.
+*/
+
+/* ── BASE HOVER RESET ── */
+.ns-tech-icon {
+    position: relative;
+}
+.ns-tech-icon:hover {
+    opacity: 1;
+    transform: scale(1.1); /* Fallback */
+    z-index: 10;
+}
+
+/* ── ⚛️ REACT (Atomic Spin & Glow) ── */
+.ns-tech-icon[data-tech="react"]:hover {
+    color: #61DAFB;
+    animation: react-spin 4s linear infinite;
+    filter: drop-shadow(0 0 12px rgba(97,218,251,0.6));
+}
+@keyframes react-spin {
+    from { transform: scale(1.15) rotate(0deg); }
+    to { transform: scale(1.15) rotate(360deg); }
+}
+
+/* ── 📘 TYPESCRIPT (Strict Boundary) ── */
+.ns-tech-icon[data-tech="typescript"]::after {
+    content: ''; 
+    position: absolute; 
+    inset: -6px;
+    border: 2px solid transparent; 
+    border-radius: 6px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.ns-tech-icon[data-tech="typescript"]:hover {
+    color: #3178C6;
+    transform: scale(1.1);
+}
+.ns-tech-icon[data-tech="typescript"]:hover::after {
+    border-color: #3178C6;
+    box-shadow: inset 0 0 10px rgba(49,120,198,0.5), 0 0 10px rgba(49,120,198,0.5);
+}
+
+/* ── ▲ NEXT.JS (Pulse Flash) ── */
+.ns-tech-icon[data-tech="next.js"]:hover {
+    /* Hardcoded dark/light colors handle themselves, we just do the pulse */
+    animation: next-pulse 0.8s ease-in-out infinite alternate;
+}
+html[data-theme='dark'] .ns-tech-icon[data-tech="next.js"]:hover { color: #fff; }
+html[data-theme='light'] .ns-tech-icon[data-tech="next.js"]:hover { color: #000; }
+
+@keyframes next-pulse {
+    from { transform: scale(1.1); filter: drop-shadow(0 0 2px rgba(128,128,128,0.4)); }
+    to { transform: scale(1.1); filter: drop-shadow(0 0 15px rgba(128,128,128,1)); }
+}
+
+/* ── 🟢 NODE.JS (Breathing Hexagon) ── */
+.ns-tech-icon[data-tech="node.js"]:hover {
+    color: #339933;
+    animation: node-breathe 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(51,153,51,0.6));
+}
+@keyframes node-breathe {
+    0%, 100% { transform: scale(1.1); }
+    50% { transform: scale(1.2); }
+}
+
+/* ── 🐍 PYTHON (The Slither & Split Glow) ── */
+.ns-tech-icon[data-tech="python"]:hover {
+    animation: python-slither 0.5s ease-in-out infinite alternate;
+    filter: drop-shadow(-4px -4px 6px rgba(55,118,171,0.7)) drop-shadow(4px 4px 6px rgba(255,212,59,0.7));
+}
+@keyframes python-slither {
+    from { transform: scale(1.15) rotate(-6deg); }
+    to { transform: scale(1.15) rotate(6deg); }
+}
+
+/* ── 🐳 DOCKER (Buoyancy / Floating) ── */
+.ns-tech-icon[data-tech="docker"]:hover {
+    color: #2496ED;
+    animation: docker-bob 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 12px 6px rgba(36,150,237,0.3));
+}
+@keyframes docker-bob {
+    0%, 100% { transform: scale(1.15) translateY(0); }
+    50% { transform: scale(1.15) translateY(-8px); }
+}
+
+/* ── 🐘 POSTGRESQL (The Heavyweight Stomp) ── */
+.ns-tech-icon[data-tech="postgresql"]:hover {
+    color: #4169E1;
+    animation: pg-stomp 1.2s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+}
+@keyframes pg-stomp {
+    0% { transform: scale(1.1) translateY(0); filter: drop-shadow(0 0 0 rgba(65,105,225,0)); }
+    15% { transform: scale(1.1) translateY(-12px); }
+    25% { transform: scale(1.15) translateY(2px); filter: drop-shadow(0 5px 15px rgba(65,105,225,0.9)); }
+    35% { transform: scale(1.1) translateY(0); filter: drop-shadow(0 0 5px rgba(65,105,225,0.3)); }
+    100% { transform: scale(1.1) translateY(0); }
+}
+
+/* ── ⚡ SUPABASE (Neon Breathe) ── */
+.ns-tech-icon[data-tech="supabase"]:hover {
+    color: #3ECF8E;
+    animation: supabase-pulse 1s ease-out infinite;
+}
+@keyframes supabase-pulse {
+    0% { transform: scale(1.15); filter: drop-shadow(0 0 0 rgba(62,207,142,0.8)); }
+    100% { transform: scale(1.15); filter: drop-shadow(0 0 25px rgba(62,207,142,0)); }
+}
+
+/* ── 🚀 FASTAPI (Electric Zap) ── */
+.ns-tech-icon[data-tech="fastapi"]:hover {
+    color: #009688;
+    animation: fastapi-zap 0.15s linear infinite alternate;
+}
+@keyframes fastapi-zap {
+    from { transform: scale(1.15) translateX(-2px) rotate(-2deg); filter: drop-shadow(3px 0 6px rgba(0,150,136,0.8)); }
+    to { transform: scale(1.15) translateX(2px) rotate(2deg); filter: drop-shadow(-3px 0 6px rgba(0,150,136,0.8)); }
+}
+
+/* ── 🛠️ GITHUB ACTIONS (The Pipeline Ring) ── */
+.ns-tech-icon[data-tech="github-actions"]::before {
+    content: ''; 
+    position: absolute; 
+    inset: -6px;
+    border: 2px dashed #2088FF; 
+    border-radius: 50%;
+    opacity: 0; 
+    transition: opacity 0.3s;
+}
+.ns-tech-icon[data-tech="github-actions"]:hover {
+    color: #2088FF;
+    transform: scale(1.1);
+}
+.ns-tech-icon[data-tech="github-actions"]:hover::before {
+    opacity: 1;
+    animation: actions-spin 3s linear infinite;
+}
+@keyframes actions-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── 🪄 FRAMER (Spring Physics) ── */
+.ns-tech-icon[data-tech="framer"]:hover {
+    color: #0055FF;
+    /* Framer uses spring physics, this simulates elasticity */
+    animation: framer-spring 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both infinite;
+}
+@keyframes framer-spring {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.4) rotate(8deg); }
+    40% { transform: scale(1.05) rotate(-4deg); }
+    60% { transform: scale(1.15) rotate(2deg); }
+    80%, 100% { transform: scale(1.1) rotate(0); }
+}
+
+/* ── 🔄 TANSTACK QUERY (Cache Sync Pulse) ── */
+.ns-tech-icon[data-tech="tanstack-query"]:hover {
+    color: #FF4154;
+    animation: tanstack-sync 0.8s ease-in-out infinite alternate;
+}
+@keyframes tanstack-sync {
+    from { transform: scale(1.15) rotate(-10deg); filter: drop-shadow(0 0 5px rgba(255,65,84,0.4)); }
+    to { transform: scale(1.15) rotate(10deg); filter: drop-shadow(0 0 15px rgba(255,65,84,0.9)); }
+}
+
+/* ── 🔪 SHADCN/UI (The Slice) ── */
+.ns-tech-icon[data-tech="shadcn/ui"]:hover {
+    /* Shadcn is neutral, we'll use a sharp stark shadow */
+    animation: shadcn-slice 0.4s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
+}
+html[data-theme='dark'] .ns-tech-icon[data-tech="shadcn/ui"]:hover { color: #fff; }
+html[data-theme='light'] .ns-tech-icon[data-tech="shadcn/ui"]:hover { color: #000; }
+
+@keyframes shadcn-slice {
+    from { transform: scale(1.1) skewX(0deg); filter: drop-shadow(0 0 0px rgba(128,128,128,0)); }
+    to { transform: scale(1.2) skewX(-10deg); filter: drop-shadow(5px 5px 0px rgba(128,128,128,0.5)); }
+}
+
+/* ── 🧊 PRISMA (3D Refraction) ── */
+.ns-tech-icon[data-tech="prisma"]:hover {
+    color: #5A67D8;
+    animation: prisma-3d 1.5s linear infinite;
+}
+@keyframes prisma-3d {
+    0% { transform: scale(1.15) rotateY(0deg); filter: drop-shadow(0 0 5px rgba(90,103,216,0.5)); }
+    50% { transform: scale(1.15) rotateY(180deg); filter: drop-shadow(0 0 15px rgba(90,103,216,0.9)); }
+    100% { transform: scale(1.15) rotateY(360deg); filter: drop-shadow(0 0 5px rgba(90,103,216,0.5)); }
+}
+
+/* ── 🎾 GSAP (The Easing Bounce) ── */
+.ns-tech-icon[data-tech="gsap"]:hover {
+    color: #88CE02;
+    /* Simulate a complex CustomEase bounce */
+    animation: gsap-bounce 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+@keyframes gsap-bounce {
+    0%, 100% { transform: scale(1.1) translateY(0); }
+    50% { transform: scale(1.3) translateY(-10px); filter: drop-shadow(0 10px 5px rgba(136,206,2,0.4)); }
+}
+
+/* ── 🛡️ ZOD (Strict Validation Shake) ── */
+.ns-tech-icon[data-tech="zod"]:hover {
+    color: #3E67B1;
+    animation: zod-validate 0.5s ease-in-out infinite;
+}
+@keyframes zod-validate {
+    0%, 100% { transform: scale(1.15) translateX(0); }
+    25% { transform: scale(1.15) translateX(-3px) rotate(-5deg); filter: drop-shadow(-3px 0 10px rgba(62,103,177,0.8)); }
+    75% { transform: scale(1.15) translateX(3px) rotate(5deg); filter: drop-shadow(3px 0 10px rgba(62,103,177,0.8)); }
+}
+
+/* ── 📝 REACT HOOK FORM (Pop-in) ── */
+.ns-tech-icon[data-tech="react-hook-form"]:hover {
+    color: #EC5990;
+    animation: rhf-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
+}
+@keyframes rhf-pop {
+    from { transform: scale(1); filter: drop-shadow(0 0 0 rgba(236,89,144,0)); }
+    to { transform: scale(1.3); filter: drop-shadow(0 0 12px rgba(236,89,144,0.8)); }
+}
+
+/* ── ✨ LOTTIE & SVG ANIMATION (Jelly Wobble) ── */
+.ns-tech-icon[data-tech="lottiefiles"]:hover { color: #00D1B2; animation: jelly-wobble 0.8s ease-in-out infinite; }
+.ns-tech-icon[data-tech="svg-animation"]:hover { color: #FFB800; animation: jelly-wobble 0.8s ease-in-out infinite reverse; }
+
+@keyframes jelly-wobble {
+    0%, 100% { transform: scale(1.15) scale3d(1, 1, 1); }
+    30% { transform: scale(1.15) scale3d(1.25, 0.75, 1); }
+    40% { transform: scale(1.15) scale3d(0.75, 1.25, 1); }
+    50% { transform: scale(1.15) scale3d(1.15, 0.85, 1); }
+    65% { transform: scale(1.15) scale3d(0.95, 1.05, 1); }
+    75% { transform: scale(1.15) scale3d(1.05, 0.95, 1); }
+}
+
+/* ── 🟢 OTHER STANDARD COLORS WITH BASIC PULSE ── */
+.ns-tech-icon[data-tech="flutter"]:hover { color: #02569B; animation: jelly-wobble 1s infinite; filter: drop-shadow(0 0 10px rgba(2,86,155,0.6)); }
+.ns-tech-icon[data-tech="scikit-learn"]:hover { color: #F7931E; animation: react-spin 5s linear infinite; filter: drop-shadow(0 0 10px rgba(247,147,30,0.6)); }
+.ns-tech-icon[data-tech="emailjs"]:hover { color: #F6A900; animation: docker-bob 1s infinite; filter: drop-shadow(0 5px 10px rgba(246,169,0,0.4)); }
+.ns-tech-icon[data-tech="lovable"]:hover { color: #FF4B4B; animation: lovable-beat 0.8s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(255,75,75,0.6)); }
+.ns-tech-icon[data-tech="uptimerobot"]:hover { color: #33D45D; animation: next-pulse 0.5s infinite alternate; filter: drop-shadow(0 0 10px rgba(51,212,93,0.8)); }
+.ns-tech-icon[data-tech="zed"]:hover { color: #FF6B6B; animation: fastapi-zap 0.2s infinite; filter: drop-shadow(0 0 10px rgba(255,107,107,0.6)); }
+
+/* New Stack Additions */
+.ns-tech-icon[data-tech="vercel"]:hover { animation: next-pulse 0.8s ease-in-out infinite alternate; }
+html[data-theme='dark'] .ns-tech-icon[data-tech="vercel"]:hover { color: #fff; }
+html[data-theme='light'] .ns-tech-icon[data-tech="vercel"]:hover { color: #000; }
+
+.ns-tech-icon[data-tech="react-native"]:hover { color: #61DAFB; animation: react-spin 4s linear infinite; filter: drop-shadow(0 0 12px rgba(97,218,251,0.6)); }
+.ns-tech-icon[data-tech="lenis"]:hover { color: #FFB800; animation: docker-bob 1s infinite; filter: drop-shadow(0 5px 10px rgba(255,184,0,0.4)); }
+.ns-tech-icon[data-tech="figma"]:hover { color: #F24E1E; transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 10px rgba(242,78,30,0.6)); }
+.ns-tech-icon[data-tech="redux"]:hover { color: #764ABC; animation: react-spin 4s linear infinite reverse; filter: drop-shadow(0 0 10px rgba(118,74,188,0.6)); }
+.ns-tech-icon[data-tech="base-ui"]:hover { color: #007FFF; transform: scale(1.15); filter: drop-shadow(0 0 10px rgba(0,127,255,0.6)); }
+.ns-tech-icon[data-tech="tailwind-css"]:hover { color: #06B6D4; animation: docker-bob 1.5s infinite; filter: drop-shadow(0 5px 10px rgba(6,182,212,0.4)); }
+.ns-tech-icon[data-tech="hugging-face"]:hover { color: #FFD21E; animation: lovable-beat 1s infinite; filter: drop-shadow(0 0 10px rgba(255,210,30,0.6)); }
+.ns-tech-icon[data-tech="rest-api"]:hover { color: #A8B9CC; animation: tanstack-sync 1s infinite; filter: drop-shadow(0 0 10px rgba(168,185,204,0.6)); }
+.ns-tech-icon[data-tech="firebase"]:hover { color: #FFCA28; transform: scale(1.15) translateY(-5px); filter: drop-shadow(0 10px 10px rgba(255,202,40,0.4)); }
+.ns-tech-icon[data-tech="angular"]:hover { color: #DD0031; transform: scale(1.15) rotateY(15deg); filter: drop-shadow(0 0 10px rgba(221,0,49,0.6)); }
+.ns-tech-icon[data-tech="vue"]:hover { color: #4FC08D; animation: jelly-wobble 1s infinite; filter: drop-shadow(0 0 10px rgba(79,192,141,0.6)); }
+.ns-tech-icon[data-tech="astro"]:hover { color: #BC52EE; transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 10px rgba(188,82,238,0.6)); }
+.ns-tech-icon[data-tech="vite"]:hover { color: #646CFF; animation: fastapi-zap 0.2s infinite alternate; filter: drop-shadow(0 0 10px rgba(100,108,255,0.6)); }
+.ns-tech-icon[data-tech="wordpress"]:hover { color: #21759B; transform: scale(1.15); filter: drop-shadow(0 0 10px rgba(33,117,155,0.6)); }
+.ns-tech-icon[data-tech="shopify"]:hover { color: #95BF47; transform: scale(1.15); filter: drop-shadow(0 0 10px rgba(149,191,71,0.6)); }
+.ns-tech-icon[data-tech="zustand"]:hover { color: #443E38; animation: docker-bob 1s infinite; filter: drop-shadow(0 5px 10px rgba(68,62,56,0.4)); }
+.ns-tech-icon[data-tech="riverpod"]:hover { color: #02569B; animation: jelly-wobble 1s infinite; filter: drop-shadow(0 0 10px rgba(2,86,155,0.6)); }
+.ns-tech-icon[data-tech="jupyter-notebook"]:hover { color: #F37626; transform: scale(1.15) rotate(15deg); filter: drop-shadow(0 0 10px rgba(243,118,38,0.6)); }
+.ns-tech-icon[data-tech="turbopack"]:hover { color: #FF1E56; animation: fastapi-zap 0.15s infinite alternate; filter: drop-shadow(0 0 10px rgba(255,30,86,0.6)); }
+
+@keyframes lovable-beat {
+    0%, 100% { transform: scale(1.15); }
+    15% { transform: scale(1.3); }
+    30% { transform: scale(1.15); }
+    45% { transform: scale(1.3); }
+}

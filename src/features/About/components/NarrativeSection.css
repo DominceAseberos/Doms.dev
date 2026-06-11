@@ -400,6 +400,22 @@ html[data-theme='light'] .name-last {
     margin: 0 0 2rem;
 }
 
+/* ── Lyrics Fill Effect ─────────────────────────────────────────────────── */
+.ns-lyrics-text {
+    font-size: clamp(2rem, 5vw, 3.5rem); /* Massive statement piece */
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    max-width: 1100px;
+    margin-bottom: 2rem;
+}
+
+.lyric-word {
+    display: inline-block;
+    will-change: opacity;
+}
+
 .ns-about-block .ui-body-copy {
     font-size: clamp(0.95rem, 1.3vw, 1.15rem);
 }
@@ -490,11 +506,62 @@ html[data-theme='light'] .ns-sidebar-label {
     font-size: 0.8rem;
 }
 
+/* Bento Socials Grid */
+.ns-bento-socials {
+    display: grid;
+    grid-template-columns: repeat(3, 4rem);
+    gap: 0.75rem;
+}
+
+.ns-bento-social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    background: var(--ns-card-bg);
+    border: 1px solid var(--ns-card-border);
+    border-radius: 12px;
+    color: var(--ns-link-color);
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s, color 0.3s;
+}
+
+.ns-bento-social-link:hover {
+    background: var(--ns-project-card-hover);
+    border-color: var(--ns-link-hover);
+    color: var(--ns-link-hover);
+}
+
+
 /* Pills */
 .ns-pill-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    justify-content: center;
+    gap: 3.5rem 3rem;
+    width: 100%;
+}
+
+.ns-tech-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ns-tech-icon {
+    font-size: 2.5rem;
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ns-tech-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 .ns-pill {
@@ -502,8 +569,8 @@ html[data-theme='light'] .ns-sidebar-label {
     background: var(--ns-pill-bg);
     border: 1px solid var(--ns-pill-border);
     border-radius: 999px;
-    padding: 4px 10px;
-    font-size: 0.68rem;
+    padding: 6px 16px;
+    font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     transition: background 0.2s, border-color 0.2s;
@@ -608,22 +675,18 @@ html[data-theme='light'] .ns-timeline-period {
 
 /* ── TECH STACK ──────────────────────────────────────────────────────────── */
 .ns-stack-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: clamp(1.5rem, 3vw, 2.5rem);
     margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 @media (min-width: 768px) {
-    .ns-stack-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    /* Kept for structural spacing if needed, but removed grid-columns */
 }
 
 @media (min-width: 1100px) {
-    .ns-stack-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    /* Kept for structural spacing if needed, but removed grid-columns */
 }
 
 .ns-stack-group {
@@ -636,8 +699,9 @@ html[data-theme='light'] .ns-timeline-period {
 
 .ns-stack-group-title {
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.22em;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--gray);
     margin: 0;

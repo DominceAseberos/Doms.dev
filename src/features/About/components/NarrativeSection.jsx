@@ -4,6 +4,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FaLinkedinIn, FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
 import { fetchPortfolioData } from '../../../shared/portfolioService';
+import HrmsPipelineMotionCards from './HrmsPipelineMotionCards';
+import { 
+    SiReact, SiNextdotjs, SiTypescript, SiNodedotjs, SiFastapi, SiFlutter, 
+    SiSupabase, SiPrisma, SiVercel, SiFigma, SiRedux, SiTailwindcss, SiHuggingface, 
+    SiGithubactions, SiFirebase, SiAngular, SiVuedotjs, SiAstro, SiVite, SiWordpress, 
+    SiShopify, SiJupyter, SiTurborepo
+} from 'react-icons/si';
+import { Database, Layout, Webhook, Box, Code } from 'lucide-react';
 import portfolioDataDefault from '../../../data/portfolioData.json';
 import aboutDataDefault from '../../../data/aboutData.json';
 import ProfileMorphCard from '../../../components/ProfileMorphCard';
@@ -13,13 +21,13 @@ import FeedSection from './FeedSection';
 import PremiumMotionCards from './PremiumMotionCards';
 import PhilosophyCards from './PhilosophyCards';
 import DocViewerModal from '../../../components/DocViewerModal';
-import SectionProgressIndicator from '../../../components/SectionProgressIndicator';
 import humanPortrait from '../../../assets/human-cutout.png';
 import animePortrait from '../../../assets/anime-cutout.png';
 import useLoadingStore from '../../../store/useLoadingStore';
 import useLogoStore from '../../../store/useLogoStore';
 import useThemeStore from '../../../store/useThemeStore';
 import './NarrativeSection.css';
+import './TechHoverPhysics.css';
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
@@ -50,6 +58,23 @@ function useScrubReveal(containerRef, dataReady) {
                         });
                     },
                 });
+                
+                ScrollTrigger.batch('.ns-tech-reveal', {
+                    start: 'top 95%',
+                    onEnter: (batch) => {
+                        gsap.to(batch, {
+                            opacity: 1, 
+                            scale: 1,
+                            y: 0,
+                            duration: 0.6,
+                            ease: 'back.out(1.5)',
+                            stagger: 0.04,
+                            overwrite: 'auto'
+                        });
+                    },
+                });
+                gsap.set('.ns-tech-reveal', { opacity: 0, scale: 0.8, y: 20 });
+
                 ScrollTrigger.refresh();
             }, containerRef);
             return () => ctx.revert();
@@ -58,6 +83,53 @@ function useScrubReveal(containerRef, dataReady) {
         return () => cancelAnimationFrame(raf);
     }, [dataReady, containerRef]);
 }
+// ── Lyrics Scrub Reveal Component ──────────────────────────────────────────
+const LyricsScrubText = ({ text, highlights = [], className = '', style = {} }) => {
+    const textRef = useRef(null);
+
+    useEffect(() => {
+        if (!textRef.current || typeof window === 'undefined') return;
+        
+        const ctx = gsap.context(() => {
+            const words = gsap.utils.toArray('.lyric-word', textRef.current);
+            gsap.set(words, { opacity: 0.15 });
+            
+            gsap.to(words, {
+                opacity: 1,
+                stagger: 0.1,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: textRef.current,
+                    start: 'top 85%',
+                    end: 'bottom 45%',
+                    scrub: 0.5,
+                }
+            });
+        }, textRef);
+        
+        return () => ctx.revert();
+    }, [text]);
+
+    return (
+        <p ref={textRef} className={`ns-lyrics-text ${className}`} style={style} suppressHydrationWarning>
+            {text.split(' ').map((word, i) => {
+                const cleanWord = word.replace(/[.,!?]/g, '');
+                const isHighlight = highlights.some(h => h.toLowerCase() === cleanWord.toLowerCase());
+                return (
+                    <span key={i} className="lyric-word" style={{ 
+                        marginRight: '0.25em', 
+                        display: 'inline-block', 
+                        willChange: 'opacity',
+                        color: isHighlight ? 'var(--accent)' : 'inherit',
+                        textShadow: isHighlight ? '0 0 20px color-mix(in srgb, var(--accent) 30%, transparent)' : 'none'
+                    }}>
+                        {word}
+                    </span>
+                );
+            })}
+        </p>
+    );
+};
 
 // ── Icons ─────────────────────────────────────────────────────────────────
 const GithubIcon = () => (
@@ -80,6 +152,42 @@ const getSocialIcon = (label) => {
     if (l === 'facebook') return <FaFacebookF />;
     if (l === 'email') return <FaEnvelope />;
     return <span className="ns-arrow">↗</span>;
+};
+
+
+const getTechIcon = (name) => {
+    const n = name.toLowerCase();
+    if (n.includes('react native')) return <SiReact />;
+    if (n.includes('react')) return <SiReact />;
+    if (n.includes('next.js')) return <SiNextdotjs />;
+    if (n.includes('typescript')) return <SiTypescript />;
+    if (n.includes('node.js')) return <SiNodedotjs />;
+    if (n.includes('fastapi')) return <SiFastapi />;
+    if (n.includes('flutter')) return <SiFlutter />;
+    if (n.includes('supabase')) return <SiSupabase />;
+    if (n.includes('prisma')) return <SiPrisma />;
+    if (n.includes('vercel')) return <SiVercel />;
+    if (n.includes('figma')) return <SiFigma />;
+    if (n.includes('redux')) return <SiRedux />;
+    if (n.includes('tailwind')) return <SiTailwindcss />;
+    if (n.includes('hugging')) return <SiHuggingface />;
+    if (n.includes('github action')) return <SiGithubactions />;
+    if (n.includes('firebase')) return <SiFirebase />;
+    if (n.includes('angular')) return <SiAngular />;
+    if (n.includes('vue')) return <SiVuedotjs />;
+    if (n.includes('astro')) return <SiAstro />;
+    if (n.includes('vite')) return <SiVite />;
+    if (n.includes('wordpress')) return <SiWordpress />;
+    if (n.includes('shopify')) return <SiShopify />;
+    if (n.includes('ipynb') || n.includes('jupyter')) return <SiJupyter />;
+    if (n.includes('turbopack')) return <SiTurborepo />;
+    if (n.includes('rest api')) return <Webhook />;
+    if (n.includes('zod')) return <Code />;
+    if (n.includes('tanstack')) return <Database />;
+    if (n.includes('shadcn') || n.includes('base ui')) return <Layout />;
+    if (n.includes('zustand') || n.includes('riverpod')) return <Box />;
+    if (n.includes('lenis')) return <Code />;
+    return null;
 };
 
 // ── Main component ────────────────────────────────────────────────────────
@@ -225,7 +333,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                                 );
                             })()}
                         </h1>
-                        {hero.bio  && <p className="ns-hero-bio ui-body-copy ns-reveal" style={{ marginTop: '1rem' }} suppressHydrationWarning>{hero.bio}</p>}
+
 
                         <div className="ns-hero-actions ns-reveal">
                             {data.resume && (
@@ -282,9 +390,12 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </section>
 
+
+
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
             <section className="ns-section" id="about">
-                <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
+                <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
+                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
                 <div className="ns-about-grid">
                     <div className="ns-about-main lit-content-block lit-transparent">
                         <h2 className="ns-section-heading ns-reveal">
@@ -292,7 +403,10 @@ const NarrativeSection = forwardRef((props, ref) => {
                             <span className="ns-accent">{about.headingAccent || 'Digital Poetry'}</span>
                         </h2>
                         {about.intro && (
-                            <p className="ns-body-lg ui-body-copy ns-reveal" suppressHydrationWarning>{about.intro}</p>
+                            <LyricsScrubText 
+                                text={about.intro} 
+                                highlights={['Computer', 'Science', 'full-stack', 'engineering', 'mobile', 'apps', 'motion-heavy', 'interfaces', 'AI/ML', 'software']} 
+                            />
                         )}
                         {/* Philosophy Cards will be rendered outside the grid below */}
                     </div>
@@ -337,13 +451,51 @@ const NarrativeSection = forwardRef((props, ref) => {
                         </aside>
                     )}
                 </div>
+                </div>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '3rem' }}>
-                    {/* 3 Philosophy Cards Row */}
-                    <PhilosophyCards />
-
-                    {/* 4 Premium Motion Cards Row */}
-                    <PremiumMotionCards />
+                <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
+                    <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
+                        <div style={{ flex: '1 1 400px' }}>
+                            <h2 className="ns-section-heading">
+                                How I <span className="ns-accent">Build</span>
+                            </h2>
+                            <LyricsScrubText 
+                                text="I don't just write code. I design systems. Here is my step-by-step pipeline for turning complex problems into working software."
+                                highlights={['design', 'systems', 'step-by-step', 'pipeline', 'complex', 'problems', 'working', 'software']}
+                                style={{ marginTop: '0.5rem', maxWidth: '500px' }}
+                            />
+                        </div>
+                        
+                        <div style={{ flex: '1 1 300px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', height: '60px', padding: '0 10px' }}>
+                            <div style={{ position: 'absolute', left: '20px', right: '20px', top: '24px', height: '2px', background: 'var(--border-color, rgba(160, 168, 208, 0.2))', zIndex: 0 }}></div>
+                            <div style={{ position: 'absolute', left: '20px', right: '20px', top: '24px', height: '2px', overflow: 'hidden', zIndex: 1 }}>
+                                <div style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, transparent, #3B82F6, #7C3AED, transparent)', animation: 'flowingLine 2.5s infinite linear' }}></div>
+                            </div>
+                            
+                            {[
+                                { name: 'Plan', color: '#7C3AED', delay: '0.41s' },
+                                { name: 'Data', color: '#3B82F6', delay: '0.69s' },
+                                { name: 'Logic', color: '#06B6D4', delay: '0.97s' },
+                                { name: 'Build', color: '#8B5CF6', delay: '1.25s' }
+                            ].map((phase) => (
+                                <div key={phase.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', zIndex: 2 }}>
+                                    <div style={{ 
+                                        width: '14px', 
+                                        height: '14px', 
+                                        borderRadius: '50%', 
+                                        border: '3px solid var(--bg-main, #ffffff)', 
+                                        '--dot-color': phase.color,
+                                        '--dot-glow': `${phase.color}66`,
+                                        animation: `pulseDot 2.5s infinite linear ${phase.delay}`
+                                    }}></div>
+                                    <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted, #64748b)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{phase.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="ns-reveal" style={{ marginTop: '3rem' }}>
+                        <HrmsPipelineMotionCards />
+                    </div>
                 </div>
             </section>
 
@@ -384,26 +536,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </section>
             )}
 
-            {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
-            {techStack.length > 0 && (
-                <section className="ns-section" id="stack">
-                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Technical Skills</p>
-                    <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
-                    <div className="ns-stack-grid">
-                        {techStack.map((group) => (
-                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block lit-transparent">
-                                <h3 className="ns-stack-group-title">{group.group}</h3>
-                                <div className="ns-pill-group">
-                                    {(group.items || []).map((item) => (
-                                        <span key={item} className="ns-pill">{item}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
-
             {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
             {experience.length > 0 && (
                 <section className="ns-section" id="experience">
@@ -435,6 +567,38 @@ const NarrativeSection = forwardRef((props, ref) => {
 
             {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
             <GithubContributionSection />
+
+            {/* ══ TECH STACK ═══════════════════════════════════════════════ */}
+            {techStack.length > 0 && (
+                <section className="ns-section" id="stack">
+                    <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Technical Skills</p>
+                    <h2 className="ns-section-heading ns-reveal">Technology Stack</h2>
+                    <div className="ns-stack-grid">
+                        {techStack.map((group) => (
+                            <div key={group.group} className="ns-stack-group ns-reveal lit-content-block lit-transparent">
+                                <h3 className="ns-stack-group-title">{group.group}</h3>
+                                <div className="ns-pill-group">
+                                    {(group.items || []).map((item) => {
+                                        const Icon = getTechIcon(item);
+                                        return (
+                                            <div key={item} className="ns-tech-item ns-tech-reveal">
+                                                {Icon && (
+                                                    <div className="ns-tech-icon" data-tech={item.toLowerCase().replace(/\s+/g, '-')}>
+                                                        {Icon}
+                                                    </div>
+                                                )}
+                                                <span className="ns-pill" style={{ textAlign: 'center', width: 'max-content' }}>
+                                                    {item}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
             {testimonials.length > 0 && (
@@ -511,7 +675,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </div>
             </footer>
 
-            <SectionProgressIndicator />
             <DocViewerModal 
                 isOpen={isResumeModalOpen} 
                 onClose={() => setIsResumeModalOpen(false)} 
@@ -523,4 +686,4 @@ const NarrativeSection = forwardRef((props, ref) => {
 });
 
 NarrativeSection.displayName = 'NarrativeSection';
-export default React.memo(NarrativeSection);
+export default NarrativeSection;
