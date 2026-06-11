@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaHeart, FaRobot, FaPaw } from 'react-icons/fa6';
+import { FaHeart, FaRobot, FaPaw, FaEnvelope } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
 import { fetchPortfolioData } from '../../../shared/portfolioService';
 import HrmsPipelineMotionCards from './HrmsPipelineMotionCards';
