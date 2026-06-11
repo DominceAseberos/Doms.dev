@@ -409,10 +409,7 @@ const NarrativeSection = forwardRef((props, ref) => {
                     <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
                 <div className="ns-about-grid">
                     <div className="ns-about-main lit-content-block lit-transparent">
-                        <h2 className="ns-section-heading ns-reveal">
-                            {about.heading || 'Engineering'}{' '}
-                            <span className="ns-accent">{about.headingAccent || 'Digital Poetry'}</span>
-                        </h2>
+
                         {about.intro && (
                             <LyricsScrubText 
                                 text={about.intro} 
