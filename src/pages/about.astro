@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AboutDeepDive from '../features/About/components/AboutDeepDive.jsx';
+---
+
+<Layout 
+  title="About Domince Aseberos — Behind the Code"
+  description="A deeper dive into my experience, education, daily contributions, and what others have to say about working with me."
+>
+  <div className="relative min-h-screen">
+      <AboutDeepDive client:only="react" />
+  </div>
+</Layout>
