@@ -376,7 +376,7 @@ const CityscapeContact = () => {
           {/* Right: live city card */}
           <div className="cc-form-right">
             <span className="cc-preview-label">Live Preview</span>
-            <CityscapeSVG svgRef={svgRef} lit={lit} />
+            <CityscapeSVG svgRef={svgRef} lit={lit} socialSpots={socialSpots} />
           </div>
 
         </div>
@@ -386,7 +386,7 @@ const CityscapeContact = () => {
 };
 
 // ─── Cityscape SVG (all paths extracted from the HTML prototype) ───────────
-const CityscapeSVG = ({ svgRef, lit }) => (
+const CityscapeSVG = ({ svgRef, lit, socialSpots }) => (
   <svg
     ref={svgRef}
     id="cc-city-svg"
