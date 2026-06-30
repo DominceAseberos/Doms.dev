@@ -131,7 +131,22 @@
                 "Zod",
                 "TanStack Query",
                 "shadcn/ui",
-                "Prisma"
+                "Prisma",
+                "Vercel",
+                "React Native",
+                "Lenis",
+                "Figma",
+                "Redux",
+                "Base UI",
+                "Tailwind CSS",
+                "Hugging Face",
+                "GitHub Actions",
+                "REST API",
+                "Firebase",
+                "Angular",
+                "Vue",
+                "Astro",
+                "Vite"
             ]
         },
         {
@@ -142,14 +157,19 @@
                 "GSAP",
                 "Scikit-learn",
                 "Docker",
-                "GitHub Actions",
                 "LottieFiles",
                 "Framer",
                 "SVG Animation",
                 "React Hook Form",
                 "EmailJS",
                 "Lovable",
-                "UptimeRobot"
+                "UptimeRobot",
+                "WordPress",
+                "Shopify",
+                "Zustand",
+                "Riverpod",
+                "Jupyter Notebook",
+                "Turbopack"
             ]
         }
     ],

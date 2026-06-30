@@ -70,38 +70,8 @@ const useLightPhysics = () => {
         // Overall opacity for deep-shadow fade
         block.style.opacity = String(0.1 + brightness * 0.9);
 
-        // Text Colors
-        const textElements = block.querySelectorAll('h1, h2, h3, p, span, li, a, strong, em, button');
-        
-        // Portfolio white: #f2f0ed (242, 240, 237)
-        // Portfolio gray: #8d8d8d (141, 141, 141)
-        textElements.forEach(el => {
-            const isHeader = ['H1', 'H2', 'H3', 'STRONG'].includes(el.tagName);
-            
-            if (isHeader) {
-                // Fades to a rich, warm golden color instead of white
-                const r = Math.round(24 + (255 - 24) * brightness);
-                const g = Math.round(24 + (210 - 24) * brightness);
-                const b = Math.round(24 + (100 - 24) * brightness);
-                el.style.color = `rgb(${r}, ${g}, ${b})`;
-            } else {
-                // Fades to a warm, sandy gray
-                const r = Math.round(24 + (230 - 24) * brightness);
-                const g = Math.round(24 + (190 - 24) * brightness);
-                const b = Math.round(24 + (120 - 24) * brightness);
-                el.style.color = `rgb(${r}, ${g}, ${b})`;
-            }
-        });
-
-        // Apply a warm tint to images and graphics so they physically blend with the light
-        const media = block.querySelectorAll('img, video, svg');
-        media.forEach(el => {
-             // In the dark: dim. In the light: bright with a heavy warm sepia tint
-             const imgBrightness = 0.4 + (brightness * 0.6);
-             const sepia = brightness * 0.5; // Adds up to 50% warm brown/yellow tint
-             const contrast = 0.8 + (brightness * 0.3);
-             el.style.filter = `brightness(${imgBrightness}) sepia(${sepia}) contrast(${contrast})`;
-        });
+        // Removed aggressive text color tinting to keep text and SVG colors crisp
+        // and match the aesthetic of the custom motion cards.
       });
     };
 
@@ -111,16 +81,6 @@ const useLightPhysics = () => {
         block.style.borderColor = '';
         block.style.boxShadow = '';
         block.style.opacity = '';
-        
-        const textElements = block.querySelectorAll('h1, h2, h3, p, span, li, a, strong, em, button');
-        textElements.forEach(el => {
-            el.style.color = '';
-        });
-
-        const media = block.querySelectorAll('img, video, svg');
-        media.forEach(el => {
-            el.style.filter = '';
-        });
       });
     };
 
