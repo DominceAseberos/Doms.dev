@@ -297,9 +297,7 @@ html[data-theme='light'] .name-last {
 }
 
 .ns-btn {
-    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 1rem) !important;
     padding: 1rem 1.75rem !important;
-    border-radius: 4px;
     display: inline-flex;
     align-items: center;
     justify-content: center;

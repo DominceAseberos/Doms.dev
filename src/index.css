@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+
 /* Overlay Project Theme Classes */
 .ep-inner-light {
     background: #e6f7d9;
@@ -403,24 +405,28 @@ html[data-theme='light'] .cs-page {
     display: inline-block;
     background: var(--accent);
     color: var(--on-accent);
-    border: none;
+    border: 2px solid var(--accent);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     padding: 14px 32px;
-    font-family: 'DM Mono', monospace;
-    font-size: 24px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    text-transform: none;
     text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    transition: all 0.2s ease;
+    box-shadow: 5px 5px 0px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px;
+    transform: translateY(-2px) rotate(-1deg);
+    box-shadow: 7px 7px 0px color-mix(in srgb, var(--accent) 30%, transparent);
     opacity: 0.95;
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+    transform: translateY(2px) rotate(1deg);
+    box-shadow: 2px 2px 0px color-mix(in srgb, var(--accent) 30%, transparent);
     opacity: 0.85;
 }
 
@@ -435,19 +441,29 @@ html[data-theme='light'] .cs-page {
     display: inline-block;
     background: transparent;
     color: var(--gray-light);
-    border: 1px solid var(--border);
+    border: 2px solid var(--border);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     padding: 14px 32px;
-    font-family: 'DM Mono', monospace;
-    font-size: 24px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    text-transform: none;
     text-decoration: none;
-    transition: color 0.2s, border-color 0.2s;
+    transition: all 0.2s ease;
+    box-shadow: 5px 5px 0px var(--border);
 }
 
 .btn-ghost:hover {
+    border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px;
+    transform: translateY(-2px) rotate(-1deg);
+    box-shadow: 7px 7px 0px color-mix(in srgb, var(--white) 25%, transparent);
     color: var(--white);
     border-color: color-mix(in srgb, var(--white) 25%, transparent);
+}
+
+.btn-ghost:active {
+    transform: translateY(2px) rotate(1deg);
+    box-shadow: 2px 2px 0px color-mix(in srgb, var(--white) 25%, transparent);
 }
 
 /* right half */
