@@ -46,20 +46,7 @@
   overflow: hidden;
 }
 
-/* Dot grid — day only */
-.cc-env-layer::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle, #c8c2b8 1px, transparent 1px);
-  background-size: 20px 20px;
-  opacity: 0;
-  transition: opacity var(--cc-transition);
-}
 
-.cc-root.cc-day .cc-env-layer::before {
-  opacity: 1;
-}
 
 /* Sun */
 .cc-sun {
