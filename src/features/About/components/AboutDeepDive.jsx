@@ -92,31 +92,6 @@ const AboutDeepDive = forwardRef((props, ref) => {
 
     useScrubReveal(containerRef, dataReady);
 
-    // ── Stripe intro ──────────────────────────────────────────────────────
-    useEffect(() => {
-        if (isLoading || !heroRef.current) return;
-        const stripes = stripesRef.current.filter(Boolean);
-        if (!stripes.length) return;
-
-        // Find the overlay element (parent of stripes)
-        const overlay = stripes[0]?.parentElement;
-
-        const ctx = gsap.context(() => {
-            gsap.set(stripes, { xPercent: 0 });
-            gsap.to(stripes, {
-                xPercent: (i) => (i % 2 === 0 ? 100 : -100),
-                duration: 1.5,
-                ease: 'power2.inOut',
-                stagger: { amount: 0.8, from: 'center' },
-                delay: 0.2,
-                onComplete: () => {
-                    // Hide overlay after animation so it never blocks clicks
-                    if (overlay) overlay.style.display = 'none';
-                },
-            });
-        }, heroRef);
-        return () => ctx.revert();
-    }, [isLoading]);
 
     // ── Data fetch ────────────────────────────────────────────────────────
     useEffect(() => {
@@ -126,9 +101,6 @@ const AboutDeepDive = forwardRef((props, ref) => {
             .finally(() => setDataReady(true));
     }, []);
 
-    const addStripe = (el) => {
-        if (el && !stripesRef.current.includes(el)) stripesRef.current.push(el);
-    };
 
     const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
@@ -138,17 +110,8 @@ const AboutDeepDive = forwardRef((props, ref) => {
     const testimonials = data.testimonials || [];
     const socials    = data.socials    || [];
 
-    const STRIPE_COUNT = 20;
-
     return (
         <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" suppressHydrationWarning>
-
-            {/* ══ STRIPE OVERLAY — fixed full-viewport, removed after animation ══ */}
-            <div className="ns-stripes-overlay" aria-hidden>
-                {Array.from({ length: STRIPE_COUNT }).map((_, i) => (
-                    <div key={i} ref={addStripe} className="ns-stripe" style={{ height: `${100 / STRIPE_COUNT}%` }} />
-                ))}
-            </div>
 
             {/* ══ HERO ═════════════════════════════════════════════════════ */}
             <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
