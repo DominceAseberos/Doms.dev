@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Permanent+Marker&display=swap');
 
 /* Overlay Project Theme Classes */
 .ep-inner-light {
@@ -85,6 +85,27 @@ body {
 
 #root {
     min-height: 100vh;
+}
+
+#global-graffiti-bg {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('/graffiti-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.05;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 999;
+}
+
+html[data-theme='dark'] #global-graffiti-bg {
+    filter: invert(1);
+    mix-blend-mode: screen;
+    opacity: 0.04;
 }
 
 /* Custom SVG cursor for interactive elements */
@@ -408,10 +429,11 @@ html[data-theme='light'] .cs-page {
     border: 2px solid var(--accent);
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     padding: 14px 32px;
-    font-family: 'Caveat', cursive;
-    font-size: 28px;
-    letter-spacing: 0.05em;
-    text-transform: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
     text-decoration: none;
     transition: all 0.2s ease;
     box-shadow: 5px 5px 0px color-mix(in srgb, var(--accent) 30%, transparent);
@@ -440,17 +462,18 @@ html[data-theme='light'] .cs-page {
 .btn-ghost {
     display: inline-block;
     background: transparent;
-    color: var(--gray-light);
-    border: 2px solid var(--border);
+    color: var(--white);
+    border: 2px solid var(--white);
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     padding: 14px 32px;
-    font-family: 'Caveat', cursive;
-    font-size: 28px;
-    letter-spacing: 0.05em;
-    text-transform: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
     text-decoration: none;
     transition: all 0.2s ease;
-    box-shadow: 5px 5px 0px var(--border);
+    box-shadow: 5px 5px 0px var(--white);
 }
 
 .btn-ghost:hover {
@@ -1009,4 +1032,10 @@ html[data-theme='light'] .cs-page {
     .metric-lbl {
         font-size: clamp(9px, 1vw, 13px);
     }
+}
+@keyframes drawHandwriting { 
+    to { stroke-dashoffset: 0; } 
+} 
+@keyframes fillHandwriting { 
+    to { fill: var(--fill-color); } 
 }
