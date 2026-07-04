@@ -1,75 +1,103 @@
 import React from 'react';
-import LyricsScrubText from '../ui/LyricsScrubText';
-import SocialInteractionGrid from '../SocialInteractionGrid';
-import HrmsPipelineMotionCards from '../HrmsPipelineMotionCards';
+import AINodes from '../ui/AINodes';
+import AIWebIntegration from '../ui/AIWebIntegration';
+import ScrollTypewriter from '../ui/ScrollTypewriter';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const highlightsList = ['Computer', 'Science', 'Artificial', 'Intelligence', 'front-end', 'full-stack', 'AI', 'integration', 'Large', 'Language', 'Models', '(LLMs)'];
 
 export default function AboutMeSection({ about, socials }) {
+    const sentences = about.intro ? (about.intro.match(/[^.!?]+[.!?]+/g) || [about.intro]) : [];
+    
+    // Split: First 2 sentences, then middle sentence, then the rest
+    const firstPart = sentences.slice(0, 2).map(s => s.trim()).join(' ');
+    const secondPart = sentences.slice(2, 3).map(s => s.trim()).join(' ');
+    const thirdPart = sentences.slice(3).map(s => s.trim()).join(' ');
+
     return (
         <section className="ns-section" id="about">
-            <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', paddingTop: '0', paddingBottom: '10vh' }}>
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
                 <div className="ns-about-grid">
                     <div className="ns-about-main lit-content-block lit-transparent">
-                        {about.intro && (
-                            <LyricsScrubText
-                                text={about.intro}
-                                highlights={['Computer', 'Science', 'full-stack', 'engineering', 'mobile', 'apps', 'motion-heavy', 'interfaces', 'AI/ML', 'software']}
+                        
+                        {/* FIRST PART - Scroll Scrubbed Typewriter */}
+                        {firstPart.length > 0 && (
+                            <ScrollTypewriter 
+                                text={firstPart} 
+                                highlights={highlightsList} 
+                                className="ns-lyrics-text"
+                                style={{ margin: 0 }} 
+                                scrollStart="top 85%"
+                                scrollEnd="center 45%"
                             />
                         )}
-                    </div>
 
-                    {/* Socials Column */}
-                    {(socials || []).length > 0 && (
-                        <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-end' }}>
-                            <div className="ns-reveal lit-content-block lit-transparent">
-                                <p className="ui-sub-label" style={{ marginBottom: '1.25rem', letterSpacing: '0.22em' }}>Connect</p>
-                                <SocialInteractionGrid socials={socials} />
-                            </div>
-                        </aside>
-                    )}
-                </div>
-            </div>
+                        {/* AI NETWORK VISUALIZATION */}
+                        <AINodes />
 
-            <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
-                <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
-                    <div style={{ flex: '1 1 400px' }}>
-                        <p className="ui-sub-label ns-section-label" suppressHydrationWarning>Process</p>
-                        <LyricsScrubText
-                            text="I don't just write code. I design systems. Here is my step-by-step pipeline for turning complex problems into working software."
-                            highlights={['design', 'systems', 'step-by-step', 'pipeline', 'complex', 'problems', 'working', 'software']}
-                            style={{ marginTop: '0.5rem', maxWidth: '500px' }}
-                        />
-                    </div>
+                        {/* SECOND PART - Scroll Scrubbed Typewriter */}
+                        {secondPart.length > 0 && (
+                            <ScrollTypewriter 
+                                text={secondPart} 
+                                highlights={highlightsList} 
+                                className="ns-lyrics-text"
+                                style={{ margin: 0 }} 
+                                scrollStart="top 85%"
+                                scrollEnd="center 50%"
+                            />
+                        )}
 
-                    <div style={{ flex: '1 1 300px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', height: '60px', padding: '0 10px' }}>
-                        <div style={{ position: 'absolute', left: '20px', right: '20px', top: '24px', height: '2px', background: 'var(--border-color, rgba(160, 168, 208, 0.2))', zIndex: 0 }}></div>
-                        <div style={{ position: 'absolute', left: '20px', right: '20px', top: '24px', height: '2px', overflow: 'hidden', zIndex: 1 }}>
-                            <div style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, transparent, #3B82F6, #7C3AED, transparent)', animation: 'flowingLine 2.5s infinite linear' }}></div>
+                        {/* AI WEB INTEGRATION */}
+                        <AIWebIntegration />
+
+                        {/* THIRD PART - Scroll Scrubbed Typewriter */}
+                        {thirdPart.length > 0 && (
+                            <ScrollTypewriter 
+                                text={thirdPart} 
+                                highlights={highlightsList} 
+                                className="ns-lyrics-text"
+                                style={{ margin: 0 }} 
+                                scrollStart="top 85%"
+                                scrollEnd="center 50%"
+                            />
+                        )}
+
+                        {/* WORKFLOW BUTTON */}
+                        <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem', marginBottom: '2rem' }}>
+                            <a href="/about#workflow" className="ui-button primary" style={{ 
+                                padding: '16px 32px', 
+                                fontSize: '1.1rem',
+                                borderRadius: '30px',
+                                background: 'transparent',
+                                border: '2px solid var(--accent)',
+                                color: 'var(--text-primary)',
+                                textDecoration: 'none',
+                                fontWeight: '600',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                transition: 'all 0.3s ease',
+                                cursor: 'pointer'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = 'rgba(195, 255, 54, 0.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = 'transparent';
+                            }}
+                            >
+                                View My Workflow
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
                         </div>
-
-                        {[
-                            { name: 'Plan', color: '#7C3AED', delay: '0.41s' },
-                            { name: 'Data', color: '#3B82F6', delay: '0.69s' },
-                            { name: 'Logic', color: '#06B6D4', delay: '0.97s' },
-                            { name: 'Build', color: '#8B5CF6', delay: '1.25s' }
-                        ].map((phase) => (
-                            <div key={phase.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', zIndex: 2 }}>
-                                <div style={{
-                                    width: '14px',
-                                    height: '14px',
-                                    borderRadius: '50%',
-                                    border: '3px solid var(--bg-main, #ffffff)',
-                                    '--dot-color': phase.color,
-                                    '--dot-glow': `${phase.color}66`,
-                                    animation: `pulseDot 2.5s infinite linear ${phase.delay}`
-                                }}></div>
-                                <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted, #64748b)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{phase.name}</span>
-                            </div>
-                        ))}
                     </div>
-                </div>
-                <div className="ns-reveal" style={{ marginTop: '3rem' }}>
-                    <HrmsPipelineMotionCards />
                 </div>
             </div>
         </section>
