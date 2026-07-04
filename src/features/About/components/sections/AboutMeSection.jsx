@@ -68,30 +68,13 @@ export default function AboutMeSection({ about, socials }) {
 
                         {/* WORKFLOW BUTTON */}
                         <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem', marginBottom: '2rem' }}>
-                            <a href="/about#workflow" className="ui-button primary" style={{ 
-                                padding: '16px 32px', 
-                                fontSize: '1.1rem',
-                                borderRadius: '30px',
-                                background: 'transparent',
-                                border: '2px solid var(--accent)',
-                                color: 'var(--text-primary)',
-                                textDecoration: 'none',
-                                fontWeight: '600',
+                            <a href="/about#workflow" className="btn-ghost ns-btn" style={{ 
                                 display: 'inline-flex',
                                 alignItems: 'center',
-                                gap: '10px',
-                                transition: 'all 0.3s ease',
-                                cursor: 'pointer'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = 'rgba(195, 255, 54, 0.1)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = 'transparent';
-                            }}
-                            >
+                                gap: '10px'
+                            }}>
                                 View My Workflow
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
                                 </svg>
