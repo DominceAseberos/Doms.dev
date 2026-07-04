@@ -764,14 +764,44 @@ html[data-theme='light'] .ns-stack-group-title {
 }
 
 .ns-project-card {
+    position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--ns-project-card-border);
+    border: 1px solid var(--ns-project-card-border) !important;
     background: var(--ns-project-card-bg);
-    border-radius: 16px;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px !important;
     overflow: hidden;
     text-decoration: none;
-    transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    transition: background 0.25s, border-color 0.25s, transform 0.25s, border-radius 0.25s;
+}
+
+.ns-project-card:hover {
+    background: var(--ns-project-card-hover);
+    border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px !important;
+}
+
+.hover-draw-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.hover-draw-svg rect {
+    fill: none;
+    stroke: var(--white);
+    stroke-width: 4px;
+    /* Draws a line covering 60% of perimeter, leaving 40% empty */
+    stroke-dasharray: 0.6 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.ns-project-card:hover .hover-draw-svg rect {
+    stroke-dashoffset: 0;
 }
 
 .ns-project-img-wrap {

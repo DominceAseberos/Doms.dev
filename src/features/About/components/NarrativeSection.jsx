@@ -9,6 +9,7 @@ import DocViewerModal from '../../../components/DocViewerModal';
 import useLoadingStore from '../../../store/useLoadingStore';
 import useLogoStore from '../../../store/useLogoStore';
 import useThemeStore from '../../../store/useThemeStore';
+import AnimatedDivider from './ui/AnimatedDivider';
 
 import useScrubReveal from '../hooks/useScrubReveal';
 import HeroSection from './sections/HeroSection';
@@ -165,6 +166,8 @@ const NarrativeSection = forwardRef((props, ref) => {
                 socials={socials} 
             />
 
+            <AnimatedDivider />
+
             <ProjectsSection 
                 projects={projects} 
             />
@@ -172,6 +175,8 @@ const NarrativeSection = forwardRef((props, ref) => {
             <TechStackSection 
                 techStack={techStack} 
             />
+
+            <AnimatedDivider />
 
             <PinnedFeedPost />
 

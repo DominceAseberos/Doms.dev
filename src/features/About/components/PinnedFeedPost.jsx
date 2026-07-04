@@ -42,7 +42,7 @@ const PinnedFeedPost = () => {
         : (typeof pinnedPost.image === 'string' && pinnedPost.image.trim().length > 0 ? [pinnedPost.image] : []);
 
     return (
-        <section className="ns-section ns-reveal" style={{ marginTop: '2rem' }}>
+        <section className="ns-section ns-reveal" style={{ marginTop: '2rem', borderTop: 'none', paddingTop: '40px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
                 <div>
                     <p className="ui-sub-label ns-section-label">Latest Update</p>
