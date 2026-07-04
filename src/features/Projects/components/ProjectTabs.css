@@ -235,12 +235,17 @@ html[data-theme='light'] .proj-page {
     display: flex;
     flex-direction: column;
     min-height: 400px;
-    transition: background .3s;
+    transition: all 0.3s ease;
     opacity: 0;
     transform: translateY(32px);
     cursor: pointer;
+    border: 1px solid var(--border);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
 }
-.pg-card:hover { background: var(--card-hover); }
+.pg-card:hover { 
+    background: var(--card-hover); 
+    border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px;
+}
 
 /* ── Visual zone ── */
 .pg-vis {
