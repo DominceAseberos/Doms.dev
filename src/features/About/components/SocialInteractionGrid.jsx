@@ -2,16 +2,24 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MousePointer2, Grid } from 'lucide-react';
-import { FaLinkedinIn, FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa6';
+import { FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa6';
+import useThemeStore from '../../../store/useThemeStore';
+import githubSvg from '../../../assets/github.svg';
+import linkedinSvg from '../../../assets/linkedin.svg';
+import emailSvg from '../../../assets/email.svg';
 
-const getSocialIcon = (label) => {
+const getSocialIcon = (label, theme) => {
     const l = label.toLowerCase();
-    if (l === 'linkedin') return <FaLinkedinIn />;
+    const style = { width: '100%', height: '100%', filter: theme === 'dark' ? 'invert(1)' : 'invert(0)', display: 'block', padding: '16px' };
+    
+    if (l === 'linkedin') return <img src={typeof linkedinSvg === 'object' ? linkedinSvg.src : linkedinSvg} alt="LinkedIn" style={style} />;
+    if (l === 'github') return <img src={typeof githubSvg === 'object' ? githubSvg.src : githubSvg} alt="GitHub" style={style} />;
+    if (l === 'email') return <img src={typeof emailSvg === 'object' ? emailSvg.src : emailSvg} alt="Email" style={style} />;
+
     if (l === 'x' || l === 'twitter') return <FaXTwitter />;
     if (l === 'threads') return <FaThreads />;
     if (l === 'instagram') return <FaInstagram />;
     if (l === 'facebook') return <FaFacebookF />;
-    if (l === 'email') return <FaEnvelope />;
     return <span className="ns-arrow">↗</span>;
 };
 
@@ -20,6 +28,7 @@ if (typeof window !== 'undefined') {
 }
 
 const SocialInteractionGrid = ({ socials }) => {
+    const theme = useThemeStore((state) => state.theme);
     const containerRef = useRef(null);
     const menuIconRef = useRef(null);
     const cursorRef = useRef(null);
@@ -168,7 +177,7 @@ const SocialInteractionGrid = ({ socials }) => {
                         });
                     }}
                 >
-                    {getSocialIcon(link.label)}
+                    {getSocialIcon(link.label, theme)}
                 </a>
             ))}
         </div>

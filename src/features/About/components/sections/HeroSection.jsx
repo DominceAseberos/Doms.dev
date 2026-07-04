@@ -3,8 +3,13 @@ import AnimatedHandwritingText from '../../../../components/AnimatedHandwritingT
 import ProfileMorphCard from '../../../../components/ProfileMorphCard';
 import humanPortrait from '../../../../assets/human-cutout.png';
 import animePortrait from '../../../../assets/anime-cutout.png';
+import useThemeStore from '../../../../store/useThemeStore';
+import githubSvg from '../../../../assets/github.svg';
+import linkedinSvg from '../../../../assets/linkedin.svg';
+import emailSvg from '../../../../assets/email.svg';
 
 const HeroSection = forwardRef(({ hero, resumeUrl, totalProjectsCount, nameTimeline, onOpenResume }, ref) => {
+    const theme = useThemeStore((state) => state.theme);
     return (
         <section ref={ref} className="ns-hero-section" id="hero">
             <div className="ns-hero-inner">
@@ -69,6 +74,30 @@ const HeroSection = forwardRef(({ hero, resumeUrl, totalProjectsCount, nameTimel
                         <a href="/projects" className="btn-ghost ns-btn">
                             Projects
                         </a>
+
+                        <div className="hero-socials ns-reveal" style={{ display: 'flex', gap: '1rem', marginLeft: '0.5rem', alignItems: 'center' }}>
+                            {[
+                                { src: githubSvg, alt: 'GitHub', href: hero.githubUrl || 'https://github.com/DominceAseberos' },
+                                { src: linkedinSvg, alt: 'LinkedIn', href: hero.linkedinUrl || 'https://www.linkedin.com/in/dominceaseberos/' },
+                                { src: emailSvg, alt: 'Email', href: 'mailto:daseberos@gmail.com' },
+                            ].map((social, i) => (
+                                <a key={i} href={social.href} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <img 
+                                        src={typeof social.src === 'object' ? social.src.src : social.src} 
+                                        alt={social.alt} 
+                                        style={{ 
+                                            width: '40px', 
+                                            height: '40px', 
+                                            filter: theme === 'dark' ? 'invert(1)' : 'invert(0)',
+                                            transition: 'transform 0.2s ease, filter 0.2s ease',
+                                            cursor: 'pointer'
+                                        }} 
+                                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                    />
+                                </a>
+                            ))}
+                        </div>
                     </div>
 
                     {(hero.metrics || []).length > 0 && (

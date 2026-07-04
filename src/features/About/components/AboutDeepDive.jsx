@@ -1,8 +1,11 @@
 import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaLinkedinIn, FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa6';
+import { FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
+import githubSvg from '../../../assets/github.svg';
+import linkedinSvg from '../../../assets/linkedin.svg';
+import emailSvg from '../../../assets/email.svg';
 import { fetchPortfolioData } from '../../../shared/portfolioService';
 import portfolioDataDefault from '../../../data/portfolioData.json';
 import aboutDataDefault from '../../../data/aboutData.json';
@@ -13,6 +16,7 @@ import FeedSection from './FeedSection';
 import PremiumMotionCards from './PremiumMotionCards';
 import PhilosophyCards from './PhilosophyCards';
 import HrmsPipelineMotionCards from './HrmsPipelineMotionCards';
+import LyricsScrubText from './ui/LyricsScrubText';
 import DocViewerModal from '../../../components/DocViewerModal';
 import SectionProgressIndicator from '../../../components/SectionProgressIndicator';
 import useLoadingStore from '../../../store/useLoadingStore';
@@ -59,14 +63,18 @@ function useScrubReveal(containerRef, dataReady) {
 }
 
 // ── Icons ─────────────────────────────────────────────────────────────────
-const getSocialIcon = (label) => {
+const getSocialIcon = (label, theme) => {
     const l = label.toLowerCase();
-    if (l === 'linkedin') return <FaLinkedinIn />;
+    const style = { width: '100%', height: '100%', filter: theme === 'dark' ? 'invert(1)' : 'invert(0)' };
+    
+    if (l === 'linkedin') return <img src={typeof linkedinSvg === 'object' ? linkedinSvg.src : linkedinSvg} alt="LinkedIn" style={style} />;
+    if (l === 'github') return <img src={typeof githubSvg === 'object' ? githubSvg.src : githubSvg} alt="GitHub" style={style} />;
+    if (l === 'email') return <img src={typeof emailSvg === 'object' ? emailSvg.src : emailSvg} alt="Email" style={style} />;
+
     if (l === 'x' || l === 'twitter') return <FaXTwitter />;
     if (l === 'threads') return <FaThreads />;
     if (l === 'instagram') return <FaInstagram />;
     if (l === 'facebook') return <FaFacebookF />;
-    if (l === 'email') return <FaEnvelope />;
     return <span className="ns-arrow">↗</span>;
 };
 
@@ -154,7 +162,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
                                             rel={link.external ? 'noopener noreferrer' : ''}
                                             className="ns-bento-social-link" title={link.label}
                                             onMouseEnter={(e) => { 
-                                                gsap.to(e.currentTarget.querySelector('svg'), {
+                                                gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
                                                     scale: 1.25,
                                                     rotation: (Math.random() - 0.5) * 20,
                                                     duration: 0.35,
@@ -162,7 +170,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
                                                 });
                                             }}
                                             onMouseLeave={(e) => { 
-                                                gsap.to(e.currentTarget.querySelector('svg'), {
+                                                gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
                                                     scale: 1,
                                                     rotation: 0,
                                                     duration: 0.7,
@@ -170,13 +178,59 @@ const AboutDeepDive = forwardRef((props, ref) => {
                                                 });
                                             }}
                                         >
-                                            {getSocialIcon(link.label)}
+                                            {getSocialIcon(link.label, theme)}
                                         </a>
                                     ))}
                                 </div>
                             </div>
                         </aside>
                     )}
+                </div>
+            </section>
+
+            {/* ══ WORKFLOW ═════════════════════════════════════════════════ */}
+            <section className="ns-section" id="workflow">
+                <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
+                    <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
+                        <div style={{ flex: '1 1 400px' }}>
+                            <p className="ui-sub-label ns-section-label" suppressHydrationWarning>Process</p>
+                            <LyricsScrubText
+                                text="I don't just write code. I design systems. Here is my step-by-step pipeline for turning complex problems into working software."
+                                highlights={['design', 'systems', 'step-by-step', 'pipeline', 'complex', 'problems', 'working', 'software']}
+                                style={{ marginTop: '0.5rem', maxWidth: '500px' }}
+                            />
+                        </div>
+
+                        <div style={{ flex: '1 1 300px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', height: '60px', padding: '0 10px' }}>
+                            <div style={{ position: 'absolute', left: '20px', right: '20px', top: '24px', height: '2px', background: 'var(--border-color, rgba(160, 168, 208, 0.2))', zIndex: 0 }}></div>
+                            <div style={{ position: 'absolute', left: '20px', right: '20px', top: '24px', height: '2px', overflow: 'hidden', zIndex: 1 }}>
+                                <div style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, transparent, #3B82F6, #7C3AED, transparent)', animation: 'flowingLine 2.5s infinite linear' }}></div>
+                            </div>
+
+                            {[
+                                { name: 'Plan', color: '#7C3AED', delay: '0.41s' },
+                                { name: 'Data', color: '#3B82F6', delay: '0.69s' },
+                                { name: 'Logic', color: '#06B6D4', delay: '0.97s' },
+                                { name: 'Build', color: '#8B5CF6', delay: '1.25s' }
+                            ].map((phase) => (
+                                <div key={phase.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', zIndex: 2 }}>
+                                    <div style={{
+                                        width: '14px',
+                                        height: '14px',
+                                        borderRadius: '50%',
+                                        border: '3px solid var(--bg-main, #ffffff)',
+                                        '--dot-color': phase.color,
+                                        '--dot-glow': `${phase.color}66`,
+                                        animation: `pulseDot 2.5s infinite linear ${phase.delay}`
+                                    }}></div>
+                                    <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted, #64748b)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{phase.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="ns-reveal" style={{ marginTop: '3rem' }}>
+                        <HrmsPipelineMotionCards />
+                    </div>
                 </div>
             </section>
 
