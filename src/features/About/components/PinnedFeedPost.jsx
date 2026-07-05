@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { fetchFeedPosts } from '../../../shared/feedService';
+import HoverDrawBorder from './ui/HoverDrawBorder';
 import './FeedSection.css'; // Reusing FeedSection styles
 
 const formatDate = (value) => {
@@ -49,8 +50,8 @@ const PinnedFeedPost = () => {
                     <h2 className="ns-section-heading" style={{ fontSize: '1.8rem' }}>Dev Log</h2>
                 </div>
             </div>
-            
-            <article className="feed-detail-card lit-content-block lit-transparent" style={{ width: '100%', margin: '0' }}>
+            <article className="feed-detail-card ns-sketch-box lit-content-block lit-transparent" style={{ width: '100%', margin: '0', position: 'relative' }}>
+                <HoverDrawBorder />
                 <div className="feed-detail-meta ui-sub-label ns-reveal" style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         <span className="feed-type" style={{ color: 'var(--accent-color, #7C3AED)', fontWeight: 'bold' }}>

@@ -2,11 +2,15 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MousePointer2, Grid } from 'lucide-react';
-import { FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa6';
+import { FaEnvelope } from 'react-icons/fa6';
 import useThemeStore from '../../../store/useThemeStore';
 import githubSvg from '../../../assets/github.svg';
 import linkedinSvg from '../../../assets/linkedin.svg';
 import emailSvg from '../../../assets/email.svg';
+import xSvg from '../../../assets/X.svg';
+import threadsSvg from '../../../assets/threads.svg';
+import instagramSvg from '../../../assets/instagram.svg';
+import facebookSvg from '../../../assets/facebook.svg';
 
 const getSocialIcon = (label, theme) => {
     const l = label.toLowerCase();
@@ -16,10 +20,10 @@ const getSocialIcon = (label, theme) => {
     if (l === 'github') return <img src={typeof githubSvg === 'object' ? githubSvg.src : githubSvg} alt="GitHub" style={style} />;
     if (l === 'email') return <img src={typeof emailSvg === 'object' ? emailSvg.src : emailSvg} alt="Email" style={style} />;
 
-    if (l === 'x' || l === 'twitter') return <FaXTwitter />;
-    if (l === 'threads') return <FaThreads />;
-    if (l === 'instagram') return <FaInstagram />;
-    if (l === 'facebook') return <FaFacebookF />;
+    if (l === 'x' || l === 'twitter') return <img src={typeof xSvg === 'object' ? xSvg.src : xSvg} alt="X" style={style} />;
+    if (l === 'threads') return <img src={typeof threadsSvg === 'object' ? threadsSvg.src : threadsSvg} alt="Threads" style={style} />;
+    if (l === 'instagram') return <img src={typeof instagramSvg === 'object' ? instagramSvg.src : instagramSvg} alt="Instagram" style={style} />;
+    if (l === 'facebook') return <img src={typeof facebookSvg === 'object' ? facebookSvg.src : facebookSvg} alt="Facebook" style={style} />;
     return <span className="ns-arrow">↗</span>;
 };
 

@@ -4,6 +4,7 @@ import portfolioData from '../../../data/portfolioData.json';
 import useThemeStore from '../../../store/useThemeStore';
 import './GithubContributionSection.css';
 import { MagicCard } from '../../../components/ui/magic-card';
+import HoverDrawBorder from './ui/HoverDrawBorder';
 
 const USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'DominceAseberos';
 
@@ -144,7 +145,8 @@ const calendarTheme = {
 const CalendarWidget = React.memo(({ mounted, handleTransformData }) => {
     const theme = useThemeStore((state) => state.theme);
     return (
-        <div className="gc-heatmap-card ns-reveal lit-content-block">
+        <div className="gc-heatmap-card ns-sketch-box ns-reveal lit-content-block">
+            <HoverDrawBorder />
             <div className="gc-card-eyebrow">Contribution Heat Map</div>
             {mounted && (
                 <GitHubCalendar
@@ -273,7 +275,8 @@ const GithubContributionSection = () => {
             <div className="github-activity-grid">
                 <CalendarWidget mounted={mounted} handleTransformData={handleTransformData} />
 
-                <MagicCard className="gc-commit-card ns-reveal lit-content-block">
+                <MagicCard className="gc-commit-card ns-sketch-box ns-reveal lit-content-block">
+                    <HoverDrawBorder />
                     <div className="gc-card-eyebrow">Latest Commits</div>
                     <h3 className="gc-card-title">@{USERNAME}</h3>
                     <div className="gc-commits-list">
