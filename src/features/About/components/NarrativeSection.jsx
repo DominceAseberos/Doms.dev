@@ -9,7 +9,11 @@ import DocViewerModal from '../../../components/DocViewerModal';
 import useLoadingStore from '../../../store/useLoadingStore';
 import useLogoStore from '../../../store/useLogoStore';
 import useThemeStore from '../../../store/useThemeStore';
-import AnimatedDivider from './ui/AnimatedDivider';
+
+import firstSvg from '../../../assets/1st.svg?url';
+import secondSvg from '../../../assets/2nd.svg?url';
+import thirdSvg from '../../../assets/3rd.svg?url';
+import fourthSvg from '../../../assets/4th.svg?url';
 
 import useScrubReveal from '../hooks/useScrubReveal';
 import HeroSection from './sections/HeroSection';
@@ -25,11 +29,15 @@ const NarrativeSection = forwardRef((props, ref) => {
     const containerRef = useRef(null);
     const heroRef = useRef(null);
     const stripesRef = useRef([]);
-    
+    const svg1Ref = useRef(null);
+    const svg2Ref = useRef(null);
+    const svg3Ref = useRef(null);
+    const svg4Ref = useRef(null);
+
     // Shared GSAP timeline: DOMINCE at t=0, ASEBEROS at t=NAME_DUR — both on one timeline
     // PAUSED initially so it waits for the loading screen (curtains) to finish!
     const nameTimeline = useRef(gsap.timeline({ paused: true })).current;
-    
+
     const isLoading = useLoadingStore((state) => state.isLoading);
     const setLogoFullView = useLogoStore((state) => state.setLogoFullView);
     const themeStoreVal = useThemeStore((state) => state.theme);
@@ -58,11 +66,56 @@ const NarrativeSection = forwardRef((props, ref) => {
 
     useScrubReveal(containerRef, dataReady);
 
+    // ── Animate Background SVGs in strict sequence ────────────────────────
+    useEffect(() => {
+        if (!containerRef.current) return;
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: true, // instant scroll lock
+                }
+            });
+
+            // Using linear gradient mask for a soft top-to-bottom wipe
+            const mask1 = { val: -10 };
+            const mask2 = { val: -10 };
+            const mask3 = { val: -10 };
+            const mask4 = { val: -10 };
+
+            const updateMask = (ref, obj) => () => {
+                if (!ref.current) return;
+                gsap.set(ref.current, {
+                    WebkitMaskImage: `linear-gradient(to bottom, black ${obj.val}%, transparent ${obj.val + 10}%)`,
+                    maskImage: `linear-gradient(to bottom, black ${obj.val}%, transparent ${obj.val + 10}%)`
+                });
+            };
+
+            // Init fully hidden
+            updateMask(svg1Ref, mask1)();
+            updateMask(svg2Ref, mask2)();
+            updateMask(svg3Ref, mask3)();
+            updateMask(svg4Ref, mask4)();
+
+            // Strict sequence mapping to scroll
+            tl.to(mask1, { val: 110, duration: 1, ease: 'none', onUpdate: updateMask(svg1Ref, mask1) })
+                .to(mask2, { val: 110, duration: 2, ease: 'none', onUpdate: updateMask(svg2Ref, mask2) })
+                .to(mask3, { val: 110, duration: 1, ease: 'none', onUpdate: updateMask(svg3Ref, mask3) })
+                .to({}, { duration: 0.5 }) // <--- DELAY before 4th SVG
+                .to(mask4, { val: 110, duration: 1, ease: 'none', onUpdate: updateMask(svg4Ref, mask4) })
+                .to({}, { duration: 1.0 }); // Reduced from 1.5 to keep the math balanced!
+
+        }, containerRef);
+        return () => ctx.revert();
+    }, []);
+
     // ── Stripe intro ──────────────────────────────────────────────────────
     useEffect(() => {
         if (isLoading || !heroRef.current) return;
         const stripes = stripesRef.current.filter(Boolean);
-        
+
         // Start the handwriting animation with a slight delay so it draws AS the curtains open
         setTimeout(() => nameTimeline.play(), 500);
 
@@ -135,7 +188,7 @@ const NarrativeSection = forwardRef((props, ref) => {
     const STRIPE_COUNT = 20;
 
     return (
-        <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" suppressHydrationWarning>
+        <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" style={{ position: 'relative' }} suppressHydrationWarning>
 
             {/* ══ STRIPE OVERLAY — fixed full-viewport, removed after animation ══ */}
             <div className="ns-stripes-overlay" aria-hidden>
@@ -152,38 +205,63 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </filter>
             </svg>
 
-            <HeroSection 
-                ref={heroRef} 
-                hero={hero} 
-                resumeUrl={data.resume} 
-                totalProjectsCount={totalProjectsCount} 
-                nameTimeline={nameTimeline} 
-                onOpenResume={() => setIsResumeModalOpen(true)} 
-            />
+            <div style={{ position: 'relative', zIndex: 10 }}>
+                <HeroSection
+                    ref={heroRef}
+                    hero={hero}
+                    resumeUrl={data.resume}
+                    totalProjectsCount={totalProjectsCount}
+                    nameTimeline={nameTimeline}
+                    onOpenResume={() => setIsResumeModalOpen(true)}
+                />
+            </div>
 
-            <AboutMeSection 
-                about={about} 
-                socials={socials} 
-            />
+            <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
+                <img ref={svg1Ref} src={firstSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', bottom: '-90vh', right: '-5vw', width: '200vw', minWidth: '1200px', opacity: 0.9, pointerEvents: 'none' }} />
+            </div>
 
-            <AnimatedDivider />
+            <div style={{ position: 'relative', zIndex: 10 }}>
+                <AboutMeSection
+                    about={about}
+                    socials={socials}
+                />
+            </div>
 
-            <ProjectsSection 
-                projects={projects} 
-            />
+            <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
+                <img ref={svg2Ref} src={secondSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', top: '-190vh', left: '-5vw', width: '20vw', minWidth: '300px', opacity: 0.9, pointerEvents: 'none' }} />
+            </div>
 
-            <TechStackSection 
-                techStack={techStack} 
-            />
+            <div style={{ position: 'relative', zIndex: 10 }}>
+                <ProjectsSection
+                    projects={projects}
+                />
+            </div>
 
-            <AnimatedDivider />
+            <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
+                <img ref={svg3Ref} src={thirdSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', top: '-160vh', right: '5vw', width: '120vw', minWidth: '1100px', opacity: 0.9, pointerEvents: 'none' }} />
+            </div>
 
-            <PinnedFeedPost />
+            <div style={{ position: 'relative', zIndex: 10 }}>
+                <TechStackSection
+                    techStack={techStack}
+                    compact={true}
+                />
+            </div>
 
-            <ContactSection 
-                contact={contact} 
-                theme={theme} 
-            />
+            <div style={{ position: 'relative', zIndex: 10 }}>
+                <PinnedFeedPost />
+            </div>
+
+            <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
+                <img ref={svg4Ref} src={fourthSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', bottom: '10vh', left: '0', top: '-120vh', width: '90vw', minWidth: '800px', opacity: 0.9, pointerEvents: 'none' }} />
+            </div>
+
+            <div style={{ position: 'relative', zIndex: 10 }}>
+                <ContactSection
+                    contact={contact}
+                    theme={theme}
+                />
+            </div>
 
             <DocViewerModal
                 isOpen={isResumeModalOpen}
