@@ -2,6 +2,10 @@ import React from 'react';
 import AINodes from '../ui/AINodes';
 import AIWebIntegration from '../ui/AIWebIntegration';
 import ScrollTypewriter from '../ui/ScrollTypewriter';
+import educationHatSvg from '../../../../assets/education-hat copy.svg';
+import workflowIconSvg from '../../../../assets/workflow-icon.svg';
+import aboutMeSvg from '../../../../assets/about-me.svg';
+import useThemeStore from '../../../../store/useThemeStore';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -9,7 +13,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const highlightsList = ['Computer', 'Science', 'Artificial', 'Intelligence', 'front-end', 'full-stack', 'AI', 'integration', 'Large', 'Language', 'Models', '(LLMs)'];
 
-export default function AboutMeSection({ about, socials }) {
+export default function AboutMeSection({ about }) {
+    const theme = useThemeStore((state) => state.theme);
+    const [isEduHovered, setIsEduHovered] = React.useState(false);
+    const [isAboutHovered, setIsAboutHovered] = React.useState(false);
+    const [isWorkflowHovered, setIsWorkflowHovered] = React.useState(false);
     const sentences = about.intro ? (about.intro.match(/[^.!?]+[.!?]+/g) || [about.intro]) : [];
     
     // Split: First 2 sentences, then middle sentence, then the rest
@@ -66,19 +74,106 @@ export default function AboutMeSection({ about, socials }) {
                             />
                         )}
 
-                        {/* WORKFLOW BUTTON */}
-                        <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem', marginBottom: '2rem' }}>
-                            <a href="/about#workflow" className="btn-ghost ns-btn" style={{ 
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '10px'
-                            }}>
-                                View My Workflow
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    <polyline points="12 5 19 12 12 19"></polyline>
-                                </svg>
-                            </a>
+                        {/* NAVIGATION BUTTONS */}
+                        <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '4rem', marginBottom: '2rem' }}>
+                            <div 
+                                style={{ position: 'relative', display: 'inline-block' }}
+                                onMouseEnter={() => setIsAboutHovered(true)}
+                                onMouseLeave={() => setIsAboutHovered(false)}
+                            >
+                                <img 
+                                    src={typeof aboutMeSvg === 'object' ? aboutMeSvg.src : aboutMeSvg} 
+                                    alt="About Me" 
+                                    style={{ 
+                                        position: 'absolute',
+                                        bottom: '110%',
+                                        left: '50%',
+                                        width: '45px', 
+                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)', 
+                                        opacity: 0.95,
+                                        zIndex: 10,
+                                        pointerEvents: 'none',
+                                        transform: `translateX(-50%) translateY(${isAboutHovered ? '-12px' : '0px'}) rotate(-5deg)`,
+                                        transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                                    }} 
+                                />
+                                <a href="/about#about" className="btn-ghost ns-btn" style={{ 
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '10px',
+                                    position: 'relative',
+                                    zIndex: 1
+                                }}>
+                                    About Me
+                                </a>
+                            </div>
+
+                            <div 
+                                style={{ position: 'relative', display: 'inline-block' }}
+                                onMouseEnter={() => setIsWorkflowHovered(true)}
+                                onMouseLeave={() => setIsWorkflowHovered(false)}
+                            >
+                                <img 
+                                    src={typeof workflowIconSvg === 'object' ? workflowIconSvg.src : workflowIconSvg} 
+                                    alt="My Workflow" 
+                                    style={{ 
+                                        position: 'absolute',
+                                        bottom: '110%',
+                                        left: '50%',
+                                        width: '55px', 
+                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)', 
+                                        opacity: 0.95,
+                                        zIndex: 10,
+                                        pointerEvents: 'none',
+                                        transform: `translateX(-50%) translateY(${isWorkflowHovered ? '-12px' : '0px'}) rotate(3deg)`,
+                                        transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                                    }} 
+                                />
+                                <a href="/about#workflow" className="btn-ghost ns-btn" style={{ 
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '10px',
+                                    position: 'relative',
+                                    zIndex: 1
+                                }}>
+                                    My Workflow
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div 
+                                style={{ position: 'relative', display: 'inline-block' }}
+                                onMouseEnter={() => setIsEduHovered(true)}
+                                onMouseLeave={() => setIsEduHovered(false)}
+                            >
+                                <img 
+                                    src={typeof educationHatSvg === 'object' ? educationHatSvg.src : educationHatSvg} 
+                                    alt="Education Hat" 
+                                    style={{ 
+                                        position: 'absolute',
+                                        bottom: '110%',
+                                        left: '50%',
+                                        width: '70px', 
+                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)', 
+                                        opacity: 0.95,
+                                        zIndex: 10,
+                                        pointerEvents: 'none',
+                                        transform: `translateX(-50%) translateY(${isEduHovered ? '-12px' : '0px'}) rotate(5deg)`,
+                                        transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                                    }} 
+                                />
+                                <a href="/about#education" className="btn-ghost ns-btn" style={{ 
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '10px',
+                                    position: 'relative',
+                                    zIndex: 1
+                                }}>
+                                    Education
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
