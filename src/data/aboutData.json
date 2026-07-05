@@ -119,57 +119,99 @@
     ],
     "techStack": [
         {
-            "group": "Primary Stack",
+            "group": "Languages",
             "items": [
-                "React",
-                "Next.js",
+                "Python",
                 "TypeScript",
-                "Node.js",
-                "FastAPI",
-                "Flutter",
-                "Supabase",
-                "Zod",
-                "TanStack Query",
-                "shadcn/ui",
-                "Prisma",
-                "Vercel",
-                "React Native",
-                "Lenis",
-                "Figma",
-                "Redux",
-                "Base UI",
-                "Tailwind CSS",
-                "Hugging Face",
-                "GitHub Actions",
-                "REST API",
-                "Firebase",
-                "Angular",
-                "Vue",
-                "Astro",
-                "Vite"
+                "JavaScript",
+                "Dart",
+                "PHP",
+                "SQL"
             ]
         },
         {
-            "group": "Familiar With",
+            "group": "Backend",
             "items": [
-                "Python",
-                "PostgreSQL",
+                "FastAPI",
+                "Flask",
+                "Node.js",
+                "REST APIs",
+                "WebSockets/SSE"
+            ]
+        },
+        {
+            "group": "Frontend",
+            "items": [
+                "React",
+                "Next.js",
+                "Astro",
+                "Tailwind CSS",
                 "GSAP",
-                "Scikit-learn",
+                "Framer Motion"
+            ]
+        },
+        {
+            "group": "Mobile",
+            "items": [
+                "Flutter",
+                "Riverpod"
+            ]
+        },
+        {
+            "group": "Databases",
+            "items": [
+                "PostgreSQL",
+                "SQLite",
+                "Firebase Firestore"
+            ]
+        },
+        {
+            "group": "AI / ML",
+            "items": [
+                "PyTorch",
+                "Keras",
+                "OpenCV",
+                "MediaPipe",
+                "scikit-learn",
+                "Hugging Face"
+            ]
+        },
+        {
+            "group": "Cloud & Deployment",
+            "items": [
                 "Docker",
-                "LottieFiles",
-                "Framer",
-                "SVG Animation",
-                "React Hook Form",
-                "EmailJS",
-                "Lovable",
-                "UptimeRobot",
-                "WordPress",
-                "Shopify",
-                "Zustand",
-                "Riverpod",
-                "Jupyter Notebook",
-                "Turbopack"
+                "Vercel",
+                "Railway",
+                "Render",
+                "Supabase",
+                "Firebase"
+            ]
+        },
+        {
+            "group": "Automation & AI",
+            "items": [
+                "Playwright",
+                "Puppeteer",
+                "ScrapingAnt",
+                "Gemini API",
+                "Ollama"
+            ]
+        },
+        {
+            "group": "Tools",
+            "items": [
+                "Git",
+                "GitHub",
+                "Postman",
+                "Figma",
+                "WordPress"
+            ]
+        },
+        {
+            "group": "SEO & Analytics",
+            "items": [
+                "Google Search Console",
+                "Google Analytics"
             ]
         }
     ],

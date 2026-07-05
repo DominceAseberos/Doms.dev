@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { fetchFeedPosts } from '../../../shared/feedService';
-import HoverDrawBorder from './ui/HoverDrawBorder';
 import './FeedSection.css'; // Reusing FeedSection styles
 
 const formatDate = (value) => {
@@ -13,6 +12,28 @@ const formatDate = (value) => {
         timeZone: 'UTC'
     }).format(date);
 };
+
+const PushPinSVG = ({ color, className, style }) => (
+    <svg 
+        width="36" 
+        height="36" 
+        viewBox="0 0 24 24" 
+        className={className} 
+        style={{ 
+            ...style, 
+            filter: 'drop-shadow(2px 4px 4px rgba(0,0,0,0.3))' 
+        }}
+    >
+        {/* Needle */}
+        <path d="M12 14 L12 22" stroke="#888" strokeWidth="2" strokeLinecap="round" />
+        
+        {/* Pin Head */}
+        <path d="M16 8 C16 11, 14 14, 12 14 C10 14, 8 11, 8 8 C8 5, 10 2, 12 2 C14 2, 16 5, 16 8 Z" fill={color} stroke="rgba(0,0,0,0.15)" strokeWidth="0.5" />
+        
+        {/* Highlight */}
+        <ellipse cx="11" cy="5" rx="2" ry="3" fill="rgba(255,255,255,0.6)" transform="rotate(-30 11 5)" />
+    </svg>
+);
 
 const PinnedFeedPost = () => {
     const [posts, setPosts] = useState([]);
@@ -29,18 +50,14 @@ const PinnedFeedPost = () => {
         loadPosts();
     }, []);
 
-    const pinnedPost = useMemo(() => {
-        if (!Array.isArray(posts) || posts.length === 0) return null;
-        // Get the latest post
+    const pinnedPosts = useMemo(() => {
+        if (!Array.isArray(posts) || posts.length === 0) return [];
+        // Get the latest 2 posts
         const sorted = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        return sorted[0];
+        return sorted.slice(0, 2);
     }, [posts]);
 
-    if (!pinnedPost) return null;
-
-    const selectedMedia = Array.isArray(pinnedPost.images)
-        ? pinnedPost.images.filter((src) => typeof src === 'string' && src.trim().length > 0)
-        : (typeof pinnedPost.image === 'string' && pinnedPost.image.trim().length > 0 ? [pinnedPost.image] : []);
+    if (pinnedPosts.length === 0) return null;
 
     return (
         <section className="ns-section ns-reveal" style={{ marginTop: '2rem', borderTop: 'none', paddingTop: '40px' }}>
@@ -50,45 +67,59 @@ const PinnedFeedPost = () => {
                     <h2 className="ns-section-heading" style={{ fontSize: '1.8rem' }}>Dev Log</h2>
                 </div>
             </div>
-            <article className="feed-detail-card ns-sketch-box lit-content-block lit-transparent" style={{ width: '100%', margin: '0', position: 'relative' }}>
-                <HoverDrawBorder />
-                <div className="feed-detail-meta ui-sub-label ns-reveal" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
-                        <span className="feed-type" style={{ color: 'var(--accent-color, #7C3AED)', fontWeight: 'bold' }}>
-                            {pinnedPost.type === 'image' ? 'Image Post' : 'Text Post'}
-                        </span>
-                        <time dateTime={pinnedPost.createdAt}>{formatDate(pinnedPost.createdAt)}</time>
-                    </div>
-                    <span style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', border: '1px solid rgba(160,168,208,0.3)', borderRadius: '12px' }}>
-                        Pinned
-                    </span>
-                </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+                {pinnedPosts.map((post, idx) => {
+                    const selectedMedia = Array.isArray(post.images)
+                        ? post.images.filter((src) => typeof src === 'string' && src.trim().length > 0)
+                        : (typeof post.image === 'string' && post.image.trim().length > 0 ? [post.image] : []);
 
-                <div className="feed-card-copy" style={{ marginTop: '1rem' }}>
-                    <h3 className="feed-card-title ns-reveal" style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{pinnedPost.title}</h3>
-                    {pinnedPost.body && (
-                        <p className="feed-card-body ui-body-copy ns-reveal" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                            {pinnedPost.body}
-                        </p>
-                    )}
-                </div>
+                    // Different sticky note colors
+                    const noteColors = ['#f4b4ce', '#ffed99', '#a9def9', '#d0f4de'];
+                    const bgColor = noteColors[idx % noteColors.length];
 
-                {selectedMedia.length > 0 && (
-                    <div className={`feed-media-wrap ns-reveal ${selectedMedia.length > 1 ? 'feed-media-grid' : ''}`} style={{ marginTop: '1.5rem' }}>
-                        {selectedMedia.slice(0, 2).map((src, index) => (
-                            <div key={index} className="feed-media-item" style={{ maxHeight: '300px', overflow: 'hidden' }}>
-                                <img
-                                    src={src}
-                                    alt={pinnedPost.title}
-                                    className="feed-media"
-                                    loading="lazy"
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                />
+                    return (
+                        <article key={post.id || idx} className="pinned-sticky-note" style={{ width: '100%', margin: '0', '--note-color': bgColor }}>
+                            <PushPinSVG color="#66cc66" style={{ position: 'absolute', top: '5px', left: '15px', zIndex: 10 }} />
+                            <PushPinSVG color="#ffdd44" style={{ position: 'absolute', top: '5px', right: '15px', zIndex: 10 }} />
+                            
+                            <div className="feed-detail-meta ui-sub-label ns-reveal" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <span className="feed-type" style={{ fontWeight: 'bold' }}>
+                                        {post.type === 'image' ? 'Image Post' : 'Text Post'}
+                                    </span>
+                                    <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
+                                </div>
                             </div>
-                        ))}
-                    </div>
-                )}
-            </article>
+
+                            <div className="feed-card-copy" style={{ marginTop: '1rem' }}>
+                                <h3 className="feed-card-title ns-reveal" style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{post.title}</h3>
+                                {post.body && (
+                                    <p className="feed-card-body ui-body-copy ns-reveal" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                        {post.body}
+                                    </p>
+                                )}
+                            </div>
+
+                            {selectedMedia.length > 0 && (
+                                <div className={`feed-media-wrap ns-reveal ${selectedMedia.length > 1 ? 'feed-media-grid' : ''}`} style={{ marginTop: '1.5rem', border: 'none', background: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                                    {selectedMedia.slice(0, 2).map((src, index) => (
+                                        <div key={index} className="feed-media-item" style={{ width: '100%', height: '100%', maxHeight: '250px', overflow: 'hidden', borderRadius: '4px', boxShadow: '0 2px 6px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'rgba(0,0,0,0.03)' }}>
+                                            <img
+                                                src={src}
+                                                alt={post.title}
+                                                className="feed-media"
+                                                loading="lazy"
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </article>
+                    );
+                })}
+            </div>
         </section>
     );
 };

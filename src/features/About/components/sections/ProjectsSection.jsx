@@ -23,7 +23,7 @@ const extractTechStack = (project) => {
             });
         });
     }
-    if (tech.length > 0) return tech;
+    if (tech.length > 0) return [...new Set(tech)];
     
     // Fallbacks for projects without chips defined
     if (project.id === 'project-serveflow') return ["React", "Vite", "TypeScript", "IndexedDB", "Zustand"];

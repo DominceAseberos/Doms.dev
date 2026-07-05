@@ -490,3 +490,102 @@ html[data-theme='light'] .feed-section {
 html[data-theme='light'] .feed-title {
     color: rgba(18, 18, 18, 0.96);
 }
+
+/* ── Pinned Sticky Note Styles ── */
+.pinned-sticky-note {
+    background-color: var(--note-color, #f4b4ce); /* Dynamic note color */
+    background-image: repeating-linear-gradient(
+        transparent,
+        transparent 28px,
+        rgba(0, 0, 0, 0.08) 28px,
+        rgba(0, 0, 0, 0.08) 29px
+    );
+    border-radius: 2px 2px 6px 4px;
+    padding: 3.5rem 2rem 2.5rem;
+    box-shadow: 
+        3px 8px 15px rgba(0, 0, 0, 0.15),
+        -1px 2px 6px rgba(0, 0, 0, 0.05);
+    transform: rotate(-1.5deg);
+    position: relative;
+    color: #1a1a1a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pinned-sticky-note:hover {
+    transform: rotate(0deg) scale(1.02);
+    box-shadow: 
+        5px 12px 20px rgba(0, 0, 0, 0.2),
+        -2px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Torn paper top edge */
+.pinned-sticky-note::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background-color: var(--note-color, #f4b4ce);
+    /* Create square teeth using a repeating linear gradient mask */
+    -webkit-mask-image: repeating-linear-gradient(
+        to right,
+        black 0,
+        black 12px,
+        transparent 12px,
+        transparent 20px
+    );
+    mask-image: repeating-linear-gradient(
+        to right,
+        black 0,
+        black 12px,
+        transparent 12px,
+        transparent 20px
+    );
+}
+
+/* Push pins base */
+.sticky-pin {
+    position: absolute;
+    top: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-shadow: 
+        inset -3px -3px 6px rgba(0,0,0,0.3),
+        inset 2px 2px 5px rgba(255,255,255,0.7),
+        2px 5px 6px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+/* Push pin needle */
+.sticky-pin::before {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 11px;
+    width: 2px;
+    height: 14px;
+    background: linear-gradient(to right, #777, #bbb, #777);
+    border-radius: 0 0 2px 2px;
+    z-index: -1;
+    box-shadow: 1px 4px 3px rgba(0,0,0,0.2);
+}
+
+.left-pin {
+    left: 20px;
+    background-color: #66cc66; /* Green */
+}
+
+.right-pin {
+    right: 20px;
+    background-color: #ffdd44; /* Yellow */
+}
+
+/* Override text colors inside the sticky note */
+.pinned-sticky-note .feed-type,
+.pinned-sticky-note .feed-card-title,
+.pinned-sticky-note .feed-card-body,
+.pinned-sticky-note time {
+    color: #1a1a1a !important;
+}
