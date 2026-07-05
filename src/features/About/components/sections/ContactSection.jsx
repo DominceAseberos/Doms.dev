@@ -1,10 +1,13 @@
 import React from 'react';
 import { GithubIcon, LinkedInIcon } from '../../utils/techIcons';
+import ContactSquiggles from '../ui/ContactSquiggles';
+import landingData from '../../../../data/landingData.json';
 
 export default function ContactSection({ contact = {}, theme }) {
     return (
-        <section className="ns-contact-section" id="contact">
-            <div className="ns-contact-header lit-content-block lit-transparent">
+        <section className="ns-contact-section" id="contact" style={{ position: 'relative', overflow: 'hidden' }}>
+            <ContactSquiggles />
+            <div className="ns-contact-header lit-content-block lit-transparent" style={{ position: 'relative', zIndex: 1 }}>
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Contact</p>
                 <h2 className="ns-section-heading ns-reveal">{contact.heading || "Open to Opportunities"}</h2>
                 {contact.subtext && (
@@ -29,20 +32,8 @@ export default function ContactSection({ contact = {}, theme }) {
                 </div>
             </div>
 
-            <footer className="ns-footer lit-content-block">
-                <div className="ns-footer-content">
-                    <p className="ui-body-copy ns-footer-copy" suppressHydrationWarning>
-                        © {new Date().getFullYear()} Domince Aseberos. All rights reserved.
-                    </p>
-                    <div className="ns-footer-links">
-                        <a href="https://github.com/DominceAseberos" target="_blank" rel="noopener noreferrer" className="ns-footer-link" aria-label="GitHub">
-                            <GithubIcon />
-                        </a>
-                        <a href="https://linkedin.com/in/dominceaseberos" target="_blank" rel="noopener noreferrer" className="ns-footer-link" aria-label="LinkedIn">
-                            <LinkedInIcon />
-                        </a>
-                    </div>
-                </div>
+            <footer style={{ padding: '2rem', textAlign: 'center', opacity: 0.7, fontSize: '0.85rem', marginTop: '4rem' }} suppressHydrationWarning>
+                © {new Date().getFullYear()} Domince Aseberos. Designed & Built in Davao, Philippines.
             </footer>
         </section>
     );
