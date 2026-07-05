@@ -525,18 +525,15 @@ html[data-theme='light'] .ns-sidebar-label {
     align-items: center;
     justify-content: center;
     aspect-ratio: 1;
-    background: var(--ns-card-bg);
-    border: 1px solid var(--ns-card-border);
-    border-radius: 12px;
+    background: transparent;
+    border: none;
     color: var(--ns-link-color);
     text-decoration: none;
     font-size: 1.5rem;
-    transition: background 0.3s, border-color 0.3s, transform 0.3s, color 0.3s;
+    transition: transform 0.3s, color 0.3s;
 }
 
 .ns-bento-social-link:hover {
-    background: var(--ns-project-card-hover);
-    border-color: var(--ns-link-hover);
     color: var(--ns-link-hover);
 }
 
@@ -763,21 +760,27 @@ html[data-theme='light'] .ns-stack-group-title {
     }
 }
 
-.ns-project-card {
+.ns-sketch-box {
     position: relative;
-    display: flex;
-    flex-direction: column;
     border: 1px solid var(--ns-project-card-border) !important;
-    background: var(--ns-project-card-bg);
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px !important;
     overflow: hidden;
-    text-decoration: none;
     transition: background 0.25s, border-color 0.25s, transform 0.25s, border-radius 0.25s;
+}
+
+.ns-sketch-box:hover {
+    border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px !important;
+}
+
+.ns-project-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--ns-project-card-bg);
+    text-decoration: none;
 }
 
 .ns-project-card:hover {
     background: var(--ns-project-card-hover);
-    border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px !important;
 }
 
 .hover-draw-svg {
@@ -800,7 +803,7 @@ html[data-theme='light'] .ns-stack-group-title {
     transition: stroke-dashoffset 0.8s cubic-bezier(0.7, 0, 0.3, 1);
 }
 
-.ns-project-card:hover .hover-draw-svg rect {
+.ns-sketch-box:hover .hover-draw-svg rect {
     stroke-dashoffset: 0;
 }
 

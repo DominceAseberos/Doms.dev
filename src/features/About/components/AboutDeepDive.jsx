@@ -1,11 +1,15 @@
 import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaXTwitter, FaThreads, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa6';
+import { FaEnvelope } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
 import githubSvg from '../../../assets/github.svg';
 import linkedinSvg from '../../../assets/linkedin.svg';
 import emailSvg from '../../../assets/email.svg';
+import xSvg from '../../../assets/X.svg';
+import threadsSvg from '../../../assets/threads.svg';
+import instagramSvg from '../../../assets/instagram.svg';
+import facebookSvg from '../../../assets/facebook.svg';
 import { fetchPortfolioData } from '../../../shared/portfolioService';
 import portfolioDataDefault from '../../../data/portfolioData.json';
 import aboutDataDefault from '../../../data/aboutData.json';
@@ -22,6 +26,9 @@ import SectionProgressIndicator from '../../../components/SectionProgressIndicat
 import useLoadingStore from '../../../store/useLoadingStore';
 import useLogoStore from '../../../store/useLogoStore';
 import useThemeStore from '../../../store/useThemeStore';
+import AnimatedHandwritingText from '../../../components/AnimatedHandwritingText';
+import AnimatedDivider from './ui/AnimatedDivider';
+import HoverDrawBorder from './ui/HoverDrawBorder';
 import './NarrativeSection.css';
 
 if (typeof window !== 'undefined') {
@@ -71,10 +78,10 @@ const getSocialIcon = (label, theme) => {
     if (l === 'github') return <img src={typeof githubSvg === 'object' ? githubSvg.src : githubSvg} alt="GitHub" style={style} />;
     if (l === 'email') return <img src={typeof emailSvg === 'object' ? emailSvg.src : emailSvg} alt="Email" style={style} />;
 
-    if (l === 'x' || l === 'twitter') return <FaXTwitter />;
-    if (l === 'threads') return <FaThreads />;
-    if (l === 'instagram') return <FaInstagram />;
-    if (l === 'facebook') return <FaFacebookF />;
+    if (l === 'x' || l === 'twitter') return <img src={typeof xSvg === 'object' ? xSvg.src : xSvg} alt="X" style={style} />;
+    if (l === 'threads') return <img src={typeof threadsSvg === 'object' ? threadsSvg.src : threadsSvg} alt="Threads" style={style} />;
+    if (l === 'instagram') return <img src={typeof instagramSvg === 'object' ? instagramSvg.src : instagramSvg} alt="Instagram" style={style} />;
+    if (l === 'facebook') return <img src={typeof facebookSvg === 'object' ? facebookSvg.src : facebookSvg} alt="Facebook" style={style} />;
     return <span className="ns-arrow">↗</span>;
 };
 
@@ -125,9 +132,22 @@ const AboutDeepDive = forwardRef((props, ref) => {
             <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div className="ns-hero-inner" style={{ textAlign: 'center' }}>
                     <div className="ns-hero-text lit-content-block lit-transparent" suppressHydrationWarning>
-                        <h1 className="ns-hero-name ns-reveal" suppressHydrationWarning>
-                            <span className="name-first">Behind</span>
-                            <span className="name-last">the Code</span>
+                        <h1 className="ns-hero-name ns-reveal" suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <AnimatedHandwritingText
+                                text="Behind"
+                                className="name-first"
+                                fontUrl="/fonts/PermanentMarker.ttf"
+                                strokeWidth={3}
+                                duration={2}
+                            />
+                            <AnimatedHandwritingText
+                                text="the Code"
+                                className="name-last"
+                                fontUrl="/fonts/PermanentMarker.ttf"
+                                strokeWidth={3}
+                                duration={2}
+                                delay={1}
+                            />
                         </h1>
                         <p className="ns-hero-bio ui-body-copy ns-reveal" style={{ marginTop: '1rem', maxWidth: '600px', margin: '1rem auto 0' }} suppressHydrationWarning>
                             A deeper dive into my experience, education, daily contributions, and what others have to say about working with me.
@@ -136,12 +156,15 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </div>
             </section>
 
+            <AnimatedDivider />
+
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
-            <section className="ns-section" id="about">
+            <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: '40px' }}>
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
-                <div className="ns-about-grid">
-                    <div className="ns-about-main lit-content-block lit-transparent">
-                        <h2 className="ns-section-heading ns-reveal">
+                <div className="ns-about-grid" style={{ alignItems: 'center', textAlign: 'center' }}>
+                    <div className="ns-about-main ns-sketch-box lit-content-block lit-transparent" style={{ padding: '2rem' }}>
+                        <HoverDrawBorder />
+                        <h2 className="ns-section-heading ns-reveal" style={{ textAlign: 'center', width: '100%' }}>
                             {about.heading || 'Engineering'}{' '}
                             <span className="ns-accent">{about.headingAccent || 'Digital Poetry'}</span>
                         </h2>
@@ -152,10 +175,11 @@ const AboutDeepDive = forwardRef((props, ref) => {
                     
                     {/* Socials Column */}
                     {socials.length > 0 && (
-                        <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start' }}>
-                            <div className="ns-reveal lit-content-block lit-transparent">
+                        <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <div className="ns-reveal ns-sketch-box lit-content-block lit-transparent" style={{ padding: '2rem' }}>
+                                <HoverDrawBorder />
                                 <p className="ui-sub-label" style={{ marginBottom: '1.25rem', letterSpacing: '0.22em' }}>Connect</p>
-                                <div className="ns-bento-socials">
+                                <div className="ns-bento-socials" style={{ justifyContent: 'center' }}>
                                     {socials.map((link) => (
                                         <a key={link.label} href={link.href}
                                             target={link.external ? '_blank' : '_self'}
@@ -188,8 +212,10 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </div>
             </section>
 
+            <AnimatedDivider />
+
             {/* ══ WORKFLOW ═════════════════════════════════════════════════ */}
-            <section className="ns-section" id="workflow">
+            <section className="ns-section" id="workflow" style={{ borderTop: 'none', paddingTop: '40px' }}>
                 <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
                     <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
                         <div style={{ flex: '1 1 400px' }}>
@@ -234,15 +260,17 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </div>
             </section>
 
+            <AnimatedDivider />
 
             {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
             {experience.length > 0 && (
-                <section className="ns-section" id="experience">
+                <section className="ns-section" id="experience" style={{ borderTop: 'none', paddingTop: '40px' }}>
                     <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Work History</p>
                     <h2 className="ns-section-heading ns-reveal">Experience</h2>
                     <div className="ns-timeline">
                         {experience.map((item, i) => (
-                            <div key={i} className="ns-timeline-item ns-reveal lit-content-block lit-transparent">
+                            <div key={i} className="ns-timeline-item ns-reveal ns-sketch-box lit-content-block lit-transparent" style={{ padding: '2rem' }}>
+                                <HoverDrawBorder />
                                 <div className="ns-timeline-dot" />
                                 <div className="ns-timeline-body">
                                     <div className="ns-timeline-header">
@@ -258,24 +286,33 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </section>
             )}
 
+            <AnimatedDivider />
+
             {/* ══ EDUCATION ════════════════════════════════════════════════ */}
             <EducationSection />
+
+            <AnimatedDivider />
 
             {/* ══ FEED ═════════════════════════════════════════════════════ */}
             <FeedSection />
 
+            <AnimatedDivider />
+
             {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
             <GithubContributionSection />
 
+            <AnimatedDivider />
+
             {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
             {testimonials.length > 0 && (
-                <section className="ns-section" id="testimonials">
+                <section className="ns-section" id="testimonials" style={{ borderTop: 'none', paddingTop: '40px' }}>
                     <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Endorsements</p>
                     <h2 className="ns-section-heading ns-reveal">Testimonials</h2>
                     <div className="ns-testimonials-wrapper ns-reveal">
                         <div className="ns-testimonials-track">
                             {[...testimonials, ...testimonials].map((t, i) => (
-                                <div key={i} className="ns-testimonial-card lit-content-block">
+                                <div key={i} className="ns-testimonial-card ns-sketch-box lit-content-block" style={{ padding: '2rem' }}>
+                                    <HoverDrawBorder />
                                     <p className="ns-testimonial-quote">“{t.quote}”</p>
                                     <div className="ns-testimonial-author">
                                         <p className="ns-testimonial-name">{t.author}</p>

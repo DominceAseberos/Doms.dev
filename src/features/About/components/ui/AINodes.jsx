@@ -72,7 +72,7 @@ export default function AINodes({ className = '', style = {} }) {
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: containerRef.current,
-                    start: 'top 50%',
+                    start: 'top 90%',
                     toggleActions: 'play none none none',
                     once: true
                 }
