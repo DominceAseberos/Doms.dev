@@ -248,6 +248,8 @@ const NarrativeSection = forwardRef((props, ref) => {
 
             <ContactSection
                 contact={contact}
+                socials={socials}
+                projects={projects}
                 theme={theme}
             />
 

@@ -3,9 +3,10 @@ import { GithubIcon, LinkedInIcon } from '../../utils/techIcons';
 import ContactSquiggles from '../ui/ContactSquiggles';
 import landingData from '../../../../data/landingData.json';
 
-export default function ContactSection({ contact = {}, theme }) {
+export default function ContactSection({ contact = {}, socials = [], projects = [], theme }) {
     return (
-        <section className="ns-contact-section" id="contact" style={{ position: 'relative', overflow: 'hidden' }}>
+        <>
+        <section className="ns-contact-section" id="contact" style={{ position: 'relative', overflow: 'hidden', paddingBottom: '3rem' }}>
             <ContactSquiggles />
             <div className="ns-contact-header lit-content-block lit-transparent" style={{ position: 'relative', zIndex: 1 }}>
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Contact</p>
@@ -31,10 +32,89 @@ export default function ContactSection({ contact = {}, theme }) {
                     </a>
                 </div>
             </div>
-
-            <footer style={{ padding: '2rem', textAlign: 'center', opacity: 0.7, fontSize: '0.85rem', marginTop: '4rem' }} suppressHydrationWarning>
-                © {new Date().getFullYear()} Domince Aseberos. Designed & Built in Davao, Philippines.
-            </footer>
         </section>
+
+            <footer style={{
+                width: '100vw',
+                marginLeft: 'calc(50% - 50vw)',
+                padding: '2rem 1rem 1rem',
+                zIndex: 2,
+                borderTop: '1px solid var(--ns-section-border)',
+                background: 'transparent'
+            }} suppressHydrationWarning>
+
+                <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '2rem', textAlign: 'left', justifyContent: 'space-between' }}>
+                    
+                    {/* NAVIGATION */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '120px' }}>
+                        <h4 style={{ margin: 0, fontSize: '0.8rem', color: 'var(--white)', letterSpacing: '0.15em', textTransform: 'uppercase', opacity: 0.9 }}>Navigation</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                            <a href="/" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>Home</a>
+                            <a href="#about" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>About</a>
+                            <a href="#contact" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>Contact</a>
+                            <a href="#projects" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>Projects</a>
+                        </div>
+                    </div>
+
+                    {/* SECTIONS */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '120px' }}>
+                        <h4 style={{ margin: 0, fontSize: '0.8rem', color: 'var(--white)', letterSpacing: '0.15em', textTransform: 'uppercase', opacity: 0.9 }}>Sections</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                            <a href="#about" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>About Me</a>
+                            <a href="#workflow" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>Workflow</a>
+                            <a href="#education" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>Education</a>
+                            <a href="#certifications" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>Certifications</a>
+                        </div>
+                    </div>
+
+                    {/* PROJECT */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '120px' }}>
+                        <h4 style={{ margin: 0, fontSize: '0.8rem', color: 'var(--white)', letterSpacing: '0.15em', textTransform: 'uppercase', opacity: 0.9 }}>Project</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                            {projects && projects.slice(0, 3).map((p, idx) => (
+                                <a key={idx} href={`/projects/${p.id}`} style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>{p.title}</a>
+                            ))}
+                            <a href="/projects" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>See More ↗</a>
+                        </div>
+                    </div>
+
+                    {/* DEV LOG */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '120px' }}>
+                        <h4 style={{ margin: 0, fontSize: '0.8rem', color: 'var(--white)', letterSpacing: '0.15em', textTransform: 'uppercase', opacity: 0.9 }}>Dev Log</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                            <a href="#" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>AI Integration</a>
+                            <a href="#" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>UI Architecture</a>
+                            <a href="#" style={{ textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', opacity: 0.6 }} onMouseEnter={e => e.currentTarget.style.opacity=1} onMouseLeave={e => e.currentTarget.style.opacity=0.6}>See More ↗</a>
+                        </div>
+                    </div>
+
+                    {/* SOCIAL LINKS (Chunked to max 4 per column) */}
+                    {socials && socials.length > 0 && (
+                        Array.from({ length: Math.ceil(socials.length / 4) }).map((_, colIndex) => (
+                            <div key={colIndex} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '120px' }}>
+                                <h4 style={{ margin: 0, fontSize: '0.8rem', color: colIndex === 0 ? 'var(--white)' : 'transparent', letterSpacing: '0.15em', textTransform: 'uppercase', opacity: 0.9, pointerEvents: 'none' }}>
+                                    Social Links
+                                </h4>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                                    {socials.slice(colIndex * 4, colIndex * 4 + 4).map((social, idx) => (
+                                        <a 
+                                            key={idx} 
+                                            href={social.href} 
+                                            target={social.external ? '_blank' : '_self'} 
+                                            rel="noreferrer" 
+                                            style={{ color: 'inherit', textDecoration: 'none', transition: 'opacity 0.2s', opacity: 0.6 }} 
+                                            onMouseEnter={e => e.currentTarget.style.opacity=1} 
+                                            onMouseLeave={e => e.currentTarget.style.opacity=0.6}
+                                        >
+                                            {social.label}
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </footer>
+        </>
     );
 }

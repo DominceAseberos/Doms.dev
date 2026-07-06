@@ -19,7 +19,7 @@ export default function AboutMeSection({ about }) {
     const [isAboutHovered, setIsAboutHovered] = React.useState(false);
     const [isWorkflowHovered, setIsWorkflowHovered] = React.useState(false);
     const sentences = about.intro ? (about.intro.match(/[^.!?]+[.!?]+/g) || [about.intro]) : [];
-    
+
     // Split: First 2 sentences, then middle sentence, then the rest
     const firstPart = sentences.slice(0, 2).map(s => s.trim()).join(' ');
     const secondPart = sentences.slice(2, 3).map(s => s.trim()).join(' ');
@@ -31,16 +31,16 @@ export default function AboutMeSection({ about }) {
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
                 <div className="ns-about-grid">
                     <div className="ns-about-main lit-content-block lit-transparent">
-                        
+
                         {/* FIRST PART - Scroll Scrubbed Typewriter */}
                         {firstPart.length > 0 && (
-                            <ScrollTypewriter 
-                                text={firstPart} 
-                                highlights={highlightsList} 
+                            <ScrollTypewriter
+                                text={firstPart}
+                                highlights={highlightsList}
                                 className="ns-lyrics-text"
-                                style={{ margin: 0 }} 
-                                scrollStart="top 85%"
-                                scrollEnd="center 45%"
+                                style={{ margin: 0, textAlign: 'center' }}
+                                scrollStart="top 90%"
+                                scrollEnd="center 10%"
                             />
                         )}
 
@@ -49,11 +49,11 @@ export default function AboutMeSection({ about }) {
 
                         {/* SECOND PART - Scroll Scrubbed Typewriter */}
                         {secondPart.length > 0 && (
-                            <ScrollTypewriter 
-                                text={secondPart} 
-                                highlights={highlightsList} 
+                            <ScrollTypewriter
+                                text={secondPart}
+                                highlights={highlightsList}
                                 className="ns-lyrics-text"
-                                style={{ margin: 0 }} 
+                                style={{ margin: 0, textAlign: 'center' }}
                                 scrollStart="top 85%"
                                 scrollEnd="center 50%"
                             />
@@ -64,40 +64,40 @@ export default function AboutMeSection({ about }) {
 
                         {/* THIRD PART - Scroll Scrubbed Typewriter */}
                         {thirdPart.length > 0 && (
-                            <ScrollTypewriter 
-                                text={thirdPart} 
-                                highlights={highlightsList} 
+                            <ScrollTypewriter
+                                text={thirdPart}
+                                highlights={highlightsList}
                                 className="ns-lyrics-text"
-                                style={{ margin: 0 }} 
+                                style={{ margin: 0, textAlign: 'center' }}
                                 scrollStart="top 85%"
                                 scrollEnd="center 50%"
                             />
                         )}
 
                         {/* NAVIGATION BUTTONS */}
-                        <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '4rem', marginBottom: '2rem' }}>
-                            <div 
+                        <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '8rem', marginBottom: '4rem' }}>
+                            <div
                                 style={{ position: 'relative', display: 'inline-block' }}
                                 onMouseEnter={() => setIsAboutHovered(true)}
                                 onMouseLeave={() => setIsAboutHovered(false)}
                             >
-                                <img 
-                                    src={typeof aboutMeSvg === 'object' ? aboutMeSvg.src : aboutMeSvg} 
-                                    alt="About Me" 
-                                    style={{ 
+                                <img
+                                    src={typeof aboutMeSvg === 'object' ? aboutMeSvg.src : aboutMeSvg}
+                                    alt="About Me"
+                                    style={{
                                         position: 'absolute',
                                         bottom: '110%',
                                         left: '50%',
-                                        width: '45px', 
-                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)', 
+                                        width: '45px',
+                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)',
                                         opacity: 0.95,
                                         zIndex: 10,
                                         pointerEvents: 'none',
                                         transform: `translateX(-50%) translateY(${isAboutHovered ? '-12px' : '0px'}) rotate(-5deg)`,
                                         transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                                    }} 
+                                    }}
                                 />
-                                <a href="/about#about" className="btn-ghost ns-btn" style={{ 
+                                <a href="/about#about" className="btn-ghost ns-btn" style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
@@ -108,28 +108,28 @@ export default function AboutMeSection({ about }) {
                                 </a>
                             </div>
 
-                            <div 
+                            <div
                                 style={{ position: 'relative', display: 'inline-block' }}
                                 onMouseEnter={() => setIsWorkflowHovered(true)}
                                 onMouseLeave={() => setIsWorkflowHovered(false)}
                             >
-                                <img 
-                                    src={typeof workflowIconSvg === 'object' ? workflowIconSvg.src : workflowIconSvg} 
-                                    alt="My Workflow" 
-                                    style={{ 
+                                <img
+                                    src={typeof workflowIconSvg === 'object' ? workflowIconSvg.src : workflowIconSvg}
+                                    alt="My Workflow"
+                                    style={{
                                         position: 'absolute',
                                         bottom: '110%',
                                         left: '50%',
-                                        width: '55px', 
-                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)', 
+                                        width: '55px',
+                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)',
                                         opacity: 0.95,
                                         zIndex: 10,
                                         pointerEvents: 'none',
                                         transform: `translateX(-50%) translateY(${isWorkflowHovered ? '-12px' : '0px'}) rotate(3deg)`,
                                         transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                                    }} 
+                                    }}
                                 />
-                                <a href="/about#workflow" className="btn-ghost ns-btn" style={{ 
+                                <a href="/about#workflow" className="btn-ghost ns-btn" style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
@@ -143,28 +143,28 @@ export default function AboutMeSection({ about }) {
                                     </svg>
                                 </a>
                             </div>
-                            <div 
+                            <div
                                 style={{ position: 'relative', display: 'inline-block' }}
                                 onMouseEnter={() => setIsEduHovered(true)}
                                 onMouseLeave={() => setIsEduHovered(false)}
                             >
-                                <img 
-                                    src={typeof educationHatSvg === 'object' ? educationHatSvg.src : educationHatSvg} 
-                                    alt="Education Hat" 
-                                    style={{ 
+                                <img
+                                    src={typeof educationHatSvg === 'object' ? educationHatSvg.src : educationHatSvg}
+                                    alt="Education Hat"
+                                    style={{
                                         position: 'absolute',
                                         bottom: '110%',
                                         left: '50%',
-                                        width: '70px', 
-                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)', 
+                                        width: '70px',
+                                        filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)',
                                         opacity: 0.95,
                                         zIndex: 10,
                                         pointerEvents: 'none',
                                         transform: `translateX(-50%) translateY(${isEduHovered ? '-12px' : '0px'}) rotate(5deg)`,
                                         transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
-                                    }} 
+                                    }}
                                 />
-                                <a href="/about#education" className="btn-ghost ns-btn" style={{ 
+                                <a href="/about#education" className="btn-ghost ns-btn" style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
