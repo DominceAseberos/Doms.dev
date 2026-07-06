@@ -205,63 +205,51 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </filter>
             </svg>
 
-            <div style={{ position: 'relative', zIndex: 10 }}>
-                <HeroSection
-                    ref={heroRef}
-                    hero={hero}
-                    resumeUrl={data.resume}
-                    totalProjectsCount={totalProjectsCount}
-                    nameTimeline={nameTimeline}
-                    onOpenResume={() => setIsResumeModalOpen(true)}
-                />
-            </div>
+            <HeroSection
+                ref={heroRef}
+                hero={hero}
+                resumeUrl={data.resume}
+                totalProjectsCount={totalProjectsCount}
+                nameTimeline={nameTimeline}
+                onOpenResume={() => setIsResumeModalOpen(true)}
+            />
 
             <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
                 <img ref={svg1Ref} src={firstSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', bottom: '-90vh', right: '-5vw', width: '200vw', minWidth: '1200px', opacity: 0.9, pointerEvents: 'none' }} />
             </div>
 
-            <div style={{ position: 'relative', zIndex: 10 }}>
-                <AboutMeSection
-                    about={about}
-                    socials={socials}
-                />
-            </div>
+            <AboutMeSection
+                about={about}
+                socials={socials}
+            />
 
             <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
                 <img ref={svg2Ref} src={secondSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', top: '-190vh', left: '-5vw', width: '20vw', minWidth: '300px', opacity: 0.9, pointerEvents: 'none' }} />
             </div>
 
-            <div style={{ position: 'relative', zIndex: 10 }}>
-                <ProjectsSection
-                    projects={projects}
-                />
-            </div>
+            <ProjectsSection
+                projects={projects}
+            />
 
             <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
                 <img ref={svg3Ref} src={thirdSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', top: '-160vh', right: '5vw', width: '120vw', minWidth: '1100px', opacity: 0.9, pointerEvents: 'none' }} />
             </div>
 
-            <div style={{ position: 'relative', zIndex: 10 }}>
-                <TechStackSection
-                    techStack={techStack}
-                    compact={true}
-                />
-            </div>
+            <TechStackSection
+                techStack={techStack}
+                compact={true}
+            />
 
-            <div style={{ position: 'relative', zIndex: 10 }}>
-                <PinnedFeedPost />
-            </div>
+            <PinnedFeedPost />
 
             <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
                 <img ref={svg4Ref} src={fourthSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', bottom: '10vh', left: '0', top: '-120vh', width: '90vw', minWidth: '800px', opacity: 0.9, pointerEvents: 'none' }} />
             </div>
 
-            <div style={{ position: 'relative', zIndex: 10 }}>
-                <ContactSection
-                    contact={contact}
-                    theme={theme}
-                />
-            </div>
+            <ContactSection
+                contact={contact}
+                theme={theme}
+            />
 
             <DocViewerModal
                 isOpen={isResumeModalOpen}
