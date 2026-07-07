@@ -37,8 +37,9 @@
     --surface: rgba(255, 255, 255, 0.04);
     --nav-scrolled-bg: rgba(5, 8, 20, 0.65);
     --nav-scrolled-border: rgba(255, 255, 255, 0.05);
-    --nav-transparent-bg: rgba(5, 8, 20, 0);
-    --nav-transparent-border: rgba(255, 255, 255, 0);
+    --nav-transparent-bg: rgba(5, 8, 20, 0.4);
+    --nav-transparent-border: rgba(255, 255, 255, 0.1);
+    --nav-sketch-color: var(--soft-text);
     --title-outline: rgba(242, 240, 237, 0.4);
     --cursor-hover: url('./assets/cursor-hover.svg');
 }
@@ -57,8 +58,9 @@ html[data-theme='light'] {
     --surface: rgba(0, 0, 0, 0.035);
     --nav-scrolled-bg: rgba(245, 241, 234, 0.74);
     --nav-scrolled-border: rgba(18, 18, 18, 0.08);
-    --nav-transparent-bg: rgba(245, 241, 234, 0);
-    --nav-transparent-border: rgba(18, 18, 18, 0);
+    --nav-transparent-bg: rgba(245, 241, 234, 0.6);
+    --nav-transparent-border: rgba(18, 18, 18, 0.15);
+    --nav-sketch-color: #000000;
     --title-outline: rgba(18, 18, 18, 0.35);
     --cursor-hover: url('./assets/cursor-hover-dark.svg');
 }
@@ -69,17 +71,20 @@ html[data-theme='light'] {
     }
 }
 
-html,
+html {
+    background: var(--bg);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
 body {
     background: var(--bg);
     color: var(--white);
     font-family: 'Syne', sans-serif;
     min-height: 100vh;
     cursor: crosshair;
-    overflow-x: hidden;
     margin: 0;
     padding: 0;
-    scrollbar-gutter: stable;
     transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 
@@ -166,22 +171,19 @@ input[type="button"],
 /* ── NAV ── */
 .main-nav {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 24px;
+    left: 32px;
+    right: 32px;
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 28px 48px;
-    mix-blend-mode: normal;
-    background-color: var(--nav-transparent-bg);
-    border-bottom: 1px solid var(--nav-transparent-border);
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease, padding 0.4s ease, opacity 0.4s ease;
+    pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, top 0.4s ease;
 }
 
 .main-nav.nav-hidden {
-    transform: translateY(calc(-100% - 2px));
+    transform: translateY(calc(-100% - 32px));
     pointer-events: none;
 }
 
@@ -215,14 +217,44 @@ body.nav-hidden-in-hallway nav:focus-within {
 }
 
 .main-nav.nav-scrolled {
-    background: var(--nav-scrolled-bg);
-    border-bottom: 1px solid var(--nav-scrolled-border);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 20px 48px;
+    top: 16px;
+}
+
+.nav-logo, .nav-right {
+    position: relative;
+    pointer-events: auto;
+    background-color: transparent;
+    transition: padding 0.4s ease;
+}
+
+.nav-right::before {
+    content: '';
+    position: absolute;
+    inset: -6px; /* give some room for the sketch */
+    background-color: var(--nav-sketch-color);
+    -webkit-mask: url('./assets/border.svg') no-repeat center / 100% 100%;
+    mask: url('./assets/border.svg') no-repeat center / 100% 100%;
+    pointer-events: none;
+    z-index: 10;
+    transition: background-color 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
+}
+
+.nav-logo:hover, .nav-right:hover {
+    border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px;
+}
+
+/* Removed nav-right hover effect so interaction focuses on text */
+
+.main-nav.nav-scrolled .nav-logo,
+.main-nav.nav-scrolled .nav-right {
+    /* Kept intentionally empty to override any previous background if needed, or simply transition padding */
 }
 
 .nav-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
     font-family: 'DM Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.2em;
@@ -241,21 +273,31 @@ body.nav-hidden-in-hallway nav:focus-within {
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 18px;
+    padding: 12px 32px;
+}
+
+.main-nav.nav-scrolled .nav-logo {
+    padding: 4px 12px;
+}
+
+.main-nav.nav-scrolled .nav-right {
+    padding: 8px 24px;
 }
 
 .nav-links a {
     font-family: 'DM Mono', monospace;
-    font-size: 24px;
+    font-size: 14px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--gray-light);
+    color: var(--white);
     text-decoration: none;
-    transition: color 0.2s;
+    display: inline-block;
+    transition: color 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .nav-links a:hover {
-    color: var(--white);
+    color: var(--gray);
+    transform: scale(1.15);
 }
 
 .nav-links a.active,
@@ -703,15 +745,29 @@ html[data-theme='light'] .cs-page {
     }
 
     .main-nav {
-        padding: 24px 20px;
+        top: 16px;
+        left: 16px;
+        right: 16px;
         align-items: center;
         justify-content: space-between;
         flex-direction: row;
-        width: 100%;
+    }
+
+    .nav-logo {
+        padding: 4px 12px;
+    }
+    .nav-right {
+        padding: 8px 20px;
     }
 
     .main-nav.nav-scrolled {
-        padding: 16px 20px;
+        top: 12px;
+    }
+    .main-nav.nav-scrolled .nav-logo {
+        padding: 2px 8px;
+    }
+    .main-nav.nav-scrolled .nav-right {
+        padding: 6px 16px;
     }
 
     .nav-logo {

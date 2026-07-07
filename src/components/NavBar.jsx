@@ -10,9 +10,17 @@ const NavBar = () => {
     const lastScrollY = React.useRef(0);
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            setCurrentPath(window.location.pathname);
-        }
+        const updateStateOnNav = () => {
+            if (typeof window !== 'undefined') {
+                setCurrentPath(window.location.pathname);
+                setIsScrolled(window.scrollY > 20);
+                setIsHidden(false);
+                lastScrollY.current = window.scrollY;
+            }
+        };
+        updateStateOnNav();
+        document.addEventListener('astro:page-load', updateStateOnNav);
+        return () => document.removeEventListener('astro:page-load', updateStateOnNav);
     }, []);
 
     useEffect(() => {
