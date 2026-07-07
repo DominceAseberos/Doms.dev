@@ -10,7 +10,7 @@ const useLightPhysics = () => {
     const isDark = theme === 'dark';
     
     // Target all our main content blocks, plus specific elements we want to glow individually
-    const blocks = document.querySelectorAll('.lit-content-block, .bg-svg-line, .ns-lyrics-text, .ns-ai-nodes-container, .ns-ai-web-integration, .contact-squiggles, .ns-hero-text, .ns-hero-card, .ns-tech-icon-carousel, .pinned-sticky-note');
+    const blocks = document.querySelectorAll('.lit-content-block, .bg-svg-line, .ns-lyrics-text, .ns-ai-nodes-container, .ns-ai-web-integration, .contact-squiggles, .ns-squiggle, .ns-hero-text, .ns-hero-card, .ns-tech-icon-carousel, .pinned-sticky-note');
 
     
     const bulbY = 90; 
@@ -54,7 +54,8 @@ const useLightPhysics = () => {
                            block.classList.contains('ns-lyrics-text') ||
                            block.classList.contains('ns-ai-nodes-container') ||
                            block.classList.contains('ns-ai-web-integration') ||
-                           block.classList.contains('contact-squiggles');
+                           block.classList.contains('contact-squiggles') ||
+                           block.classList.contains('ns-squiggle');
 
         // Solid colored cards that should preserve their background color but darken in shadows
         const isSolidColorCard = block.classList.contains('lit-transparent') || 
@@ -89,10 +90,15 @@ const useLightPhysics = () => {
             // Overall opacity for deep-shadow fade
             block.style.opacity = String(0.1 + brightness * 0.9);
             
+            let baseFilter = '';
+            if (block.classList.contains('bg-svg-line') || block.classList.contains('contact-squiggles') || block.classList.contains('ns-squiggle')) {
+                baseFilter = 'invert(1) ';
+            }
+
             // Only apply the glowing effect when glowFactor is active (i.e. near the top)
             block.style.filter = glowFactor > 0.01 
-                ? `brightness(${1 + glowFactor * 0.4}) drop-shadow(0px 0px ${15 * glowFactor}px rgba(255, 220, 100, ${glowFactor * 0.4}))` 
-                : '';
+                ? `${baseFilter}brightness(${1 + glowFactor * 0.4}) drop-shadow(0px 0px ${15 * glowFactor}px rgba(255, 220, 100, ${glowFactor * 0.4}))` 
+                : baseFilter.trim();
         } else if (isSolidColorCard) {
             block.style.opacity = '1'; // Never make solid cards translucent!
             
@@ -118,7 +124,14 @@ const useLightPhysics = () => {
         block.style.borderColor = '';
         block.style.boxShadow = '';
         block.style.opacity = '';
-        block.style.filter = '';
+        
+        if (block.classList.contains('bg-svg-line')) {
+            block.style.filter = theme === 'dark' ? 'invert(1)' : 'brightness(3.5)';
+        } else if (block.classList.contains('contact-squiggles') || block.classList.contains('ns-squiggle')) {
+            block.style.filter = theme === 'dark' ? 'invert(1)' : 'none';
+        } else {
+            block.style.filter = '';
+        }
       });
     };
 
