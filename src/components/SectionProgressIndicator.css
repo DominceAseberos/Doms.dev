@@ -1,8 +1,6 @@
 .spi-root {
   --spi-dot-color: rgba(255, 255, 255, 0.25);
   --spi-dot-active: var(--accent);
-  --spi-label-bg: rgba(0, 0, 0, 0.55);
-  --spi-label-text: rgba(255, 255, 255, 0.7);
 
   position: fixed;
   right: 20px;
@@ -56,29 +54,39 @@
   right: calc(100% + 12px);
   white-space: nowrap;
   font-family: 'DM Mono', monospace;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--spi-label-text);
-  background: var(--spi-label-bg);
-  padding: 3px 10px;
-  border-radius: 4px;
+  color: var(--white);
+  background: transparent;
+  padding: 6px 14px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease;
   transform: translateX(6px);
 }
 
+.spi-label::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  background-color: var(--white);
+  -webkit-mask: url('../assets/label-border.svg') no-repeat center / 100% 100%;
+  mask: url('../assets/label-border.svg') no-repeat center / 100% 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
 .spi-dot:hover .spi-label,
-.spi-dot:focus-visible .spi-label {
+.spi-dot:focus-visible .spi-label,
+.spi-label.show-label {
   opacity: 1;
   transform: translateX(0);
 }
 
 html[data-theme='light'] .spi-root {
   --spi-dot-color: rgba(0, 0, 0, 0.18);
-  --spi-label-bg: rgba(255, 255, 255, 0.85);
-  --spi-label-text: rgba(0, 0, 0, 0.65);
 }
 
 @media (max-width: 768px) {
