@@ -75,7 +75,7 @@ export default function AboutMeSection({ about }) {
                         )}
 
                         {/* NAVIGATION BUTTONS */}
-                        <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem', marginTop: '8rem', marginBottom: '4rem' }}>
+                        <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 'clamp(0.4rem, 2vw, 1rem)', marginTop: 'clamp(4rem, 10vw, 8rem)', marginBottom: 'clamp(0.5rem, 3vw, 1.5rem)' }}>
                             <div
                                 style={{ position: 'relative', display: 'inline-block' }}
                                 onMouseEnter={() => setIsAboutHovered(true)}
@@ -88,7 +88,7 @@ export default function AboutMeSection({ about }) {
                                         position: 'absolute',
                                         bottom: '110%',
                                         left: '50%',
-                                        width: '45px',
+                                        width: 'clamp(28px, 6vw, 45px)',
                                         filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)',
                                         opacity: 0.95,
                                         zIndex: 10,
@@ -97,7 +97,7 @@ export default function AboutMeSection({ about }) {
                                         transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
                                     }}
                                 />
-                                <a href="/about#about" className="btn-ghost ns-btn" style={{
+                                <a href="/about#about" className="btn-ghost ns-btn ns-nav-btn" style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
@@ -120,7 +120,7 @@ export default function AboutMeSection({ about }) {
                                         position: 'absolute',
                                         bottom: '110%',
                                         left: '50%',
-                                        width: '55px',
+                                        width: 'clamp(35px, 8vw, 55px)',
                                         filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)',
                                         opacity: 0.95,
                                         zIndex: 10,
@@ -129,7 +129,7 @@ export default function AboutMeSection({ about }) {
                                         transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
                                     }}
                                 />
-                                <a href="/about#workflow" className="btn-ghost ns-btn" style={{
+                                <a href="/about#workflow" className="btn-ghost ns-btn ns-nav-btn" style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
@@ -155,7 +155,7 @@ export default function AboutMeSection({ about }) {
                                         position: 'absolute',
                                         bottom: '110%',
                                         left: '50%',
-                                        width: '70px',
+                                        width: 'clamp(42px, 10vw, 70px)',
                                         filter: theme === 'dark' ? 'invert(1) brightness(2)' : 'invert(0)',
                                         opacity: 0.95,
                                         zIndex: 10,
@@ -164,7 +164,7 @@ export default function AboutMeSection({ about }) {
                                         transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
                                     }}
                                 />
-                                <a href="/about#education" className="btn-ghost ns-btn" style={{
+                                <a href="/about#education" className="btn-ghost ns-btn ns-nav-btn" style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',

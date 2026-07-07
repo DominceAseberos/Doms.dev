@@ -14,6 +14,9 @@ export default function AINodes({ className = '', style = {} }) {
         const xPositions = [150, 320, 480, 650];
         const colCounts = [4, 8, 8, 4];
         
+        const leftLabels = ['RAW DATA', 'USER INPUT', 'EXTERNAL APIS', 'SENSORS'];
+        const rightLabels = ['PREDICTIONS', 'AUTOMATION', 'ANALYTICS', 'UI INSIGHTS'];
+        
         colCounts.forEach((count, colIndex) => {
             const ySpacing = 360 / (count + 1);
             for (let i = 0; i < count; i++) {
@@ -21,12 +24,17 @@ export default function AINodes({ className = '', style = {} }) {
                 const centerDist = Math.abs((count / 2) - i - 0.5);
                 const xOffset = centerDist * 10 * (colIndex < 2 ? 1 : -1);
                 
+                let label = '';
+                if (colIndex === 0) label = leftLabels[i];
+                if (colIndex === 3) label = rightLabels[i];
+                
                 nodes.push({
                     id: `n_${colIndex}_${i}`,
                     col: colIndex,
                     x: xPositions[colIndex] + xOffset,
                     y: 20 + ySpacing * (i + 1),
-                    r: count === 4 ? 6 : 4 // Outer layers have slightly larger nodes
+                    r: count === 4 ? 6 : 4, // Outer layers have slightly larger nodes
+                    label
                 });
             }
         });
@@ -126,7 +134,7 @@ export default function AINodes({ className = '', style = {} }) {
             justifyContent: 'center', 
             alignItems: 'center',
             width: '100%', 
-            margin: '6rem 0',
+            margin: 'clamp(0.5rem, 5vw, 6rem) 0',
             ...style 
         }}>
             
@@ -154,7 +162,7 @@ export default function AINodes({ className = '', style = {} }) {
             </div>
 
             {/* Neural Network SVG */}
-            <svg width="800" height="400" viewBox="0 0 800 400" style={{ maxWidth: '100%', overflow: 'visible', position: 'relative', zIndex: 2 }}>
+            <svg width="100%" viewBox="0 0 800 400" style={{ maxWidth: '800px', height: 'auto', overflow: 'visible', position: 'relative', zIndex: 2 }}>
                 
                 {/* 1. Base Connections */}
                 {network.lines.map(line => (
@@ -216,6 +224,27 @@ export default function AINodes({ className = '', style = {} }) {
                         />
                     )
                 ))}
+
+                {/* 5. Outer Node Labels */}
+                {network.nodes.map(node => {
+                    if (!node.label) return null;
+                    const isLeft = node.col === 0;
+                    return (
+                        <text
+                            key={`label_${node.id}`}
+                            x={isLeft ? node.x - 24 : node.x + 24}
+                            y={node.y + 3}
+                            textAnchor={isLeft ? "end" : "start"}
+                            fill="currentColor"
+                            fontSize="9"
+                            fontWeight="700"
+                            opacity="0.65"
+                            letterSpacing="1.5px"
+                        >
+                            {node.label}
+                        </text>
+                    );
+                })}
             </svg>
         </div>
     );

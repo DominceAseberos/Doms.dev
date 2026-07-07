@@ -31,21 +31,24 @@ export default function useScrubReveal(containerRef, dataReady) {
                     },
                 });
 
-                ScrollTrigger.batch('.ns-tech-reveal', {
-                    start: 'top 95%',
-                    onEnter: (batch) => {
-                        gsap.to(batch, {
-                            opacity: 1,
-                            scale: 1,
-                            y: 0,
-                            duration: 0.6,
-                            ease: 'back.out(1.5)',
-                            stagger: 0.04,
-                            overwrite: 'auto'
-                        });
-                    },
-                });
-                gsap.set('.ns-tech-reveal', { opacity: 0, scale: 0.8, y: 20 });
+                const techRevealEls = gsap.utils.toArray('.ns-tech-reveal');
+                if (techRevealEls.length > 0) {
+                    ScrollTrigger.batch('.ns-tech-reveal', {
+                        start: 'top 95%',
+                        onEnter: (batch) => {
+                            gsap.to(batch, {
+                                opacity: 1,
+                                scale: 1,
+                                y: 0,
+                                duration: 0.6,
+                                ease: 'back.out(1.5)',
+                                stagger: 0.04,
+                                overwrite: 'auto'
+                            });
+                        },
+                    });
+                    gsap.set(techRevealEls, { opacity: 0, scale: 0.8, y: 20 });
+                }
 
                 ScrollTrigger.refresh();
             }, containerRef);

@@ -62,38 +62,30 @@ const HeroSection = forwardRef(({ hero, resumeUrl, totalProjectsCount, nameTimel
                         })()}
                     </h1>
 
-                    <div className="ns-hero-actions ns-reveal">
+                    <div className="ns-hero-actions ns-reveal mobile-actions-row">
                         {resumeUrl && (
                             <button
                                 onClick={(e) => { e.preventDefault(); onOpenResume(); }}
-                                className="btn-primary ns-btn"
+                                className="btn-primary ns-btn mobile-flex-btn"
                             >
                                 View CV
                             </button>
                         )}
-                        <a href="/projects" className="btn-ghost ns-btn">
+                        <a href="/projects" className="btn-ghost ns-btn mobile-flex-btn">
                             Projects
                         </a>
 
-                        <div className="hero-socials ns-reveal" style={{ display: 'flex', gap: '1rem', marginLeft: '0.5rem', alignItems: 'center' }}>
+                        <div className="hero-socials ns-reveal mobile-socials-row" style={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: '8px', flexBasis: '100%' }}>
                             {[
                                 { src: githubSvg, alt: 'GitHub', href: hero.githubUrl || 'https://github.com/DominceAseberos' },
                                 { src: linkedinSvg, alt: 'LinkedIn', href: hero.linkedinUrl || 'https://www.linkedin.com/in/dominceaseberos/' },
                                 { src: emailSvg, alt: 'Email', href: 'mailto:daseberos@gmail.com' },
                             ].map((social, i) => (
-                                <a key={i} href={social.href} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <img 
-                                        src={typeof social.src === 'object' ? social.src.src : social.src} 
-                                        alt={social.alt} 
-                                        style={{ 
-                                            width: '40px', 
-                                            height: '40px', 
-                                            filter: theme === 'dark' ? 'invert(1)' : 'invert(0)',
-                                            transition: 'transform 0.2s ease, filter 0.2s ease',
-                                            cursor: 'pointer'
-                                        }} 
-                                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
-                                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                <a key={i} href={social.href} target="_blank" rel="noopener noreferrer" className="hero-social-link" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <img
+                                        src={typeof social.src === 'object' ? social.src.src : social.src}
+                                        alt={social.alt}
+                                        className="hero-social-icon"
                                     />
                                 </a>
                             ))}
@@ -106,10 +98,10 @@ const HeroSection = forwardRef(({ hero, resumeUrl, totalProjectsCount, nameTimel
                                 <React.Fragment>
                                     <div className="ns-metric" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '0' }}>
                                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem' }}>
-                                            <img 
-                                                src="https://flagcdn.com/ph.svg" 
-                                                alt="Philippines Flag" 
-                                                style={{ opacity: 1, zIndex: 0, width: '54px', borderRadius: '4px' }} 
+                                            <img
+                                                src="https://flagcdn.com/ph.svg"
+                                                alt="Philippines Flag"
+                                                style={{ opacity: 1, zIndex: 0, width: '54px', borderRadius: '4px' }}
                                             />
                                             <span className="ns-metric-val" style={{ opacity: 0, pointerEvents: 'none', margin: 0, userSelect: 'none', width: '0px' }}>&nbsp;</span>
                                         </div>
@@ -123,7 +115,7 @@ const HeroSection = forwardRef(({ hero, resumeUrl, totalProjectsCount, nameTimel
                                 if (m.label && m.label.toLowerCase() === 'projects shipped') {
                                     displayValue = totalProjectsCount;
                                 }
-                                
+
                                 const getMetricIcon = (label) => {
                                     const l = label.toLowerCase();
                                     if (l.includes('project')) {
