@@ -22,7 +22,7 @@ export const SQUIGGLE_CONFIG = {
     desktop: {
         opacity: 1.0,
         svg1: {
-            top: `5vh`,
+            top: `-2vh`,
             right: '-15vw',
             bottom: 'auto',
             left: `auto`,
@@ -34,7 +34,7 @@ export const SQUIGGLE_CONFIG = {
         svg2: {
             top: `auto`,
             right: 'auto',
-            bottom: '-55vh',
+            bottom: '-50vh',
             left: `0`,
             width: '40vw',
             minWidth: 'auto',

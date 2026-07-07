@@ -6,6 +6,7 @@ import portfolioDataDefault from '../../../data/portfolioData.json';
 import aboutDataDefault from '../../../data/aboutData.json';
 import PinnedFeedPost from './PinnedFeedPost';
 import DocViewerModal from '../../../components/DocViewerModal';
+import SectionProgressIndicator from '../../../components/SectionProgressIndicator';
 import useLoadingStore from '../../../store/useLoadingStore';
 import useLogoStore from '../../../store/useLogoStore';
 import useThemeStore from '../../../store/useThemeStore';
@@ -29,6 +30,15 @@ import ContactSection from './sections/ContactSection';
 
 import './NarrativeSection.css';
 import './TechHoverPhysics.css';
+
+const HOME_SECTIONS = [
+  { id: 'hero', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'stack', label: 'Tech Stack' },
+  { id: 'feed', label: 'Dev Log' },
+  { id: 'contact', label: 'Contact' },
+];
 
 // ── EASY CONFIGURATION FOR BACKGROUND SVGS ─────────────────────────────────
 // Tweak these values to adjust the SVGs without hunting through CSS or GSAP
@@ -401,6 +411,8 @@ const NarrativeSection = forwardRef((props, ref) => {
                 projects={projects}
                 theme={theme}
             />
+
+            <SectionProgressIndicator sections={HOME_SECTIONS} />
 
             <DocViewerModal
                 isOpen={isResumeModalOpen}

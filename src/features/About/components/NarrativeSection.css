@@ -33,6 +33,7 @@
 
     width: 100%;
     padding-top: 0;
+    overflow: clip;
 }
 
 /* ── Light theme overrides ───────────────────────────────────────────────── */
@@ -1182,7 +1183,8 @@ html[data-theme='light'] .ns-stack-group-title {
 
     .ns-projects-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem; /* slightly tighter gap on very small screens */
+        gap: 0.5rem;
+        /* slightly tighter gap on very small screens */
     }
 }
 
@@ -1399,18 +1401,21 @@ html[data-theme='light'] .ns-testimonial-name {
     width: 200vw;
     min-width: 1200px;
 }
+
 .ns-bg-svg-2 {
     top: -190vh;
     left: -5vw;
     width: 20vw;
     min-width: 300px;
 }
+
 .ns-bg-svg-3 {
     top: -160vh;
     right: 5vw;
     width: 120vw;
     min-width: 1100px;
 }
+
 .ns-bg-svg-4 {
     bottom: 10vh;
     left: 0;
@@ -1433,6 +1438,7 @@ html[data-theme='light'] .ns-testimonial-name {
         height: auto;
         bottom: auto;
     }
+
     .ns-bg-svg-2 {
         opacity: var(--m-svg2-opacity, 0.15);
         top: var(--m-svg2-top, -90vh);
@@ -1444,6 +1450,7 @@ html[data-theme='light'] .ns-testimonial-name {
         min-width: 320px;
         height: auto;
     }
+
     .ns-bg-svg-3 {
         opacity: var(--m-svg3-opacity, 0.15);
         top: var(--m-svg3-top, -80vh);
@@ -1455,6 +1462,7 @@ html[data-theme='light'] .ns-testimonial-name {
         min-width: 320px;
         height: auto;
     }
+
     .ns-bg-svg-4 {
         opacity: var(--m-svg4-opacity, 0.15);
         top: var(--m-svg4-top, -90vh);

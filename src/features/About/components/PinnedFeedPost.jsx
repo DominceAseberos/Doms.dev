@@ -60,10 +60,12 @@ const PinnedFeedPost = () => {
         return sorted.slice(0, 2);
     }, [posts]);
 
-    if (pinnedPosts.length === 0) return null;
+    if (pinnedPosts.length === 0) {
+        return <section id="feed" style={{ display: 'none' }}></section>;
+    }
 
     return (
-        <section className="ns-section ns-reveal" style={{ marginTop: '2rem', borderTop: 'none', paddingTop: '40px' }}>
+        <section id="feed" className="ns-section ns-reveal" style={{ marginTop: '2rem', borderTop: 'none', paddingTop: '40px' }}>
             <style>{`
                 .pinned-sticky-note {
                     transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;

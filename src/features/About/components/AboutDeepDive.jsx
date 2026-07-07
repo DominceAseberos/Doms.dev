@@ -35,6 +35,16 @@ if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
 
+const ABOUT_SECTIONS = [
+  { id: 'about', label: 'About' },
+  { id: 'workflow', label: 'Process' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'education', label: 'Education' },
+  { id: 'feed', label: 'Dev Feed' },
+  { id: 'github', label: 'GitHub' },
+  { id: 'testimonials', label: 'Testimonials' },
+];
+
 // ── Scrub reveal — re-registers whenever dataReady flips true ────────────
 function useScrubReveal(containerRef, dataReady) {
     useEffect(() => {
@@ -329,7 +339,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
 
             {/* FOOTER & CONTACT REMOVED AS THEY ARE ON LAYOUT OR MAIN PAGE */}
 
-            <SectionProgressIndicator />
+            <SectionProgressIndicator sections={ABOUT_SECTIONS} />
             <DocViewerModal 
                 isOpen={isResumeModalOpen} 
                 onClose={() => setIsResumeModalOpen(false)} 

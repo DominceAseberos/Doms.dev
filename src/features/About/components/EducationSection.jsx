@@ -28,7 +28,7 @@ const EducationSection = () => {
                         className="font-bold uppercase tracking-tight text-[var(--accent)] ns-reveal"
                         style={{ fontSize: 'clamp(1.2rem, 2vw, 1.6rem)', lineHeight: 1.15 }}
                     >
-                        <span className="es-heading-name">Educational</span> Background
+                        Educational Background
                     </h2>
                     <p className="ui-sub-label mt-1 ns-reveal">Academic Foundation</p>
                 </div>
