@@ -19,7 +19,7 @@ export default function TechStackSection({ techStack = [], compact = false }) {
                     const Icon = getTechIcon(item);
                     if (!Icon) return null;
                     return (
-                        <div key={`${item}-${idx}`} className="ns-tech-icon-carousel" title={item} style={{
+                        <div key={`${item}-${idx}`} className="ns-tech-icon-carousel lit-content-block lit-transparent" title={item} style={{
                             width: '45px',
                             height: '45px',
                             flexShrink: 0,

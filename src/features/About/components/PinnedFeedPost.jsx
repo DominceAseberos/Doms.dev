@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { fetchFeedPosts } from '../../../shared/feedService';
+import useThemeStore from '../../../store/useThemeStore';
 import './FeedSection.css'; // Reusing FeedSection styles
 
 const formatDate = (value) => {
@@ -37,6 +38,8 @@ const PushPinSVG = ({ color, className, style }) => (
 
 const PinnedFeedPost = () => {
     const [posts, setPosts] = useState([]);
+    const theme = useThemeStore((state) => state.theme);
+    const isDark = theme === 'dark';
 
     useEffect(() => {
         const loadPosts = async () => {
@@ -61,6 +64,16 @@ const PinnedFeedPost = () => {
 
     return (
         <section className="ns-section ns-reveal" style={{ marginTop: '2rem', borderTop: 'none', paddingTop: '40px' }}>
+            <style>{`
+                .pinned-sticky-note {
+                    transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+                }
+                .pinned-sticky-note:hover {
+                    transform: scale(1.02) translateY(-5px) !important;
+                    filter: brightness(1.35) drop-shadow(0 10px 20px rgba(0,0,0,0.4)) !important;
+                    z-index: 20;
+                }
+            `}</style>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
                 <div>
                     <p className="ui-sub-label ns-section-label">Latest Update</p>
@@ -75,15 +88,19 @@ const PinnedFeedPost = () => {
                         : (typeof post.image === 'string' && post.image.trim().length > 0 ? [post.image] : []);
 
                     // Different sticky note colors
-                    const noteColors = ['#f4b4ce', '#ffed99', '#a9def9', '#d0f4de'];
+                    const noteColorsLight = ['#f4b4ce', '#ffed99', '#a9def9', '#d0f4de'];
+                    const noteColorsDark = ['#6a4052', '#6b5f40', '#405a6a', '#426850'];
+                    const noteColors = isDark ? noteColorsDark : noteColorsLight;
                     const bgColor = noteColors[idx % noteColors.length];
+                    const textColor = isDark ? '#eaeaea' : '#1a1a1a';
+                    const mutedTextColor = isDark ? '#bbb' : '#555';
 
                     return (
-                        <article key={post.id || idx} className="pinned-sticky-note" style={{ width: '100%', margin: '0', '--note-color': bgColor }}>
+                        <article key={post.id || idx} className="pinned-sticky-note lit-content-block lit-transparent" style={{ width: '100%', margin: '0', '--note-color': bgColor, color: textColor }}>
                             <PushPinSVG color="#66cc66" style={{ position: 'absolute', top: '5px', left: '15px', zIndex: 10 }} />
                             <PushPinSVG color="#ffdd44" style={{ position: 'absolute', top: '5px', right: '15px', zIndex: 10 }} />
                             
-                            <div className="feed-detail-meta ui-sub-label ns-reveal" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div className="feed-detail-meta ui-sub-label ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', color: mutedTextColor }}>
                                 <div style={{ display: 'flex', gap: '1rem' }}>
                                     <span className="feed-type" style={{ fontWeight: 'bold' }}>
                                         {post.type === 'image' ? 'Image Post' : 'Text Post'}

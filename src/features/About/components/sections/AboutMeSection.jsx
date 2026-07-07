@@ -30,7 +30,7 @@ export default function AboutMeSection({ about }) {
             <div style={{ display: 'flex', flexDirection: 'column', paddingTop: '0', paddingBottom: '10vh' }}>
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
                 <div className="ns-about-grid">
-                    <div className="ns-about-main lit-content-block lit-transparent">
+                    <div className="ns-about-main">
 
                         {/* FIRST PART - Scroll Scrubbed Typewriter */}
                         {firstPart.length > 0 && (

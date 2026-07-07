@@ -186,6 +186,9 @@ const NarrativeSection = forwardRef((props, ref) => {
     const socials = data.socials || [];
 
     const STRIPE_COUNT = 20;
+    
+    // Change this value to adjust the visibility of all 4 background SVG waves
+    const bgSvgFilter = 'brightness(3.5)';
 
     return (
         <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" style={{ position: 'relative' }} suppressHydrationWarning>
@@ -215,7 +218,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             />
 
             <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
-                <img ref={svg1Ref} src={firstSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', bottom: '-90vh', right: '-5vw', width: '200vw', minWidth: '1200px', opacity: 0.9, pointerEvents: 'none' }} />
+                <img ref={svg1Ref} src={firstSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', bottom: '-90vh', right: '-5vw', width: '200vw', minWidth: '1200px', opacity: 1, filter: bgSvgFilter, pointerEvents: 'none' }} />
             </div>
 
             <AboutMeSection
@@ -224,7 +227,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             />
 
             <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
-                <img ref={svg2Ref} src={secondSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', top: '-190vh', left: '-5vw', width: '20vw', minWidth: '300px', opacity: 0.9, pointerEvents: 'none' }} />
+                <img ref={svg2Ref} src={secondSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', top: '-190vh', left: '-5vw', width: '20vw', minWidth: '300px', opacity: 1, filter: bgSvgFilter, pointerEvents: 'none' }} />
             </div>
 
             <ProjectsSection
@@ -232,7 +235,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             />
 
             <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
-                <img ref={svg3Ref} src={thirdSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', top: '-160vh', right: '5vw', width: '120vw', minWidth: '1100px', opacity: 0.9, pointerEvents: 'none' }} />
+                <img ref={svg3Ref} src={thirdSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', top: '-160vh', right: '5vw', width: '120vw', minWidth: '1100px', opacity: 1, filter: bgSvgFilter, pointerEvents: 'none' }} />
             </div>
 
             <TechStackSection
@@ -243,7 +246,7 @@ const NarrativeSection = forwardRef((props, ref) => {
             <PinnedFeedPost />
 
             <div style={{ position: 'relative', width: '100%', zIndex: -1 }}>
-                <img ref={svg4Ref} src={fourthSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', bottom: '10vh', left: '0', top: '-120vh', width: '90vw', minWidth: '800px', opacity: 0.9, pointerEvents: 'none' }} />
+                <img ref={svg4Ref} src={fourthSvg} alt="" className="bg-svg-line" style={{ position: 'absolute', bottom: '10vh', left: '0', top: '-120vh', width: '90vw', minWidth: '800px', opacity: 1, filter: bgSvgFilter, pointerEvents: 'none' }} />
             </div>
 
             <ContactSection

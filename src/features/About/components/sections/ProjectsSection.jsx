@@ -1,13 +1,21 @@
 import React from 'react';
 import HoverDrawBorder from '../ui/HoverDrawBorder';
+import useThemeStore from '../../../../store/useThemeStore';
 
 const isPlaceholderImage = (src) => typeof src === 'string' && /placehold\.co|placeholder/i.test(src);
 
-const STICKY_STYLES = [
+const STICKY_STYLES_LIGHT = [
     { bg: '#f1968d', tapeColor: 'rgba(180, 190, 150, 0.7)', tapePos: 'center', rotation: '-2deg' },
     { bg: '#f4c798', tapeColor: 'rgba(160, 120, 120, 0.7)', tapePos: 'center', rotation: '1deg' },
     { bg: '#fbf0d9', tapeColor: 'rgba(200, 180, 160, 0.7)', tapePos: 'left-fold', rotation: '2deg' },
     { bg: '#e9a1c1', tapeColor: 'rgba(150, 190, 200, 0.7)', tapePos: 'corners', rotation: '-1deg' },
+];
+
+const STICKY_STYLES_DARK = [
+    { bg: '#6a4240', tapeColor: 'rgba(100, 110, 80, 0.7)', tapePos: 'center', rotation: '-2deg' },
+    { bg: '#6a5240', tapeColor: 'rgba(90, 70, 70, 0.7)', tapePos: 'center', rotation: '1deg' },
+    { bg: '#505048', tapeColor: 'rgba(110, 100, 90, 0.7)', tapePos: 'left-fold', rotation: '2deg' },
+    { bg: '#6a4052', tapeColor: 'rgba(90, 110, 120, 0.7)', tapePos: 'corners', rotation: '-1deg' },
 ];
 
 const extractTechStack = (project) => {
@@ -35,10 +43,19 @@ const extractTechStack = (project) => {
 };
 
 export default function ProjectsSection({ projects = [] }) {
+    const theme = useThemeStore((state) => state.theme);
+    const isDark = theme === 'dark';
+
     if (!projects || projects.length === 0) return null;
 
     return (
         <section className="ns-section" id="projects" style={{ borderTop: 'none', paddingTop: '40px' }}>
+            <style>{`
+                .ns-project-card:hover {
+                    filter: brightness(1.35) !important;
+                    z-index: 10;
+                }
+            `}</style>
             <div className="ns-projects-header ns-reveal">
                 <div>
                     <p className="ui-sub-label ns-section-label">Selected Work</p>
@@ -48,11 +65,16 @@ export default function ProjectsSection({ projects = [] }) {
             </div>
             <div className="ns-projects-grid">
                 {projects.map((p, index) => {
+                    const STICKY_STYLES = isDark ? STICKY_STYLES_DARK : STICKY_STYLES_LIGHT;
                     const style = STICKY_STYLES[index % STICKY_STYLES.length];
+                    const textColor = isDark ? '#eaeaea' : '#1a1a1a';
+                    const mutedTextColor = isDark ? '#aaa' : '#555';
+                    const descTextColor = isDark ? '#ccc' : '#333';
+                    
                     return (
-                    <a key={p.id} href={`/projects/${p.id}`} className="ns-project-card ns-reveal lit-content-block" style={{
+                    <a key={p.id} href={`/projects/${p.id}`} className="ns-project-card ns-reveal lit-content-block lit-transparent" style={{
                         backgroundColor: style.bg,
-                        color: '#1a1a1a', // force dark text for pastel backgrounds
+                        color: textColor, 
                         transform: `rotate(${style.rotation})`,
                         boxShadow: '3px 8px 15px rgba(0,0,0,0.15)',
                         borderRadius: '2px',
@@ -127,17 +149,17 @@ export default function ProjectsSection({ projects = [] }) {
                             </div>
                         ) : (
                             <div className="ns-project-img-placeholder" style={{ borderRadius: '2px 2px 0 0' }}>
-                                <span style={{ color: '#1a1a1a' }}>{p.projectType || 'Case Study'}</span>
-                                <strong style={{ color: '#1a1a1a' }}>{p.title}</strong>
+                                <span style={{ color: textColor }}>{p.projectType || 'Case Study'}</span>
+                                <strong style={{ color: textColor }}>{p.title}</strong>
                             </div>
                         )}
                         <div className="ns-project-info">
                             <div className="ns-project-meta">
-                                <span className="ui-sub-label ns-project-type" style={{ color: '#555' }}>{p.projectType}</span>
-                                <span className="ns-project-arrow" style={{ color: '#1a1a1a' }}>↗</span>
+                                <span className="ui-sub-label ns-project-type" style={{ color: mutedTextColor }}>{p.projectType}</span>
+                                <span className="ns-project-arrow" style={{ color: textColor }}>↗</span>
                             </div>
-                            <h3 className="ns-project-title" style={{ color: '#1a1a1a' }}>{p.title}</h3>
-                            <p className="ns-project-desc ui-body-copy" style={{ color: '#333' }}>{p.shortDescription}</p>
+                            <h3 className="ns-project-title" style={{ color: textColor }}>{p.title}</h3>
+                            <p className="ns-project-desc ui-body-copy" style={{ color: descTextColor }}>{p.shortDescription}</p>
                         </div>
                     </a>
                 )})}

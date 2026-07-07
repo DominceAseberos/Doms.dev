@@ -9,8 +9,9 @@ const useLightPhysics = () => {
   useEffect(() => {
     const isDark = theme === 'dark';
     
-    // We target all our main content blocks, but also allow nested elements to be targeted if they have the class
-    const blocks = document.querySelectorAll('.lit-content-block');
+    // Target all our main content blocks, plus specific elements we want to glow individually
+    const blocks = document.querySelectorAll('.lit-content-block, .bg-svg-line, .ns-lyrics-text, .ns-ai-nodes-container, .ns-ai-web-integration, .contact-squiggles, .ns-hero-text, .ns-hero-card, .ns-tech-icon-carousel, .pinned-sticky-note');
+
     
     const bulbY = 90; 
     const maxDist = 1400; // Increased significantly to ensure the edges are comfortably visible
@@ -38,13 +39,31 @@ const useLightPhysics = () => {
         // Softened the falloff curve (from 1.8 to 1.2) so light travels further with less steep decay
         const brightness = Math.pow(1 - t, 1.2);
 
+        // Calculate a much tighter radius specifically for the bright glowing effect
+        // so it only shines intensely when elements actually reach near the top.
+        // Reduced to 450px so it only triggers in the top half of a standard screen.
+        const glowFactor = Math.pow(Math.max(0, 1 - dist / 450), 3.0);
+
+
         // Map to existing portfolio dark mode colors + warm bulb
         // Portfolio dark bg: #0c0c0c (12, 12, 12)
         // Warm bulb light: #ffdc64 (255, 220, 100)
         
-        const isTransparent = block.classList.contains('lit-transparent');
+        // Text and lines that should become highly transparent in shadows
+        const isTextLine = block.classList.contains('bg-svg-line') ||
+                           block.classList.contains('ns-lyrics-text') ||
+                           block.classList.contains('ns-ai-nodes-container') ||
+                           block.classList.contains('ns-ai-web-integration') ||
+                           block.classList.contains('contact-squiggles');
 
-        if (!isTransparent) {
+        // Solid colored cards that should preserve their background color but darken in shadows
+        const isSolidColorCard = block.classList.contains('lit-transparent') || 
+                                 block.classList.contains('ns-tech-icon-carousel') ||
+                                 block.classList.contains('pinned-sticky-note') ||
+                                 block.classList.contains('ns-project-card') ||
+                                 block.classList.contains('ns-stack-group');
+
+        if (!isTextLine && !isSolidColorCard) {
           // Background Tint (mix surface color with warm light based on brightness)
           const bgR = Math.round(12 + (255 - 12) * brightness * 0.15);
           const bgG = Math.round(12 + (220 - 12) * brightness * 0.15);
@@ -66,13 +85,31 @@ const useLightPhysics = () => {
                inset 0 1px 0 rgba(255,220,100,${brightness * 0.15})`
             : 'none';
         }
-
-        // Overall opacity for deep-shadow fade
-        block.style.opacity = String(0.1 + brightness * 0.9);
-
-        // Removed aggressive text color tinting to keep text and SVG colors crisp
-        // and match the aesthetic of the custom motion cards.
+        if (isTextLine) {
+            // Overall opacity for deep-shadow fade
+            block.style.opacity = String(0.1 + brightness * 0.9);
+            
+            // Only apply the glowing effect when glowFactor is active (i.e. near the top)
+            block.style.filter = glowFactor > 0.01 
+                ? `brightness(${1 + glowFactor * 0.4}) drop-shadow(0px 0px ${15 * glowFactor}px rgba(255, 220, 100, ${glowFactor * 0.4}))` 
+                : '';
+        } else if (isSolidColorCard) {
+            block.style.opacity = '1'; // Never make solid cards translucent!
+            
+            // Base shadow brightness: 0.4 in shadows, 1.0 when illuminated by general brightness
+            const baseBrightness = 0.4 + brightness * 0.6;
+            
+            // Add extreme bulb glow factor if very close to the top
+            block.style.filter = glowFactor > 0.01
+                ? `brightness(${baseBrightness + glowFactor * 0.4}) drop-shadow(0px 0px ${15 * glowFactor}px rgba(255, 220, 100, ${glowFactor * 0.4}))`
+                : `brightness(${baseBrightness})`;
+        } else {
+            // For standard tint-overwritten blocks
+            block.style.opacity = String(0.1 + brightness * 0.9);
+            block.style.filter = glowFactor > 0.01 ? `brightness(${1 + glowFactor * 0.1})` : '';
+        }
       });
+
     };
 
     const resetPhysics = () => {
@@ -81,6 +118,7 @@ const useLightPhysics = () => {
         block.style.borderColor = '';
         block.style.boxShadow = '';
         block.style.opacity = '';
+        block.style.filter = '';
       });
     };
 
