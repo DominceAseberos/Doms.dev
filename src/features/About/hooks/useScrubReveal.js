@@ -14,26 +14,27 @@ export default function useScrubReveal(containerRef, dataReady) {
         const raf = requestAnimationFrame(() => {
             const ctx = gsap.context(() => {
                 const els = gsap.utils.toArray('.ns-reveal', containerRef.current);
+                if (els.length > 0) {
+                    gsap.set(els, { opacity: 0, y: 36, immediateRender: true });
 
-                // Force initial hidden state in JS (not CSS) so GSAP owns it
-                gsap.set(els, { opacity: 0, y: 36, immediateRender: true });
+                    ScrollTrigger.batch(els, {
+                        start: 'top 92%',
+                        onEnter: (batch) => {
+                            gsap.to(batch, {
+                                opacity: 1,
+                                y: 0,
+                                duration: 0.7,
+                                ease: 'power2.out',
+                                stagger: 0.1,
+                            });
+                        },
+                    });
+                }
 
-                ScrollTrigger.batch(els, {
-                    start: 'top 92%',
-                    onEnter: (batch) => {
-                        gsap.to(batch, {
-                            opacity: 1,
-                            y: 0,
-                            duration: 0.7,
-                            ease: 'power2.out',
-                            stagger: 0.1,
-                        });
-                    },
-                });
-
-                const techRevealEls = gsap.utils.toArray('.ns-tech-reveal');
+                const techRevealEls = gsap.utils.toArray('.ns-tech-reveal', containerRef.current);
                 if (techRevealEls.length > 0) {
-                    ScrollTrigger.batch('.ns-tech-reveal', {
+                    gsap.set(techRevealEls, { opacity: 0, scale: 0.8, y: 20 });
+                    ScrollTrigger.batch(techRevealEls, {
                         start: 'top 95%',
                         onEnter: (batch) => {
                             gsap.to(batch, {
@@ -47,7 +48,6 @@ export default function useScrubReveal(containerRef, dataReady) {
                             });
                         },
                     });
-                    gsap.set(techRevealEls, { opacity: 0, scale: 0.8, y: 20 });
                 }
 
                 ScrollTrigger.refresh();

@@ -203,7 +203,9 @@ const GithubContributionSection = () => {
                 streak = 0;
             }
         }
-        setStats((prev) => ({ ...prev, contributions: total, streak: maxStreak }));
+        setTimeout(() => {
+            setStats((prev) => ({ ...prev, contributions: total, streak: maxStreak }));
+        }, 0);
         return contributions;
     }, []);
 
