@@ -14,20 +14,12 @@ export default function TechStackSection({ techStack = [], compact = false }) {
 
         // Render a single track chunk
         const renderTrack = (rowItems, rowKey) => (
-            <div key={rowKey} style={{ display: 'flex', gap: '4rem', paddingRight: '4rem' }}>
+            <div key={rowKey} className="ns-tech-track-row">
                 {rowItems.map((item, idx) => {
                     const Icon = getTechIcon(item);
                     if (!Icon) return null;
                     return (
-                        <div key={`${item}-${idx}`} className="ns-tech-icon-carousel lit-content-block lit-transparent" title={item} style={{
-                            width: '45px',
-                            height: '45px',
-                            flexShrink: 0,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            color: 'var(--ns-body-color)'
-                        }}>
+                        <div key={`${item}-${idx}`} className="ns-tech-icon-carousel lit-content-block lit-transparent" title={item}>
                             {Icon}
                         </div>
                     );
@@ -47,6 +39,46 @@ export default function TechStackSection({ techStack = [], compact = false }) {
                     0% { transform: translateX(-50%); }
                     100% { transform: translateX(0); }
                 }
+                
+                /* Layout */
+                .ns-tech-track-row {
+                    display: flex;
+                    gap: 4rem;
+                    padding-right: 4rem;
+                }
+                .ns-tech-icon-carousel {
+                    width: 45px;
+                    height: 45px;
+                    flex-shrink: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: var(--ns-body-color);
+                }
+                
+                /* Responsive Resizing */
+                @media (max-width: 1024px) {
+                    .ns-tech-track-row {
+                        gap: 3rem;
+                        padding-right: 3rem;
+                    }
+                    .ns-tech-icon-carousel {
+                        width: 36px;
+                        height: 36px;
+                    }
+                }
+                @media (max-width: 768px) {
+                    .ns-tech-track-row {
+                        gap: 2.5rem;
+                        padding-right: 2.5rem;
+                    }
+                    .ns-tech-icon-carousel {
+                        width: 28px;
+                        height: 28px;
+                    }
+                }
+                
+                /* Icon Styles */
                 .ns-tech-icon-carousel svg {
                     width: 100%;
                     height: 100%;
