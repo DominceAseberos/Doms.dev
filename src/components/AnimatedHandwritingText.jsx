@@ -131,8 +131,8 @@ export default function AnimatedHandwritingText({
             viewBox={viewBox}
             className={className}
             aria-label={text}
-            preserveAspectRatio="xMinYMin meet"
-            style={{ height: '1em', width: 'auto', display: 'block', overflow: 'visible' }}
+            preserveAspectRatio="xMidYMid meet"
+            style={{ height: '1em', width: 'auto', display: 'block', overflow: 'visible', margin: '0 auto' }}
         >
             <path
                 d={pathData}

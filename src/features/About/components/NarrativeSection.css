@@ -1426,6 +1426,20 @@ html[data-theme='light'] .ns-testimonial-name {
 
 /* Mobile Adjustments */
 @media (max-width: 768px) {
+    .ns-hero-face {
+        right: -3% !important;
+        top: 30% !important;
+        max-width: 120px !important;
+        opacity: 0.4 !important;
+    }
+
+    .ns-animated-divider {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: unset !important;
+        transform: none !important;
+    }
+
     .ns-bg-svg-1 {
         opacity: var(--m-svg1-opacity, 0.15);
         top: var(--m-svg1-top, -90vh);

@@ -28,6 +28,9 @@ import useLogoStore from '../../../store/useLogoStore';
 import useThemeStore from '../../../store/useThemeStore';
 import AnimatedHandwritingText from '../../../components/AnimatedHandwritingText';
 import AnimatedDivider from './ui/AnimatedDivider';
+import AnimatedFace from './ui/AnimatedFace';
+
+
 import HoverDrawBorder from './ui/HoverDrawBorder';
 import './NarrativeSection.css';
 
@@ -36,13 +39,13 @@ if (typeof window !== 'undefined') {
 }
 
 const ABOUT_SECTIONS = [
-  { id: 'about', label: 'About' },
-  { id: 'workflow', label: 'Process' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'education', label: 'Education' },
-  { id: 'feed', label: 'Dev Feed' },
-  { id: 'github', label: 'GitHub' },
-  { id: 'testimonials', label: 'Testimonials' },
+    { id: 'about', label: 'About' },
+    { id: 'workflow', label: 'Process' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'education', label: 'Education' },
+    { id: 'feed', label: 'Dev Feed' },
+    { id: 'github', label: 'GitHub' },
+    { id: 'testimonials', label: 'Testimonials' },
 ];
 
 // ── Scrub reveal — re-registers whenever dataReady flips true ────────────
@@ -54,15 +57,15 @@ function useScrubReveal(containerRef, dataReady) {
         const raf = requestAnimationFrame(() => {
             const ctx = gsap.context(() => {
                 const els = gsap.utils.toArray('.ns-reveal', containerRef.current);
-                
+
                 // Force initial hidden state in JS (not CSS) so GSAP owns it
                 gsap.set(els, { opacity: 0, y: 36, immediateRender: true });
-                
+
                 ScrollTrigger.batch(els, {
                     start: 'top 92%',
                     onEnter: (batch) => {
                         gsap.to(batch, {
-                            opacity: 1, 
+                            opacity: 1,
                             y: 0,
                             duration: 0.7,
                             ease: 'power2.out',
@@ -83,7 +86,7 @@ function useScrubReveal(containerRef, dataReady) {
 const getSocialIcon = (label, theme) => {
     const l = label.toLowerCase();
     const style = { width: '100%', height: '100%', filter: theme === 'dark' ? 'invert(1)' : 'invert(0)' };
-    
+
     if (l === 'linkedin') return <img src={typeof linkedinSvg === 'object' ? linkedinSvg.src : linkedinSvg} alt="LinkedIn" style={style} />;
     if (l === 'github') return <img src={typeof githubSvg === 'object' ? githubSvg.src : githubSvg} alt="GitHub" style={style} />;
     if (l === 'email') return <img src={typeof emailSvg === 'object' ? emailSvg.src : emailSvg} alt="Email" style={style} />;
@@ -93,6 +96,16 @@ const getSocialIcon = (label, theme) => {
     if (l === 'instagram') return <img src={typeof instagramSvg === 'object' ? instagramSvg.src : instagramSvg} alt="Instagram" style={style} />;
     if (l === 'facebook') return <img src={typeof facebookSvg === 'object' ? facebookSvg.src : facebookSvg} alt="Facebook" style={style} />;
     return <span className="ns-arrow">↗</span>;
+};
+
+// ── Configuration for Face Drawing ───────────────────────────────────────
+// Easily configure the position, size, and animation settings of the face drawing
+const FACE_CONFIG = {
+    top: '25%', // Adjust vertical position: move up (e.g. '15%') or down (e.g. '30%')
+    right: '5%', // Adjust horizontal position
+    maxWidth: '320px', // Adjust size of the face drawing
+    delay: 0.2, // Start delay of the drawing animation (seconds)
+    duration: 5.0 // Duration of the drawing animation (seconds)
 };
 
 // ── Main component ────────────────────────────────────────────────────────
@@ -122,7 +135,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
     useEffect(() => {
         fetchAboutData()
             .then((d) => setData(d))
-            .catch(() => {/* keep bundled default */})
+            .catch(() => {/* keep bundled default */ })
             .finally(() => setDataReady(true));
     }, []);
 
@@ -130,28 +143,28 @@ const AboutDeepDive = forwardRef((props, ref) => {
     const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
     // ── Destructure with safe fallbacks ───────────────────────────────────
-    const about      = data.about      || {};
+    const about = data.about || {};
     const experience = data.experience || [];
     const testimonials = data.testimonials || [];
-    const socials    = data.socials    || [];
+    const socials = data.socials || [];
 
     return (
         <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" suppressHydrationWarning>
 
             {/* ══ HERO ═════════════════════════════════════════════════════ */}
-            <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className="ns-hero-inner" style={{ textAlign: 'center' }}>
+            <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                <div className="ns-hero-inner" style={{ textAlign: 'center', position: 'relative', zIndex: 1, width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                     <div className="ns-hero-text lit-content-block lit-transparent" suppressHydrationWarning>
                         <h1 className="ns-hero-name ns-reveal" suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <AnimatedHandwritingText
-                                text="Behind"
+                                text="How I"
                                 className="name-first"
                                 fontUrl="/fonts/PermanentMarker.ttf"
                                 strokeWidth={3}
                                 duration={2}
                             />
                             <AnimatedHandwritingText
-                                text="the Code"
+                                text="Got Here"
                                 className="name-last"
                                 fontUrl="/fonts/PermanentMarker.ttf"
                                 strokeWidth={3}
@@ -160,13 +173,40 @@ const AboutDeepDive = forwardRef((props, ref) => {
                             />
                         </h1>
                         <p className="ns-hero-bio ui-body-copy ns-reveal" style={{ marginTop: '1rem', maxWidth: '600px', margin: '1rem auto 0' }} suppressHydrationWarning>
-                            A deeper dive into my experience, education, daily contributions, and what others have to say about working with me.
+                            The path that got me here - experience, education, what I work on day to day, and what people say about working with me.
                         </p>
                     </div>
                 </div>
+
+                {/* Face Drawing - Positioned absolutely and animated to grow/reveal on load */}
+                <AnimatedFace 
+                    className="ns-reveal ns-hero-face"
+                    alt="Face Drawing" 
+                    delay={FACE_CONFIG.delay}
+                    duration={FACE_CONFIG.duration}
+                    style={{ 
+                        position: 'absolute',
+                        right: FACE_CONFIG.right,
+                        top: FACE_CONFIG.top,
+                        transform: 'translateY(-50%)',
+                        width: '100%', 
+                        maxWidth: FACE_CONFIG.maxWidth,
+                        opacity: 0.8,
+                        pointerEvents: 'none',
+                        zIndex: 0
+                    }} 
+                />
             </section>
 
-            <AnimatedDivider />
+            <AnimatedDivider
+                style={{ marginTop: '-1rem', zIndex: 0, position: 'relative' }}
+                scrollStart="top 100%"
+                scrollEnd="bottom 15%"
+                scrub={0.5}
+                maskMaxSize={120}
+                tailFadeStart={25}
+                headThickness={5}
+            />
 
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
             <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: '40px' }}>
@@ -182,7 +222,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
                             <p className="ns-body-lg ui-body-copy ns-reveal" suppressHydrationWarning>{about.intro}</p>
                         )}
                     </div>
-                    
+
                     {/* Socials Column */}
                     {socials.length > 0 && (
                         <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -195,7 +235,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
                                             target={link.external ? '_blank' : '_self'}
                                             rel={link.external ? 'noopener noreferrer' : ''}
                                             className="ns-bento-social-link" title={link.label}
-                                            onMouseEnter={(e) => { 
+                                            onMouseEnter={(e) => {
                                                 gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
                                                     scale: 1.25,
                                                     rotation: (Math.random() - 0.5) * 20,
@@ -203,7 +243,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
                                                     ease: 'back.out(3)'
                                                 });
                                             }}
-                                            onMouseLeave={(e) => { 
+                                            onMouseLeave={(e) => {
                                                 gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
                                                     scale: 1,
                                                     rotation: 0,
@@ -340,10 +380,10 @@ const AboutDeepDive = forwardRef((props, ref) => {
             {/* FOOTER & CONTACT REMOVED AS THEY ARE ON LAYOUT OR MAIN PAGE */}
 
             <SectionProgressIndicator sections={ABOUT_SECTIONS} />
-            <DocViewerModal 
-                isOpen={isResumeModalOpen} 
-                onClose={() => setIsResumeModalOpen(false)} 
-                docUrl={data.resume} 
+            <DocViewerModal
+                isOpen={isResumeModalOpen}
+                onClose={() => setIsResumeModalOpen(false)}
+                docUrl={data.resume}
                 title="Curriculum Vitae"
             />
         </div>
