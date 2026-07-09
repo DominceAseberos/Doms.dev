@@ -42,7 +42,7 @@ const HOME_SECTIONS = [
 
 // ── EASY CONFIGURATION FOR BACKGROUND SVGS ─────────────────────────────────
 // Tweak these values to adjust the SVGs without hunting through CSS or GSAP
-export const SVG_CONFIG = {
+const SVG_CONFIG = {
     desktop: {
         // Durations control how fast each SVG draws relative to the whole page scroll
         duration1: 1.0,

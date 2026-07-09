@@ -11,7 +11,7 @@ import mobileSquiggle2 from '../../../../assets/mobie-view-svg-flow/bottom-left.
 gsap.registerPlugin(ScrollTrigger);
 
 // ── CONFIGURATION FOR CONTACT SQUIGGLES ────────────────────────
-export const SQUIGGLE_CONFIG = {
+const SQUIGGLE_CONFIG = {
     // ── SCROLL TRIGGER CONFIG ──
     scrollAnimation: {
         start: 'top 95%', // Starts as soon as the top of the contact section becomes visible

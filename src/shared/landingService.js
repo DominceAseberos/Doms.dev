@@ -12,7 +12,7 @@ const LANDING_JSON_URL = '/src/data/landingData.json';
  * Fetches the latest landing data from the server.
  * Falls back to static import in production (Vercel).
  */
-export const fetchLandingData = async () => {
+const fetchLandingData = async () => {
     try {
         const fetchUrl = `${LANDING_JSON_URL}?t=${new Date().getTime()}`;
         const res = await fetch(fetchUrl);

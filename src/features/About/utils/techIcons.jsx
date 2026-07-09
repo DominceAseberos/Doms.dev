@@ -17,7 +17,7 @@ export const GithubIcon = () => (
     </svg>
 );
 
-export const ScrapingAntIcon = () => (
+const ScrapingAntIcon = () => (
     <Bug style={{ width: '2.5rem', height: '2.5rem' }} />
 );
 
