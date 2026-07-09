@@ -20,6 +20,7 @@ import FeedSection from './FeedSection';
 import PremiumMotionCards from './PremiumMotionCards';
 import PhilosophyCards from './PhilosophyCards';
 import HrmsPipelineMotionCards from './HrmsPipelineMotionCards';
+import ScrollTypewriter from './ui/ScrollTypewriter';
 import LyricsScrubText from './ui/LyricsScrubText';
 import DocViewerModal from '../../../components/DocViewerModal';
 import SectionProgressIndicator from '../../../components/SectionProgressIndicator';
@@ -29,7 +30,8 @@ import useThemeStore from '../../../store/useThemeStore';
 import AnimatedHandwritingText from '../../../components/AnimatedHandwritingText';
 import AnimatedDivider from './ui/AnimatedDivider';
 import AnimatedFace from './ui/AnimatedFace';
-
+import ScrollyTellingSection from './sections/ScrollyTellingSection';
+import { ABOUT_SEQUENCES } from '../data/scrollyTellingData';
 
 import HoverDrawBorder from './ui/HoverDrawBorder';
 import './NarrativeSection.css';
@@ -179,22 +181,22 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </div>
 
                 {/* Face Drawing - Positioned absolutely and animated to grow/reveal on load */}
-                <AnimatedFace 
+                <AnimatedFace
                     className="ns-reveal ns-hero-face"
-                    alt="Face Drawing" 
+                    alt="Face Drawing"
                     delay={FACE_CONFIG.delay}
                     duration={FACE_CONFIG.duration}
-                    style={{ 
+                    style={{
                         position: 'absolute',
                         right: FACE_CONFIG.right,
                         top: FACE_CONFIG.top,
                         transform: 'translateY(-50%)',
-                        width: '100%', 
+                        width: '100%',
                         maxWidth: FACE_CONFIG.maxWidth,
                         opacity: 0.8,
                         pointerEvents: 'none',
                         zIndex: 0
-                    }} 
+                    }}
                 />
             </section>
 
@@ -209,57 +211,10 @@ const AboutDeepDive = forwardRef((props, ref) => {
             />
 
             {/* ══ ABOUT ════════════════════════════════════════════════════ */}
-            <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: '40px' }}>
+            <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: '40px', position: 'relative' }}>
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
-                <div className="ns-about-grid" style={{ alignItems: 'center', textAlign: 'center' }}>
-                    <div className="ns-about-main ns-sketch-box lit-content-block lit-transparent" style={{ padding: '2rem' }}>
-                        <HoverDrawBorder />
-                        <h2 className="ns-section-heading ns-reveal" style={{ textAlign: 'center', width: '100%' }}>
-                            {about.heading || 'Engineering'}{' '}
-                            <span className="ns-accent">{about.headingAccent || 'Digital Poetry'}</span>
-                        </h2>
-                        {about.intro && (
-                            <p className="ns-body-lg ui-body-copy ns-reveal" suppressHydrationWarning>{about.intro}</p>
-                        )}
-                    </div>
-
-                    {/* Socials Column */}
-                    {socials.length > 0 && (
-                        <aside className="ns-about-sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <div className="ns-reveal ns-sketch-box lit-content-block lit-transparent" style={{ padding: '2rem' }}>
-                                <HoverDrawBorder />
-                                <p className="ui-sub-label" style={{ marginBottom: '1.25rem', letterSpacing: '0.22em' }}>Connect</p>
-                                <div className="ns-bento-socials" style={{ justifyContent: 'center' }}>
-                                    {socials.map((link) => (
-                                        <a key={link.label} href={link.href}
-                                            target={link.external ? '_blank' : '_self'}
-                                            rel={link.external ? 'noopener noreferrer' : ''}
-                                            className="ns-bento-social-link" title={link.label}
-                                            onMouseEnter={(e) => {
-                                                gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
-                                                    scale: 1.25,
-                                                    rotation: (Math.random() - 0.5) * 20,
-                                                    duration: 0.35,
-                                                    ease: 'back.out(3)'
-                                                });
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
-                                                    scale: 1,
-                                                    rotation: 0,
-                                                    duration: 0.7,
-                                                    ease: 'elastic.out(1, 0.3)'
-                                                });
-                                            }}
-                                        >
-                                            {getSocialIcon(link.label, theme)}
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
-                        </aside>
-                    )}
-                </div>
+                
+                <ScrollyTellingSection sequences={ABOUT_SEQUENCES} />
             </section>
 
             <AnimatedDivider />
@@ -377,7 +332,41 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </section>
             )}
 
-            {/* FOOTER & CONTACT REMOVED AS THEY ARE ON LAYOUT OR MAIN PAGE */}
+            {/* ══ CONNECT ═══════════════════════════════════════════════════ */}
+            {socials.length > 0 && (
+                <section className="ns-section" id="connect" style={{ borderTop: 'none', paddingTop: '40px', paddingBottom: '10vh' }}>
+                    <div className="ns-reveal" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <p className="ui-sub-label" style={{ marginBottom: '1.25rem', letterSpacing: '0.22em' }}>Connect</p>
+                        <div className="ns-bento-socials" style={{ justifyContent: 'center', gap: '1.5rem' }}>
+                            {socials.map((link) => (
+                                <a key={link.label} href={link.href}
+                                    target={link.external ? '_blank' : '_self'}
+                                    rel={link.external ? 'noopener noreferrer' : ''}
+                                    className="ns-bento-social-link" title={link.label}
+                                    onMouseEnter={(e) => {
+                                        gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
+                                            scale: 1.25,
+                                            rotation: (Math.random() - 0.5) * 20,
+                                            duration: 0.35,
+                                            ease: 'back.out(3)'
+                                        });
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
+                                            scale: 1,
+                                            rotation: 0,
+                                            duration: 0.7,
+                                            ease: 'elastic.out(1, 0.3)'
+                                        });
+                                    }}
+                                >
+                                    {getSocialIcon(link.label, theme)}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             <SectionProgressIndicator sections={ABOUT_SECTIONS} />
             <DocViewerModal
