@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ScrollTypewriter({ text = '', highlights = [], className = '', style = {}, scrollStart = 'top 85%', scrollEnd = 'bottom 45%', customTriggerRef }) {
+export default function ScrollTypewriter({ text = '', highlights = [], className = '', style = {}, scrollStart = 'top 85%', scrollEnd = 'bottom 45%', customTriggerRef, typeSpeedMultiplier = 1 }) {
     const containerRef = useRef(null);
     const [progress, setProgress] = useState(0);
 
@@ -24,12 +24,13 @@ export default function ScrollTypewriter({ text = '', highlights = [], className
                     setProgress(self.progress);
                 }
             });
-        }, [containerRef, customTriggerRef]);
+        }, containerRef);
 
         return () => ctx.revert();
     }, [scrollStart, scrollEnd, customTriggerRef]);
 
-    const charCount = Math.floor(progress * text.length);
+    const typingProgress = Math.min(1, progress * typeSpeedMultiplier);
+    const charCount = Math.floor(typingProgress * text.length);
     const visibleText = text.slice(0, charCount);
     
     // Highlight logic
