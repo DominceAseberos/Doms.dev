@@ -73,6 +73,8 @@
     --nav-sketch-color: var(--soft-text);
     --title-outline: rgba(242, 240, 237, 0.4);
     --cursor-hover: url('./assets/cursor-hover.svg');
+    /* Paper plane image: dark mode has black outlines, invert → white */
+    --plane-filter: invert(1);
 }
 
 html[data-theme='light'] {
@@ -94,6 +96,8 @@ html[data-theme='light'] {
     --nav-sketch-color: #000000;
     --title-outline: rgba(18, 18, 18, 0.35);
     --cursor-hover: url('./assets/cursor-hover-dark.svg');
+    /* Light mode: plane already has black outlines, no invert needed */
+    --plane-filter: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+
+gsap.registerPlugin(MotionPathPlugin);
 
 export default function ComplexSystemsViz() {
     const svgRef = useRef(null);
@@ -94,7 +97,7 @@ export default function ComplexSystemsViz() {
                 </defs>
 
                 {lines.map((line, i) => (
-                    <line key={`line-${i}`} className="sys-line" x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="var(--gray)" strokeWidth="1.5" strokeDasharray="5,5" />
+                    <path key={`line-${i}`} className="sys-line" d={`M ${line.x1} ${line.y1} L ${line.x2} ${line.y2}`} stroke="var(--gray)" strokeWidth="1.5" strokeDasharray="5,5" fill="none" />
                 ))}
 
                 {nodes.map(node => (
