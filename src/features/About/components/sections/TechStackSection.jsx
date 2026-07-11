@@ -19,8 +19,11 @@ export default function TechStackSection({ techStack = [], compact = false }) {
                     const Icon = getTechIcon(item);
                     if (!Icon) return null;
                     return (
-                        <div key={`${item}-${idx}`} className="ns-tech-icon-carousel lit-content-block lit-transparent" title={item}>
-                            {Icon}
+                        <div key={`${item}-${idx}`} className="ns-tech-item-wrapper lit-content-block lit-transparent" title={item}>
+                            <div className="ns-tech-icon-carousel">
+                                {Icon}
+                            </div>
+                            <span className="ns-tech-carousel-label">{item}</span>
                         </div>
                     );
                 })}
@@ -46,6 +49,13 @@ export default function TechStackSection({ techStack = [], compact = false }) {
                     gap: 4rem;
                     padding-right: 4rem;
                 }
+                .ns-tech-item-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.75rem;
+                    justify-content: center;
+                }
                 .ns-tech-icon-carousel {
                     width: 45px;
                     height: 45px;
@@ -55,26 +65,47 @@ export default function TechStackSection({ techStack = [], compact = false }) {
                     align-items: center;
                     color: var(--ns-body-color);
                 }
+                .ns-tech-carousel-label {
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    opacity: 0.6;
+                    font-weight: 600;
+                    white-space: nowrap;
+                    transition: opacity 0.3s ease, color 0.3s ease;
+                }
                 
                 /* Responsive Resizing */
                 @media (max-width: 1024px) {
                     .ns-tech-track-row {
-                        gap: 3rem;
-                        padding-right: 3rem;
+                        gap: 3.5rem;
+                        padding-right: 3.5rem;
+                    }
+                    .ns-tech-item-wrapper {
+                        gap: 0.6rem;
                     }
                     .ns-tech-icon-carousel {
                         width: 36px;
                         height: 36px;
                     }
+                    .ns-tech-carousel-label {
+                        font-size: 0.65rem;
+                    }
                 }
                 @media (max-width: 768px) {
                     .ns-tech-track-row {
-                        gap: 2.5rem;
-                        padding-right: 2.5rem;
+                        gap: 3rem;
+                        padding-right: 3rem;
+                    }
+                    .ns-tech-item-wrapper {
+                        gap: 0.5rem;
                     }
                     .ns-tech-icon-carousel {
                         width: 28px;
                         height: 28px;
+                    }
+                    .ns-tech-carousel-label {
+                        font-size: 0.55rem;
                     }
                 }
                 
@@ -85,8 +116,11 @@ export default function TechStackSection({ techStack = [], compact = false }) {
                     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
                     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
                 }
-                .ns-tech-icon-carousel:hover svg {
+                .ns-tech-item-wrapper:hover .ns-tech-icon-carousel svg {
                     transform: scale(1.4);
+                }
+                .ns-tech-item-wrapper:hover .ns-tech-carousel-label {
+                    opacity: 1;
                 }
                 `}
                 </style>
