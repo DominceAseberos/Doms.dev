@@ -4,19 +4,39 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ScrollTypewriter({ text = '', highlights = [], className = '', style = {}, scrollStart = 'top 85%', scrollEnd = 'bottom 45%', customTriggerRef, typeSpeedMultiplier = 1 }) {
+export default function ScrollTypewriter({ text = '', highlights = [], className = '', style = {}, scrollStart = 'top 85%', scrollEnd = 'bottom 45%', customTriggerRef, typeSpeedMultiplier = 1, externalProgress }) {
     const containerRef = useRef(null);
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
+        if (externalProgress !== undefined) {
+            setProgress(externalProgress);
+            return;
+        }
+
+        const handleSync = (e) => {
+            if (e.detail?.id === className) { // Use className or id to match
+                setProgress(e.detail.progress);
+            }
+        };
+
+        window.addEventListener('syncTypewriter', handleSync);
+
         if (!containerRef.current || typeof window === 'undefined') return;
 
         const targetEl = customTriggerRef?.current || containerRef.current;
         if (!targetEl) return;
 
         const ctx = gsap.context(() => {
+            // If external progress is passed or a sync event is used, don't create a ScrollTrigger.
+            if (externalProgress !== undefined) return;
+
+            const rowEl = targetEl.closest('.ns-scrollytelling-row');
+            const isSelfPinned = rowEl === targetEl;
+
             ScrollTrigger.create({
                 trigger: targetEl,
+                pinnedContainer: isSelfPinned ? undefined : rowEl,
                 start: scrollStart,
                 end: scrollEnd,
                 scrub: true,
@@ -26,8 +46,11 @@ export default function ScrollTypewriter({ text = '', highlights = [], className
             });
         }, containerRef);
 
-        return () => ctx.revert();
-    }, [scrollStart, scrollEnd, customTriggerRef]);
+        return () => {
+            ctx.revert();
+            window.removeEventListener('syncTypewriter', handleSync);
+        };
+    }, [scrollStart, scrollEnd, customTriggerRef, externalProgress, className]);
 
     const typingProgress = Math.min(1, progress * typeSpeedMultiplier);
     const charCount = Math.floor(typingProgress * text.length);
