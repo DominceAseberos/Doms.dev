@@ -23,6 +23,7 @@ import HrmsPipelineMotionCards from './HrmsPipelineMotionCards';
 import ScrollTypewriter from './ui/ScrollTypewriter';
 import LyricsScrubText from './ui/LyricsScrubText';
 import DocViewerModal from '../../../components/DocViewerModal';
+import SafeErrorBoundary from '../../../components/SafeErrorBoundary';
 import SectionProgressIndicator from '../../../components/SectionProgressIndicator';
 import useLoadingStore from '../../../store/useLoadingStore';
 import useLogoStore from '../../../store/useLogoStore';
@@ -164,7 +165,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
     const socials = data.socials || [];
 
     return (
-        <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" suppressHydrationWarning>
+        <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" style={{ overflowX: 'hidden' }} suppressHydrationWarning>
 
             {/* ══ HERO ═════════════════════════════════════════════════════ */}
             <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
@@ -194,26 +195,30 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </div>
 
                 {/* The Paper Plane Animation */}
-                <HeroPaperPlane />
+                <SafeErrorBoundary>
+                    <HeroPaperPlane />
+                </SafeErrorBoundary>
 
                 {/* Face Drawing - Positioned absolutely and animated to grow/reveal on load */}
-                <AnimatedFace
-                    className="ns-reveal ns-hero-face"
-                    alt="Face Drawing"
-                    delay={FACE_CONFIG.delay}
-                    duration={FACE_CONFIG.duration}
-                    style={{
-                        position: 'absolute',
-                        right: FACE_CONFIG.right,
-                        top: FACE_CONFIG.top,
-                        transform: 'translateY(-50%)',
-                        width: '100%',
-                        maxWidth: FACE_CONFIG.maxWidth,
-                        opacity: 0.8,
-                        pointerEvents: 'none',
-                        zIndex: 0
-                    }}
-                />
+                <SafeErrorBoundary>
+                    <AnimatedFace
+                        className="ns-reveal ns-hero-face"
+                        alt="Face Drawing"
+                        delay={FACE_CONFIG.delay}
+                        duration={FACE_CONFIG.duration}
+                        style={{
+                            position: 'absolute',
+                            right: FACE_CONFIG.right,
+                            top: FACE_CONFIG.top,
+                            transform: 'translateY(-50%)',
+                            width: '100%',
+                            maxWidth: FACE_CONFIG.maxWidth,
+                            opacity: 0.8,
+                            pointerEvents: 'none',
+                            zIndex: 0
+                        }}
+                    />
+                </SafeErrorBoundary>
             </section>
 
             <AnimatedDivider
@@ -226,11 +231,9 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 headThickness={5}
             />
 
-            {/* ══ ABOUT ════════════════════════════════════════════════════ */}
-            <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: '40px', position: 'relative' }}>
-                <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
-                
-                <ScrollyTellingSection sequences={ABOUT_SEQUENCES} />
+            {/* ══ ABOUT ═══════════════════════════════════════════════ */}
+            <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: '0', position: 'relative' }}>
+                <ScrollyTellingSection sequences={ABOUT_SEQUENCES} sectionLabel="About" />
             </section>
 
             <AnimatedDivider />

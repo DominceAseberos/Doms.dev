@@ -13,6 +13,8 @@ export default function PlaneSprayEffect({ planeRef, active = true }) {
         let lastProgress = 0;
 
         const handleUpdate = () => {
+            if (!planeRef.current || !sprayContainerRef.current) return;
+
             const px = gsap.getProperty(planeRef.current, 'x');
             const py = gsap.getProperty(planeRef.current, 'y');
             const pScale = gsap.getProperty(planeRef.current, 'scale') || 1;

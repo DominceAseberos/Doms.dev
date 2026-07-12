@@ -1,8 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SHOW_PLANE_PATHS } from './planeDebugConfig';
 
-gsap.registerPlugin(MotionPathPlugin);
+gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
+
+// ── EXIT CONFIG: How the plane flies OFF screen on scroll ────────────────────
+// Add/remove waypoints freely — the path auto-visualizes when SHOW_PLANE_PATHS=true
+const EXIT_CONFIG = {
+    // Waypoints the plane exits through are now responsive and defined in PLANE_CONFIG
+    exitScale: 0.05,
+    exitOpacity: 0,
+
+    // Scroll range settings
+    scrollStart: 'top top',  // When to begin (try 'center top' to start later)
+    scrollDistance: 600,        // px of scroll the exit lasts — increase for slower exit
+    scrub: 1.5,
+
+    // Rotation offset so the plane points forward (90 degrees for this SVG)
+    autoRotate: 90,
+};
 
 // ── CONFIGURATION: EASILY ADJUST PLANE ANIMATION FOR EVERY SCREEN SIZE ──
 const SHARED_CONFIG = {
@@ -14,10 +32,6 @@ const SHARED_CONFIG = {
     delay: 1.5, // Wait for GlobalLoader to finish fading (500ms) + buffer
     durationPerPoint: 1, // Multiply this by the number of points to get total duration
     ease: "power2.inOut",
-
-    // Debugging
-    // Set this to true to see the exact curved path the plane will take!
-    showDebugPath: false,
 };
 
 export const PLANE_CONFIG = {
@@ -33,6 +47,10 @@ export const PLANE_CONFIG = {
             { x: -100, y: 500 },
             { x: -400, y: 100 },
         ],
+        exitPath: [
+            { x: -500, y: 200 },
+            { x: -2500, y: 500 },
+        ],
         finalScale: 0.6,
         finalOpacity: 1,
     },
@@ -45,10 +63,12 @@ export const PLANE_CONFIG = {
             { x: 400, y: 400 },
             { x: 100, y: 300 },
             { x: -250, y: 0 },
-
-
         ],
-        finalScale: 0.4, // Smaller plane
+        exitPath: [
+            { x: -300, y: 150 },
+            { x: -1500, y: 400 },
+        ],
+        finalScale: 0.4,
         finalOpacity: 1,
     },
     mobile: { // Screens smaller than 768px
@@ -58,17 +78,21 @@ export const PLANE_CONFIG = {
             { x: 150, y: -120 },
             { x: 0, y: 300 },
             { x: -170, y: 0 },
-
-            // Lands lower and more centered for mobile
         ],
-        finalScale: 0.25, // Tiny plane
+        exitPath: [
+            { x: 0, y: 100 },
+            { x: -800, y: 900 },
+        ],
+        finalScale: 0.25,
         finalOpacity: 1,
     }
 };
 
 export default function HeroPaperPlane({ style = {} }) {
     const planeRef = useRef(null);
-    const debugPathRef = useRef(null);
+    const debugPathRef = useRef(null);   // fly-in path ref
+    const exitPathRef = useRef(null);   // exit path ref
+    const exitTlRef = useRef(null);     // track the exit timeline to prevent duplicates
 
     // State to force re-render of debug points when matchMedia changes
     const [currentBreakpoint, setCurrentBreakpoint] = useState('desktop');
@@ -81,25 +105,21 @@ export default function HeroPaperPlane({ style = {} }) {
         const runAnimation = (config, breakpointName) => {
             setCurrentBreakpoint(breakpointName);
 
+            // Clean up any existing exit animation to prevent duplicates
+            if (exitTlRef.current) {
+                exitTlRef.current.kill();
+                exitTlRef.current = null;
+            }
+
             // Set the starting position instantly
             gsap.set(planeRef.current, config.initial);
 
-            // If debugging is on, draw the exact path GSAP calculates
-            if (config.showDebugPath && debugPathRef.current) {
-                try {
-                    const fullPath = [
-                        { x: config.initial.x, y: config.initial.y },
-                        ...config.flightPath
-                    ];
-                    const rawPath = MotionPathPlugin.arrayToRawPath(fullPath, { curviness: 1.5 });
-                    const pathStr = MotionPathPlugin.rawPathToString(rawPath);
-                    debugPathRef.current.setAttribute('d', pathStr);
-                } catch (e) {
-                    console.error("Could not draw debug path:", e);
-                }
-            }
+            // Draw fly-in debug path if enabled
+            // (Handled separately in the debug useEffect below)
 
             // Animate along the curved path!
+            // The exit ScrollTrigger is only created AFTER the fly-in completes,
+            // so scrolling during entry has zero effect on the plane.
             gsap.to(planeRef.current, {
                 motionPath: {
                     path: config.flightPath,
@@ -110,16 +130,93 @@ export default function HeroPaperPlane({ style = {} }) {
                 opacity: config.finalOpacity,
                 duration: config.flightPath.length * config.durationPerPoint,
                 delay: config.delay,
-                ease: config.ease
+                ease: config.ease,
+                onComplete: () => {
+                    // ── SCROLL-BASED EXIT ANIMATION (only starts after fly-in is done) ──
+                    if (!planeRef.current) return;
+                    const heroSection = planeRef.current.closest('section') || planeRef.current.parentElement;
+
+                    exitTlRef.current = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: heroSection,
+                            start: EXIT_CONFIG.scrollStart,
+                            end: `+=${EXIT_CONFIG.scrollDistance}`,
+                            scrub: EXIT_CONFIG.scrub,
+                        }
+                    }).to(planeRef.current, {
+                        motionPath: {
+                            path: config.exitPath,
+                            curviness: 1.2,
+                            autoRotate: EXIT_CONFIG.autoRotate,
+                        },
+                        scale: EXIT_CONFIG.exitScale,
+                        opacity: EXIT_CONFIG.exitOpacity,
+                        ease: 'power1.in',
+                    });
+                }
             });
         };
 
-        mm.add("(min-width: 1024px)", () => runAnimation(PLANE_CONFIG.desktop, 'desktop'));
-        mm.add("(min-width: 768px) and (max-width: 1023px)", () => runAnimation(PLANE_CONFIG.tablet, 'tablet'));
-        mm.add("(max-width: 767px)", () => runAnimation(PLANE_CONFIG.mobile, 'mobile'));
+        const conditions = {
+            isDesktop: "(min-width: 1024px)",
+            isTablet: "(min-width: 768px) and (max-width: 1023px)",
+            isMobile: "(max-width: 767px)"
+        };
 
-        return () => mm.revert(); // Automatically cleans up all animations and triggers on resize!
+        mm.add(conditions, (context) => {
+            const { isDesktop, isTablet } = context.conditions;
+
+            let config = PLANE_CONFIG.mobile;
+            let breakpointName = 'mobile';
+
+            if (isDesktop) {
+                config = PLANE_CONFIG.desktop;
+                breakpointName = 'desktop';
+            } else if (isTablet) {
+                config = PLANE_CONFIG.tablet;
+                breakpointName = 'tablet';
+            }
+
+            runAnimation(config, breakpointName);
+        });
+
+        return () => {
+            mm.revert();
+            if (exitTlRef.current) {
+                exitTlRef.current.kill();
+            }
+        };
     }, []);
+
+    // ── Debug path drawing — reacts to active breakpoint change ──
+    useEffect(() => {
+        if (!SHOW_PLANE_PATHS) return;
+
+        const config = PLANE_CONFIG[currentBreakpoint];
+
+        // Draw fly-in path
+        if (debugPathRef.current && config) {
+            try {
+                const fullPath = [
+                    { x: config.initial.x, y: config.initial.y },
+                    ...config.flightPath
+                ];
+                const rawPath = MotionPathPlugin.arrayToRawPath(fullPath, { curviness: 1.5 });
+                debugPathRef.current.setAttribute('d', MotionPathPlugin.rawPathToString(rawPath));
+            } catch (e) { /* ignore */ }
+        }
+
+        // Draw exit path
+        if (exitPathRef.current && config) {
+            try {
+                // Start from the final resting position of the fly-in path
+                const lastFlyIn = config.flightPath[config.flightPath.length - 1];
+                const fullExit = [{ x: lastFlyIn.x, y: lastFlyIn.y }, ...config.exitPath];
+                const rawPath = MotionPathPlugin.arrayToRawPath(fullExit, { curviness: 1.2 });
+                exitPathRef.current.setAttribute('d', MotionPathPlugin.rawPathToString(rawPath));
+            } catch (e) { /* ignore */ }
+        }
+    }, [currentBreakpoint]);
 
     // Get the active config for drawing debug dots
     const activeConfig = PLANE_CONFIG[currentBreakpoint];
@@ -136,12 +233,12 @@ export default function HeroPaperPlane({ style = {} }) {
                     height: '350px',
                     pointerEvents: 'none',
                     zIndex: 5,
-                    // Center the transform origin for predictable rotation and scaling
                     transformOrigin: '50% 50%',
+                    willChange: 'transform',
                     ...style
                 }}
             >
-                {/* The Plane Body (Terminal Shape folded via clipPath) */}
+                {/* The Plane Body */}
                 <div style={{
                     position: 'absolute',
                     width: '100%',
@@ -163,42 +260,32 @@ export default function HeroPaperPlane({ style = {} }) {
 
                 {/* Paper Plane Creases */}
                 <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 100 }}>
-                    {/* Left wing crease */}
                     <line x1="50%" y1="0%" x2="46%" y2="49%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" strokeLinecap="round" />
-                    {/* Right wing crease */}
                     <line x1="50%" y1="0%" x2="57%" y2="49%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" strokeLinecap="round" />
-                    {/* Center fold down to the tail */}
                     <line x1="50%" y1="0%" x2="52%" y2="64%" stroke="rgba(255,255,255,0.8)" strokeWidth="6" strokeLinecap="round" />
                 </svg>
             </div>
 
-            {/* DEBUG PATH LINE (Moved OUTSIDE the plane so it doesn't move with it) */}
-            {activeConfig.showDebugPath && (
-                <svg
-                    style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        width: '1px',
-                        height: '1px',
-                        overflow: 'visible',
-                        pointerEvents: 'none',
-                        zIndex: 9999
-                    }}
-                >
-                    <path
-                        ref={debugPathRef}
-                        fill="none"
-                        stroke="red"
-                        strokeWidth="4"
-                        strokeDasharray="10, 10"
-                        opacity="0.8"
-                    />
-
-                    {/* Draw points as blue dots */}
-                    <circle cx={activeConfig.initial.x} cy={activeConfig.initial.y} r="8" fill="blue" />
+            {/* ── DEBUG PATHS (shown when SHOW_PLANE_PATHS = true in planeDebugConfig.js) ── */}
+            {SHOW_PLANE_PATHS && (
+                <svg style={{
+                    position: 'absolute', top: '50%', left: '50%',
+                    width: '1px', height: '1px', overflow: 'visible',
+                    pointerEvents: 'none', zIndex: 9999
+                }}>
+                    {/* Fly-in path (green) */}
+                    <path ref={debugPathRef} fill="none" stroke="lime" strokeWidth="3" strokeDasharray="10,6" opacity="0.8" />
+                    {/* Fly-in waypoints */}
+                    <circle cx={activeConfig.initial.x} cy={activeConfig.initial.y} r="8" fill="lime" />
                     {activeConfig.flightPath.map((pt, i) => (
-                        <circle key={i} cx={pt.x} cy={pt.y} r="8" fill="blue" />
+                        <circle key={`in-${i}`} cx={pt.x} cy={pt.y} r="8" fill="lime" />
+                    ))}
+
+                    {/* Exit path (orange) */}
+                    <path ref={exitPathRef} fill="none" stroke="orange" strokeWidth="3" strokeDasharray="10,6" opacity="0.8" />
+                    {/* Exit waypoints */}
+                    {activeConfig.exitPath.map((pt, i) => (
+                        <circle key={`ex-${i}`} cx={pt.x} cy={pt.y} r="8" fill="orange" />
                     ))}
                 </svg>
             )}
