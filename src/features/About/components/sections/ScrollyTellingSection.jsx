@@ -21,7 +21,7 @@ export const SCROLLY_CONFIG = {
     animationEndTrigger: "center center", // When it finishes dropping down & typing
 };
 
-export default function ScrollyTellingSection({ sequences = [], children }) {
+export default function ScrollyTellingSection({ sequences = [], children, sectionLabel }) {
     // Create refs for each scene dynamically
     const [triggerRefs] = useState(() => sequences.map(() => React.createRef()));
 
@@ -64,8 +64,8 @@ export default function ScrollyTellingSection({ sequences = [], children }) {
                             alignContent: 'center',
                             minHeight: '100vh',
                             justifyContent: 'center',
-                            marginBottom: '10vh',
-                            marginTop: '10vh',
+                            marginBottom: index === 0 ? '0' : '10vh',
+                            marginTop: index === 0 ? '0' : '10vh',
                             position: 'relative',
                             zIndex: index === 0 ? 10 : sequences.length - index
                         }}
@@ -82,14 +82,36 @@ export default function ScrollyTellingSection({ sequences = [], children }) {
                                 position: 'relative' // For absolute stacking of replaced text
                             }}
                         >
+                            {/* Section label (e.g. "About") — only on the first row */}
+                            {index === 0 && sectionLabel && (
+                                <p className="ui-sub-label ns-section-label" style={{ marginBottom: '1rem' }}>{sectionLabel}</p>
+                            )}
                             {scene.text.includes('|||') ? (
                                 <div style={{ position: 'relative', width: '100%' }}>
                                     <div className="part-1-text">
-                                        {renderStaticText(scene.text.split('|||')[0], scene.highlights)}
+                                        <ScrollTypewriter 
+                                            text={scene.text.split('|||')[0]} 
+                                            highlights={scene.highlights}
+                                            className="ns-lyrics-text"
+                                            customTriggerRef={triggerRefs[index]}
+                                        />
+                                    </div>
+                                    <div className="part-2-text" style={{ marginTop: '1.5rem' }}>
+                                        <ScrollTypewriter 
+                                            text={scene.text.split('|||')[1]} 
+                                            highlights={scene.highlights}
+                                            className="ns-lyrics-text"
+                                            customTriggerRef={triggerRefs[index]}
+                                        />
                                     </div>
                                 </div>
                             ) : (
-                                renderStaticText(scene.text, scene.highlights)
+                                <ScrollTypewriter 
+                                    text={scene.text} 
+                                    highlights={scene.highlights}
+                                    className="ns-lyrics-text"
+                                    customTriggerRef={triggerRefs[index]}
+                                />
                             )}
                         </div>
 
@@ -101,7 +123,8 @@ export default function ScrollyTellingSection({ sequences = [], children }) {
                                 minWidth: '300px',
                                 display: 'flex',
                                 justifyContent: 'center',
-                                opacity: 1
+                                opacity: 1,
+                                overflow: 'visible', // Let the plane fly outside this box
                             }}
                         >
                             <div style={{ width: '100%', height: '500px', position: 'relative' }}>
