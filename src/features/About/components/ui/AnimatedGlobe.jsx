@@ -74,89 +74,28 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
         globeEl.current.controls().autoRotate = false;
         globeEl.current.controls().enableZoom = false;
 
-        // Set initial POV (Far out, showing Asia)
-        globeEl.current.pointOfView({ lat: 10, lng: 100, altitude: 2.5 }, 0);
+        // Set final POV (Deep zoom into Tagum)
+        globeEl.current.pointOfView({
+            lat: targetLocation.lat,
+            lng: targetLocation.lng,
+            altitude: 0.35
+        }, 0);
 
-        const ctx = gsap.context(() => {
-            ScrollTrigger.create({
-                trigger: scrollTriggerRef.current,
-                start: scrollStart,
-                end: scrollEnd,
-                scrub: 1, // Smooth scrub
-                onUpdate: (self) => {
-                    if (!globeEl.current) return;
-                    
-                    const p = self.progress;
-                    
-                    // Custom easing for smooth zoom
-                    const easeP = gsap.parseEase('power2.inOut')(p);
-
-                    const startLat = 10;
-                    const startLng = 100;
-                    const startAlt = 2.5;
-
-                    const endLat = targetLocation.lat;
-                    const endLng = targetLocation.lng;
-                    const endAlt = 0.35; // Deep zoom
-
-                    const currentLat = startLat + (endLat - startLat) * easeP;
-                    const currentLng = startLng + (endLng - startLng) * easeP;
-                    const currentAlt = startAlt + (endAlt - startAlt) * easeP;
-
-                    globeEl.current.pointOfView({
-                        lat: currentLat,
-                        lng: currentLng,
-                        altitude: currentAlt
-                    }, 0);
-                    
-                    // Reveal logo overlay near the end of the zoom, but hold it visible
-                    if (logoRef.current && courseRef.current) {
-                        let logoOpacity = 0;
-                        if (p > 0.6) {
-                            logoOpacity = Math.min(1, (p - 0.6) * 5); // scales 0 to 1 between p=0.6 and p=0.8, caps at 1
-                        }
-                        logoRef.current.style.opacity = logoOpacity;
-                        logoRef.current.style.transform = `translate(20px, -50%) scale(${0.8 + logoOpacity * 0.4})`; // prominent scale in
-                        
-                        let courseOpacity = 0;
-                        if (p > 0.65) { // slightly delayed
-                            courseOpacity = Math.min(1, (p - 0.65) * 5);
-                        }
-                        courseRef.current.style.opacity = courseOpacity;
-                        courseRef.current.style.transform = `translate(40px, calc(-50% + 75px)) scale(${0.8 + courseOpacity * 0.4})`;
-                    }
-                    
-                    // Expand background to cover text at the very end of sequence
-                    if (bgRef.current) {
-                        let expand = 0;
-                        if (p > 0.8) {
-                            expand = (p - 0.8) * 5; // 0 to 1
-                        }
-                        
-                        const maxWidth = parseFloat(bgRef.current.dataset.maxWidth);
-                        const baseWidth = parseFloat(bgRef.current.dataset.baseWidth);
-                        const offset = parseFloat(bgRef.current.dataset.offset);
-                        
-                        if (!isNaN(maxWidth) && !isNaN(baseWidth)) {
-                            bgRef.current.dataset.animating = 'true';
-                            
-                            // Ease the expansion using power2.inOut for a smoother wave effect
-                            const easeExpand = gsap.parseEase('power2.inOut')(expand);
-                            const currentWidth = baseWidth + (maxWidth - baseWidth) * easeExpand;
-                            bgRef.current.style.width = `${currentWidth}px`;
-                            
-                            // Pan the globe from right-aligned (centered in 500px) to center-aligned
-                            if (globeWrapperRef.current && !isNaN(offset)) {
-                                const currentOffset = offset * (1 - easeExpand);
-                                globeWrapperRef.current.style.transform = `translateX(${currentOffset}px)`;
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-        return () => ctx.revert();
+        // Animations stripped for layout extraction
+        if (logoRef.current && courseRef.current) {
+            logoRef.current.style.opacity = 1;
+            logoRef.current.style.transform = `translate(20px, -50%) scale(1.2)`;
+            
+            courseRef.current.style.opacity = 1;
+            courseRef.current.style.transform = `translate(40px, calc(-50% + 75px)) scale(1.2)`;
+        }
+        
+        if (bgRef.current) {
+            bgRef.current.style.width = '100%';
+            if (globeWrapperRef.current) {
+                globeWrapperRef.current.style.transform = 'translateX(0px)';
+            }
+        }
     }, [scrollTriggerRef, isClient]);
 
     if (!isClient) return <div style={{ width: '100%', height: '100%', minHeight: '500px' }} />;

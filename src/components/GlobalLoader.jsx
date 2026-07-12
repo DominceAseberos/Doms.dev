@@ -7,16 +7,24 @@ const GlobalLoader = () => {
     const [fade, setFade] = useState(false);
 
     useEffect(() => {
+        const MIN_DISPLAY_MS = 2000; // Always show loader for at least 2 seconds
+        const startTime = Date.now();
+
         const handleStart = () => {
             setRenderLoader(true);
             setFade(false); // Instantly show
         };
 
         const handleStop = () => {
-            // Trigger fade out
-            setFade(true);
-            // Remove from DOM after transition completes
-            setTimeout(() => setRenderLoader(false), 500);
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(0, MIN_DISPLAY_MS - elapsed);
+
+            // Wait for minimum display time before fading out
+            setTimeout(() => {
+                setFade(true);
+                // Remove from DOM after fade transition completes
+                setTimeout(() => setRenderLoader(false), 500);
+            }, remaining);
         };
 
         // If we are already loaded when this runs, hide it.

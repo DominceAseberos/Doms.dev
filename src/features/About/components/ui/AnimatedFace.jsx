@@ -5,7 +5,7 @@ import AnimatedFaceSvg from './AnimatedFaceSvg';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function AnimatedFace({ style, className, duration = 2.5 }) {
+export default function AnimatedFace({ style, className, duration = 2.5, delay = 0 }) {
     const svgRef = useRef(null);
 
     useEffect(() => {
@@ -15,12 +15,12 @@ export default function AnimatedFace({ style, className, duration = 2.5 }) {
         if (!path) return;
 
         // Ensure path uses stroke for drawing and sets up the 1000-unit path length
-        gsap.set(path, { 
-            fill: 'transparent', 
-            stroke: 'currentColor', 
+        gsap.set(path, {
+            fill: 'transparent',
+            stroke: 'currentColor',
             strokeWidth: 1.5,
-            strokeDasharray: 1000, 
-            strokeDashoffset: 1000 
+            strokeDasharray: 1000,
+            strokeDashoffset: 1000
         });
 
         // Initialize timeline with ScrollTrigger
@@ -39,6 +39,7 @@ export default function AnimatedFace({ style, className, duration = 2.5 }) {
         tl.to(path, {
             strokeDashoffset: 0,
             duration: duration,
+            delay: delay,
             ease: 'power2.inOut'
         });
 
@@ -46,10 +47,10 @@ export default function AnimatedFace({ style, className, duration = 2.5 }) {
             if (tl.scrollTrigger) tl.scrollTrigger.kill();
             tl.kill();
         };
-    }, [duration]);
+    }, [duration, delay]);
 
     return (
-        <AnimatedFaceSvg 
+        <AnimatedFaceSvg
             ref={svgRef}
             className={className}
             style={{ ...style, opacity: 0 }} // Start invisible until GSAP takes over

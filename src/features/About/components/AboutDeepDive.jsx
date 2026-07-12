@@ -32,6 +32,7 @@ import AnimatedDivider from './ui/AnimatedDivider';
 import AnimatedFace from './ui/AnimatedFace';
 import ScrollyTellingSection from './sections/ScrollyTellingSection';
 import { ABOUT_SEQUENCES } from '../data/scrollyTellingData';
+import HeroPaperPlane from './ui/HeroPaperPlane';
 
 import HoverDrawBorder from './ui/HoverDrawBorder';
 import './NarrativeSection.css';
@@ -114,6 +115,7 @@ const FACE_CONFIG = {
 const AboutDeepDive = forwardRef((props, ref) => {
     const containerRef = useRef(null);
     const heroRef = useRef(null);
+    const bioRef = useRef(null);
     const stripesRef = useRef([]);
     const isLoading = useLoadingStore((state) => state.isLoading);
     const themeStoreVal = useThemeStore((state) => state.theme);
@@ -141,6 +143,17 @@ const AboutDeepDive = forwardRef((props, ref) => {
             .finally(() => setDataReady(true));
     }, []);
 
+    // ── Dedicated Hero Bio Reveal ──────────────────────────────────────────
+    // Waits ~1s for GlobalLoader to fade out, then reveals after handwriting finishes
+    useEffect(() => {
+        if (!bioRef.current) return;
+
+        // GlobalLoader takes ~500ms to fade + 0.5s buffer + 3s for handwriting = ~4s total
+        gsap.fromTo(bioRef.current,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 1, delay: 4, ease: 'power2.out' }
+        );
+    }, []);
 
     const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
@@ -174,11 +187,14 @@ const AboutDeepDive = forwardRef((props, ref) => {
                                 delay={1}
                             />
                         </h1>
-                        <p className="ns-hero-bio ui-body-copy ns-reveal" style={{ marginTop: '1rem', maxWidth: '600px', margin: '1rem auto 0' }} suppressHydrationWarning>
+                        <p ref={bioRef} className="ns-hero-bio ui-body-copy" style={{ marginTop: '1rem', maxWidth: '600px', margin: '1rem auto 0', opacity: 0 }} suppressHydrationWarning>
                             The path that got me here - experience, education, what I work on day to day, and what people say about working with me.
                         </p>
                     </div>
                 </div>
+
+                {/* The Paper Plane Animation */}
+                <HeroPaperPlane />
 
                 {/* Face Drawing - Positioned absolutely and animated to grow/reveal on load */}
                 <AnimatedFace
