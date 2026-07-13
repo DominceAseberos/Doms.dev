@@ -18,9 +18,8 @@ const SCROLL_PLANE_CONFIG = {
     // The pin duration auto-scales with the number of waypoints.
     flightPath: [
         { x: -400, y: -300 },
-        { x: 100,  y: -150 },
-        { x: 200,  y:  100 },
-        { x:   0,  y:    0 }, // Final landing point (center of map)
+        { x: 200, y: 100 },
+        { x: 0, y: 0 }, // Final landing point (center of map)
     ],
 
     // How much pinned scroll distance each waypoint costs
@@ -58,24 +57,24 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
             if (containerRef.current) {
                 const baseWidth = containerRef.current.offsetWidth;
                 const height = containerRef.current.offsetHeight;
-                
+
                 if (bgRef.current) {
                     const row = containerRef.current.closest('.ns-scrollytelling-row');
                     if (row) {
                         const rowRect = row.getBoundingClientRect();
                         const containerRect = containerRef.current.getBoundingClientRect();
-                        
+
                         // Distance from the right edge of container to the left edge of the row
                         const maxW = containerRect.right - rowRect.left;
                         bgRef.current.dataset.maxWidth = maxW;
                         bgRef.current.dataset.baseWidth = baseWidth;
-                        
+
                         const offset = (maxW / 2) - (baseWidth / 2);
                         bgRef.current.dataset.offset = offset;
-                        
+
                         // Render canvas at max width so it doesn't need to resize during animation
                         setDimensions({ width: maxW, height });
-                        
+
                         // Apply initial translation if not currently animating
                         if (globeWrapperRef.current && bgRef.current.dataset.animating !== 'true') {
                             globeWrapperRef.current.style.transform = `translateX(${offset}px)`;
@@ -86,7 +85,7 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
                 }
             }
         };
-        
+
         // Slight delay to ensure DOM is fully rendered before measuring
         setTimeout(handleResize, 100);
         window.addEventListener('resize', handleResize);
@@ -108,7 +107,7 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
         }, 0);
 
         // ── PLANE TO MAP MORPHING TIMELINE ──
-        
+
         // Plane Polygon (8 points)
         const planePolygon = 'polygon(50% 0%, 81% 29%, 90% 48%, 57% 49%, 52% 64%, 46% 49%, 14% 49%, 21% 29%)';
         // Map Polygon (8 points, mapped for smooth transition to a rounded rectangle look)
@@ -165,6 +164,7 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
                 pin: true,
                 scrub: 1.5,
                 anticipatePin: 1,
+                refreshPriority: 1, // Ensure this pin spacer is calculated FIRST
             }
         });
 
@@ -203,7 +203,7 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
         // Phase 5: Deep zoom into Tagum
         tl.to({}, {
             duration: 1, // Empty tween just to trigger the pointOfView in scrub
-            onUpdate: function() {
+            onUpdate: function () {
                 // We use progress of this specific tween to interpolate zoom
                 const p = this.progress();
                 const currentAlt = 2.0 - (p * 1.65); // Zoom from 2.0 down to 0.35
@@ -226,7 +226,7 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
 
     return (
         <div ref={containerRef} style={{ width: '100%', height: '100%', minHeight: '500px', maxWidth: '500px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', opacity: 0 }}>
-        {/* DEBUG PATH — outside bgRef so clipping doesn't hide it */}
+            {/* DEBUG PATH — outside bgRef so clipping doesn't hide it */}
             {SHOW_PLANE_PATHS && (
                 <svg style={{
                     position: 'absolute',
@@ -270,11 +270,11 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
                         showAtmosphere={true}
                         atmosphereColor="#baff29"
                         atmosphereAltitude={0.15}
-                        
+
                         // Textureless, flat geometry for stylized look
                         globeImageUrl={null}
                         bumpImageUrl={null}
-                        
+
                         // Render country polygons
                         polygonsData={countries.features}
                         polygonAltitude={0.01}
@@ -288,7 +288,7 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
                         ringMaxRadius={5}
                         ringPropagationSpeed={2}
                         ringRepeatPeriod={1000}
-                        
+
                         // Add a glowing dot
                         pointsData={[targetLocation]}
                         pointColor={() => '#baff29'}
@@ -307,7 +307,7 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
                     <line x1="50%" y1="0%" x2="52%" y2="64%" stroke="rgba(255,255,255,0.8)" strokeWidth="6" strokeLinecap="round" />
                 </svg>
             </div>
-            
+
             {/* School Logo Overlay (Revealed via GSAP near end of zoom) */}
             <div ref={logoRef} style={{
                 position: 'absolute',

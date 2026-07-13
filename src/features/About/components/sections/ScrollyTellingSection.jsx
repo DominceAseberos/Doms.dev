@@ -67,7 +67,9 @@ export default function ScrollyTellingSection({ sequences = [], children, sectio
                             marginBottom: index === 0 ? '0' : '10vh',
                             marginTop: index === 0 ? '0' : '10vh',
                             position: 'relative',
-                            zIndex: index === 0 ? 10 : sequences.length - index
+                            // Ensure subsequent rows (like Row 2) render ON TOP of previous rows (like Row 1)
+                            // so the JoyOfCoding plane can fly over the AnimatedGlobe map!
+                            zIndex: 10 + (index * 10) 
                         }}
                     >
                         {/* Left Column (Text) */}
@@ -127,7 +129,7 @@ export default function ScrollyTellingSection({ sequences = [], children, sectio
                                 overflow: 'visible', // Let the plane fly outside this box
                             }}
                         >
-                            <div style={{ width: '100%', height: '500px', position: 'relative' }}>
+                            <div style={{ width: '100%', height: '500px', position: 'relative' }} className="ns-viz-container">
                                 <Viz
                                     scrollTriggerRef={scene.vizNeedsTriggerRef ? triggerRefs[index] : undefined}
                                     scrollStart={pinStart}
