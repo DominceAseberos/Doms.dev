@@ -16,6 +16,7 @@ export const ABOUT_SEQUENCES = [
         text: "For me, the true joy of coding is the sheer adrenaline of finally solving a problem after countless failures.|||While I build web apps today, it's just a stepping stone to master far more complex systems.",
         highlights: ['adrenaline', 'countless', 'failures', 'stepping', 'stone', 'complex', 'systems'],
         VizComponent: JoyOfCodingViz, // We will update JoyOfCodingViz to also render ComplexSystemsViz
+        vizNeedsTriggerRef: true // Enable pinning the entire row exactly like AnimatedGlobe
     },
     {
         id: 'scene-4-endgame',
