@@ -1125,6 +1125,54 @@ html[data-theme='light'] .cs-page {
     }
 }
 
+/* ── Small laptop / medium screens: compact desktop nav ──────────────────── */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    .main-nav {
+        top: 16px;
+        left: 20px;
+        right: 20px;
+    }
+
+    .main-nav.nav-scrolled {
+        top: 12px;
+    }
+
+    .nav-logo {
+        padding: 4px 12px;
+    }
+
+    .nav-links {
+        gap: 22px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+        letter-spacing: 0.14em;
+    }
+
+    /* Compact border/container around the right-hand nav */
+    .nav-right {
+        padding: 8px 22px;
+        margin-right: 12px;
+    }
+
+    .nav-right::before {
+        inset: -6px -28px;
+    }
+
+    .main-nav.nav-scrolled .nav-logo {
+        padding: 3px 10px;
+    }
+
+    .main-nav.nav-scrolled .nav-right {
+        padding: 6px 22px;
+    }
+
+    .main-nav.nav-scrolled .nav-right::before {
+        inset: -5px -26px;
+    }
+}
+
 /* Tablet Layout Adjustments */
 @media (min-width: 769px) and (max-width: 1024px) {
     .main-nav {
