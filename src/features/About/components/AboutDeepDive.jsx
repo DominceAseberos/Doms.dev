@@ -241,7 +241,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
                                         '--dot-glow': `${phase.color}66`,
                                         animation: `pulseDot 2.5s infinite linear ${phase.delay}`
                                     }}></div>
-                                    <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted, #64748b)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{phase.name}</span>
+                                    <span className='ns-workflow-phase' style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-muted, #64748b)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{phase.name}</span>
                                 </div>
                             ))}
                         </div>

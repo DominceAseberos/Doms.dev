@@ -1865,3 +1865,37 @@ html[data-theme='light'] .ns-testimonial-name {
     letter-spacing: 0.1em;
     font-size: 0.76rem;
 }
+
+/* Workflow pipeline labels — terminal mono */
+.ns-about-dive .ns-workflow-phase {
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+}
+
+/* Testimonials — notebook author + mono role */
+.ns-about-dive .ns-testimonial-name {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+}
+.ns-about-dive .ns-testimonial-role {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+}
+
+/* Feed section — notebook title + mono type tag */
+.ns-about-dive .feed-title { font-family: 'Syne', sans-serif; }
+.ns-about-dive .feed-type { font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* GitHub activity — terminal eyebrow + mono subtitle */
+.ns-about-dive .gc-card-eyebrow { font-family: 'DM Mono', monospace; color: var(--gray); }
+.ns-about-dive .gc-card-eyebrow::before { content: '$ '; color: var(--accent); }
+.ns-about-dive .github-contrib-title { font-family: 'Syne', sans-serif; }
+.ns-about-dive .github-contrib-subtitle { font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* Education — marker heading + terminal sub-label + mono degree */
+.ns-about-dive .education-section h2 { font-family: 'Permanent Marker', cursive; }
+.ns-about-dive .education-section .ui-sub-label::before { content: '$ '; color: var(--accent); }
+.ns-about-dive .es-degree-text { font-family: 'DM Mono', monospace; }
