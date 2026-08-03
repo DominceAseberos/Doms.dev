@@ -245,6 +245,26 @@
             "title": "CMS",
             "viz": "cms",
             "desc": "Custom, easy-to-manage content systems for your team."
+        },
+        {
+            "title": "UI/UX Design",
+            "viz": "design",
+            "desc": "Clean, user-friendly interfaces designed around real workflows."
+        },
+        {
+            "title": "API & Backend",
+            "viz": "api",
+            "desc": "Robust, well-documented APIs and role-based backend logic."
+        },
+        {
+            "title": "E-commerce",
+            "viz": "shop",
+            "desc": "Online stores with payments, carts, and smooth checkout."
+        },
+        {
+            "title": "Cloud & Deployment",
+            "viz": "cloud",
+            "desc": "Reliable deployment, hosting, and cloud infrastructure."
         }
     ],
     "education": [

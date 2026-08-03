@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollTypewriter from '../ui/ScrollTypewriter';
@@ -6,135 +6,104 @@ import ScrollTypewriter from '../ui/ScrollTypewriter';
 gsap.registerPlugin(ScrollTrigger);
 
 // ── Configuration for ScrollyTelling Timings & Spacing ──
-export const SCROLLY_CONFIG = {
-    // 1st Sequence Pinning
-    pinStart: "center center",
-    pinEnd: "+=250%",
-
-    // Subsequent Sequences (2nd, 3rd, etc.) Spacing & Timings
-    overlapMarginTop: "-5vh", // Pulls the sequence up under the previous one
-    slideOutStartY: -200,      // Starts physically higher (hidden behind the black box)
-    slideOutEndY: 0,           // Drops down to normal position
-
-    // Triggers for when the subsequent sequences emerge from the black box
-    animationStartTrigger: "top 75%",     // When to start dropping down & typing
-    animationEndTrigger: "center center", // When it finishes dropping down & typing
+const SCROLLY_CONFIG = {
+    pinStart: 'center center',
+    pinEnd: '+=250%',
+    overlapMarginTop: '-5vh',
+    slideOutStartY: -200,
+    slideOutEndY: 0,
+    animationStartTrigger: 'top 75%',
+    animationEndTrigger: 'center center',
 };
 
+// Terminal file title shown in each scene's window chrome
+const TERMINAL_TITLES = ['adrenaline.ts', 'endgame.ts'];
+
 export default function ScrollyTellingSection({ sequences = [], children, sectionLabel }) {
-    // Create refs for each scene dynamically
+    const sectionRef = useRef(null);
     const [triggerRefs] = useState(() => sequences.map(() => React.createRef()));
 
-    const { pinStart, pinEnd } = SCROLLY_CONFIG;
-
+    // Scroll-scrubbed parallax: the terminal note flies in / lifts as you scroll
     useEffect(() => {
-        // All GSAP timeline animations, pins, and triggers have been stripped out
-        // to allow for easy layout extraction and design.
-    }, [triggerRefs]);
+        const section = sectionRef.current;
+        if (!section || sequences.length === 0) return;
 
-    const renderStaticText = (text, highlights) => {
-        if (!text) return null;
-        let htmlContent = text;
-        if (highlights && highlights.length > 0) {
-            highlights.forEach(word => {
-                const regex = new RegExp(`\\b${word}\\b`, 'gi');
-                htmlContent = htmlContent.replace(regex, `<span class="ns-highlight-word">${word}</span>`);
+        const rows = section.querySelectorAll('.ns-scrolly-row');
+
+        const ctx = gsap.context(() => {
+            rows.forEach((row) => {
+                const viz = row.querySelector('.ns-term-wrap');
+                const text = row.querySelector('.ns-scrolly-text');
+
+                if (text) gsap.set(text, { opacity: 0, y: 34 });
+
+                ScrollTrigger.create({
+                    trigger: row,
+                    start: 'top 72%',
+                    end: 'bottom 58%',
+                    scrub: 0.7,
+                    onUpdate: (self) => {
+                        const p = self.progress;
+                        if (text) gsap.set(text, { opacity: Math.min(1, p * 2.2), y: 34 - p * 34 });
+                        if (viz) gsap.set(viz, { y: 70 - p * 90, scale: 0.9 + p * 0.1 });
+                    },
+                });
             });
-        }
-        return <span className="ns-lyrics-text" dangerouslySetInnerHTML={{ __html: htmlContent }} />;
-    };
+        }, section);
+
+        return () => ctx.revert();
+    }, [sequences.length]);
 
     if (!sequences || sequences.length === 0) return null;
 
     return (
-        <div style={{ width: '100%', paddingBottom: '15vh' }}>
+        <div ref={sectionRef} style={{ width: '100%' }}>
+            {sectionLabel && (
+                <p className="ui-sub-label ns-section-label ns-scrolly-section-label" suppressHydrationWarning>
+                    <span style={{ color: 'var(--accent)' }}>$</span> {sectionLabel}
+                </p>
+            )}
             {sequences.map((scene, index) => {
                 const Viz = scene.VizComponent;
                 return (
                     <div
                         key={scene.id}
                         ref={triggerRefs[index]}
-                        className="ns-scrollytelling-row"
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            width: '100%',
-                            gap: index === 0 ? '4rem' : '2rem',
-                            alignItems: 'center',
-                            alignContent: 'center',
-                            minHeight: '100vh',
-                            justifyContent: 'center',
-                            marginBottom: index === 0 ? '0' : '10vh',
-                            marginTop: index === 0 ? '0' : '10vh',
-                            position: 'relative',
-                            // Ensure subsequent rows (like Row 2) render ON TOP of previous rows (like Row 1)
-                            // so the JoyOfCoding plane can fly over the AnimatedGlobe map!
-                            zIndex: 10 + (index * 10) 
-                        }}
+                        className="ns-scrollytelling-row ns-scrolly-row"
+                        style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', alignItems: 'center', width: '100%', minHeight: '90vh', justifyContent: 'center', position: 'relative' }}
                     >
-                        {/* Left Column (Text) */}
-                        <div
-                            className="ns-text-container"
-                            style={{
-                                flex: index === 0 ? '1 1 400px' : '1 1 100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-start',
-                                maxWidth: index === 0 ? '600px' : '1000px',
-                                position: 'relative' // For absolute stacking of replaced text
-                            }}
-                        >
-                            {/* Section label (e.g. "About") — only on the first row */}
-                            {index === 0 && sectionLabel && (
-                                <p className="ui-sub-label ns-section-label" style={{ marginBottom: '1rem' }}>{sectionLabel}</p>
-                            )}
+                        {/* Left: typed story */}
+                        <div className="ns-scrolly-text" style={{ flex: '1 1 380px', maxWidth: '620px', position: 'relative' }}>
+                            <p className="ns-scrolly-prompt" suppressHydrationWarning>
+                                <span className="ns-scrolly-cwd">~/domince</span> <span className="ns-scrolly-cmd">about</span>
+                                <span className="ns-scrolly-caret" />
+                            </p>
                             {scene.text.includes('|||') ? (
                                 <div style={{ position: 'relative', width: '100%' }}>
                                     <div className="part-1-text">
-                                        <ScrollTypewriter 
-                                            text={scene.text.split('|||')[0]} 
-                                            highlights={scene.highlights}
-                                            className="ns-lyrics-text"
-                                            customTriggerRef={triggerRefs[index]}
-                                        />
+                                        <ScrollTypewriter text={scene.text.split('|||')[0]} highlights={scene.highlights} className="ns-lyrics-text ns-scrolly-monotext" customTriggerRef={triggerRefs[index]} />
                                     </div>
-                                    <div className="part-2-text" style={{ marginTop: '1.5rem' }}>
-                                        <ScrollTypewriter 
-                                            text={scene.text.split('|||')[1]} 
-                                            highlights={scene.highlights}
-                                            className="ns-lyrics-text"
-                                            customTriggerRef={triggerRefs[index]}
-                                        />
+                                    <div className="part-2-text" style={{ marginTop: '1.25rem' }}>
+                                        <ScrollTypewriter text={scene.text.split('|||')[1]} highlights={scene.highlights} className="ns-lyrics-text ns-scrolly-monotext" customTriggerRef={triggerRefs[index]} />
                                     </div>
                                 </div>
                             ) : (
-                                <ScrollTypewriter 
-                                    text={scene.text} 
-                                    highlights={scene.highlights}
-                                    className="ns-lyrics-text"
-                                    customTriggerRef={triggerRefs[index]}
-                                />
+                                <ScrollTypewriter text={scene.text} highlights={scene.highlights} className="ns-lyrics-text ns-scrolly-monotext" customTriggerRef={triggerRefs[index]} />
                             )}
                         </div>
 
-                        {/* Right Column (Visualization) */}
-                        <div
-                            className="ns-viz-container"
-                            style={{
-                                flex: '1 1 400px',
-                                minWidth: '300px',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                opacity: 1,
-                                overflow: 'visible', // Let the plane fly outside this box
-                            }}
-                        >
-                            <div style={{ width: '100%', height: '500px', position: 'relative' }} className="ns-viz-container">
-                                <Viz
-                                    scrollTriggerRef={scene.vizNeedsTriggerRef ? triggerRefs[index] : undefined}
-                                    scrollStart={pinStart}
-                                    scrollEnd={pinEnd}
-                                />
+                        {/* Right: terminal chrome wrapping the viz */}
+                        <div className="ns-term-wrap" style={{ flex: '1 1 400px', minWidth: '300px', position: 'relative' }}>
+                            <div className="ns-term">
+                                <div className="ns-term-bar">
+                                    <span className="ns-term-dot" style={{ background: '#ff5f56' }} />
+                                    <span className="ns-term-dot" style={{ background: '#ffbd2e' }} />
+                                    <span className="ns-term-dot" style={{ background: '#27c93f' }} />
+                                    <span className="ns-term-title">{TERMINAL_TITLES[index] || 'note.md'}</span>
+                                </div>
+                                <div className="ns-term-body">
+                                    <Viz scrollTriggerRef={scene.vizNeedsTriggerRef ? triggerRefs[index] : undefined} scrollStart={SCROLLY_CONFIG.pinStart} scrollEnd={SCROLLY_CONFIG.pinEnd} />
+                                </div>
                             </div>
                         </div>
                     </div>

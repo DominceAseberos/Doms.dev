@@ -84,17 +84,86 @@ const CmsViz = () => (
     </svg>
 );
 
+const DesignViz = () => (
+    <svg className="ns-svc-viz-svg" viewBox="0 0 84 70" width="60" height="50" aria-hidden="true">
+        {/* UI frame */}
+        <rect x="3" y="6" width="52" height="52" rx="6" fill="none" stroke="currentColor" strokeWidth="3" />
+        <line x1="3" y1="20" x2="55" y2="20" stroke="currentColor" strokeWidth="3" />
+        <circle className="ns-svc-layout ns-svc-layout1" cx="12" cy="13" r="3" fill="currentColor" />
+        <rect className="ns-svc-layout ns-svc-layout2" x="8" y="26" width="16" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="2.5" />
+        <rect className="ns-svc-layout ns-svc-layout3" x="28" y="26" width="20" height="8" rx="2" fill="none" stroke="currentColor" strokeWidth="2.5" />
+        <rect className="ns-svc-layout ns-svc-layout4" x="28" y="38" width="20" height="8" rx="2" fill="none" stroke="currentColor" strokeWidth="2.5" />
+        {/* Pen */}
+        <g className="ns-svc-pen" style={{ transformOrigin: '66px 40px' }}>
+            <rect x="60" y="30" width="4" height="26" rx="2" fill="currentColor" />
+            <polygon points="58,56 66,56 62,64" fill="currentColor" />
+        </g>
+    </svg>
+);
+
+const ApiViz = () => (
+    <svg className="ns-svc-viz-svg" viewBox="0 0 84 70" width="60" height="50" aria-hidden="true">
+        {/* Connection */}
+        <line x1="20" y1="35" x2="68" y2="35" stroke="currentColor" strokeWidth="3" opacity="0.5" />
+        {/* Client */}
+        <rect x="2" y="20" width="26" height="30" rx="5" fill="none" stroke="currentColor" strokeWidth="3" />
+        <circle cx="15" cy="31" r="3" fill="currentColor" />
+        <rect className="ns-svc-node-pulse" x="8" y="38" width="14" height="4" rx="2" fill="currentColor" opacity="0.7" />
+        {/* Server */}
+        <rect x="62" y="14" width="20" height="42" rx="5" fill="none" stroke="currentColor" strokeWidth="3" />
+        <line x1="66" y1="24" x2="78" y2="24" stroke="currentColor" strokeWidth="3" />
+        <line x1="66" y1="34" x2="78" y2="34" stroke="currentColor" strokeWidth="3" />
+        <line x1="66" y1="44" x2="78" y2="44" stroke="currentColor" strokeWidth="3" />
+        {/* Data packet */}
+        <circle className="ns-svc-packet" cx="20" cy="35" r="5" fill="currentColor" />
+    </svg>
+);
+
+const ShopViz = () => (
+    <svg className="ns-svc-viz-svg" viewBox="0 0 84 70" width="60" height="50" aria-hidden="true">
+        {/* Bag/cart */}
+        <path d="M28 30 h30 v28 a6 6 0 0 1 -6 6 h-18 a6 6 0 0 1 -6 -6 z" fill="none" stroke="currentColor" strokeWidth="3" />
+        <path d="M34 30 v-8 a8 8 0 0 1 16 0 v8" fill="none" stroke="currentColor" strokeWidth="3" />
+        {/* Falling item */}
+        <rect className="ns-svc-item" x="40" y="10" width="10" height="10" rx="2" fill="currentColor" />
+        {/* Price tag */}
+        <g className="ns-svc-tag" style={{ transformOrigin: '74px 20px' }}>
+            <polygon points="70,12 78,12 82,20 78,28 70,28 66,20" fill="none" stroke="currentColor" strokeWidth="2.5" />
+        </g>
+    </svg>
+);
+
+const CloudViz = () => (
+    <svg className="ns-svc-viz-svg" viewBox="0 0 84 70" width="60" height="50" aria-hidden="true">
+        {/* Upload arrow */}
+        <g className="ns-svc-upload" style={{ transformOrigin: '28px 20px' }}>
+            <line x1="28" y1="30" x2="28" y2="14" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+            <line x1="20" y1="20" x2="28" y2="12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+            <line x1="36" y1="20" x2="28" y2="12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+        </g>
+        {/* Cloud */}
+        <path className="ns-svc-cloudpuf" d="M22 56 h40 a10 10 0 0 0 0 -20 a13 13 0 0 0 -25 -2 a11 11 0 0 0 -15 8 a9 9 0 0 0 0 14 z"
+            fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" />
+        {/* Orbiting dot */}
+        <circle className="ns-svc-orbit2" cx="20" cy="34" r="3.5" fill="currentColor" />
+    </svg>
+);
+
 const VIZ_MAP = {
     mobile: MobileViz,
     web: WebViz,
     seo: SeoViz,
     ai: AiViz,
     cms: CmsViz,
+    design: DesignViz,
+    api: ApiViz,
+    shop: ShopViz,
+    cloud: CloudViz,
 };
 
 // ── Sticky-note tilt presets & palette ──────────────────────────────────────
-const TILTS = [-3, 2, -2, 3, -1.5, 2.5];
-const HUE = ['#f6e58d', '#ffbe76', '#f8c291', '#c7ecee', '#eadcf5', '#d1f2eb'];
+const TILTS = [-3, 2, -2, 3, -1.5, 2.5, -2.5, 1.5, -1];
+const HUE = ['#f6e58d', '#ffbe76', '#f8c291', '#c7ecee', '#eadcf5', '#d1f2eb', '#b8e6c8', '#ffd6e0', '#fff0ca'];
 
 export default function ServicesSection({ services = [] }) {
     const rootRef = useRef(null);
