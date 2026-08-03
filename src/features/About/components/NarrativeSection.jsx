@@ -23,9 +23,9 @@ import fourthSvgMobile from '../../../assets/mobie-view-svg-flow/4th.svg?url';
 
 import useScrubReveal from '../hooks/useScrubReveal';
 import HeroSection from './sections/HeroSection';
-import AboutMeSection from './sections/AboutMeSection';
 import ProjectsSection from './sections/ProjectsSection';
 import TechStackSection from './sections/TechStackSection';
+import ServicesSection from './sections/ServicesSection';
 import ContactSection from './sections/ContactSection';
 
 import './NarrativeSection.css';
@@ -36,6 +36,7 @@ const HOME_SECTIONS = [
   { id: 'about', label: 'About' },
   { id: 'projects', label: 'Projects' },
   { id: 'stack', label: 'Tech Stack' },
+  { id: 'services', label: 'Services' },
   { id: 'feed', label: 'Dev Log' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -293,7 +294,6 @@ const NarrativeSection = forwardRef((props, ref) => {
 
     // ── Destructure with safe fallbacks ───────────────────────────────────
     const hero = data.hero || {};
-    const about = data.about || {};
     const techStack = data.techStack || [];
     const contact = data.contact || {};
     const socials = data.socials || [];
@@ -368,11 +368,6 @@ const NarrativeSection = forwardRef((props, ref) => {
                 </picture>
             </div>
 
-            <AboutMeSection
-                about={about}
-                socials={socials}
-            />
-
             <div style={{ position: 'relative', width: '100%', zIndex: SVG_CONFIG.mobile.svg2.zIndex }}>
                 <picture>
                     <source media="(max-width: 768px)" srcSet={secondSvgMobile} />
@@ -395,6 +390,8 @@ const NarrativeSection = forwardRef((props, ref) => {
                 techStack={techStack}
                 compact={true}
             />
+
+            <ServicesSection services={data.services || []} />
 
             <PinnedFeedPost />
 

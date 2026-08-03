@@ -25,6 +25,7 @@ import AnimatedDivider from './ui/AnimatedDivider';
 import AnimatedFace from './ui/AnimatedFace';
 import ScrollyTellingSection from './sections/ScrollyTellingSection';
 import ContactSection from './sections/ContactSection';
+import AboutMeSection from './sections/AboutMeSection';
 import { ABOUT_SEQUENCES } from '../data/scrollyTellingData';
 import HeroPaperPlane from './ui/HeroPaperPlane';
 
@@ -196,6 +197,9 @@ const AboutDeepDive = forwardRef((props, ref) => {
                     />
                 </SafeErrorBoundary>
             </section>
+
+            {/* The homepage's About (intro/bio) section, moved here under the hero */}
+            <AboutMeSection about={data.about} />
 
             {/* â•â• ABOUT â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: 'clamp(48px, 8vh, 96px)', position: 'relative' }}>

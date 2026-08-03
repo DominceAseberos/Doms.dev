@@ -220,6 +220,33 @@
         "heading": "Open to Opportunities",
         "subtext": "Available for freelance projects, contract work, and full-time junior roles across web, mobile, and AI-assisted product development."
     },
+    "services": [
+        {
+            "title": "Mobile App",
+            "viz": "mobile",
+            "desc": "Cross-platform mobile apps built with Flutter and clean architectures."
+        },
+        {
+            "title": "Web App",
+            "viz": "web",
+            "desc": "Fast, responsive front-ends and full-stack platforms that scale."
+        },
+        {
+            "title": "SEO",
+            "viz": "seo",
+            "desc": "On-page optimization and performance that helps you rank."
+        },
+        {
+            "title": "AI Integration",
+            "viz": "ai",
+            "desc": "LLMs, ML models, and AI features wired into real products."
+        },
+        {
+            "title": "CMS",
+            "viz": "cms",
+            "desc": "Custom, easy-to-manage content systems for your team."
+        }
+    ],
     "education": [
         {
             "institution": "University of Mindanao Tagum City",

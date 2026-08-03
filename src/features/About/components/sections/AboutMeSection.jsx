@@ -26,7 +26,7 @@ export default function AboutMeSection({ about }) {
     const thirdPart = sentences.slice(3).map(s => s.trim()).join(' ');
 
     return (
-        <section className="ns-section" id="about">
+        <section className="ns-section" id="about-intro">
             <div style={{ display: 'flex', flexDirection: 'column', paddingTop: '0', paddingBottom: '10vh' }}>
                 <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>About</p>
                 <div className="ns-about-grid">
