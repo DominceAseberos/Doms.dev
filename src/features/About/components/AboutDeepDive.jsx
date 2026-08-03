@@ -1,15 +1,7 @@
-import React, { forwardRef, useState, useEffect, useRef } from 'react';
+﻿import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaEnvelope } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
-import githubSvg from '../../../assets/github.svg';
-import linkedinSvg from '../../../assets/linkedin.svg';
-import emailSvg from '../../../assets/email.svg';
-import xSvg from '../../../assets/X.svg';
-import threadsSvg from '../../../assets/threads.svg';
-import instagramSvg from '../../../assets/instagram.svg';
-import facebookSvg from '../../../assets/facebook.svg';
 import { fetchPortfolioData } from '../../../shared/portfolioService';
 import portfolioDataDefault from '../../../data/portfolioData.json';
 import aboutDataDefault from '../../../data/aboutData.json';
@@ -32,6 +24,7 @@ import AnimatedHandwritingText from '../../../components/AnimatedHandwritingText
 import AnimatedDivider from './ui/AnimatedDivider';
 import AnimatedFace from './ui/AnimatedFace';
 import ScrollyTellingSection from './sections/ScrollyTellingSection';
+import ContactSection from './sections/ContactSection';
 import { ABOUT_SEQUENCES } from '../data/scrollyTellingData';
 import HeroPaperPlane from './ui/HeroPaperPlane';
 
@@ -52,7 +45,7 @@ const ABOUT_SECTIONS = [
     { id: 'testimonials', label: 'Testimonials' },
 ];
 
-// ── Scrub reveal — re-registers whenever dataReady flips true ────────────
+// â”€â”€ Scrub reveal â€” re-registers whenever dataReady flips true â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function useScrubReveal(containerRef, dataReady) {
     useEffect(() => {
         if (!dataReady || !containerRef.current) return;
@@ -86,23 +79,7 @@ function useScrubReveal(containerRef, dataReady) {
     }, [dataReady, containerRef]);
 }
 
-// ── Icons ─────────────────────────────────────────────────────────────────
-const getSocialIcon = (label, theme) => {
-    const l = label.toLowerCase();
-    const style = { width: '100%', height: '100%', filter: theme === 'dark' ? 'invert(1)' : 'invert(0)' };
-
-    if (l === 'linkedin') return <img src={typeof linkedinSvg === 'object' ? linkedinSvg.src : linkedinSvg} alt="LinkedIn" style={style} />;
-    if (l === 'github') return <img src={typeof githubSvg === 'object' ? githubSvg.src : githubSvg} alt="GitHub" style={style} />;
-    if (l === 'email') return <img src={typeof emailSvg === 'object' ? emailSvg.src : emailSvg} alt="Email" style={style} />;
-
-    if (l === 'x' || l === 'twitter') return <img src={typeof xSvg === 'object' ? xSvg.src : xSvg} alt="X" style={style} />;
-    if (l === 'threads') return <img src={typeof threadsSvg === 'object' ? threadsSvg.src : threadsSvg} alt="Threads" style={style} />;
-    if (l === 'instagram') return <img src={typeof instagramSvg === 'object' ? instagramSvg.src : instagramSvg} alt="Instagram" style={style} />;
-    if (l === 'facebook') return <img src={typeof facebookSvg === 'object' ? facebookSvg.src : facebookSvg} alt="Facebook" style={style} />;
-    return <span className="ns-arrow">↗</span>;
-};
-
-// ── Configuration for Face Drawing ───────────────────────────────────────
+// â”€â”€ Configuration for Face Drawing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Easily configure the position, size, and animation settings of the face drawing
 const FACE_CONFIG = {
     top: '25%', // Adjust vertical position: move up (e.g. '15%') or down (e.g. '30%')
@@ -112,7 +89,7 @@ const FACE_CONFIG = {
     duration: 5.0 // Duration of the drawing animation (seconds)
 };
 
-// ── Main component ────────────────────────────────────────────────────────
+// â”€â”€ Main component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const AboutDeepDive = forwardRef((props, ref) => {
     const containerRef = useRef(null);
     const heroRef = useRef(null);
@@ -129,14 +106,13 @@ const AboutDeepDive = forwardRef((props, ref) => {
     // Ensure server and first client render both use 'dark' to prevent hydration mismatches
     const theme = isMounted ? themeStoreVal : 'dark';
 
-    // All content from aboutData.json — bundled default, refreshed from server
+    // All content from aboutData.json â€” bundled default, refreshed from server
     const [data, setData] = useState(() => aboutDataDefault);
     const [dataReady, setDataReady] = useState(false);
 
     useScrubReveal(containerRef, dataReady);
 
-
-    // ── Data fetch ────────────────────────────────────────────────────────
+    // â”€â”€ Data fetch â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     useEffect(() => {
         fetchAboutData()
             .then((d) => setData(d))
@@ -144,7 +120,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
             .finally(() => setDataReady(true));
     }, []);
 
-    // ── Dedicated Hero Bio Reveal ──────────────────────────────────────────
+    // â”€â”€ Dedicated Hero Bio Reveal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     // Waits ~1s for GlobalLoader to fade out, then reveals after handwriting finishes
     useEffect(() => {
         if (!bioRef.current) return;
@@ -158,7 +134,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
 
     const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
-    // ── Destructure with safe fallbacks ───────────────────────────────────
+    // â”€â”€ Destructure with safe fallbacks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const about = data.about || {};
     const experience = data.experience || [];
     const testimonials = data.testimonials || [];
@@ -167,7 +143,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
     return (
         <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" style={{ overflowX: 'hidden' }} suppressHydrationWarning>
 
-            {/* ══ HERO ═════════════════════════════════════════════════════ */}
+            {/* â•â• HERO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                 <div className="ns-hero-inner" style={{ textAlign: 'center', position: 'relative', zIndex: 1, width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                     <div className="ns-hero-text lit-content-block lit-transparent" suppressHydrationWarning>
@@ -221,24 +197,12 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </SafeErrorBoundary>
             </section>
 
-            <AnimatedDivider
-                style={{ marginTop: '-1rem', zIndex: 0, position: 'relative' }}
-                scrollStart="top 100%"
-                scrollEnd="bottom 15%"
-                scrub={0.5}
-                maskMaxSize={120}
-                tailFadeStart={25}
-                headThickness={5}
-            />
-
-            {/* ══ ABOUT ═══════════════════════════════════════════════ */}
-            <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: '0', position: 'relative' }}>
+            {/* â•â• ABOUT â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+            <section className="ns-section" id="about" style={{ borderTop: 'none', paddingTop: 'clamp(48px, 8vh, 96px)', position: 'relative' }}>
                 <ScrollyTellingSection sequences={ABOUT_SEQUENCES} sectionLabel="About" />
             </section>
 
-            <AnimatedDivider />
-
-            {/* ══ WORKFLOW ═════════════════════════════════════════════════ */}
+            {/* â•â• WORKFLOW â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section className="ns-section" id="workflow" style={{ borderTop: 'none', paddingTop: '40px' }}>
                 <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
                     <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
@@ -284,9 +248,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </div>
             </section>
 
-            <AnimatedDivider />
-
-            {/* ══ EXPERIENCE ═══════════════════════════════════════════════ */}
+            {/* â•â• EXPERIENCE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {experience.length > 0 && (
                 <section className="ns-section" id="experience" style={{ borderTop: 'none', paddingTop: '40px' }}>
                     <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Work History</p>
@@ -310,24 +272,18 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </section>
             )}
 
-            <AnimatedDivider />
-
-            {/* ══ EDUCATION ════════════════════════════════════════════════ */}
+            {/* â•â• EDUCATION â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <EducationSection />
 
-            <AnimatedDivider />
-
-            {/* ══ FEED ═════════════════════════════════════════════════════ */}
+            {/* â•â• FEED â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <FeedSection />
 
-            <AnimatedDivider />
-
-            {/* ══ GITHUB ═══════════════════════════════════════════════════ */}
+            {/* â•â• GITHUB â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <GithubContributionSection />
 
             <AnimatedDivider />
 
-            {/* ══ TESTIMONIALS ═════════════════════════════════════════════ */}
+            {/* â•â• TESTIMONIALS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {testimonials.length > 0 && (
                 <section className="ns-section" id="testimonials" style={{ borderTop: 'none', paddingTop: '40px' }}>
                     <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Endorsements</p>
@@ -337,7 +293,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
                             {[...testimonials, ...testimonials].map((t, i) => (
                                 <div key={i} className="ns-testimonial-card ns-sketch-box lit-content-block" style={{ padding: '2rem' }}>
                                     <HoverDrawBorder />
-                                    <p className="ns-testimonial-quote">“{t.quote}”</p>
+                                    <p className="ns-testimonial-quote">â€œ{t.quote}â€</p>
                                     <div className="ns-testimonial-author">
                                         <p className="ns-testimonial-name">{t.author}</p>
                                         <p className="ns-testimonial-role ui-sub-label">
@@ -351,41 +307,13 @@ const AboutDeepDive = forwardRef((props, ref) => {
                 </section>
             )}
 
-            {/* ══ CONNECT ═══════════════════════════════════════════════════ */}
-            {socials.length > 0 && (
-                <section className="ns-section" id="connect" style={{ borderTop: 'none', paddingTop: '40px', paddingBottom: '10vh' }}>
-                    <div className="ns-reveal" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <p className="ui-sub-label" style={{ marginBottom: '1.25rem', letterSpacing: '0.22em' }}>Connect</p>
-                        <div className="ns-bento-socials" style={{ justifyContent: 'center', gap: '1.5rem' }}>
-                            {socials.map((link) => (
-                                <a key={link.label} href={link.href}
-                                    target={link.external ? '_blank' : '_self'}
-                                    rel={link.external ? 'noopener noreferrer' : ''}
-                                    className="ns-bento-social-link" title={link.label}
-                                    onMouseEnter={(e) => {
-                                        gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
-                                            scale: 1.25,
-                                            rotation: (Math.random() - 0.5) * 20,
-                                            duration: 0.35,
-                                            ease: 'back.out(3)'
-                                        });
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        gsap.to(e.currentTarget.querySelectorAll('svg, img'), {
-                                            scale: 1,
-                                            rotation: 0,
-                                            duration: 0.7,
-                                            ease: 'elastic.out(1, 0.3)'
-                                        });
-                                    }}
-                                >
-                                    {getSocialIcon(link.label, theme)}
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
+            {/* â•â• CONNECT â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+            <ContactSection
+                contact={data.contact || {}}
+                socials={socials}
+                theme={theme}
+                footerOnly
+            />
 
             <SectionProgressIndicator sections={ABOUT_SECTIONS} />
             <DocViewerModal
