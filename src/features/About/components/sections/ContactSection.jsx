@@ -3,9 +3,10 @@ import { GithubIcon, LinkedInIcon } from '../../utils/techIcons';
 import ContactSquiggles from '../ui/ContactSquiggles';
 import landingData from '../../../../data/landingData.json';
 
-export default function ContactSection({ contact = {}, socials = [], projects = [], theme }) {
+export default function ContactSection({ contact = {}, socials = [], projects = [], theme, footerOnly = false }) {
     return (
         <>
+        {!footerOnly && (
         <section className="ns-contact-section" id="contact" style={{ position: 'relative', overflowX: 'clip', paddingBottom: '3rem' }}>
             <ContactSquiggles />
             <div className="ns-contact-header lit-content-block lit-transparent" style={{ position: 'relative', zIndex: 1 }}>
@@ -33,6 +34,7 @@ export default function ContactSection({ contact = {}, socials = [], projects = 
                 </div>
             </div>
         </section>
+        )}
 
             <footer style={{
                 width: '100vw',
