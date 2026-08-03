@@ -88,6 +88,14 @@ export const PLANE_CONFIG = {
     }
 };
 
+// Responsive plane body size per breakpoint (keeps the plane from being too
+// large on smaller laptop/screens, matching the responsive navbar approach)
+const PLANE_SIZES = {
+    desktop: { width: 360, height: 315 },
+    tablet: { width: 252, height: 221 },
+    mobile: { width: 190, height: 166 },
+};
+
 export default function HeroPaperPlane({ style = {} }) {
     const planeRef = useRef(null);
     const debugPathRef = useRef(null);   // fly-in path ref
@@ -229,8 +237,8 @@ export default function HeroPaperPlane({ style = {} }) {
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
-                    width: '400px',
-                    height: '350px',
+                    width: `${PLANE_SIZES[currentBreakpoint].width}px`,
+                    height: `${PLANE_SIZES[currentBreakpoint].height}px`,
                     pointerEvents: 'none',
                     zIndex: 5,
                     transformOrigin: '50% 50%',

@@ -3,4 +3,4 @@
 //   - Hero plane fly-in path
 //   - Hero plane exit path (on scroll)
 //   - AnimatedGlobe scroll plane path
-export const SHOW_PLANE_PATHS = true;
+export const SHOW_PLANE_PATHS = false;
