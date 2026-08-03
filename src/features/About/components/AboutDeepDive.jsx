@@ -82,6 +82,33 @@ function useScrubReveal(containerRef, dataReady) {
 
 // â”€â”€ Configuration for Face Drawing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Easily configure the position, size, and animation settings of the face drawing
+    // --- Section parallax: subtle scrub drift on .ns-parallax sections ---
+    // Independent of .ns-reveal child fades, which animate the inner elements.
+    function useSectionParallax(containerRef, dataReady) {
+        useEffect(() => {
+            if (!dataReady || !containerRef.current) return;
+            const ctx = gsap.context(() => {
+                const secs = gsap.utils.toArray('.ns-parallax', containerRef.current);
+                secs.forEach((sec) => {
+                    if (!sec) return;
+                    gsap.fromTo(sec, { y: 0 }, {
+                        y: '+=28',
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: sec,
+                            start: 'top 88%',
+                            end: 'bottom 50%',
+                            scrub: 0.6,
+                        },
+                    });
+                });
+            }, containerRef);
+            ScrollTrigger.refresh();
+            return () => ctx.revert();
+        }, [dataReady, containerRef]);
+    }
+
+
 const FACE_CONFIG = {
     top: '25%', // Adjust vertical position: move up (e.g. '15%') or down (e.g. '30%')
     right: '5%', // Adjust horizontal position
@@ -112,6 +139,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
     const [dataReady, setDataReady] = useState(false);
 
     useScrubReveal(containerRef, dataReady);
+    useSectionParallax(containerRef, dataReady);
 
     // â”€â”€ Data fetch â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     useEffect(() => {
@@ -207,7 +235,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
             </section>
 
             {/* â•â• WORKFLOW â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
-            <section className="ns-section" id="workflow" style={{ borderTop: 'none', paddingTop: '40px' }}>
+            <section className="ns-section ns-parallax" id="workflow" style={{ borderTop: 'none', paddingTop: '40px' }}>
                 <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '10vh' }}>
                     <div className="ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
                         <div style={{ flex: '1 1 400px' }}>
@@ -254,7 +282,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
 
             {/* â•â• EXPERIENCE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {experience.length > 0 && (
-                <section className="ns-section" id="experience" style={{ borderTop: 'none', paddingTop: '40px' }}>
+                <section className="ns-section ns-parallax" id="experience" style={{ borderTop: 'none', paddingTop: '40px' }}>
                     <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Work History</p>
                     <h2 className="ns-section-heading ns-reveal">Experience</h2>
                     <div className="ns-timeline">
@@ -289,7 +317,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
 
             {/* â•â• TESTIMONIALS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             {testimonials.length > 0 && (
-                <section className="ns-section" id="testimonials" style={{ borderTop: 'none', paddingTop: '40px' }}>
+                <section className="ns-section ns-parallax" id="testimonials" style={{ borderTop: 'none', paddingTop: '40px' }}>
                     <p className="ui-sub-label ns-section-label ns-reveal" suppressHydrationWarning>Endorsements</p>
                     <h2 className="ns-section-heading ns-reveal">Testimonials</h2>
                     <div className="ns-testimonials-wrapper ns-reveal">
