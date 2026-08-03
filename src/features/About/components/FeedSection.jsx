@@ -46,6 +46,16 @@ const FeedSection = () => {
     const recentPost = hasPosts ? sortedPosts[0] : null;
     const pastPosts = hasPosts ? sortedPosts.slice(1) : [];
     const [selectedId, setSelectedId] = useState(hasPosts ? sortedPosts[0].id : null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const postId = params.get('post');
+            if (postId && sortedPosts.some(p => p.id === postId)) {
+                setSelectedId(postId);
+            }
+        }
+    }, [sortedPosts]);
     const [showAllPastMobile, setShowAllPastMobile] = useState(false);
     const [expandedImage, setExpandedImage] = useState(null);
     const listScrollRef = useRef(null);
@@ -158,6 +168,7 @@ const FeedSection = () => {
                             <div className="feed-card-copy">
                                 <h3 className="feed-card-title ns-reveal">{selectedPost.title}</h3>
                                 {selectedPost.body ? <p className="feed-card-body ui-body-copy ns-reveal">{selectedPost.body}</p> : null}
+                                {selectedPost.fullDescription ? <p className="feed-card-full-desc ui-body-copy ns-reveal" style={{ marginTop: '1.2rem', whiteSpace: 'pre-wrap', lineHeight: '1.7', color: 'var(--text-secondary)' }}>{selectedPost.fullDescription}</p> : null}
                             </div>
 
                             {selectedMedia.length ? (

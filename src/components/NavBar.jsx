@@ -72,6 +72,7 @@ const NavBar = () => {
         { label: 'Home', to: '/' },
         { label: 'About', to: '/about' },
         { label: 'Projects', to: '/projects' },
+        { label: 'Feed', to: '/feed' },
         { label: 'Contact', to: '/contact' }
     ];
 

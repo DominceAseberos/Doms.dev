@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FeedTimeline from '../features/Feed/FeedTimeline.jsx';
+---
+
+<Layout 
+  title="Dev Feed — Domince Aseberos"
+  description="Short build notes from project work, architecture decisions, ML experiments, and interface polish."
+>
+  <FeedTimeline client:only="react" />
+</Layout>

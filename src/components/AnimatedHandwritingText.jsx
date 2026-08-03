@@ -132,7 +132,7 @@ export default function AnimatedHandwritingText({
             className={className}
             aria-label={text}
             preserveAspectRatio="xMidYMid meet"
-            style={{ height: '1em', width: 'auto', display: 'block', overflow: 'visible', margin: '0 auto' }}
+            style={{ height: '1em', width: 'auto', display: 'block', overflow: 'visible', margin: '0' }}
         >
             <path
                 d={pathData}

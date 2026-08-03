@@ -2,31 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import Globe from 'react-globe.gl';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
-import { SHOW_PLANE_PATHS } from './planeDebugConfig';
 
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-
-// ── SCROLL PLANE CONFIG ─────────────────────────────────────────────────────
-// Edit this block to customize the scroll-based plane animation!
-const SCROLL_PLANE_CONFIG = {
-
-    // Starting position of the plane (relative to center of the map box)
-    initial: { x: -900, y: -500, scale: 0.15, rotation: -45 },
-
-    // Waypoints the plane flies through before landing (add/remove freely!)
-    // The pin duration auto-scales with the number of waypoints.
-    flightPath: [
-        { x: -400, y: -300 },
-        { x: 200, y: 100 },
-        { x: 0, y: 0 }, // Final landing point (center of map)
-    ],
-
-    // How much pinned scroll distance each waypoint costs
-    scrollPerPoint: 80, // vh units — increase for slower flight
-    // Extra pinned distance after the flight for the morph + globe reveal
-    scrollForMorph: 120, // vh units
-};
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%', scrollEnd = 'bottom 40%' }) {
     const globeEl = useRef();
@@ -35,8 +12,6 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
     const courseRef = useRef();
     const bgRef = useRef();
     const globeWrapperRef = useRef();
-    const creasesRef = useRef();
-    const debugPathRef = useRef();
     const [dimensions, setDimensions] = useState({ width: 600, height: 600 });
     const [countries, setCountries] = useState({ features: [] });
     const [isClient, setIsClient] = useState(false);
@@ -99,112 +74,45 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
         globeEl.current.controls().autoRotate = false;
         globeEl.current.controls().enableZoom = false;
 
-        // Set final POV (Deep zoom into Tagum)
+        // Set initial POV
         globeEl.current.pointOfView({
             lat: targetLocation.lat,
             lng: targetLocation.lng,
-            altitude: 0.35
+            altitude: 2.0
         }, 0);
 
-        // ── PLANE TO MAP MORPHING TIMELINE ──
-
-        // Plane Polygon (8 points)
-        const planePolygon = 'polygon(50% 0%, 81% 29%, 90% 48%, 57% 49%, 52% 64%, 46% 49%, 14% 49%, 21% 29%)';
-        // Map Polygon (8 points, mapped for smooth transition to a rounded rectangle look)
-        const mapPolygon = 'polygon(50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%, 0% 0%)';
-
-        // 1. Initial State Setup
         gsap.set(bgRef.current, {
-            clipPath: planePolygon,
-            x: SCROLL_PLANE_CONFIG.initial.x,
-            y: SCROLL_PLANE_CONFIG.initial.y,
-            rotation: SCROLL_PLANE_CONFIG.initial.rotation,
-            scale: SCROLL_PLANE_CONFIG.initial.scale,
+            scale: 1,
             width: '100%',
-            borderRadius: '0px'
+            borderRadius: '24px'
         });
 
-        // Draw the debug path if enabled
-        if (SHOW_PLANE_PATHS && debugPathRef.current) {
-            try {
-                const fullPath = [
-                    { x: SCROLL_PLANE_CONFIG.initial.x, y: SCROLL_PLANE_CONFIG.initial.y },
-                    ...SCROLL_PLANE_CONFIG.flightPath
-                ];
-                const rawPath = MotionPathPlugin.arrayToRawPath(fullPath, { curviness: 1.5 });
-                const pathStr = MotionPathPlugin.rawPathToString(rawPath);
-                debugPathRef.current.setAttribute('d', pathStr);
-                debugPathRef.current.style.display = 'block';
-            } catch (e) {
-                console.error('Debug path error:', e);
-            }
-        }
-
-        gsap.set(globeWrapperRef.current, { opacity: 0 });
-        gsap.set(creasesRef.current, { opacity: 1 });
-        gsap.set(containerRef.current, { opacity: 0 }); // Hide empty space until plane flies in
+        gsap.set(globeWrapperRef.current, { opacity: 1 });
+        gsap.set(containerRef.current, { opacity: 1 }); 
 
         if (logoRef.current && courseRef.current) {
             gsap.set(logoRef.current, { opacity: 0, x: 20, scale: 0.8 });
             gsap.set(courseRef.current, { opacity: 0, x: 40, scale: 0.8 });
         }
 
-        // 2. Auto-calculate pin length from number of waypoints
-        const numPoints = SCROLL_PLANE_CONFIG.flightPath.length;
-        const pinDistance = (numPoints * SCROLL_PLANE_CONFIG.scrollPerPoint) + SCROLL_PLANE_CONFIG.scrollForMorph;
-
-        // 3. Build Scroll Timeline — pin the parent row section
         const sectionEl = scrollTriggerRef.current?.closest('.ns-scrollytelling-row') || scrollTriggerRef.current;
 
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: sectionEl,
                 start: 'top top',
-                end: `+=${pinDistance}%`,  // Auto-scales with path length!
+                end: scrollEnd, 
                 pin: true,
                 scrub: 1.5,
                 anticipatePin: 1,
-                refreshPriority: 1, // Ensure this pin spacer is calculated FIRST
+                refreshPriority: 1, 
             }
         });
 
-        // Phase 1: Fly along the curved path — reveal container at very start
-        tl.set(containerRef.current, { opacity: 1 }, 0); // Show container the moment scroll starts
-        tl.to(bgRef.current, {
-            motionPath: {
-                path: SCROLL_PLANE_CONFIG.flightPath,
-                curviness: 1.5,
-                autoRotate: 90,
-            },
-            scale: 1,
-            ease: 'power2.out',
-            duration: numPoints, // More points = more timeline duration = more scroll
-        }, 0);
-
-        // Phase 2: Morph into Map
-        tl.to(bgRef.current, {
-            clipPath: mapPolygon,
-            borderRadius: '24px', // Smooth corners
-            rotation: 0, // Reset rotation back to upright
-            ease: "power2.inOut",
-            duration: 1
-        }, ">"); // Right after flight lands
-
-        // Phase 3: Fade out creases, Fade in Globe
-        tl.to(creasesRef.current, { opacity: 0, duration: 0.5 }, ">-0.5");
-        tl.to(globeWrapperRef.current, { opacity: 1, duration: 1 }, "<");
-
-        // Phase 4: Overlays Pop In
-        if (logoRef.current && courseRef.current) {
-            tl.to(logoRef.current, { opacity: 1, x: 0, scale: 1, duration: 0.5, ease: "back.out(1.5)" }, ">-0.2");
-            tl.to(courseRef.current, { opacity: 1, x: 0, scale: 1, duration: 0.5, ease: "back.out(1.5)" }, "<0.2");
-        }
-
-        // Phase 5: Deep zoom into Tagum
+        // Zoom into Tagum and fade in overlays
         tl.to({}, {
-            duration: 1, // Empty tween just to trigger the pointOfView in scrub
+            duration: 1, 
             onUpdate: function () {
-                // We use progress of this specific tween to interpolate zoom
                 const p = this.progress();
                 const currentAlt = 2.0 - (p * 1.65); // Zoom from 2.0 down to 0.35
                 if (globeEl.current) {
@@ -212,56 +120,27 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
                         lat: targetLocation.lat,
                         lng: targetLocation.lng,
                         altitude: currentAlt
-                    }, 0); // 0ms transition because scrub is handling it
+                    }, 0); 
                 }
             }
-        }, ">-0.5");
+        }, 0);
+
+        if (logoRef.current && courseRef.current) {
+            tl.to(logoRef.current, { opacity: 1, x: 0, scale: 1, duration: 0.3, ease: "back.out(1.5)" }, 0.7);
+            tl.to(courseRef.current, { opacity: 1, x: 0, scale: 1, duration: 0.3, ease: "back.out(1.5)" }, 0.7);
+        }
 
         return () => {
             if (tl) tl.kill();
         };
-    }, [scrollTriggerRef, isClient]);
+    }, [scrollTriggerRef, isClient, scrollEnd]);
 
     if (!isClient) return <div style={{ width: '100%', height: '100%', minHeight: '500px' }} />;
 
     return (
-        <div ref={containerRef} style={{ width: '100%', height: '100%', minHeight: '500px', maxWidth: '500px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', opacity: 0 }}>
-            {/* DEBUG PATH — outside bgRef so clipping doesn't hide it */}
-            {SHOW_PLANE_PATHS && (
-                <svg style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    width: '1px',
-                    height: '1px',
-                    overflow: 'visible',
-                    pointerEvents: 'none',
-                    zIndex: 9999,
-                }}>
-                    {/* Curved path line */}
-                    <path
-                        ref={debugPathRef}
-                        fill="none"
-                        stroke="red"
-                        strokeWidth="3"
-                        strokeDasharray="10, 6"
-                        opacity="0.8"
-                        style={{ display: 'none' }}
-                    />
-                    {/* Start dot */}
-                    <circle cx={SCROLL_PLANE_CONFIG.initial.x} cy={SCROLL_PLANE_CONFIG.initial.y} r="8" fill="blue" />
-                    {/* Waypoint dots */}
-                    {SCROLL_PLANE_CONFIG.flightPath.map((pt, i) => (
-                        <circle key={i} cx={pt.x} cy={pt.y} r="8" fill="blue" />
-                    ))}
-                </svg>
-            )}
-
-            {/* Inner wrapper for the map to hide corners without clipping the logo */}
-
+        <div ref={containerRef} style={{ width: '100%', height: '100%', minHeight: '500px', maxWidth: '500px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
             <div ref={bgRef} style={{ width: '100%', height: '100%', borderRadius: '24px', overflow: 'hidden', backgroundColor: '#050505', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', position: 'absolute', top: 0, right: 0 }}>
-                {/* Globe inner container to keep it pinned to the right when bg expands */}
-                <div ref={globeWrapperRef} style={{ position: 'absolute', top: 0, right: 0, width: `${dimensions.width}px`, height: '100%', pointerEvents: 'none', opacity: 0 }}>
+                <div ref={globeWrapperRef} style={{ position: 'absolute', top: 0, right: 0, width: `${dimensions.width}px`, height: '100%', pointerEvents: 'none' }}>
                     <Globe
                         ref={globeEl}
                         width={dimensions.width}
@@ -270,45 +149,26 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
                         showAtmosphere={true}
                         atmosphereColor="#baff29"
                         atmosphereAltitude={0.15}
-
-                        // Textureless, flat geometry for stylized look
                         globeImageUrl={null}
                         bumpImageUrl={null}
-
-                        // Render country polygons
                         polygonsData={countries.features}
                         polygonAltitude={0.01}
-                        polygonCapColor={() => '#e8e6e3'} // Off-white cream color to match site
+                        polygonCapColor={() => '#e8e6e3'} 
                         polygonSideColor={() => 'rgba(0, 0, 0, 0.05)'}
                         polygonStrokeColor={() => '#d4d0ca'}
-
-                        // Render pulsing ring on Tagum City
                         ringsData={[targetLocation]}
                         ringColor={() => '#baff29'}
                         ringMaxRadius={5}
                         ringPropagationSpeed={2}
                         ringRepeatPeriod={1000}
-
-                        // Add a glowing dot
                         pointsData={[targetLocation]}
                         pointColor={() => '#baff29'}
                         pointAltitude={0.05}
                         pointRadius={0.1}
                     />
                 </div>
-
-                {/* Paper Plane Creases (Visible initially, fades out after morph) */}
-                <svg ref={creasesRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 100, pointerEvents: 'none' }}>
-                    {/* Left wing crease */}
-                    <line x1="50%" y1="0%" x2="46%" y2="49%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" strokeLinecap="round" />
-                    {/* Right wing crease */}
-                    <line x1="50%" y1="0%" x2="57%" y2="49%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" strokeLinecap="round" />
-                    {/* Center fold down to the tail */}
-                    <line x1="50%" y1="0%" x2="52%" y2="64%" stroke="rgba(255,255,255,0.8)" strokeWidth="6" strokeLinecap="round" />
-                </svg>
             </div>
 
-            {/* School Logo Overlay (Revealed via GSAP near end of zoom) */}
             <div ref={logoRef} style={{
                 position: 'absolute',
                 top: '50%',
@@ -336,7 +196,6 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
                 </div>
             </div>
 
-            {/* Course Overlay */}
             <div ref={courseRef} style={{
                 position: 'absolute',
                 top: '50%',
@@ -369,3 +228,4 @@ export default function AnimatedGlobe({ scrollTriggerRef, scrollStart = 'top 80%
         </div>
     );
 }
+

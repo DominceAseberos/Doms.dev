@@ -98,44 +98,50 @@ const PinnedFeedPost = () => {
                     const mutedTextColor = isDark ? '#bbb' : '#555';
 
                     return (
-                        <article key={post.id || idx} className="pinned-sticky-note lit-content-block lit-transparent" style={{ width: '100%', margin: '0', '--note-color': bgColor, color: textColor }}>
-                            <PushPinSVG color="#66cc66" style={{ position: 'absolute', top: '5px', left: 'clamp(5px, 2vw, 15px)', zIndex: 10 }} />
-                            <PushPinSVG color="#ffdd44" style={{ position: 'absolute', top: '5px', right: 'clamp(5px, 2vw, 15px)', zIndex: 10 }} />
-                            
-                            <div className="feed-detail-meta ui-sub-label ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', color: mutedTextColor, fontSize: 'clamp(0.5rem, 1.5vw, 0.75rem)' }}>
-                                <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <span className="feed-type" style={{ fontWeight: 'bold' }}>
-                                        {post.type === 'image' ? 'Image Post' : 'Text Post'}
-                                    </span>
-                                    <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
+                        <a 
+                            key={post.id || idx} 
+                            href={`/feed#post-${post.id}`} 
+                            style={{ textDecoration: 'none', display: 'block', outline: 'none' }}
+                        >
+                            <article className="pinned-sticky-note lit-content-block lit-transparent" style={{ width: '100%', margin: '0', '--note-color': bgColor, color: textColor }}>
+                                <PushPinSVG color="#66cc66" style={{ position: 'absolute', top: '5px', left: 'clamp(5px, 2vw, 15px)', zIndex: 10 }} />
+                                <PushPinSVG color="#ffdd44" style={{ position: 'absolute', top: '5px', right: 'clamp(5px, 2vw, 15px)', zIndex: 10 }} />
+                                
+                                <div className="feed-detail-meta ui-sub-label ns-reveal" style={{ display: 'flex', justifyContent: 'space-between', color: mutedTextColor, fontSize: 'clamp(0.5rem, 1.5vw, 0.75rem)' }}>
+                                    <div style={{ display: 'flex', gap: '1rem' }}>
+                                        <span className="feed-type" style={{ fontWeight: 'bold' }}>
+                                            {post.type === 'image' ? 'Image Post' : 'Text Post'}
+                                        </span>
+                                        <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="feed-card-copy" style={{ marginTop: 'clamp(0.5rem, 2vw, 1rem)' }}>
-                                <h3 className="feed-card-title ns-reveal" style={{ fontSize: 'clamp(0.8rem, 2.5vw, 1.5rem)', marginBottom: '0.5rem' }}>{post.title}</h3>
-                                {post.body && (
-                                    <p className="feed-card-body ui-body-copy ns-reveal" style={{ fontSize: 'clamp(0.6rem, 2vw, 0.85rem)', lineHeight: '1.5', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                        {post.body}
-                                    </p>
+                                <div className="feed-card-copy" style={{ marginTop: 'clamp(0.5rem, 2vw, 1rem)' }}>
+                                    <h3 className="feed-card-title ns-reveal" style={{ fontSize: 'clamp(0.8rem, 2.5vw, 1.5rem)', marginBottom: '0.5rem' }}>{post.title}</h3>
+                                    {post.body && (
+                                        <p className="feed-card-body ui-body-copy ns-reveal" style={{ fontSize: 'clamp(0.6rem, 2vw, 0.85rem)', lineHeight: '1.5', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                            {post.body}
+                                        </p>
+                                    )}
+                                </div>
+
+                                {selectedMedia.length > 0 && (
+                                    <div className={`feed-media-wrap ns-reveal ${selectedMedia.length > 1 ? 'feed-media-grid' : ''}`} style={{ marginTop: '1.5rem', border: 'none', background: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                                        {selectedMedia.slice(0, 2).map((src, index) => (
+                                            <div key={index} className="feed-media-item" style={{ width: '100%', aspectRatio: '16 / 10', overflow: 'hidden', borderRadius: '4px', boxShadow: '0 2px 6px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'rgba(0,0,0,0.03)' }}>
+                                                <img
+                                                    src={src}
+                                                    alt={post.title}
+                                                    className="feed-media"
+                                                    loading="lazy"
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
                                 )}
-                            </div>
-
-                            {selectedMedia.length > 0 && (
-                                <div className={`feed-media-wrap ns-reveal ${selectedMedia.length > 1 ? 'feed-media-grid' : ''}`} style={{ marginTop: '1.5rem', border: 'none', background: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                                    {selectedMedia.slice(0, 2).map((src, index) => (
-                                        <div key={index} className="feed-media-item" style={{ width: '100%', aspectRatio: '16 / 10', overflow: 'hidden', borderRadius: '4px', boxShadow: '0 2px 6px rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'rgba(0,0,0,0.03)' }}>
-                                            <img
-                                                src={src}
-                                                alt={post.title}
-                                                className="feed-media"
-                                                loading="lazy"
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </article>
+                            </article>
+                        </a>
                     );
                 })}
             </div>

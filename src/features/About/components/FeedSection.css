@@ -171,7 +171,13 @@
 }
 
 @media (min-width: 1025px) {
-    .feed-detail-card,
+    .feed-detail-card {
+        height: auto;
+        min-height: 32rem;
+        max-height: 48rem;
+        overflow-y: auto;
+    }
+    
     .feed-list-card {
         height: 32rem;
         min-height: 32rem;

@@ -1,7 +1,6 @@
 import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaEnvelope } from 'react-icons/fa6';
 import { fetchAboutData } from '../../../shared/aboutService';
 import githubSvg from '../../../assets/github.svg';
 import linkedinSvg from '../../../assets/linkedin.svg';
@@ -10,23 +9,14 @@ import xSvg from '../../../assets/X.svg';
 import threadsSvg from '../../../assets/threads.svg';
 import instagramSvg from '../../../assets/instagram.svg';
 import facebookSvg from '../../../assets/facebook.svg';
-import { fetchPortfolioData } from '../../../shared/portfolioService';
-import portfolioDataDefault from '../../../data/portfolioData.json';
 import aboutDataDefault from '../../../data/aboutData.json';
-import ProfileMorphCard from '../../../components/ProfileMorphCard';
 import EducationSection from './EducationSection';
 import GithubContributionSection from './GithubContributionSection';
-import FeedSection from './FeedSection';
-import PremiumMotionCards from './PremiumMotionCards';
-import PhilosophyCards from './PhilosophyCards';
 import HrmsPipelineMotionCards from './HrmsPipelineMotionCards';
-import ScrollTypewriter from './ui/ScrollTypewriter';
 import LyricsScrubText from './ui/LyricsScrubText';
 import DocViewerModal from '../../../components/DocViewerModal';
 import SafeErrorBoundary from '../../../components/SafeErrorBoundary';
 import SectionProgressIndicator from '../../../components/SectionProgressIndicator';
-import useLoadingStore from '../../../store/useLoadingStore';
-import useLogoStore from '../../../store/useLogoStore';
 import useThemeStore from '../../../store/useThemeStore';
 import AnimatedHandwritingText from '../../../components/AnimatedHandwritingText';
 import AnimatedDivider from './ui/AnimatedDivider';
@@ -47,7 +37,6 @@ const ABOUT_SECTIONS = [
     { id: 'workflow', label: 'Process' },
     { id: 'experience', label: 'Experience' },
     { id: 'education', label: 'Education' },
-    { id: 'feed', label: 'Dev Feed' },
     { id: 'github', label: 'GitHub' },
     { id: 'testimonials', label: 'Testimonials' },
 ];
@@ -118,7 +107,6 @@ const AboutDeepDive = forwardRef((props, ref) => {
     const heroRef = useRef(null);
     const bioRef = useRef(null);
     const stripesRef = useRef([]);
-    const isLoading = useLoadingStore((state) => state.isLoading);
     const themeStoreVal = useThemeStore((state) => state.theme);
     const [isMounted, setIsMounted] = useState(false);
 
@@ -314,11 +302,6 @@ const AboutDeepDive = forwardRef((props, ref) => {
 
             {/* ══ EDUCATION ════════════════════════════════════════════════ */}
             <EducationSection />
-
-            <AnimatedDivider />
-
-            {/* ══ FEED ═════════════════════════════════════════════════════ */}
-            <FeedSection />
 
             <AnimatedDivider />
 

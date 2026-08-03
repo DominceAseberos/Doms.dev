@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import ScrollTypewriter from '../ui/ScrollTypewriter';
+import DecoderText from '../ui/DecoderText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -91,7 +91,7 @@ export default function ScrollyTellingSection({ sequences = [], children, sectio
                             {scene.text.includes('|||') ? (
                                 <div style={{ position: 'relative', width: '100%' }}>
                                     <div className="part-1-text">
-                                        <ScrollTypewriter 
+                                        <DecoderText 
                                             text={scene.text.split('|||')[0]} 
                                             highlights={scene.highlights}
                                             className="ns-lyrics-text"
@@ -99,7 +99,7 @@ export default function ScrollyTellingSection({ sequences = [], children, sectio
                                         />
                                     </div>
                                     <div className="part-2-text" style={{ marginTop: '1.5rem' }}>
-                                        <ScrollTypewriter 
+                                        <DecoderText 
                                             text={scene.text.split('|||')[1]} 
                                             highlights={scene.highlights}
                                             className="ns-lyrics-text"
@@ -108,7 +108,7 @@ export default function ScrollyTellingSection({ sequences = [], children, sectio
                                     </div>
                                 </div>
                             ) : (
-                                <ScrollTypewriter 
+                                <DecoderText 
                                     text={scene.text} 
                                     highlights={scene.highlights}
                                     className="ns-lyrics-text"
