@@ -1831,3 +1831,37 @@ html[data-theme='light'] .ns-testimonial-name {
     .ns-scrolly-row { gap: 1.5rem; min-height: auto; padding: 2.5rem 0; }
     .ns-scrolly-monotext { font-size: clamp(1rem, 4.5vw, 1.4rem); }
 }
+
+/* ── About page: unified notebook/terminal section treatment (scoped) ───────── */
+.ns-about-dive .ns-section-label {
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gray);
+}
+.ns-about-dive .ns-section-label::before {
+    content: '$';
+    color: var(--accent);
+    margin-right: 0.5em;
+    font-weight: 700;
+}
+.ns-about-dive .ns-section-heading {
+    font-family: 'Syne', sans-serif;
+}
+
+/* Experience timeline — notebook sketch cards + mono accents */
+.ns-about-dive .ns-timeline-role {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.35rem;
+    letter-spacing: 0.01em;
+}
+.ns-about-dive .ns-timeline-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+}
+.ns-about-dive .ns-timeline-company {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.76rem;
+}

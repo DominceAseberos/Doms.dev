@@ -142,7 +142,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
     const socials = data.socials || [];
 
     return (
-        <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section" style={{ overflowX: 'hidden' }} suppressHydrationWarning>
+        <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section ns-about-dive" style={{ overflowX: 'hidden' }} suppressHydrationWarning>
 
             {/* â•â• HERO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
