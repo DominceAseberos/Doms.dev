@@ -136,7 +136,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.05;
+    opacity: 0.02;
     mix-blend-mode: multiply;
     pointer-events: none;
     z-index: 999;
@@ -145,7 +145,7 @@ body {
 html[data-theme='dark'] #global-graffiti-bg {
     filter: invert(1);
     mix-blend-mode: screen;
-    opacity: 0.04;
+    opacity: 0;
 }
 
 /* Custom SVG cursor for interactive elements */

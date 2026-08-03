@@ -246,7 +246,7 @@ html[data-theme='light'] .name-first {
 
 .name-last {
     display: block;
-    margin-left: 1em;
+    margin-left: 0;
     filter:
         drop-shadow(2px 2px 0 var(--border)) drop-shadow(-1px -1px 0 var(--border));
 }

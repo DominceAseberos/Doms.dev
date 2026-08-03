@@ -1,7 +1,7 @@
 import React from 'react';
 import AINodes from '../ui/AINodes';
 import AIWebIntegration from '../ui/AIWebIntegration';
-import ScrollTypewriter from '../ui/ScrollTypewriter';
+import DecoderText from '../ui/DecoderText';
 import educationHatSvg from '../../../../assets/education-hat copy.svg';
 import workflowIconSvg from '../../../../assets/workflow-icon.svg';
 import aboutMeSvg from '../../../../assets/about-me.svg';
@@ -34,7 +34,7 @@ export default function AboutMeSection({ about }) {
 
                         {/* FIRST PART - Scroll Scrubbed Typewriter */}
                         {firstPart.length > 0 && (
-                            <ScrollTypewriter
+                            <DecoderText
                                 text={firstPart}
                                 highlights={highlightsList}
                                 className="ns-lyrics-text"
@@ -49,7 +49,7 @@ export default function AboutMeSection({ about }) {
 
                         {/* SECOND PART - Scroll Scrubbed Typewriter */}
                         {secondPart.length > 0 && (
-                            <ScrollTypewriter
+                            <DecoderText
                                 text={secondPart}
                                 highlights={highlightsList}
                                 className="ns-lyrics-text"
@@ -64,7 +64,7 @@ export default function AboutMeSection({ about }) {
 
                         {/* THIRD PART - Scroll Scrubbed Typewriter */}
                         {thirdPart.length > 0 && (
-                            <ScrollTypewriter
+                            <DecoderText
                                 text={thirdPart}
                                 highlights={highlightsList}
                                 className="ns-lyrics-text"
