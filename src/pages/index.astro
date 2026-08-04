@@ -1,11 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import AboutPage from '../features/About/index.jsx';
+import HomeLayout from '../layouts/HomeLayout.astro';
+import HomePage from '../features/home/HomePage';
 ---
 
-<Layout 
-  title="Domince Aseberos — Creative Full Stack Developer"
-  description="Creative Full Stack Developer in Davao, Philippines. Building high-performance web experiences where code meets motion."
+<HomeLayout
+  title="Domince Aseberos - Creative Full Stack Developer"
+  description="Creative full stack developer in Davao, Philippines, building thoughtful digital products through code, design, and interaction."
 >
-  <AboutPage client:only="react" />
-</Layout>
+  <HomePage client:load />
+</HomeLayout>

@@ -1,0 +1,35 @@
+---
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, 'https://www.dominceaseberos.tech');
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content={description} />
+  <meta name="author" content="Domince Aseberos" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Domince Aseberos Portfolio" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content="https://www.dominceaseberos.tech/og-preview.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content="https://www.dominceaseberos.tech/og-preview.png" />
+  <title>{title}</title>
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context':'https://schema.org', '@type':'Person', name:'Domince Aseberos', url:'https://www.dominceaseberos.tech', jobTitle:'Creative Full Stack Developer', address:{ '@type':'PostalAddress', addressLocality:'Davao', addressCountry:'PH' } })} />
+</head>
+<body><slot /></body>
+</html>
+<style is:global>
+  @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,400&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap');
+  *,*::before,*::after{box-sizing:border-box}html{background:#d7d7d2;color:#17181b;scroll-behavior:auto}body{margin:0;min-width:320px;overflow-x:hidden;font-family:'Manrope',sans-serif}button,a{color:inherit}::selection{background:#455ce9;color:#fff}
+</style>
