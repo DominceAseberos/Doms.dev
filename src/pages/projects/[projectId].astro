@@ -1,22 +1,10 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import ProjectDetailsPage from '../../features/Projects/components/ProjectDetailsPage.jsx';
+import PortfolioLayout from '../../layouts/PortfolioLayout.astro';
+import { CaseStudyPage } from '../../features/site/PortfolioPages';
 import portfolioData from '../../data/portfolioData.json';
-
-export function getStaticPaths() {
-  return portfolioData.projects.map((project) => ({
-    params: { projectId: project.id },
-    props: { projectDraft: project },
-  }));
-}
-
-const { projectDraft } = Astro.props;
+export function getStaticPaths() { return portfolioData.projects.map((project) => ({ params: { projectId: project.id }, props: { project } })); }
+const { project } = Astro.props;
 ---
-
-<Layout 
-  title={`${projectDraft.title} — Domince Aseberos`}
-  description={projectDraft.tagline || `View the case study for ${projectDraft.title}.`}
->
-  {/* We pass the pre-fetched data directly to the component */}
-  <ProjectDetailsPage initialProject={projectDraft} client:load />
-</Layout>
+<PortfolioLayout title={`${project.title} — Domince Aseberos`} description={project.shortDescription || `View the case study for ${project.title}.`}>
+  <CaseStudyPage project={project} client:load />
+</PortfolioLayout>

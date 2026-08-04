@@ -1,11 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import ContactPage from '../features/Contact/index.jsx';
+import PortfolioLayout from '../layouts/PortfolioLayout.astro';
+import { ContactPage } from '../features/site/PortfolioPages';
 ---
-
-<Layout 
-  title="Contact — Domince Aseberos"
-  description="Get in touch with Domince Aseberos for creative web development."
->
+<PortfolioLayout title="Contact — Domince Aseberos" description="Get in touch with Domince Aseberos for creative web development.">
   <ContactPage client:only="react" />
-</Layout>
+</PortfolioLayout>
