@@ -127,7 +127,7 @@ html[data-theme='light'] .ns-section-label {
 /* ── HERO section ────────────────────────────────────────────────────────── */
 .ns-hero-section {
     position: relative;
-    min-height: 65vh;
+    min-height: 90vh;
     display: flex;
     align-items: center;
     padding: clamp(100px, 14vh, 160px) clamp(20px, 5vw, 72px) clamp(20px, 2vh, 40px);

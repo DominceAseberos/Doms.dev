@@ -1,4 +1,4 @@
-﻿import React, { forwardRef, useState, useEffect, useRef } from 'react';
+import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { fetchAboutData } from '../../../shared/aboutService';
@@ -173,7 +173,7 @@ const AboutDeepDive = forwardRef((props, ref) => {
         <div ref={(el) => { containerRef.current = el; if (ref) ref.current = el; }} className="narrative-section ns-about-dive" style={{ overflowX: 'hidden' }} suppressHydrationWarning>
 
             {/* â•â• HERO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
-            <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <section ref={heroRef} className="ns-hero-section" id="hero" style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                 <div className="ns-hero-inner" style={{ textAlign: 'center', position: 'relative', zIndex: 1, width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
                     <div className="ns-hero-text lit-content-block lit-transparent" suppressHydrationWarning>
                         <h1 className="ns-hero-name ns-reveal" suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
