@@ -1,11 +1,7 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import ProjectsPage from '../../features/Projects/index.jsx';
+import PortfolioLayout from '../../layouts/PortfolioLayout.astro';
+import { WorkPage } from '../../features/site/PortfolioPages';
 ---
-
-<Layout 
-  title="Selected Work — Domince Aseberos"
-  description="Explore the creative web development portfolio of Domince Aseberos."
->
-  <ProjectsPage client:load />
-</Layout>
+<PortfolioLayout title="Selected Work — Domince Aseberos" description="Explore the creative web development portfolio of Domince Aseberos.">
+  <WorkPage client:load />
+</PortfolioLayout>

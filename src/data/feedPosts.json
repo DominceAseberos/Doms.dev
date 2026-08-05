@@ -1,5 +1,20 @@
 [
     {
+        "id": "post-educational-tour-cebu",
+        "type": "image",
+        "title": "Educational Tour to Cebu 2026",
+        "body": "Visited several big companies and gained insights.",
+        "fullDescription": "The educational tour in Cebu served as a vital bridge between my theoretical knowledge and practical industry applications. As an incoming 4th-year BSCS student majoring in AI/ML, the goal of my immersion was to explore enterprise-grade software architecture, observe real-world AI integration, and understand the core competencies I need to be industry-ready. This narrative report chronicles my experiences, technical observations, and insights gathered from visiting several leading technology firms in Cebu.",
+        "createdAt": "2026-07-13",
+        "tags": ["Educational Tour", "Cebu", "Industry Immersion"],
+        "images": [
+            "/assets/uploads/feed-post/educational_tour1.webp",
+            "/assets/uploads/feed-post/educational_tour2.webp",
+            "/assets/uploads/feed-post/educational_tour3.webp",
+            "/assets/uploads/feed-post/educational_tour4.webp"
+        ]
+    },
+    {
         "id": "post-hero-physics",
         "type": "image",
         "title": "Interactive Lighting",

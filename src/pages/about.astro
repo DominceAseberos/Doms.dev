@@ -1,13 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import AboutDeepDive from '../features/About/components/AboutDeepDive.jsx';
+import PortfolioLayout from '../layouts/PortfolioLayout.astro';
+import { AboutPage } from '../features/site/PortfolioPages';
 ---
-
-<Layout 
-  title="About Domince Aseberos — How I Got Here"
-  description="The path that got me here - experience, education, what I work on day to day, and what people say about working with me."
->
-  <div className="relative min-h-screen">
-      <AboutDeepDive client:only="react" />
-  </div>
-</Layout>
+<PortfolioLayout title="About Domince Aseberos — How I Got Here" description="Experience, education, capabilities, and the path behind Domince Aseberos's work.">
+  <AboutPage client:load />
+</PortfolioLayout>

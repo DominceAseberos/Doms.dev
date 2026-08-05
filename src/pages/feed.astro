@@ -1,0 +1,7 @@
+---
+import PortfolioLayout from '../layouts/PortfolioLayout.astro';
+import { FeedPage } from '../features/site/PortfolioPages';
+---
+<PortfolioLayout title="Dev Feed — Domince Aseberos" description="Short build notes from project work, architecture decisions, ML experiments, and interface polish.">
+  <FeedPage client:load />
+</PortfolioLayout>
