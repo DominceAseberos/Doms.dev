@@ -250,8 +250,8 @@ See [Audit Achievements](AUDIT_ACHIEVEMENTS.md) for complete details.
 ## 🤝 Contact
 
 **Domince Aseberos**
-- Portfolio: [doms.dev](https://doms.dev)
-- GitHub: [@domince](https://github.com/yourusername)
+- Portfolio: [doms.dev]([https://doms.dev](https://www.dominceaseberos.tech/))
+- GitHub: [@domince](https://github.com/DominceAseberos)
 - Email: daseberos@gmail.com
 
 ---
