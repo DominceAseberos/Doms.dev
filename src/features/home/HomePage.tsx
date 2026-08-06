@@ -4,6 +4,7 @@ import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import portfolioJson from '../../data/portfolioData.json';
 import landingJson from '../../data/landingData.json';
+import aboutData from '../../data/aboutData.json';
 import type {PortfolioData} from '../../types/content';
 import PolygonPreloader from './PolygonPreloader';
 import GlobalHeader from '../../components/GlobalHeader';
@@ -12,7 +13,7 @@ import './home.css';
 
 const portfolio=portfolioJson as PortfolioData;
 const featured=portfolio.projects.filter(project=>project.featuredInTunnel&&project.mainImage).slice(0,6);
-const gallery=['Interface study','System thinking','Motion detail','Product story','Visual experiment','Build process'];
+const services=aboutData.services.slice(0,6);
 
 
 
@@ -84,6 +85,71 @@ function HeroMarquee(){
  return <h1 className="hero__name-track" id="hero-title"><span className="hero__name-loop" ref={loop}><span className="hero__name-item" ref={firstItem} data-hero-reveal><span>Domince</span> <em>Aseberos</em> <i>✦</i></span><span className="hero__name-item" aria-hidden="true"><span>Domince</span> <em>Aseberos</em> <i>✦</i></span></span></h1>
 }
 
+function ServiceIcon({ type }: { type: string }) {
+  switch (type) {
+    case 'mobile':
+      return <svg className="service-icon service-icon--mobile" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+        <line className="widget-1" x1="8" y1="6" x2="16" y2="6"></line>
+        <rect className="widget-2" x="8" y="9" width="8" height="4" rx="1"></rect>
+        <line className="widget-3" x1="8" y1="16" x2="16" y2="16"></line>
+      </svg>;
+    case 'web':
+      return <svg className="service-icon service-icon--web" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+        <line x1="2" y1="8" x2="22" y2="8"></line>
+        <circle cx="5" cy="6" r="0.5" fill="currentColor"></circle>
+        <circle cx="7" cy="6" r="0.5" fill="currentColor"></circle>
+        <rect className="web-btn" x="14" y="12" width="4" height="4" rx="1"></rect>
+        <path className="web-cursor" d="M10 10l4 8-1.5-3.5L9 16z" fill="currentColor"></path>
+      </svg>;
+    case 'seo':
+      return <svg className="service-icon service-icon--seo" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <line x1="4" y1="20" x2="20" y2="20"></line>
+        <rect className="chart-bar-1" x="6" y="14" width="3" height="6"></rect>
+        <rect className="chart-bar-2" x="11" y="10" width="3" height="10"></rect>
+        <rect className="chart-bar-3" x="16" y="6" width="3" height="14"></rect>
+        <g className="seo-lens">
+          <circle cx="10" cy="10" r="4"></circle>
+          <line x1="12.8" y1="12.8" x2="16" y2="16"></line>
+        </g>
+      </svg>;
+    case 'ai':
+      return <svg className="service-icon service-icon--ai" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path className="ai-core" d="M12 8l4 4-4 4-4-4z"></path>
+        <circle className="ai-node-1" cx="12" cy="3" r="1.5"></circle>
+        <circle className="ai-node-2" cx="21" cy="12" r="1.5"></circle>
+        <circle className="ai-node-3" cx="12" cy="21" r="1.5"></circle>
+        <circle className="ai-node-4" cx="3" cy="12" r="1.5"></circle>
+        <line className="ai-pulse-1" x1="12" y1="4.5" x2="12" y2="8"></line>
+        <line className="ai-pulse-2" x1="19.5" y1="12" x2="16" y2="12"></line>
+        <line className="ai-pulse-3" x1="12" y1="19.5" x2="12" y2="16"></line>
+        <line className="ai-pulse-4" x1="4.5" y1="12" x2="8" y2="12"></line>
+      </svg>;
+    case 'cms':
+      return <svg className="service-icon service-icon--cms" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="4" y="14" width="16" height="8" rx="1"></rect>
+        <rect x="4" y="2" width="16" height="8" rx="1"></rect>
+        <line className="cms-data-1" x1="8" y1="5" x2="16" y2="5"></line>
+        <line className="cms-data-2" x1="8" y1="7" x2="12" y2="7"></line>
+        <line className="cms-data-3" x1="8" y1="17" x2="14" y2="17"></line>
+        <path className="cms-arrow" d="M12 10v4M10 12l2 2 2-2"></path>
+      </svg>;
+    case 'design':
+      return <svg className="service-icon service-icon--design" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path className="design-curve" d="M4 16C6 8 14 6 20 13"></path>
+        <g className="design-pen">
+          <path d="M20 13l-3-3-7 7v3h3l7-7z"></path>
+          <line x1="15" y1="11" x2="17" y2="13"></line>
+        </g>
+        <circle className="design-point-1" cx="4" cy="16" r="1.5"></circle>
+        <circle className="design-point-2" cx="20" cy="13" r="1.5"></circle>
+      </svg>;
+    default:
+      return <svg className="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"></circle></svg>;
+  }
+}
+
 export default function HomePage(){
  const root=useRef<HTMLDivElement>(null);const [loaded,setLoaded]=useState(false);const finishLoading=useCallback(()=>setLoaded(true),[]);
  useEffect(()=>{if(!loaded||!root.current)return;gsap.registerPlugin(ScrollTrigger);const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;const lenis=reduced?null:new Lenis({duration:1.15,smoothWheel:true});let frame=0;const raf=(time:number)=>{lenis?.raf(time);frame=requestAnimationFrame(raf)};if(lenis)frame=requestAnimationFrame(raf);lenis?.on('scroll',ScrollTrigger.update);
@@ -96,7 +162,7 @@ export default function HomePage(){
    <section className="hero" aria-labelledby="hero-title"><div className="hero__location"><span className="hero__location-index">08° N · 125° E</span><strong>Based in<br/>Davao, Philippines</strong><div className="hero__globe"><AnimatedGlobe/></div></div><div className="hero__portrait"><GlassDebrisD/></div><div className="hero__role"><SplitFlapRole/></div><div className="hero__name-window"><HeroMarquee/></div></section>
    <section className="intro section-shell"><h2 data-reveal>I build digital experiences where systems, story, and interaction move as one.</h2><div data-reveal><p>{landingJson.hero.bio}</p></div><div data-reveal className="intro__link-wrapper"><div className="blobs" aria-hidden="true"><div className="blob blob--1"/><div className="blob blob--2"/><div className="blob blob--3"/></div><a className="round-link" href="/about"><span className="round-link__label">Discover<br/>my story</span><span className="round-link__arrow">↗</span></a></div></section>
    <section className="work section-shell" aria-labelledby="work-title"><div className="section-heading" data-reveal><span className="eyebrow">Selected work</span><h2 id="work-title">Built with intent.</h2></div><div className="work-grid">{featured.map((project,index)=><a className="project-card" href={`/projects/${project.id}`} key={project.id} data-reveal><div className={`project-card__media project-card__media--${index+1}`}><img src={project.mainImage} alt={`${project.title} project preview`} loading="lazy"/><b>{String(index+1).padStart(2,'0')}</b></div><h3>{project.title}</h3><div><span>{project.projectType}</span><time>{project.dateCreated?.slice(0,4)}</time></div></a>)}</div><a className="pill-link" href="/projects">View all projects <span>↗</span></a></section>
-   <section className="gallery" aria-label="Visual experiments">{[0,1].map(row=><div className={`gallery-row gallery-row--${row?'two':'one'}`} key={row}>{gallery.slice(row*3,row*3+3).map((label,index)=><div className={`gallery-placeholder gallery-placeholder--${row}-${index}`} key={label}><span>{label}</span></div>)}</div>)}</section>
+   <section className="gallery" aria-label="Services Offered">{[0,1].map(row=><div className={`gallery-row gallery-row--${row?'two':'one'}`} key={row}>{services.slice(row*3,row*3+3).map((service,index)=><div className={`gallery-placeholder gallery-placeholder--${row}-${index}`} key={service.title}><ServiceIcon type={service.viz}/><span>{service.title}</span></div>)}</div>)}</section>
   </main>
   <GlobalFooter />
  </div>
