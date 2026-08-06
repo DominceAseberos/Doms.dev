@@ -1,4 +1,4 @@
-# Doms.dev - Portfolio v2
+# Doms.dev - Portfolio v4
 
 [![Code Quality](https://img.shields.io/badge/Code%20Quality-A%2B%20(98%25)-success)](AUDIT_ACHIEVEMENTS.md)
 [![Security](https://img.shields.io/badge/Security-9%2F10-green)](AUDIT_ACHIEVEMENTS.md)
@@ -250,7 +250,7 @@ See [Audit Achievements](AUDIT_ACHIEVEMENTS.md) for complete details.
 ## 🤝 Contact
 
 **Domince Aseberos**
-- Portfolio: [doms.dev]([https://doms.dev](https://www.dominceaseberos.tech/))
+- Portfolio: (https://www.dominceaseberos.tech/)
 - GitHub: [@domince](https://github.com/DominceAseberos)
 - Email: daseberos@gmail.com
 
