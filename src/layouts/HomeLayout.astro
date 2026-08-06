@@ -26,6 +26,7 @@ const canonical = new URL(Astro.url.pathname, 'https://www.dominceaseberos.tech'
   <meta name="twitter:image" content="https://www.dominceaseberos.tech/og-preview.png" />
   <title>{title}</title>
   <script type="application/ld+json" set:html={JSON.stringify({ '@context':'https://schema.org', '@type':'Person', name:'Domince Aseberos', url:'https://www.dominceaseberos.tech', jobTitle:'Creative Full Stack Developer', address:{ '@type':'PostalAddress', addressLocality:'Davao', addressCountry:'PH' } })} />
+  {import.meta.env.DEV && <script src="http://127.0.0.1:43119/runtime.js"></script>}
 </head>
 <body><slot /></body>
 </html>

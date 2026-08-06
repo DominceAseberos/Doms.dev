@@ -48,3 +48,5 @@ coverage/
 
 # ── AI Reusable Workflow Prompts ──
 AI-PORTFOLIO-WORKFLOW.md
+# Visual AI Bridge generated context
+.ai-context/

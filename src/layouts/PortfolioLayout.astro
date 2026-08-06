@@ -28,6 +28,7 @@ const path = Astro.url.pathname;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://www.dominceaseberos.tech/og-preview.png" />
     <title>{title}</title>
+    {import.meta.env.DEV && <script src="http://127.0.0.1:43119/runtime.js"></script>}
   </head>
   <body>
     <GlobalHeader client:load />
