@@ -19,9 +19,9 @@
 .footer__title{display:flex;align-items:flex-start;gap:1.5rem}
 .footer .avatar-placeholder{width:3.2rem;aspect-ratio:1;display:grid;place-items:center;border-radius:50%;background:var(--hero);color:var(--ink);font-size:.75rem}
 .footer h2{margin:0;font-size:clamp(3.6rem,8vw,8rem);font-weight:400;letter-spacing:-.065em;line-height:.95}
-.footer .contact-orb{display:flex;align-items:center;justify-content:center;width:clamp(9rem,15vw,13rem);aspect-ratio:1;border-radius:50%;background:var(--blue);color:#fff;text-decoration:none;gap:.6rem;transition:transform .45s cubic-bezier(.34,1.56,.64,1),background .3s;margin:-2rem 10% 0 auto;border-radius:40% 60% 70% 30%/40% 50% 60% 50%;animation:blob-wobble 3.5s ease-in-out infinite}
+.footer .contact-orb{display:flex;align-items:center;justify-content:center;width:clamp(9rem,15vw,13rem);aspect-ratio:1;border-radius:50%;background:var(--blue);color:#fff;text-decoration:none;gap:.6rem;transition:transform .45s cubic-bezier(.34,1.56,.64,1),background .3s,color .3s;margin:-2rem 10% 0 auto;border-radius:40% 60% 70% 30%/40% 50% 60% 50%;animation:blob-wobble 3.5s ease-in-out infinite}
 @keyframes blob-wobble{0%,100%{border-radius:40% 60% 70% 30%/40% 50% 60% 50%;rotate:-4deg}25%{border-radius:60% 40% 30% 70%/60% 30% 70% 40%;rotate:6deg}50%{border-radius:30% 70% 50% 50%/30% 70% 50% 70%;rotate:-8deg}75%{border-radius:70% 30% 40% 60%/50% 40% 60% 50%;rotate:5deg}}
-.footer .contact-orb:hover{transform:scale(1.06)}
+.footer .contact-orb:hover{transform:scale(1.06);background:var(--hero);color:var(--ink)}
 .footer__line{height:1px;margin-top:-1px;background:rgba(255,255,255,.2)}
 .footer__links{display:flex;flex-wrap:wrap;gap:1rem;padding-block:3rem 7rem}
 .footer__links a{padding:1.2rem 1.6rem;border:1px solid rgba(255,255,255,.25);border-radius:3rem;color:#fff;text-decoration:none}

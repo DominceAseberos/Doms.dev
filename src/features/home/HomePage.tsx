@@ -1,6 +1,7 @@
 import {useCallback,useEffect,useRef,useState} from 'react';
 import gsap from 'gsap';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
+import {useGSAP} from '@gsap/react';
 import Lenis from 'lenis';
 import portfolioJson from '../../data/portfolioData.json';
 import landingJson from '../../data/landingData.json';
@@ -81,8 +82,8 @@ function SplitFlapRole(){
 }
 function HeroMarquee(){
  const loop=useRef<HTMLSpanElement>(null);const firstItem=useRef<HTMLSpanElement>(null);
- useEffect(()=>{if(!loop.current||!firstItem.current)return;const distance=firstItem.current.getBoundingClientRect().width;const tween=gsap.to(loop.current,{x:-distance,duration:distance/45,ease:'none',repeat:-1});const container=loop.current.parentElement;const pause=()=>tween.pause();const play=()=>tween.play();container?.addEventListener('mouseenter',pause);container?.addEventListener('mouseleave',play);container?.addEventListener('focusin',pause);container?.addEventListener('focusout',play);return()=>{tween.kill();container?.removeEventListener('mouseenter',pause);container?.removeEventListener('mouseleave',play);container?.removeEventListener('focusin',pause);container?.removeEventListener('focusout',play)}},[]);
- return <h1 className="hero__name-track" id="hero-title"><span className="hero__name-loop" ref={loop}><span className="hero__name-item" ref={firstItem} data-hero-reveal><span>Domince</span> <em>Aseberos</em> <i>✦</i></span><span className="hero__name-item" aria-hidden="true"><span>Domince</span> <em>Aseberos</em> <i>✦</i></span></span></h1>
+ useGSAP(()=>{if(!loop.current||!firstItem.current)return;const distance=firstItem.current.getBoundingClientRect().width;const tween=gsap.to(loop.current,{x:-distance,duration:distance/45,ease:'none',repeat:-1});const container=loop.current.parentElement;const pause=()=>tween.pause();const play=()=>tween.play();container?.addEventListener('mouseenter',pause);container?.addEventListener('mouseleave',play);container?.addEventListener('focusin',pause);container?.addEventListener('focusout',play);return()=>{tween.kill();container?.removeEventListener('mouseenter',pause);container?.removeEventListener('mouseleave',play);container?.removeEventListener('focusin',pause);container?.removeEventListener('focusout',play)}},{scope:loop});
+ return <h1 className="hero__name-track" id="hero-title"><span className="hero__name-loop" ref={loop}><span className="hero__name-item" ref={firstItem} data-hero-reveal><span>Domince</span> <em>Aseberos</em> <i>✦</i></span><span className="hero__name-item" aria-hidden="true" data-hero-reveal><span>Domince</span> <em>Aseberos</em> <i>✦</i></span></span></h1>
 }
 
 function ServiceIcon({ type }: { type: string }) {
@@ -150,19 +151,101 @@ function ServiceIcon({ type }: { type: string }) {
   }
 }
 
-export default function HomePage(){
+ export default function HomePage(){
  const root=useRef<HTMLDivElement>(null);const [loaded,setLoaded]=useState(false);const finishLoading=useCallback(()=>setLoaded(true),[]);
- useEffect(()=>{if(!loaded||!root.current)return;gsap.registerPlugin(ScrollTrigger);const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;const lenis=reduced?null:new Lenis({duration:1.15,smoothWheel:true});let frame=0;const raf=(time:number)=>{lenis?.raf(time);frame=requestAnimationFrame(raf)};if(lenis)frame=requestAnimationFrame(raf);lenis?.on('scroll',ScrollTrigger.update);
- const context=gsap.context(()=>{gsap.from('[data-hero-reveal]',{yPercent:110,duration:1.1,stagger:.08,ease:'power4.out'});if(!reduced){gsap.to('.hero__portrait',{yPercent:-14,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});gsap.to('.hero__name-window',{yPercent:-72,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.5}});gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach(element=>gsap.from(element,{y:70,opacity:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:element,start:'top 88%'}}));gsap.fromTo('.gallery-row--one',{xPercent:0},{xPercent:-6,ease:'none',scrollTrigger:{trigger:'.gallery',start:'center bottom',end:'center top',scrub:true}});gsap.fromTo('.gallery-row--two',{xPercent:0},{xPercent:6,ease:'none',scrollTrigger:{trigger:'.gallery',start:'center bottom',end:'center top',scrub:true}});}},root);
- return()=>{cancelAnimationFrame(frame);lenis?.destroy();context.revert();ScrollTrigger.getAll().forEach(trigger=>trigger.kill())}},[loaded]);
+ useGSAP(()=>{
+  if(!root.current)return;
+  if(!loaded) {
+    gsap.set('[data-hero-reveal]', {yPercent:110});
+    return;
+  }
+  
+  gsap.registerPlugin(ScrollTrigger);
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let lenis:Lenis|null=null;
+  let raf:((time:number)=>void)|null=null;
+  if(!reduced){
+    lenis=new Lenis({duration:1.15,smoothWheel:true});
+    lenis.on('scroll',ScrollTrigger.update);
+    raf=(time:number)=>lenis?.raf(time*1000);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+  }
+  
+  gsap.to('[data-hero-reveal]',{yPercent:0,duration:1.1,stagger:.08,ease:'power4.out'});
+  if(!reduced){
+    gsap.to('.hero__portrait',{yPercent:-14,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+    gsap.to('.hero__name-window',{yPercent:-72,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.5}});
+    gsap.utils.toArray<HTMLElement>('[data-reveal]', root.current).forEach(element=>gsap.from(element,{y:70,opacity:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:element,start:'top 88%'}}));
+    gsap.fromTo('.gallery-row--one',{xPercent:0},{xPercent:-6,ease:'none',scrollTrigger:{trigger:'.gallery',start:'center bottom',end:'center top',scrub:true}});
+    gsap.fromTo('.gallery-row--two',{xPercent:0},{xPercent:6,ease:'none',scrollTrigger:{trigger:'.gallery',start:'center bottom',end:'center top',scrub:true}});
+  }
+  
+  return()=>{if(lenis&&raf){gsap.ticker.remove(raf);lenis.destroy()}}
+ },{scope:root,dependencies:[loaded]});
+ 
+ const navigateWithBlob = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault();
+  const target = e.currentTarget;
+  const href = target.href;
+  const wrapper = target.closest('.intro__link-wrapper') as HTMLElement;
+  if (wrapper) {
+    wrapper.style.zIndex = '9999';
+  }
+  
+  target.style.animation = 'none';
+  target.style.transition = 'none';
+  
+  sessionStorage.setItem('transition_from_blob', 'true');
+  
+  const tl = gsap.timeline({
+    onComplete: () => {
+      window.location.href = href;
+    }
+  });
+
+  tl.to(['.round-link__label', '.round-link__arrow', '.blobs'], {
+    opacity: 0,
+    duration: 0.2,
+    ease: 'power2.out'
+  })
+  .to(target, {
+    scale: 60,
+    duration: 0.85,
+    ease: 'power3.inOut'
+  }, 0);
+ };
+
+ useEffect(() => {
+  const handlePageShow = (e: PageTransitionEvent) => {
+    if (e.persisted) {
+      gsap.set(['.round-link__label', '.round-link__arrow', '.blobs'], { clearProps: 'all' });
+      gsap.set('.round-link', { clearProps: 'all' });
+      
+      const target = document.querySelector('.round-link') as HTMLElement;
+      if (target) {
+        target.style.animation = '';
+        target.style.transition = '';
+      }
+      
+      const wrapper = document.querySelector('.intro__link-wrapper') as HTMLElement;
+      if (wrapper) {
+        wrapper.style.zIndex = '';
+      }
+    }
+  };
+  window.addEventListener('pageshow', handlePageShow);
+  return () => window.removeEventListener('pageshow', handlePageShow);
+ }, []);
+
  return <div className="home" ref={root}>
   {!loaded&&<PolygonPreloader onComplete={finishLoading}/>}
   <GlobalHeader />
   <main>
    <section className="hero" aria-labelledby="hero-title"><div className="hero__location"><span className="hero__location-index">08° N · 125° E</span><strong>Based in<br/>Davao, Philippines</strong><div className="hero__globe"><AnimatedGlobe/></div></div><div className="hero__portrait"><GlassDebrisD/></div><div className="hero__role"><SplitFlapRole/></div><div className="hero__name-window"><HeroMarquee/></div></section>
-   <section className="intro section-shell"><h2 data-reveal>I build digital experiences where systems, story, and interaction move as one.</h2><div data-reveal><p>{landingJson.hero.bio}</p></div><div data-reveal className="intro__link-wrapper"><div className="blobs" aria-hidden="true"><div className="blob blob--1"/><div className="blob blob--2"/><div className="blob blob--3"/></div><a className="round-link" href="/about"><span className="round-link__label">Discover<br/>my story</span><span className="round-link__arrow">↗</span></a></div></section>
+   <section className="intro section-shell"><h2 data-reveal>I build digital experiences where systems, story, and interaction move as one.</h2><div data-reveal><p>{landingJson.hero.bio}</p></div><div data-reveal className="intro__link-wrapper"><div className="blobs" aria-hidden="true"><div className="blob blob--1"/><div className="blob blob--2"/><div className="blob blob--3"/><div className="blob blob--4"/><div className="blob blob--5"/><div className="blob blob--6"/><div className="blob blob--7"/><div className="blob blob--8"/></div><a className="round-link" href="/about" onClick={navigateWithBlob}><span className="round-link__label">Discover<br/>my story</span><span className="round-link__arrow">↗</span></a></div></section>
    <section className="work section-shell" aria-labelledby="work-title"><div className="section-heading" data-reveal><span className="eyebrow">Selected work</span><h2 id="work-title">Built with intent.</h2></div><div className="work-grid">{featured.map((project,index)=><a className="project-card" href={`/projects/${project.id}`} key={project.id} data-reveal><div className={`project-card__media project-card__media--${index+1}`}><img src={project.mainImage} alt={`${project.title} project preview`} loading="lazy"/><b>{String(index+1).padStart(2,'0')}</b></div><h3>{project.title}</h3><div><span>{project.projectType}</span><time>{project.dateCreated?.slice(0,4)}</time></div></a>)}</div><a className="pill-link" href="/projects">View all projects <span>↗</span></a></section>
-   <section className="gallery" aria-label="Services Offered">{[0,1].map(row=><div className={`gallery-row gallery-row--${row?'two':'one'}`} key={row}>{services.slice(row*3,row*3+3).map((service,index)=><div className={`gallery-placeholder gallery-placeholder--${row}-${index}`} key={service.title}><ServiceIcon type={service.viz}/><span>{service.title}</span></div>)}</div>)}</section>
+   <section className="gallery" aria-label="Services Offered">{[0,1].map(row=><div className={`gallery-row gallery-row--${row?'two':'one'}`} key={row}>{services.slice(row*3,row*3+3).map((service,index)=><div className={`gallery-placeholder gallery-placeholder--${row}-${index}`} key={service.title}><ServiceIcon type={service.viz}/><span>{service.title}</span><p>{service.desc}</p></div>)}</div>)}</section>
   </main>
   <GlobalFooter />
  </div>

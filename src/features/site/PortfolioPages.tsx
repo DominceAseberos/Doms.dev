@@ -3,6 +3,8 @@ import emailjs from '@emailjs/browser';
 import ReCAPTCHA from 'react-google-recaptcha';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import Lenis from 'lenis';
 import portfolioData from '../../data/portfolioData.json';
 import aboutData from '../../data/aboutData.json';
 import feedPostsData from '../../data/feedPosts.json';
@@ -21,15 +23,28 @@ const dateLabel = (value?: string) => {
 
 function useReveal(dependency: unknown = null) {
   const root = useRef<HTMLDivElement>(null);
-  useEffect(() => {
+  useGSAP(() => {
     if (!root.current) return;
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
-        gsap.fromTo(element, { y: 42, opacity: 0 }, { y: 0, opacity: 1, duration: .85, ease: 'power3.out', scrollTrigger: { trigger: element, start: 'top 92%' } });
-      });
-    }, root);
-    return () => ctx.revert();
-  }, [dependency]);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let lenis: Lenis | null = null;
+    let raf: ((time: number) => void) | null = null;
+    if (!reduced) {
+      lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+      lenis.on('scroll', ScrollTrigger.update);
+      raf = (time: number) => lenis?.raf(time * 1000);
+      gsap.ticker.add(raf);
+      gsap.ticker.lagSmoothing(0);
+    }
+    gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
+      gsap.fromTo(element, { y: 42, opacity: 0 }, { y: 0, opacity: 1, duration: .85, ease: 'power3.out', scrollTrigger: { trigger: element, start: 'top 92%' } });
+    });
+    return () => {
+      if (lenis && raf) {
+        gsap.ticker.remove(raf);
+        lenis.destroy();
+      }
+    };
+  }, { scope: root, dependencies: [dependency] });
   return root;
 }
 
