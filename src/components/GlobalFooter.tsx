@@ -14,9 +14,10 @@ export default function GlobalFooter() {
 
     const footer = root.current;
     const backWave = footer?.querySelector<HTMLElement>('.footer__wave--back');
+    const midWave = footer?.querySelector<HTMLElement>('.footer__wave--mid');
     const frontWave = footer?.querySelector<HTMLElement>('.footer__wave--front');
 
-    if (footer && backWave && frontWave) {
+    if (footer && backWave && midWave && frontWave) {
       const waveTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: footer,
@@ -29,14 +30,20 @@ export default function GlobalFooter() {
       waveTimeline
         .fromTo(
           backWave,
-          { xPercent: 18, yPercent: 10, scaleY: 0.4 },
-          { xPercent: -18, yPercent: 0, scaleY: 1, ease: 'none' },
+          { xPercent: -12, yPercent: 14, scaleY: 0.5 },
+          { xPercent: 12, yPercent: 0, scaleY: 1, duration: 1.2, ease: 'none' },
+          0,
+        )
+        .fromTo(
+          midWave,
+          { xPercent: -20, yPercent: 11, scaleY: 0.46 },
+          { xPercent: 20, yPercent: 0, scaleY: 1, duration: 1, ease: 'none' },
           0,
         )
         .fromTo(
           frontWave,
-          { xPercent: -18, yPercent: 10, scaleY: 0.4 },
-          { xPercent: 18, yPercent: 0, scaleY: 1, ease: 'none' },
+          { xPercent: -28, yPercent: 8, scaleY: 0.42 },
+          { xPercent: 28, yPercent: 0, scaleY: 1, duration: 0.82, ease: 'none' },
           0,
         );
     }
@@ -62,6 +69,7 @@ export default function GlobalFooter() {
     
     target.style.animation = 'none';
     target.style.transition = 'none';
+    target.classList.add('is-transitioning');
     
     sessionStorage.setItem('transition_from_blob', 'true');
     
@@ -93,6 +101,7 @@ export default function GlobalFooter() {
         if (target) {
           target.style.animation = '';
           target.style.transition = '';
+          target.classList.remove('is-transitioning');
         }
         
         const wrapper = document.querySelector('.footer__inner') as HTMLElement;
@@ -113,6 +122,7 @@ export default function GlobalFooter() {
     <footer className="footer" ref={root}>
       <div className="footer__waves" aria-hidden="true">
         <div className="footer__wave footer__wave--back" />
+        <div className="footer__wave footer__wave--mid" />
         <div className="footer__wave footer__wave--front" />
       </div>
       <div className="footer__inner section-shell">
