@@ -7,7 +7,6 @@ import portfolioJson from '../../data/portfolioData.json';
 import landingJson from '../../data/landingData.json';
 import aboutData from '../../data/aboutData.json';
 import type { PortfolioData } from '../../types/content';
-import PolygonPreloader from './PolygonPreloader';
 import GlobalHeader from '../../components/GlobalHeader';
 import GlobalFooter from '../../components/GlobalFooter';
 import './home.css';
@@ -56,7 +55,8 @@ function GlassDebrisD({ active, onEntranceComplete }: { active: boolean; onEntra
       const parallax = (1 - shard.select) * .13, focusX = clamp(.5 + (pointer.x / Math.max(width, 1) - .5) * parallax, .34, .66), focusY = clamp(.5 + (pointer.y / Math.max(height, 1) - .5) * parallax, .34, .66);
       let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
       if (imageAspect > destAspect) { sw = sh * destAspect; sx = (img.naturalWidth - sw) * focusX } else { sh = sw / destAspect; sy = (img.naturalHeight - sh) * focusY }
-      context.globalAlpha = .62 + shard.hover * .12 + shard.select * .25; context.drawImage(img, sx, sy, sw, sh, minX, minY, boxW, boxH); context.globalAlpha = 1;
+      const baseAlpha = context.globalAlpha;
+      context.globalAlpha = baseAlpha * (.62 + shard.hover * .12 + shard.select * .25); context.drawImage(img, sx, sy, sw, sh, minX, minY, boxW, boxH); context.globalAlpha = baseAlpha;
       const glass = context.createLinearGradient(minX, minY, maxX, maxY); glass.addColorStop(0, 'rgba(255,255,255,.34)'); glass.addColorStop(.32, `rgba(69,92,233,${.12 - shard.select * .07})`); glass.addColorStop(1, 'rgba(20,35,120,.24)'); context.fillStyle = glass; context.fillRect(minX, minY, boxW, boxH);
       return true;
     };
@@ -125,7 +125,7 @@ function GlassDebrisD({ active, onEntranceComplete }: { active: boolean; onEntra
         for (let side = 0; side < 4; side++) { const [ax, ay] = corners[side], [bx, by] = corners[(side + 1) % 4], centerX = (ax + bx + cx) / 3, centerY = (ay + by + cy) / 3; if (!hit(centerX, centerY)) continue; letter.push({ x: centerX, y: centerY, points: [[ax - centerX, ay - centerY], [bx - centerX, by - centerY], [cx - centerX, cy - centerY]], phase: Math.random() * Math.PI * 2, speed: .2 + Math.random() * .24, depth: Math.random(), rotation: 0, magnetX: 0, magnetY: 0, color: `hsla(${202 + Math.random() * 28},${68 + Math.random() * 22}%,${55 + Math.random() * 24}%,${.48 + Math.random() * .34})`, featured: false, imageIndex: -1, baseSize: step, hover: 0, select: 0, screenX: centerX, screenY: centerY, screenRadius: step, orbitWeight: 0, reveal: reduced ? 1 : 0, revealDelay: .04 }); }
       }
       const targetZones = [
-        [.18, .19], [.27, .31], [.79, .20], [.86, .35], [.17, .72], [.81, .74],
+        [.18, .19], [.34, .31], [.71, .20], [.76, .38], [.17, .72], [.73, .72],
       ] as const;
       const reflectionCount = memoryImages.length, totalDebris = 22;
       for (let index = 0; index < totalDebris; index++) {
@@ -144,7 +144,19 @@ function GlassDebrisD({ active, onEntranceComplete }: { active: boolean; onEntra
         const size = featuredShard ? clamp(Math.min(width, height) * (.07 + Math.random() * .016), 50, 74) : 6 + Math.random() * 11;
         const pointsCount = featuredShard ? 5 + Math.floor(Math.random() * 3) : 3 + Math.floor(Math.random() * 4), points: [number, number][] = [];
         for (let point = 0; point < pointsCount; point++) { const pointAngle = point / pointsCount * Math.PI * 2 + (Math.random() - .5) * (featuredShard ? .34 : .55), pointRadius = size * (featuredShard ? .68 + Math.random() * .48 : .5 + Math.random() * .72); points.push([Math.cos(pointAngle) * pointRadius, Math.sin(pointAngle) * pointRadius]) }
-        const revealDelay = featuredShard ? .48 + index * .15 : 1.38 + (index - reflectionCount) * .07;
+        let revealDelay = 0;
+        if (featuredShard) {
+          revealDelay = .48 + index * .34;
+        } else {
+          let minDist = Infinity;
+          let nearestDelay = 0;
+          for (let i = 0; i < reflectionCount; i++) {
+            const featured = debris[i];
+            const dist = Math.hypot(x - featured.x, y - featured.y);
+            if (dist < minDist) { minDist = dist; nearestDelay = featured.revealDelay; }
+          }
+          revealDelay = nearestDelay + (Math.random() * .15 - .05);
+        }
         debris.push({ x, y, points, phase: Math.random() * Math.PI * 2, speed: featuredShard ? .13 + Math.random() * .14 : .12 + Math.random() * .22, depth: Math.random(), rotation: Math.random() * Math.PI * 2, magnetX: 0, magnetY: 0, color: `hsla(${196 + Math.random() * 42},78%,${57 + Math.random() * 20}%,${.24 + Math.random() * .26})`, featured: featuredShard, imageIndex: featuredShard ? index : -1, baseSize: size, hover: 0, select: 0, screenX: x, screenY: y, screenRadius: size, orbitWeight: 0, reveal: reduced ? 1 : 0, revealDelay });
       }
       finalRevealDelay = debris.reduce((latest, shard) => Math.max(latest, shard.revealDelay), 0);
@@ -264,6 +276,16 @@ function ServiceIcon({ type }: { type: string }) {
 export default function HomePage() {
   const root = useRef<HTMLDivElement>(null); const workGrid = useRef<HTMLDivElement>(null); const [loaded, setLoaded] = useState(false); const [heroCanvasReady, setHeroCanvasReady] = useState(false); const [visibleProjectCount, setVisibleProjectCount] = useState(() => Math.min(featured.length, 6)); const finishLoading = useCallback(() => setLoaded(true), []); const finishHeroCanvas = useCallback(() => setHeroCanvasReady(true), []);
   useEffect(() => {
+    const html = document.documentElement;
+    const handleCurtainReady = () => finishLoading();
+    if (html.dataset.navCurtainReady === 'true') {
+      handleCurtainReady();
+      return;
+    }
+    window.addEventListener('nav-curtain:ready', handleCurtainReady, { once: true });
+    return () => window.removeEventListener('nav-curtain:ready', handleCurtainReady);
+  }, [finishLoading]);
+  useEffect(() => {
     const grid = workGrid.current; if (!grid) return;
     let frame = 0;
     const updateVisibleProjects = () => {
@@ -347,6 +369,7 @@ export default function HomePage() {
 
     target.style.animation = 'none';
     target.style.transition = 'none';
+    target.classList.add('is-transitioning');
 
     sessionStorage.setItem('transition_from_blob', 'true');
 
@@ -378,6 +401,7 @@ export default function HomePage() {
         if (target) {
           target.style.animation = '';
           target.style.transition = '';
+          target.classList.remove('is-transitioning');
         }
 
         const wrapper = document.querySelector('.intro__link-wrapper') as HTMLElement;
@@ -391,7 +415,6 @@ export default function HomePage() {
   }, []);
 
   return <div className="home" ref={root}>
-    {!loaded && <PolygonPreloader onComplete={finishLoading} />}
     <GlobalHeader />
     <main>
       <section className="hero" aria-labelledby="hero-title"><div className="hero__location" data-hero-location><span className="hero__location-index">08° N · 125° E</span><strong>Based in<br />Davao, Philippines</strong><div className="hero__globe"><AnimatedGlobe /></div></div><div className="hero__portrait"><GlassDebrisD active={loaded} onEntranceComplete={finishHeroCanvas} /></div><div className="hero__role" data-hero-role><SplitFlapRole /></div><div className="hero__name-window"><HeroMarquee /></div></section>

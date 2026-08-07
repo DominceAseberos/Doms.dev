@@ -18,14 +18,21 @@ import './nav-curtain.css';
   const curtain = document.getElementById('nav-curtain');
   const html = document.documentElement;
   const persisted = sessionStorage.getItem('transition_from_nav') === 'true';
+  const preload = html.classList.contains('nav-curtain-preload');
   let active = false;
+
+  const markReady = () => {
+    html.dataset.navCurtainReady = 'true';
+    window.dispatchEvent(new CustomEvent('nav-curtain:ready'));
+  };
 
   const clearCurtain = () => {
     if (!curtain) return;
     curtain.classList.remove('is-closing', 'is-closed', 'is-opening');
-    html.classList.remove('nav-curtain-persisted', 'is-nav-transitioning');
+    html.classList.remove('nav-curtain-persisted', 'nav-curtain-preload', 'is-nav-transitioning', 'is-loading');
     sessionStorage.removeItem('transition_from_nav');
     active = false;
+    markReady();
   };
 
   const waitForFrontLayer = (phase, callback) => {
@@ -43,12 +50,12 @@ import './nav-curtain.css';
     window.setTimeout(finish, 1450);
   };
 
-  const openPersistedCurtain = () => {
-    if (!curtain || !persisted) return;
+  const openCoveredCurtain = () => {
+    if (!curtain || (!persisted && !preload)) return;
     active = true;
     curtain.classList.add('is-closed');
     html.classList.add('is-nav-transitioning');
-    html.classList.remove('nav-curtain-persisted');
+    html.classList.remove('nav-curtain-persisted', 'nav-curtain-preload');
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -59,12 +66,14 @@ import './nav-curtain.css';
     });
   };
 
-  if (persisted) {
+  if (persisted || preload) {
     if (document.readyState === 'complete') {
-      openPersistedCurtain();
+      openCoveredCurtain();
     } else {
-      window.addEventListener('load', openPersistedCurtain, { once: true });
+      window.addEventListener('load', openCoveredCurtain, { once: true });
     }
+  } else {
+    markReady();
   }
 
   window.__navCurtainNavigate = (href) => {

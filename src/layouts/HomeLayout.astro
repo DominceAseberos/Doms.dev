@@ -29,14 +29,20 @@ const canonical = new URL(Astro.url.pathname, 'https://www.dominceaseberos.tech'
   <script type="application/ld+json" set:html={JSON.stringify({ '@context':'https://schema.org', '@type':'Person', name:'Domince Aseberos', url:'https://www.dominceaseberos.tech', jobTitle:'Creative Full Stack Developer', address:{ '@type':'PostalAddress', addressLocality:'Davao', addressCountry:'PH' } })} />
   {import.meta.env.DEV && <script src="http://127.0.0.1:43119/runtime.js"></script>}
   <script is:inline>
-    if (sessionStorage.getItem('transition_from_blob') === 'true') {
+    const transitionFromBlob = sessionStorage.getItem('transition_from_blob') === 'true';
+    const transitionFromNav = sessionStorage.getItem('transition_from_nav') === 'true';
+
+    if (transitionFromBlob) {
       const div = document.createElement('div');
       div.id = 'blob-transition-overlay';
-      div.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#455ce9;z-index:999999;pointer-events:none;transform-origin:top left;';
+      div.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#27316f;z-index:999999;pointer-events:none;transform-origin:top left;';
       document.documentElement.appendChild(div);
     }
-    if (sessionStorage.getItem('transition_from_nav') === 'true') {
+
+    if (transitionFromNav) {
       document.documentElement.classList.add('nav-curtain-persisted', 'is-nav-transitioning');
+    } else if (!transitionFromBlob) {
+      document.documentElement.classList.add('nav-curtain-preload', 'is-nav-transitioning', 'is-loading');
     }
   </script>
 </head>
