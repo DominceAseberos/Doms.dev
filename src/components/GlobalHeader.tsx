@@ -95,6 +95,14 @@ export default function GlobalHeader() {
         </button>
       </header>
       <aside className={`menu-panel ${menuOpen ? 'is-open' : ''}`} aria-hidden={!menuOpen}>
+        <button 
+          className="menu-panel-close" 
+          type="button" 
+          aria-label="Close navigation" 
+          onClick={() => setMenuOpen(false)}
+        >
+          <span /><span />
+        </button>
         <span className="eyebrow">Navigation</span>
         <nav>
           <a href="/">Home</a>

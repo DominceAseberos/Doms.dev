@@ -13,12 +13,12 @@ export default function GlobalFooter() {
     gsap.registerPlugin(ScrollTrigger);
 
     gsap.fromTo('.footer__wave--back',
-      { xPercent: 2, yPercent: 4 },
-      { xPercent: -2, yPercent: -4, ease: 'none', scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'top center', scrub: true } }
+      { xPercent: 10, yPercent: 10, scaleY: 0.4 },
+      { xPercent: -10, yPercent: 0, scaleY: 1, ease: 'none', scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'top center', scrub: true } }
     );
     gsap.fromTo('.footer__wave--front',
-      { xPercent: -2, yPercent: 8 },
-      { xPercent: 2, yPercent: -8, ease: 'none', scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'top center', scrub: true } }
+      { xPercent: -10, yPercent: 10, scaleY: 0.4 },
+      { xPercent: 10, yPercent: 0, scaleY: 1, ease: 'none', scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'top center', scrub: true } }
     );
 
     gsap.utils.toArray<HTMLElement>('[data-reveal]', root.current).forEach(element => {
