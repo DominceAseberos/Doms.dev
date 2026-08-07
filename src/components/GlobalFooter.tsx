@@ -12,14 +12,34 @@ export default function GlobalFooter() {
     if (typeof window === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.fromTo('.footer__wave--back',
-      { xPercent: 10, yPercent: 10, scaleY: 0.4 },
-      { xPercent: -10, yPercent: 0, scaleY: 1, ease: 'none', scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'top center', scrub: true } }
-    );
-    gsap.fromTo('.footer__wave--front',
-      { xPercent: -10, yPercent: 10, scaleY: 0.4 },
-      { xPercent: 10, yPercent: 0, scaleY: 1, ease: 'none', scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'top center', scrub: true } }
-    );
+    const footer = root.current;
+    const backWave = footer?.querySelector<HTMLElement>('.footer__wave--back');
+    const frontWave = footer?.querySelector<HTMLElement>('.footer__wave--front');
+
+    if (footer && backWave && frontWave) {
+      const waveTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: footer,
+          start: 'top bottom',
+          end: 'top 20%',
+          scrub: true,
+        },
+      });
+
+      waveTimeline
+        .fromTo(
+          backWave,
+          { xPercent: 18, yPercent: 10, scaleY: 0.4 },
+          { xPercent: -18, yPercent: 0, scaleY: 1, ease: 'none' },
+          0,
+        )
+        .fromTo(
+          frontWave,
+          { xPercent: -18, yPercent: 10, scaleY: 0.4 },
+          { xPercent: 18, yPercent: 0, scaleY: 1, ease: 'none' },
+          0,
+        );
+    }
 
     gsap.utils.toArray<HTMLElement>('[data-reveal]', root.current).forEach(element => {
       gsap.from(element, { y: 70, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: element, start: 'top 88%' } });
