@@ -125,7 +125,7 @@ html.is-loading *, html.is-loading *::before, html.is-loading *::after { animati
 .split-flap{min-height:0;display:flex;flex-direction:column;align-items:flex-start;gap:.08em;overflow:visible;perspective:700px;font-family:'Manrope',sans-serif;font-size:clamp(2.5rem,4.8vw,5rem);font-weight:500;letter-spacing:-.07em;line-height:.84;text-transform:uppercase}
 .split-flap__word-window{display:inline-grid;overflow:hidden;padding:.18em .05em .22em;perspective:700px}
 .split-flap__word{grid-area:1/1;display:block;color:var(--blue);transform-origin:50% 100%;animation:word-flip .72s cubic-bezier(.2,.75,.25,1) both}
-.split-flap__suffix{color:var(--ink)}
+.split-flap__suffix{background:linear-gradient(270deg,var(--blue),#8ea0ff,#202d88,var(--blue));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;animation:suffix-gradient 6s ease infinite}@keyframes suffix-gradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes word-flip{0%{opacity:0;transform:translateY(70%) rotateX(-70deg) rotateZ(-6deg)}68%{opacity:1;transform:translateY(-4%) rotateX(8deg) rotateZ(1.5deg)}100%{opacity:1;transform:translateY(0) rotateX(0) rotateZ(0)}}
 @media(max-width:760px){.split-flap{font-size:clamp(2rem,8vw,3.4rem);gap:.08em}}
 .motion-glyph{animation:role-icon-in .6s cubic-bezier(.2,.75,.25,1) both}
