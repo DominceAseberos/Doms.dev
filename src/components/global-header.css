@@ -12,7 +12,7 @@
 .desktop-nav a::after{content:'';position:absolute;left:0;right:100%;bottom:-.35rem;height:1px;background:currentColor;transition:right .35s}
 .desktop-nav a:hover::after{right:0}
 
-.menu-button{position:fixed;z-index:55;top:1.25rem;right:var(--pad, clamp(1.25rem,4vw,4.5rem));width:3.7rem;aspect-ratio:1;border:0;border-radius:50%;background:var(--ink, #17181b);display:grid;place-content:center;gap:6px;cursor:pointer;transition:background .35s,transform .35s,opacity .35s;transform:scale(0);opacity:0;pointer-events:none}
+.menu-button{position:fixed;z-index:55;top:1.25rem;right:var(--pad, clamp(1.25rem,4vw,4.5rem));width:3.7rem;aspect-ratio:1;border:0;border-radius:40% 60% 70% 30%/40% 50% 60% 50%;animation:blob-wobble 3.5s ease-in-out infinite;background:var(--ink, #17181b);display:grid;place-content:center;gap:6px;cursor:pointer;transition:background .35s,transform .35s,opacity .35s;transform:scale(0);opacity:0;pointer-events:none}
 .site-header.is-scrolled .menu-button, .menu-button.is-open{transform:scale(1);opacity:1;pointer-events:auto}
 .menu-button span{display:block;width:18px;height:1px;background:#fff;transition:transform .35s}
 .menu-button.is-open{background:var(--blue, #455ce9)}

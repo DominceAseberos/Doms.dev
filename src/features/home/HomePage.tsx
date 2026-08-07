@@ -138,10 +138,10 @@ function ServiceIcon({ type }: { type: string }) {
       </svg>;
     case 'design':
       return <svg className="service-icon service-icon--design" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path className="design-curve" d="M4 16C6 8 14 6 20 13"></path>
+        <path className="design-curve" d="M4 16C6 8 14 6 20 13" pathLength="1"></path>
         <g className="design-pen">
-          <path d="M20 13l-3-3-7 7v3h3l7-7z"></path>
-          <line x1="15" y1="11" x2="17" y2="13"></line>
+          <path d="M0 0l3-3 7 7v3h-3l-7-7z"></path>
+          <line x1="5" y1="-2" x2="3" y2="0"></line>
         </g>
         <circle className="design-point-1" cx="4" cy="16" r="1.5"></circle>
         <circle className="design-point-2" cx="20" cy="13" r="1.5"></circle>
