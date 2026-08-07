@@ -1,0 +1,84 @@
+---
+import './nav-curtain.css';
+---
+
+<div class="nav-curtain" id="nav-curtain" aria-hidden="true">
+  <svg class="nav-curtain__layer nav-curtain__layer--three" viewBox="0 0 1440 1180" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 0H1440V1044C1360 1044 1325 1096 1240 1096C1148 1096 1118 1018 1016 1018C912 1018 888 1138 774 1138C654 1138 620 1062 520 1062C420 1062 382 1148 260 1148C140 1148 90 1088 0 1088Z" />
+  </svg>
+  <svg class="nav-curtain__layer nav-curtain__layer--two" viewBox="0 0 1440 1180" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 0H1440V1040C1342 1040 1290 1118 1186 1118C1088 1118 1048 1038 946 1038C842 1038 812 1146 704 1146C592 1146 540 1068 432 1068C326 1068 282 1132 190 1132C104 1132 60 1096 0 1096Z" />
+  </svg>
+  <svg class="nav-curtain__layer nav-curtain__layer--one" viewBox="0 0 1440 1180" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 0H1440V1026C1348 1026 1308 1080 1218 1080C1110 1080 1078 1150 964 1150C848 1150 808 1068 700 1068C592 1068 550 1138 446 1138C338 1138 304 1056 202 1056C112 1056 70 1110 0 1110Z" />
+  </svg>
+</div>
+
+<script>
+  const curtain = document.getElementById('nav-curtain');
+  const html = document.documentElement;
+  const persisted = sessionStorage.getItem('transition_from_nav') === 'true';
+  let active = false;
+
+  const clearCurtain = () => {
+    if (!curtain) return;
+    curtain.classList.remove('is-closing', 'is-closed', 'is-opening');
+    html.classList.remove('nav-curtain-persisted', 'is-nav-transitioning');
+    sessionStorage.removeItem('transition_from_nav');
+    active = false;
+  };
+
+  const waitForFrontLayer = (phase, callback) => {
+    if (!curtain) return callback();
+    const selector = phase === 'close' ? '.nav-curtain__layer--one' : '.nav-curtain__layer--three';
+    const layer = curtain.querySelector(selector);
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      layer?.removeEventListener('transitionend', finish);
+      callback();
+    };
+    layer?.addEventListener('transitionend', finish, { once: true });
+    window.setTimeout(finish, 1450);
+  };
+
+  const openPersistedCurtain = () => {
+    if (!curtain || !persisted) return;
+    active = true;
+    curtain.classList.add('is-closed');
+    html.classList.add('is-nav-transitioning');
+    html.classList.remove('nav-curtain-persisted');
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        curtain.classList.remove('is-closed');
+        curtain.classList.add('is-opening');
+        waitForFrontLayer('open', clearCurtain);
+      });
+    });
+  };
+
+  if (persisted) {
+    if (document.readyState === 'complete') {
+      openPersistedCurtain();
+    } else {
+      window.addEventListener('load', openPersistedCurtain, { once: true });
+    }
+  }
+
+  window.__navCurtainNavigate = (href) => {
+    if (!curtain || active) return;
+    active = true;
+    sessionStorage.setItem('transition_from_nav', 'true');
+    html.classList.add('is-nav-transitioning');
+    curtain.classList.remove('is-opening', 'is-closed');
+    curtain.classList.add('is-closing');
+
+    waitForFrontLayer('close', () => {
+      curtain.classList.remove('is-closing');
+      curtain.classList.add('is-closed');
+      window.location.href = href;
+    });
+  };
+</script>

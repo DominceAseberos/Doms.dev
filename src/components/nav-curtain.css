@@ -1,0 +1,12 @@
+html.is-nav-transitioning,html.is-nav-transitioning body{overflow:hidden}
+.nav-curtain{position:fixed;z-index:999998;inset:0;overflow:hidden;pointer-events:none;visibility:hidden}
+.nav-curtain__layer{position:absolute;left:0;top:0;width:100vw;height:120vh;transform:translate3d(0,-126vh,0);will-change:transform;filter:drop-shadow(0 1.2rem 2.2rem rgba(5,8,20,.16));transition-property:transform;transition-duration:.82s;transition-timing-function:cubic-bezier(.76,0,.24,1)}
+.nav-curtain__layer path{stroke:none}
+.nav-curtain__layer--three{z-index:1;--closed-y:0vh;--close-delay:0ms;--open-delay:280ms;fill:#17181b}
+.nav-curtain__layer--two{z-index:2;--closed-y:-22vh;--close-delay:140ms;--open-delay:140ms;fill:#20284b}
+.nav-curtain__layer--one{z-index:3;--closed-y:-44vh;--close-delay:280ms;--open-delay:0ms;fill:#27316f}
+.nav-curtain.is-closing,.nav-curtain.is-closed,.nav-curtain.is-opening,.nav-curtain-persisted .nav-curtain{visibility:visible;pointer-events:auto}
+.nav-curtain.is-closing .nav-curtain__layer{transform:translate3d(0,var(--closed-y),0);transition-delay:var(--close-delay)}
+.nav-curtain.is-closed .nav-curtain__layer,.nav-curtain-persisted .nav-curtain__layer{transform:translate3d(0,var(--closed-y),0);transition:none}
+.nav-curtain.is-opening .nav-curtain__layer{transform:translate3d(0,-126vh,0);transition-delay:var(--open-delay)}
+@media(prefers-reduced-motion:reduce){.nav-curtain__layer{transition-duration:.01ms;transition-delay:0ms!important}}

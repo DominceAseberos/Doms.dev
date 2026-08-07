@@ -63,6 +63,20 @@ export default function GlobalHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const navigateWithCurtain = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const target = event.currentTarget;
+    const url = new URL(target.href, window.location.href);
+    if (url.origin !== window.location.origin) return;
+
+    const curtainNavigate = (window as Window & { __navCurtainNavigate?: (href: string) => void }).__navCurtainNavigate;
+    if (!curtainNavigate) return;
+
+    event.preventDefault();
+    setMenuOpen(false);
+    curtainNavigate(target.href);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -79,10 +93,10 @@ export default function GlobalHeader() {
       <header className={`site-header ${isScrolled ? 'is-scrolled' : ''}`}>
         <MorphingBrand />
         <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="/projects">Work</a>
-          <a href="/about">About</a>
-          <a href="/feed">Feed</a>
-          <a href="/contact">Contact</a>
+          <a href="/projects" onClick={navigateWithCurtain}>Work</a>
+          <a href="/about" onClick={navigateWithCurtain}>About</a>
+          <a href="/feed" onClick={navigateWithCurtain}>Feed</a>
+          <a href="/contact" onClick={navigateWithCurtain}>Contact</a>
         </nav>
         <button 
           className={`menu-button ${menuOpen ? 'is-open' : ''}`} 
@@ -105,11 +119,11 @@ export default function GlobalHeader() {
         </button>
         <span className="eyebrow">Navigation</span>
         <nav>
-          <a href="/">Home</a>
-          <a href="/projects">Work</a>
-          <a href="/about">About</a>
-          <a href="/feed">Feed</a>
-          <a href="/contact">Contact</a>
+          <a href="/" onClick={navigateWithCurtain}>Home</a>
+          <a href="/projects" onClick={navigateWithCurtain}>Work</a>
+          <a href="/about" onClick={navigateWithCurtain}>About</a>
+          <a href="/feed" onClick={navigateWithCurtain}>Feed</a>
+          <a href="/contact" onClick={navigateWithCurtain}>Contact</a>
         </nav>
       </aside>
     </>
